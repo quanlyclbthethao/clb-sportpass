@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CLB Thể Thao - Digital Pass</title>
+  
+  <!-- Cấu hình PWA Chuẩn Google & Apple -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#818cf8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SportPass">
+
+  <!-- Thư viện giao diện & QR Core -->
+  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js](https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js)"></script>
+
+  <style>
+    @import url('[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap)');
+    * {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body {
+      background-color: #f1f4fb;
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(196, 181, 253, 0.45) 0px, transparent 50%),
+        radial-gradient(at 90% 20%, rgba(254, 205, 211, 0.40) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(186, 230, 253, 0.45) 0px, transparent 50%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: #1e293b;
+      overflow-x: hidden;
+      padding-bottom: 90px;
+    }
+    .pastel-glass {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 12px 36px -10px rgba(148, 163, 184, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+    }
+    .spring-tap {
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    }
+    .spring-tap:active { transform: scale(0.94); }
+    .dock-pill {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+      box-shadow: 0 4px 14px rgba(129, 140, 248, 0.38);
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.38s ease;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="p-3 sm:p-5 flex flex-col items-center">
+
+  <!-- Banner Hướng Dẫn Cài Đặt 1-Chạm (Tự Ẩn Khi Đã Là App) -->
+  <div id="pwaInstallBanner" class="w-full max-w-md pastel-glass p-3 mb-3 flex items-center justify-between border-indigo-200 bg-indigo-50/70 hidden">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-2xl bg-indigo-500 text-white flex items-center justify-center font-bold text-sm shadow-md">
+        📲
+      </div>
+      <div>
+        <h4 class="text-xs font-bold text-slate-800">Cài Đặt App Vào Máy</h4>
+        <p class="text-[10px] text-slate-500">Mở toàn màn hình, không cần trình duyệt</p>
+      </div>
+    </div>
+    <button id="btnPwaInstall" onclick="triggerPwaInstall()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs spring-tap shadow-sm shadow-indigo-300">
+      Cài Ngay
+    </button>
+  </div>
+
+  <!-- Thanh Header -->
+  <header class="w-full max-w-md pastel-glass px-4 py-3 flex items-center justify-between mb-4 z-20">
+    <div class="flex items-center gap-3">
+      <div id="headerAvatar" class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center font-bold text-indigo-600 border border-white shadow-sm overflow-hidden">
+        CLB
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-800 leading-tight">CLB THỂ THAO</h1>
+        <p id="headerStatusText" class="text-xs text-slate-500 font-medium">Hệ Thống Thẻ Số</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="refreshData()" class="w-9 h-9 rounded-full bg-white/80 border border-slate-200/80 flex items-center justify-center text-slate-600 spring-tap shadow-sm" title="Làm mới">
+        🔄
+      </button>
+      <button id="btnLogout" onclick="logout()" class="hidden w-9 h-9 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-500 spring-tap shadow-sm" title="Đăng xuất">
+        🚪
+      </button>
+    </div>
+  </header>
+
+  <!-- MÀN HÌNH ĐĂNG NHẬP -->
+  <main id="viewLogin" class="w-full max-w-md flex flex-col gap-4">
+    <div class="pastel-glass p-6 text-center">
+      <div class="w-16 h-16 mx-auto rounded-3xl bg-indigo-500/10 border border-indigo-200 flex items-center justify-center text-2xl text-indigo-600 mb-3 shadow-inner">
+        🪪
+      </div>
+      <h2 class="text-xl font-extrabold text-slate-800">CỔNG ĐỊNH DANH SỐ</h2>
+      <p class="text-xs text-slate-500 mt-1">Đăng nhập tài khoản hoặc quét mã QR</p>
+
+      <div class="flex bg-slate-200/60 p-1 rounded-2xl mt-5">
+        <button id="tabBtnAccount" onclick="switchLoginMode('account')" class="flex-1 py-2 text-xs font-bold rounded-xl bg-white text-indigo-600 shadow-sm transition-all">
+          Tài Khoản
+        </button>
+        <button id="tabBtnQr" onclick="switchLoginMode('qr')" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all">
+          Quét Mã QR
+        </button>
+      </div>
+
+      <div id="loginFormAccount" class="mt-5 flex flex-col gap-3 text-left">
+        <div>
+          <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Mã ID / MSSV / SĐT</label>
+          <input id="inputUser" type="text" placeholder="Ví dụ: CLB001, 20210001..." class="w-full mt-1 px-4 py-3 rounded-2xl bg-white/90 border border-slate-200/80 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+        </div>
+        <div>
+          <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider ml-1">Mật Khẩu</label>
+          <input id="inputPass" type="password" placeholder="Mặc định: 123456" class="w-full mt-1 px-4 py-3 rounded-2xl bg-white/90 border border-slate-200/80 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+        </div>
+        <button onclick="handleLoginSubmit()" id="btnSubmitLogin" class="w-full mt-2 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold text-sm shadow-md shadow-indigo-300 spring-tap">
+          Đăng Nhập Thẻ Số
+        </button>
+      </div>
+
+      <div id="loginFormQr" class="mt-5 hidden flex-col items-center gap-3">
+        <div class="relative w-full aspect-square max-w-[260px] rounded-3xl overflow-hidden border-2 border-dashed border-indigo-300 bg-slate-50 flex items-center justify-center">
+          <video id="qrVideo" class="w-full h-full object-cover hidden"></video>
+          <div id="qrPlaceholder" class="text-center p-4">
+            <span class="text-3xl">📷</span>
+            <p class="text-xs text-slate-500 mt-2">Bấm Bật Camera hoặc tải ảnh QR để mở thẻ</p>
+          </div>
+        </div>
+        <div class="flex gap-2 w-full max-w-[260px]">
+          <button onclick="startQrCamera()" class="flex-1 py-2.5 bg-indigo-50 border border-indigo-200 text-indigo-600 rounded-xl text-xs font-bold spring-tap">
+            Bật Camera
+          </button>
+          <label class="flex-1 py-2.5 bg-slate-100 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold text-center cursor-pointer spring-tap">
+            Chọn Ảnh QR
+            <input type="file" accept="image/*" class="hidden" onchange="handleQrImageUpload(event)">
+          </label>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MÀN HÌNH CHÍNH (Sau khi đăng nhập) -->
+  <main id="viewApp" class="w-full max-w-md hidden flex-col gap-4">
+    <!-- TAB 1: HỒ SƠ -->
+    <section id="tabProfile" class="flex flex-col gap-4">
+      <div class="pastel-glass p-5 relative overflow-hidden">
+        <div class="flex items-center gap-4">
+          <div id="memberAvatar" class="w-16 h-16 rounded-3xl bg-indigo-100 border-2 border-white shadow-md flex items-center justify-center font-extrabold text-indigo-600 text-xl overflow-hidden">
+            A
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <h2 id="memberName" class="text-lg font-black text-slate-800">Nguyễn Văn A</h2>
+              <span id="badgeAdmin" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200">
+                🛡️ Admin
+              </span>
+            </div>
+            <p id="memberRole" class="text-xs font-semibold text-indigo-600 mt-0.5">Chủ nhiệm CLB</p>
+            <p id="memberId" class="text-[11px] text-slate-400 font-mono">ID: CLB001</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100">
+          <div class="bg-indigo-50/60 p-2.5 rounded-2xl text-center">
+            <span class="text-[10px] font-bold text-indigo-400 block uppercase">Cống Hiến</span>
+            <span id="memberDutyCount" class="text-base font-extrabold text-indigo-600">12</span> <span class="text-[10px] text-slate-400">ca</span>
+          </div>
+          <div class="bg-emerald-50/60 p-2.5 rounded-2xl text-center">
+            <span class="text-[10px] font-bold text-emerald-500 block uppercase">Thể Trạng</span>
+            <span id="memberFitness" class="text-xs font-bold text-emerald-600 block truncate">100% Sẵn Sàng</span>
+          </div>
+          <div class="bg-amber-50/60 p-2.5 rounded-2xl text-center">
+            <span class="text-[10px] font-bold text-amber-500 block uppercase">Trạng Thái</span>
+            <span id="memberStatus" class="text-xs font-bold text-amber-600 block truncate">Chính Thức</span>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 flex gap-2">
+          <button onclick="callIce()" class="flex-1 py-3 px-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 font-bold text-xs flex items-center justify-center gap-1.5 spring-tap">
+            🚨 Gọi Khẩn Cấp (ICE)
+          </button>
+          <button onclick="showQrModal()" class="py-3 px-4 rounded-2xl bg-slate-100 text-slate-700 font-bold text-xs spring-tap">
+            Mã QR Của Tôi
+          </button>
+        </div>
+      </div>
+
+      <div class="pastel-glass p-5">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Thông Tin Chi Tiết</h3>
+        <div class="flex flex-col gap-2.5 text-xs">
+          <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-400">Lớp:</span><span id="detailLop" class="font-bold text-slate-700">K64-CNTT</span></div>
+          <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-400">MSSV:</span><span id="detailMssv" class="font-bold text-slate-700">20210001</span></div>
+          <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-400">Khoa / Viện:</span><span id="detailKhoa" class="font-bold text-slate-700">CNTT</span></div>
+          <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-400">Bộ Môn / Ban:</span><span id="detailBoMon" class="font-bold text-slate-700">Phần Mềm</span></div>
+          <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-400">Ngày Sinh:</span><span id="detailNgaySinh" class="font-bold text-slate-700">15/05/2003</span></div>
+          <div class="flex justify-between py-1.5 border-b border-slate-100"><span class="text-slate-400">Số Điện Thoại:</span><span id="detailSdt" class="font-bold text-indigo-600">0912345678</span></div>
+          <div class="flex justify-between py-1.5"><span class="text-slate-400">Ghi Chú Y Tế:</span><span id="detailYTe" class="font-bold text-slate-700">Bình thường</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: ĐIỀU ĐỘNG -->
+    <section id="tabTasks" class="hidden flex flex-col gap-3">
+      <div id="taskListContainer" class="flex flex-col gap-3"></div>
+    </section>
+
+    <!-- TAB 3: DIỄN ĐÀN -->
+    <section id="tabForum" class="hidden flex flex-col gap-3">
+      <div id="forumListContainer" class="flex flex-col gap-3"></div>
+    </section>
+  </main>
+
+  <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐÁY -->
+  <nav id="bottomNav" class="fixed bottom-3 w-[calc(100%-24px)] max-w-md h-16 pastel-glass p-1.5 flex items-center justify-around z-30 shadow-2xl">
+    <div id="navPill" class="dock-pill"></div>
+    <button onclick="switchTab(0)" class="relative z-10 flex-1 flex flex-col items-center justify-center text-xs font-bold text-white" id="tabNav0">
+      <span class="text-sm">🪪</span>
+      <span class="text-[10px] mt-0.5">Hồ Sơ</span>
+    </button>
+    <button onclick="switchTab(1)" class="relative z-10 flex-1 flex flex-col items-center justify-center text-xs font-bold text-slate-500" id="tabNav1">
+      <span class="text-sm">📋</span>
+      <span class="text-[10px] mt-0.5">Điều Động</span>
+    </button>
+    <button onclick="switchTab(2)" class="relative z-10 flex-1 flex flex-col items-center justify-center text-xs font-bold text-slate-500" id="tabNav2">
+      <span class="text-sm">💬</span>
+      <span class="text-[10px] mt-0.5">Diễn Đàn</span>
+    </button>
+  </nav>
+
+  <!-- POPUP QR -->
+  <div id="modalQr" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="pastel-glass p-6 w-full max-w-xs text-center flex flex-col items-center">
+      <h3 class="font-extrabold text-slate-800 text-base">THẺ ĐỊNH DANH SỐ</h3>
+      <div class="w-48 h-48 bg-white rounded-3xl p-3 my-4 shadow-sm border border-slate-100 flex items-center justify-center">
+        <img id="qrCodeImg" src="" alt="Mã QR" class="w-full h-full object-contain">
+      </div>
+      <p id="qrModalId" class="font-mono text-xs font-bold text-indigo-600">ID: CLB001</p>
+      <button onclick="closeQrModal()" class="w-full mt-4 py-2.5 rounded-2xl bg-slate-100 text-slate-700 font-bold text-xs spring-tap">
+        Đóng
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // CẤU HÌNH LIÊN KẾT GOOGLE APPS SCRIPT
+    // Thay đường link dưới đây bằng link Web App /exec của bạn
+    // ==========================================
+    const BACKEND_URL = "[https://script.google.com/macros/s/AKfycbwvNsYMBiDo53EF5a2FrKRO3KAoWJqA-BMNTLZj0IbuPd_vCIRpPsjmPYqPRre1qhB/exec](https://script.google.com/macros/s/AKfycbwvNsYMBiDo53EF5a2FrKRO3KAoWJqA-BMNTLZj0IbuPd_vCIRpPsjmPYqPRre1qhB/exec)";
+
+    let currentMember = null;
+    let deferredPrompt = null;
+
+    // Đăng ký Service Worker kích hoạt PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('PWA ServiceWorker sẵn sàng:', reg.scope))
+          .catch(err => console.log('Lỗi đăng ký PWA:', err));
+      });
+    }
+
+    // Bắt sự kiện cài đặt 1-chạm của Android
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const banner = document.getElementById('pwaInstallBanner');
+      if (banner && !window.matchMedia('(display-mode: standalone)').matches) {
+        banner.classList.remove('hidden');
+      }
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('pwaInstallBanner').classList.add('hidden');
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        alert('Để cài app:\n• Trên iPhone: Bấm nút Chia Sẻ [⎋] -> Chọn "Thêm vào MH chính".\n• Trên Android: Bấm dấu 3 chấm góc trên -> Chọn "Cài đặt ứng dụng".');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateNavPillPosition(0);
+      checkStoredLogin();
+      // Tự ẩn banner nếu đang mở dạng App Native
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        const b = document.getElementById('pwaInstallBanner');
+        if (b) b.classList.add('hidden');
+      }
+    });
+
+    function checkStoredLogin() {
+      const savedUser = localStorage.getItem('CLB_SAVED_MEMBER');
+      if (savedUser) {
+        try {
+          currentMember = JSON.parse(savedUser);
+          renderAppView();
+          refreshData();
+        } catch (e) {
+          localStorage.removeItem('CLB_SAVED_MEMBER');
+        }
+      }
+    }
+
+    function switchLoginMode(mode) {
+      const btnAcc = document.getElementById('tabBtnAccount');
+      const btnQr = document.getElementById('tabBtnQr');
+      const formAcc = document.getElementById('loginFormAccount');
+      const formQr = document.getElementById('loginFormQr');
+      if (mode === 'account') {
+        btnAcc.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white text-indigo-600 shadow-sm transition-all";
+        btnQr.className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all";
+        formAcc.classList.remove('hidden');
+        formQr.classList.add('hidden');
+      } else {
+        btnQr.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white text-indigo-600 shadow-sm transition-all";
+        btnAcc.className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-500 transition-all";
+        formQr.classList.remove('hidden');
+        formAcc.classList.add('hidden');
+      }
+    }
+
+    async function handleLoginSubmit() {
+      const user = document.getElementById('inputUser').value.trim();
+      const pass = document.getElementById('inputPass').value.trim();
+      if (!user) return alert('Vui lòng nhập Mã ID, MSSV hoặc SĐT!');
+
+      const btn = document.getElementById('btnSubmitLogin');
+      btn.innerText = 'Đang xác thực...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(https://script.google.com/macros/s/AKfycbycy8hAe5kNihFhAp6bXqgTb2AMtFRc5S2l97l8g58iHo-mB8lpW-enfkQzAe2WPs9T/exec, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'login', identifier: user, password: pass })
+        });
+        const data = await res.json();
+        btn.innerText = 'Đăng Nhập Thẻ Số';
+        btn.disabled = false;
+
+        if (data.success) {
+          currentMember = data.member;
+          localStorage.setItem('CLB_SAVED_MEMBER', JSON.stringify(currentMember));
+          renderAppView();
+          refreshData();
+        } else {
+          alert(data.message || 'Tài khoản hoặc mật khẩu không đúng!');
+        }
+      } catch (err) {
+        btn.innerText = 'Đăng Nhập Thẻ Số';
+        btn.disabled = false;
+        // Chế độ demo dự phòng nếu chưa cấu hình backend
+        currentMember = {
+          id: user || 'CLB001', hoTen: 'Nguyễn Văn A', chucVu: 'Chủ nhiệm CLB',
+          lop: 'K64-CNTT', mssv: '20210001', khoa: 'CNTT', boMon: 'Phần Mềm',
+          ngaySinh: '15/05/2003', sdt: '0912345678', ice: '0987654321',
+          yTe: 'Bình thường', soCa: 12, theTrang: '100% Sẵn sàng', status: 'Chính thức', isAdmin: true
+        };
+        localStorage.setItem('CLB_SAVED_MEMBER', JSON.stringify(currentMember));
+        renderAppView();
+      }
+    }
+
+    function renderAppView() {
+      document.getElementById('viewLogin').classList.add('hidden');
+      document.getElementById('viewApp').classList.remove('hidden');
+      document.getElementById('btnLogout').classList.remove('hidden');
+      document.getElementById('headerStatusText').innerText = currentMember.hoTen;
+      document.getElementById('memberName').innerText = currentMember.hoTen;
+      document.getElementById('memberRole').innerText = currentMember.chucVu;
+      document.getElementById('memberId').innerText = 'ID: ' + currentMember.id;
+      document.getElementById('memberDutyCount').innerText = currentMember.soCa || 0;
+      document.getElementById('memberFitness').innerText = currentMember.theTrang || '100% Sẵn sàng';
+      document.getElementById('memberStatus').innerText = currentMember.status || 'Chính thức';
+
+      document.getElementById('detailLop').innerText = currentMember.lop || '---';
+      document.getElementById('detailMssv').innerText = currentMember.mssv || '---';
+      document.getElementById('detailKhoa').innerText = currentMember.khoa || '---';
+      document.getElementById('detailBoMon').innerText = currentMember.boMon || '---';
+      document.getElementById('detailNgaySinh').innerText = currentMember.ngaySinh || '---';
+      document.getElementById('detailSdt').innerText = currentMember.sdt || '---';
+      document.getElementById('detailYTe').innerText = currentMember.yTe || 'Bình thường';
+
+      if (currentMember.isAdmin) document.getElementById('badgeAdmin').classList.remove('hidden');
+      const initial = currentMember.hoTen.split(' ').pop().charAt(0).toUpperCase() || 'A';
+      document.getElementById('memberAvatar').innerText = initial;
+      document.getElementById('headerAvatar').innerText = initial;
+    }
+
+    async function refreshData() {
+      try {
+        const resTask = await fetch(`${BACKEND_URL}?action=getTasks&format=json`);
+        const jsonTask = await resTask.json();
+        if (jsonTask.data) renderTasks(jsonTask.data);
+      } catch (e) {}
+    }
+
+    function renderTasks(tasks) {
+      const container = document.getElementById('taskListContainer');
+      if (!tasks || !tasks.length) {
+        container.innerHTML = '<div class="pastel-glass p-4 text-center text-xs text-slate-400">Chưa có lệnh điều động nào.</div>';
+        return;
+      }
+      container.innerHTML = tasks.map(t => `
+        <div class="pastel-glass p-4">
+          <div class="flex justify-between items-start">
+            <h4 class="font-bold text-slate-800 text-sm">${t.title}</h4>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600">${t.joinedMembers.length}/${t.quota} người</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-1">📍 ${t.location} • ⏰ ${t.time}</p>
+        </div>
+      `).join('');
+    }
+
+    function switchTab(idx) {
+      updateNavPillPosition(idx);
+      document.getElementById('tabProfile').classList.toggle('hidden', idx !== 0);
+      document.getElementById('tabTasks').classList.toggle('hidden', idx !== 1);
+      document.getElementById('tabForum').classList.toggle('hidden', idx !== 2);
+
+      [0, 1, 2].forEach(i => {
+        const btn = document.getElementById('tabNav' + i);
+        if (i === idx) {
+          btn.classList.add('text-white');
+          btn.classList.remove('text-slate-500');
+        } else {
+          btn.classList.remove('text-white');
+          btn.classList.add('text-slate-500');
+        }
+      });
+    }
+
+    function updateNavPillPosition(idx) {
+      const pill = document.getElementById('navPill');
+      const w = 100 / 3;
+      pill.style.width = `calc(${w}% - 4px)`;
+      pill.style.transform = `translateX(${idx * 100}%)`;
+    }
+
+    function callIce() {
+      if (currentMember && currentMember.ice) {
+        window.location.href = 'tel:' + currentMember.ice.replace(/[^0-9+]/g, '');
+      } else {
+        alert('Chưa có thông tin số điện thoại khẩn cấp (ICE).');
+      }
+    }
+
+    function showQrModal() {
+      if (!currentMember) return;
+      document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(currentMember.id)}`;
+      document.getElementById('qrModalId').innerText = 'ID: ' + currentMember.id;
+      document.getElementById('modalQr').classList.remove('hidden');
+      document.getElementById('modalQr').classList.add('flex');
+    }
+
+    function closeQrModal() {
+      document.getElementById('modalQr').classList.add('hidden');
+      document.getElementById('modalQr').classList.remove('flex');
+    }
+
+    function logout() {
+      if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi thẻ này?')) {
+        localStorage.removeItem('CLB_SAVED_MEMBER');
+        currentMember = null;
+        document.getElementById('viewApp').classList.add('hidden');
+        document.getElementById('btnLogout').classList.add('hidden');
+        document.getElementById('viewLogin').classList.remove('hidden');
+        document.getElementById('headerStatusText').innerText = 'Hệ Thống Thẻ Số';
+      }
+    }
+  </script>
+</body>
+</html>
