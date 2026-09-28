@@ -22,6 +22,7 @@
       --primary-light: #818cf8;
       --primary-dark: #4f46e5;
       --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #6366f1 55%, #4f46e5 100%);
+      --emergency-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 60%, #b91c1c 100%);
       --acrylic-bg: rgba(255, 255, 255, 0.88);
       --acrylic-border: rgba(255, 255, 255, 0.95);
       --acrylic-shadow: 0 16px 36px -8px rgba(99, 102, 241, 0.12), inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
@@ -140,21 +141,60 @@
       box-shadow: 0 2px 6px rgba(148, 163, 184, 0.06);
     }
 
+    .call-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
     .btn-call-native {
       background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
       color: #1d4ed8;
       border: 1.2px solid #bfdbfe;
       font-weight: 800;
-      font-size: 13px;
-      padding: 13px 18px;
-      border-radius: 18px;
-      width: 100%;
+      font-size: 12px;
+      padding: 12px 10px;
+      border-radius: 17px;
       text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.14);
+      gap: 6px;
+      box-shadow: 0 3px 12px rgba(59, 130, 246, 0.12);
+    }
+
+    .btn-call-emergency {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      color: #b91c1c;
+      border: 1.2px solid #fecdd3;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 12px 10px;
+      border-radius: 17px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 3px 12px rgba(239, 68, 68, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-call-emergency::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 70%);
+      animation: emergencyPulse 2.5s infinite;
+      pointer-events: none;
+    }
+    @keyframes emergencyPulse {
+      0%, 100% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.15); opacity: 1; }
     }
 
     .input-box {
@@ -323,16 +363,17 @@
       height: 13px;
     }
 
+    /* BẢNG CHỈ SỐ: FIX TRIỆT ĐỂ LỒI CHỮ & CĂN CHỈNH CO GIÃN THÔNG MINH */
     .metrics-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 7px;
       margin-top: 13px;
       padding-top: 13px;
       border-top: 1px solid rgba(241, 245, 249, 0.9);
     }
     .metric-pill {
-      padding: 9px 4px;
+      padding: 9px 5px;
       border-radius: 17px;
       text-align: center;
       cursor: pointer;
@@ -344,6 +385,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
     .metric-pill:active {
       transform: scale(0.95);
@@ -351,25 +393,34 @@
     .metric-tag-row {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      font-size: 9px;
+      justify-content: center;
+      gap: 3.5px;
+      font-size: 8.5px;
       font-weight: 800;
       text-transform: uppercase;
       margin-bottom: 3px;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .metric-tag-row svg {
       width: 11px;
       height: 11px;
+      flex-shrink: 0;
     }
     .metric-number {
       font-size: 11px;
       font-weight: 800;
       display: block;
+      width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       padding: 0 2px;
+      line-height: 1.25;
+      text-align: center;
     }
 
     .info-line {
@@ -386,11 +437,16 @@
     .info-label {
       color: var(--text-muted);
       font-weight: 600;
+      flex-shrink: 0;
     }
     .info-data {
       font-weight: 700;
       color: var(--text-main);
       text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-left: 10px;
     }
 
     .bottom-dock {
@@ -600,6 +656,7 @@
       flex-shrink: 0;
       border: 1.5px solid rgba(255, 255, 255, 0.9);
       box-shadow: 0 3px 8px rgba(99, 102, 241, 0.2);
+      cursor: pointer;
     }
     .fb-avatar-circle img {
       width: 100%;
@@ -611,6 +668,10 @@
       font-weight: 800;
       color: #0f172a;
       line-height: 1.3;
+      cursor: pointer;
+    }
+    .fb-post-author-name:hover {
+      color: var(--primary);
     }
     .fb-post-meta-sub {
       font-size: 10.5px;
@@ -813,6 +874,7 @@
       flex-shrink: 0;
       margin-top: 2px;
       overflow: hidden;
+      cursor: pointer;
     }
     .fb-comment-avatar img {
       width: 100%;
@@ -831,6 +893,10 @@
       font-size: 11px;
       font-weight: 800;
       color: #0f172a;
+      cursor: pointer;
+    }
+    .fb-comment-user:hover {
+      color: var(--primary);
     }
     .fb-comment-text {
       font-size: 11.5px;
@@ -1000,6 +1066,23 @@
       background: rgba(241, 245, 249, 0.9);
     }
 
+    .the-trang-option-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      width: 100%;
+      text-align: left;
+    }
+    .the-trang-option-item:active {
+      transform: scale(0.97);
+    }
+
     .hidden {
       display: none !important;
     }
@@ -1041,7 +1124,7 @@
     </button>
   </div>
 
-  <!-- HEADER GỌN GÀNG -->
+  <!-- HEADER GỌN GÀNG VỚI NÚT DANH BẠ CLB -->
   <header class="acrylic-card header-bar-layout">
     <div class="header-identity">
       <div id="hdrAvatar" class="header-crest" title="Câu Lạc Bộ Thể Thao">
@@ -1059,6 +1142,11 @@
     </div>
 
     <div class="header-actions-cluster">
+      <!-- Nút Xem Danh Bạ CLB -->
+      <button onclick="openDirectoryModal()" class="spring-touch icon-square-btn" title="Danh bạ thành viên CLB" style="color: #4f46e5; background: #eef2ff; border-color: #c7d2fe;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </button>
+
       <button id="btnHdrAdmin" onclick="openAdminModal()" class="spring-touch icon-square-btn hidden" style="color: #7e22ce; background: #faf5ff; border-color: #e9d5ff;" title="Bảng Quản Trị Admin">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </button>
@@ -1129,6 +1217,7 @@
           </div>
         </div>
 
+        <!-- BẢNG CHỈ SỐ: CO GIÃN TỐI ƯU KHÔNG BỊ TRÀN CHỮ -->
         <div class="metrics-row">
           <div class="metric-pill" style="background: rgba(238, 242, 255, 0.88);">
             <div class="metric-tag-row" style="color: #6366f1;">
@@ -1138,7 +1227,7 @@
             <span id="memDuty" class="metric-number" style="color: #4f46e5;">0 ca</span>
           </div>
           
-          <!-- THỂ TRẠNG VỚI CƠ CHẾ ĐỔI MÀU NĂNG ĐỘNG -->
+          <!-- THỂ TRẠNG VỚI CƠ CHẾ ĐỔI MÀU NĂNG ĐỘNG & CHỐNG TRÀN CHỮ -->
           <div class="metric-pill" id="memFitPill" style="background: rgba(240, 253, 244, 0.88); border-color: #bbf7d0;" onclick="openTheTrangModal()" title="Chạm để cập nhật thể trạng">
             <div class="metric-tag-row" id="memFitTagRow" style="color: #16a34a;">
               <span id="memFitIcon">
@@ -1158,24 +1247,34 @@
           </div>
         </div>
 
-        <div style="margin-top: 13px;">
-          <button onclick="callContactDirect()" class="spring-touch btn-call-native">
-            <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            Gọi Điện Thoại Thành Viên
+        <!-- CẶP NÚT GỌI THÀNH VIÊN VÀ LIÊN HỆ CẤP CỨU KHẨN CẤP (ICE) -->
+        <div class="call-actions-grid">
+          <button onclick="callContactDirect()" class="spring-touch btn-call-native" title="Gọi số điện thoại chính thức của thành viên">
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Gọi Thành Viên</span>
+          </button>
+
+          <button onclick="callEmergencyDirect()" class="spring-touch btn-call-emergency" title="Bấm gọi ngay người thân khẩn cấp (ICE) khi xảy ra sự cố trên sân">
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>🚨 Khẩn Cấp (ICE)</span>
           </button>
         </div>
       </section>
 
       <section class="acrylic-card">
-        <h3 style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px;">
-          Chi Tiết Hồ Sơ
-        </h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+          <h3 style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
+            Chi Tiết Hồ Sơ
+          </h3>
+          <span style="font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer;" onclick="openDirectoryModal()">Xem danh bạ CLB &rsaquo;</span>
+        </div>
         <div class="info-line"><span class="info-label">Lớp:</span><span id="dClass" class="info-data">---</span></div>
         <div class="info-line"><span class="info-label">MSSV:</span><span id="dMssv" class="info-data" style="font-family: monospace;">---</span></div>
         <div class="info-line"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="info-data">---</span></div>
         <div class="info-line"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="info-data">---</span></div>
         <div class="info-line"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="info-data">---</span></div>
         <div class="info-line"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="info-data" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-line"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="info-data" style="color: #dc2626; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
         <div class="info-line"><span class="info-label">Y Tế &amp; Sức Khỏe:</span><span id="dMed" class="info-data" style="color: #e11d48;">---</span></div>
       </section>
     </div>
@@ -1298,6 +1397,89 @@
     </div>
   </div>
 
+  <!-- MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC (MEMBER PROFILE INSPECTOR) -->
+  <div id="modalMemberDetail" class="modal-backdrop hidden" onclick="closeMemberProfileModalOnBackdrop(event)">
+    <div class="acrylic-card" style="width: 100%; max-width: 380px; max-height: 85vh; overflow-y: auto; margin-bottom: 0; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+        <span style="font-size: 10.5px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Hồ Sơ Thành Viên</span>
+        <button onclick="closeMemberProfileModal()" class="spring-touch" style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 14px;">✕</button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+        <div id="otherMemAvatarBox" class="avatar-wrapper" style="width: 60px; height: 60px; font-size: 21px; cursor: default;">
+          <span id="otherMemAvatarInitial">A</span>
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <h3 id="otherMemName" style="font-size: 15.5px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">---</h3>
+            <span id="otherMemBadgeAdm" class="hidden" style="font-size: 9px; font-weight: 800; padding: 1.5px 6px; border-radius: 7px; background: #f3e8ff; color: #7e22ce;">Admin</span>
+          </div>
+          <p id="otherMemRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Thành viên</p>
+          <p id="otherMemId" style="font-size: 9.5px; color: #94a3b8; font-family: monospace; font-weight: 700;">ID: ---</p>
+        </div>
+      </div>
+
+      <!-- Chỉ số nhanh của thành viên khác -->
+      <div class="metrics-row" style="margin-top: 0; padding-top: 10px; margin-bottom: 12px;">
+        <div class="metric-pill" style="background: rgba(238, 242, 255, 0.88); cursor: default;">
+          <div class="metric-tag-row" style="color: #6366f1;">
+            <span>Cống Hiến</span>
+          </div>
+          <span id="otherMemDuty" class="metric-number" style="color: #4f46e5;">0 ca</span>
+        </div>
+        
+        <div class="metric-pill" id="otherMemFitPill" style="background: rgba(240, 253, 244, 0.88); border-color: #bbf7d0; cursor: default;">
+          <div class="metric-tag-row" id="otherMemFitTagRow" style="color: #16a34a;">
+            <span>Thể Trạng</span>
+          </div>
+          <span id="otherMemFit" class="metric-number" style="color: #15803d;">Khỏe mạnh</span>
+        </div>
+
+        <div class="metric-pill" id="otherCardStatusBox" style="background: rgba(236, 253, 245, 0.88); cursor: default;">
+          <div class="metric-tag-row" id="otherCardStatusLabel" style="color: #047857;">
+            <span>Trạng Thái</span>
+          </div>
+          <span id="otherMemStat" class="metric-number" style="color: #065f46;">Sẵn sàng</span>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #f1f5f9; padding-top: 8px;">
+        <div class="info-line"><span class="info-label">Lớp:</span><span id="otherClass" class="info-data">---</span></div>
+        <div class="info-line"><span class="info-label">MSSV:</span><span id="otherMssv" class="info-data" style="font-family: monospace;">---</span></div>
+        <div class="info-line"><span class="info-label">Khoa / Viện:</span><span id="otherFaculty" class="info-data">---</span></div>
+        <div class="info-line"><span class="info-label">Bộ Môn / Ban:</span><span id="otherDept" class="info-data">---</span></div>
+        <div class="info-line"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="info-data" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-line"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="info-data" style="color: #dc2626; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-line"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="info-data" style="color: #e11d48;">---</span></div>
+      </div>
+
+      <div class="call-actions-grid" style="margin-top: 14px;">
+        <button id="btnCallOtherPhone" onclick="callTargetMemberPhone()" class="spring-touch btn-call-native">
+          <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Gọi Điện Thoại</span>
+        </button>
+        <button id="btnCallOtherIce" onclick="callTargetMemberIce()" class="spring-touch btn-call-emergency">
+          <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>🚨 Gọi Khẩn (ICE)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DANH BẠ TOÀN THỂ THÀNH VIÊN CLB -->
+  <div id="modalDirectory" class="modal-backdrop hidden" onclick="closeDirectoryModalOnBackdrop(event)">
+    <div class="acrylic-card" style="width: 100%; max-width: 390px; max-height: 80vh; overflow-y: auto; margin-bottom: 0;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a;">DANH BẠ THÀNH VIÊN CLB</h3>
+        <button onclick="closeDirectoryModal()" class="spring-touch" style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 14px;">✕</button>
+      </div>
+
+      <input type="text" id="iptSearchDirectory" oninput="filterDirectoryMembers()" placeholder="Tìm theo tên, ID, MSSV, ban..." class="input-box" style="margin-top: 0; margin-bottom: 10px; font-size: 11.5px; padding: 8px 12px;">
+
+      <div id="directoryListContainer" style="display: flex; flex-direction: column; gap: 7px; max-height: 55vh; overflow-y: auto;"></div>
+    </div>
+  </div>
+
   <!-- ACTION SHEET TÙY CHỌN BÀI VIẾT (MENU 3 CHẤM) -->
   <div id="postActionSheet" class="action-sheet-backdrop" onclick="closePostActionSheet(event)">
     <div class="action-sheet-card">
@@ -1317,81 +1499,141 @@
     </div>
   </div>
 
-  <!-- MODAL CẬP NHẬT THỂ TRẠNG VỚI 10 MỤC & ĐỔI MÀU NĂNG ĐỘNG -->
-  <div id="modalTheTrang" class="modal-backdrop hidden">
-    <div class="acrylic-card" style="width: 100%; max-width: 340px; max-height: 80vh; overflow-y: auto; margin-bottom: 0;">
+  <!-- MODAL CẬP NHẬT THỂ TRẠNG VỚI 10 MỤC TINH CHỈNH KHÔNG LỒI CHỮ -->
+  <div id="modalTheTrang" class="modal-backdrop hidden" onclick="closeTheTrangModalOnBackdrop(event)">
+    <div class="acrylic-card" style="width: 100%; max-width: 360px; max-height: 80vh; overflow-y: auto; margin-bottom: 0;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a; text-align: center;">CẬP NHẬT THỂ TRẠNG</h3>
-      <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Mỗi lựa chọn sẽ cập nhật màu sắc &amp; huy hiệu tương ứng</p>
+      <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Mỗi lựa chọn tự động đổi màu sắc &amp; huy hiệu nhận diện</p>
 
       <div style="display: flex; flex-direction: column; gap: 6px; margin: 12px 0;">
-        <button onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #15803d; border-color: #bbf7d0; background: #f0fdf4;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #16a34a;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-            <span>Khỏe mạnh (100% Sẵn sàng)</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')" class="the-trang-option-item" style="border-color: #bbf7d0; background: #f0fdf4;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #15803d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Khỏe mạnh</h5>
+              <p style="font-size: 9.5px; color: #16a34a;">100% Sẵn sàng thi đấu</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #16a34a; flex-shrink: 0;">100%</span>
         </button>
 
-        <button onclick="selectTheTrang('Sung sức (Đạt đỉnh phong độ)')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #0f766e; border-color: #99f6e4; background: #f0fdfa;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #0d9488;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            <span>Sung sức (Đạt đỉnh phong độ) 🔥</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Sung sức (Đạt đỉnh phong độ)')" class="the-trang-option-item" style="border-color: #99f6e4; background: #f0fdfa;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #ccfbf1; color: #0d9488; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #0f766e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Sung sức 🔥</h5>
+              <p style="font-size: 9.5px; color: #0d9488;">Đạt đỉnh phong độ</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #0d9488; flex-shrink: 0;">MAX</span>
         </button>
 
-        <button onclick="selectTheTrang('Căng cơ / Mỏi cơ nhẹ')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #b45309; border-color: #fde68a; background: #fefce8;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #d97706;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <span>Căng cơ / Mỏi cơ nhẹ</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Căng cơ / Mỏi cơ nhẹ')" class="the-trang-option-item" style="border-color: #fde68a; background: #fefce8;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #fef08a; color: #d97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #b45309; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Căng cơ nhẹ</h5>
+              <p style="font-size: 9.5px; color: #d97706;">Cần giãn cơ trước trận</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #d97706; flex-shrink: 0;">80%</span>
         </button>
 
-        <button onclick="selectTheTrang('Chấn thương nhẹ (Theo dõi)')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #c2410c; border-color: #fed7aa; background: #fff7ed;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #ea580c;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span>Chấn thương nhẹ (Theo dõi)</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Chấn thương nhẹ (Theo dõi)')" class="the-trang-option-item" style="border-color: #fed7aa; background: #fff7ed;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #ffedd5; color: #ea580c; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #c2410c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chấn thương nhẹ</h5>
+              <p style="font-size: 9.5px; color: #ea580c;">Đang theo dõi phục hồi</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #ea580c; flex-shrink: 0;">Theo dõi</span>
         </button>
 
-        <button onclick="selectTheTrang('Chấn thương nặng (Nghỉ đấu)')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #b91c1c; border-color: #fecdd3; background: #fef2f2;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #dc2626;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            <span>Chấn thương nặng (Nghỉ đấu)</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Chấn thương nặng (Nghỉ đấu)')" class="the-trang-option-item" style="border-color: #fecdd3; background: #fef2f2;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #b91c1c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chấn thương nặng</h5>
+              <p style="font-size: 9.5px; color: #dc2626;">Tạm nghỉ đấu</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #dc2626; flex-shrink: 0;">Nghỉ</span>
         </button>
 
-        <button onclick="selectTheTrang('Sốt / Cảm cúm')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #7e22ce; border-color: #e9d5ff; background: #faf5ff;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #9333ea;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
-            <span>Sốt / Cảm cúm 🤒</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Sốt / Cảm cúm')" class="the-trang-option-item" style="border-color: #e9d5ff; background: #faf5ff;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #f3e8ff; color: #9333ea; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #7e22ce; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Sốt / Cảm cúm 🤒</h5>
+              <p style="font-size: 9.5px; color: #9333ea;">Nghỉ ngơi hồi phục</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #9333ea; flex-shrink: 0;">Nghỉ</span>
         </button>
 
-        <button onclick="selectTheTrang('Đau bụng / Tiêu hóa')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #a16207; border-color: #fef08a; background: #fefce8;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #ca8a04;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
-            <span>Đau bụng / Tiêu hóa</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Đau bụng / Tiêu hóa')" class="the-trang-option-item" style="border-color: #fef08a; background: #fefce8;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #fef9c3; color: #ca8a04; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #a16207; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Đau bụng / Tiêu hóa</h5>
+              <p style="font-size: 9.5px; color: #ca8a04;">Sức khỏe đường ruột</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #ca8a04; flex-shrink: 0;">Yếu</span>
         </button>
 
-        <button onclick="selectTheTrang('Quá tải / Cần hồi phục')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #4338ca; border-color: #c7d2fe; background: #eef2ff;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #4f46e5;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>
-            <span>Quá tải / Cần hồi phục</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Quá tải / Cần hồi phục')" class="the-trang-option-item" style="border-color: #c7d2fe; background: #eef2ff;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #e0e7ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #4338ca; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Quá tải / Cần hồi phục</h5>
+              <p style="font-size: 9.5px; color: #4f46e5;">Cơ bắp cần nạp lại năng lượng</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #4f46e5; flex-shrink: 0;">Hồi phục</span>
         </button>
 
-        <button onclick="selectTheTrang('Đang vật lý trị liệu')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #0369a1; border-color: #bae6fd; background: #f0f9ff;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #0284c7;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
-            <span>Đang vật lý trị liệu</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Đang vật lý trị liệu')" class="the-trang-option-item" style="border-color: #bae6fd; background: #f0f9ff;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #0369a1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Vật lý trị liệu</h5>
+              <p style="font-size: 9.5px; color: #0284c7;">Tập phục hồi chức năng</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #0284c7; flex-shrink: 0;">Trị liệu</span>
         </button>
 
-        <button onclick="selectTheTrang('Bận học / Thi cử')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 9px 12px; font-weight: 800; color: #475569; border-color: #cbd5e1; background: #f8fafc;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <svg style="width: 16px; height: 16px; color: #64748b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            <span>Bận học / Thi cử</span>
-          </span>
+        <button type="button" onclick="selectTheTrang('Bận học / Thi cử')" class="the-trang-option-item" style="border-color: #cbd5e1; background: #f8fafc;">
+          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+            <div style="width: 30px; height: 30px; border-radius: 10px; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div style="min-width: 0;">
+              <h5 style="font-size: 12px; font-weight: 800; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Bận học / Thi cử</h5>
+              <p style="font-size: 9.5px; color: #64748b;">Lịch học trùng lịch CLB</p>
+            </div>
+          </div>
+          <span style="font-size: 10px; font-weight: 800; color: #64748b; flex-shrink: 0;">Bận</span>
         </button>
       </div>
 
@@ -1556,6 +1798,7 @@
     let BACKEND_URL = localStorage.getItem("CLB_CUSTOM_BACKEND_URL") || "https://script.google.com/macros/s/AKfycbycy8hAe5kNihFhAp6bXqgTb2AMtFRc5S2l97l8g58iHo-mB8lpW-enfkQzAe2WPs9T/exec";
 
     let currentMember = null;
+    let viewingOtherMember = null;
     let membersList = [];
     let tasksList = [];
     let swapsList = [];
@@ -1577,9 +1820,10 @@
     let currentLightboxMediaList = [];
     let currentLightboxIndex = 0;
 
-    // BẢNG MÃ MÀU VÀ ICON CHO 10 CẤP ĐỘ THỂ TRẠNG
+    // BẢNG MÃ MÀU VÀ ICON CHO 10 CẤP ĐỘ THỂ TRẠNG VỚI TÊN HIỂN THỊ RÚT GỌN CHỐNG TRÀN
     const THE_TRANG_MAP = {
       'Khỏe mạnh (100% Sẵn sàng)': {
+        shortName: 'Khỏe mạnh',
         bg: 'rgba(240, 253, 244, 0.9)',
         border: '#bbf7d0',
         textColor: '#15803d',
@@ -1587,6 +1831,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>'
       },
       'Khỏe mạnh': {
+        shortName: 'Khỏe mạnh',
         bg: 'rgba(240, 253, 244, 0.9)',
         border: '#bbf7d0',
         textColor: '#15803d',
@@ -1594,6 +1839,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>'
       },
       'Sung sức (Đạt đỉnh phong độ)': {
+        shortName: 'Sung sức 🔥',
         bg: 'rgba(240, 253, 250, 0.9)',
         border: '#99f6e4',
         textColor: '#0f766e',
@@ -1601,6 +1847,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
       },
       'Căng cơ / Mỏi cơ nhẹ': {
+        shortName: 'Căng cơ nhẹ',
         bg: 'rgba(254, 252, 232, 0.9)',
         border: '#fde68a',
         textColor: '#b45309',
@@ -1608,6 +1855,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>'
       },
       'Chấn thương nhẹ (Theo dõi)': {
+        shortName: 'Chấn thương nhẹ',
         bg: 'rgba(255, 247, 237, 0.9)',
         border: '#fed7aa',
         textColor: '#c2410c',
@@ -1615,6 +1863,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
       },
       'Chấn thương nặng (Nghỉ đấu)': {
+        shortName: 'Chấn thương nặng',
         bg: 'rgba(254, 242, 242, 0.9)',
         border: '#fecdd3',
         textColor: '#b91c1c',
@@ -1622,6 +1871,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
       },
       'Chấn thương': {
+        shortName: 'Chấn thương',
         bg: 'rgba(254, 242, 242, 0.9)',
         border: '#fecdd3',
         textColor: '#b91c1c',
@@ -1629,6 +1879,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
       },
       'Sốt / Cảm cúm': {
+        shortName: 'Sốt / Cảm 🤒',
         bg: 'rgba(250, 245, 255, 0.9)',
         border: '#e9d5ff',
         textColor: '#7e22ce',
@@ -1636,6 +1887,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>'
       },
       'Đau bụng / Tiêu hóa': {
+        shortName: 'Đau bụng',
         bg: 'rgba(254, 252, 232, 0.9)',
         border: '#fef08a',
         textColor: '#a16207',
@@ -1643,6 +1895,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>'
       },
       'Quá tải / Cần hồi phục': {
+        shortName: 'Quá tải',
         bg: 'rgba(238, 242, 255, 0.9)',
         border: '#c7d2fe',
         textColor: '#4338ca',
@@ -1650,6 +1903,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>'
       },
       'Đang vật lý trị liệu': {
+        shortName: 'Trị liệu',
         bg: 'rgba(240, 249, 255, 0.9)',
         border: '#bae6fd',
         textColor: '#0369a1',
@@ -1657,6 +1911,7 @@
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>'
       },
       'Bận học / Thi cử': {
+        shortName: 'Bận học / Thi',
         bg: 'rgba(248, 250, 252, 0.9)',
         border: '#cbd5e1',
         textColor: '#475569',
@@ -1807,6 +2062,46 @@
         isAdmin: true
       };
 
+      membersList = [
+        currentMember,
+        {
+          id: "CLB002",
+          hoTen: "Trần Hải Yến",
+          chucVu: "Phó chủ nhiệm",
+          lop: "K65-QTKD",
+          mssv: "20220102",
+          khoa: "Khoa QTKD",
+          boMon: "Hậu cần & Sự kiện",
+          ngaySinh: "20/11/2004",
+          sdt: "0988776655",
+          ice: "0911223344",
+          yTe: "Nhóm A (Dị ứng hải sản)",
+          soCa: 10,
+          theTrang: "Sung sức (Đạt đỉnh phong độ)",
+          status: "Sẵn sàng",
+          avatar: "",
+          isAdmin: true
+        },
+        {
+          id: "CLB003",
+          hoTen: "Lê Hoàng Nam",
+          chucVu: "Thành viên ban Chuyên môn",
+          lop: "K64-CK",
+          mssv: "20210988",
+          khoa: "Khoa Cơ Khí",
+          boMon: "Bóng đá Nam",
+          ngaySinh: "08/09/2003",
+          sdt: "0901234567",
+          ice: "0909887766",
+          yTe: "Nhóm B (Đã mổ sụn chêm)",
+          soCa: 6,
+          theTrang: "Căng cơ / Mỏi cơ nhẹ",
+          status: "Đang làm nhiệm vụ",
+          avatar: "",
+          isAdmin: false
+        }
+      ];
+
       tasksList = [
         {
           id: "TASK_DEMO_1",
@@ -1828,25 +2123,26 @@
           authorName: "Nguyễn Văn A",
           authorAvatar: "",
           isAnonymous: false,
-          content: "Chào mừng toàn thể anh chị em đến với phiên bản Diễn Đàn Thể Thao chuẩn Facebook! Giờ đây các bạn có thể đăng ảnh nhanh như chớp, bình luận mượt mà và nhấp vào ảnh để xem nét căng nhé! 🔥⚽",
+          content: "Chào mừng toàn thể anh chị em đến với phiên bản Diễn Đàn Thể Thao chuẩn Facebook! Giờ đây các bạn có thể đăng ảnh nhanh như chớp, chạm vào tên đồng đội để xem ngay hồ sơ cá nhân và nút gọi khẩn cấp ICE nhé! 🔥⚽",
           mediaList: [
             { url: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=75", type: "image" },
-            { url: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=75", type: "image" },
-            { url: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=75", type: "image" }
+            { url: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=75", type: "image" }
           ],
           tags: ["ToànCLB", "GiảiMùaThu"],
           reactions: { like: 14, love: 9, haha: 3, sad: 0, angry: 0 },
           comments: [
             {
               id: "CMT_1",
+              authorId: "CLB002",
               authorName: "Trần Hải Yến",
-              text: "Xem ảnh nét thật sự luôn anh ơi, bình luận hiện ngay mượt quá!",
+              text: "Chạm vào tên anh xem được ngay nhóm máu và số cấp cứu ICE, quá tiện cho đội sơ cứu sân bãi luôn!",
               time: "10 phút trước",
               replies: [
                 {
                   id: "REP_1",
+                  authorId: "CLB001",
                   authorName: "Nguyễn Văn A",
-                  text: "Cảm ơn em nhé, cùng trải nghiệm các tính năng mới!",
+                  text: "Đúng rồi em, vừa bảo vệ anh em vừa hỗ trợ y tế kịp thời!",
                   time: "Vừa xong"
                 }
               ]
@@ -1891,6 +2187,14 @@
       return s;
     }
 
+    function getShortTheTrangText(fullText) {
+      if (!fullText) return 'Khỏe mạnh';
+      const config = THE_TRANG_MAP[fullText];
+      if (config && config.shortName) return config.shortName;
+      // Nếu chuỗi dài bất thường, cắt ngắn an toàn
+      return fullText.split('(')[0].trim();
+    }
+
     function updateTheTrangUI(val) {
       const status = val || "Khỏe mạnh (100% Sẵn sàng)";
       const config = THE_TRANG_MAP[status] || THE_TRANG_MAP['Khỏe mạnh (100% Sẵn sàng)'];
@@ -1908,7 +2212,8 @@
       if (iconSpan) iconSpan.innerHTML = config.icon;
       if (textSpan) {
         textSpan.style.color = config.textColor;
-        textSpan.innerText = status;
+        textSpan.innerText = getShortTheTrangText(status);
+        textSpan.title = status;
       }
     }
 
@@ -1924,7 +2229,7 @@
       document.getElementById("memId").innerText = "ID: " + currentMember.id;
       document.getElementById("memDuty").innerText = (currentMember.soCa || 0) + " ca";
       
-      // Cập nhật thể trạng với màu sắc tương ứng
+      // Cập nhật thể trạng với màu sắc tương ứng và chữ rút gọn chống tràn
       updateTheTrangUI(currentMember.theTrang);
 
       const composerName = document.getElementById("composerAuthorName");
@@ -1938,6 +2243,7 @@
       document.getElementById("dDept").innerText = currentMember.boMon || "---";
       document.getElementById("dDob").innerText = cleanDateFormat(currentMember.ngaySinh);
       document.getElementById("dPhone").innerText = currentMember.sdt || "---";
+      document.getElementById("dIce").innerText = currentMember.ice || "---";
       document.getElementById("dMed").innerText = currentMember.yTe || "Bình thường";
 
       if (currentMember.isAdmin) {
@@ -1970,7 +2276,7 @@
       const statLabel = document.getElementById("cardStatusLabel");
 
       if (isCurrentlyAssigned) {
-        statVal.innerText = "Đang làm nhiệm vụ";
+        statVal.innerText = "Đang trực";
         statVal.style.color = "#b45309";
         statBox.style.background = "rgba(254, 243, 199, 0.9)";
         statBox.style.borderColor = "#fde68a";
@@ -2200,6 +2506,11 @@
     function closeTheTrangModal() {
       document.getElementById("modalTheTrang").classList.add("hidden");
     }
+    function closeTheTrangModalOnBackdrop(e) {
+      if (e.target.id === "modalTheTrang") {
+        closeTheTrangModal();
+      }
+    }
 
     async function selectTheTrang(val) {
       closeTheTrangModal();
@@ -2208,7 +2519,7 @@
       currentMember.theTrang = val;
       updateTheTrangUI(val);
       localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
-      triggerAquaNotification("Thể Trạng", "Đã cập nhật: " + val, "success");
+      triggerAquaNotification("Thể Trạng", "Đã cập nhật: " + getShortTheTrangText(val), "success");
 
       try {
         await fetch(BACKEND_URL, {
@@ -2287,6 +2598,181 @@
       }
     }
 
+    /* ================= TÍNH NĂNG XEM HỒ SƠ THÀNH VIÊN KHÁC ================= */
+    function openMemberProfileModal(memberIdentifier) {
+      if (!memberIdentifier) return;
+
+      // Tìm thông tin thành viên trong mảng membersList hoặc bài viết
+      let target = membersList.find(m => m.id === memberIdentifier || m.hoTen === memberIdentifier);
+      
+      if (!target && currentMember && (currentMember.id === memberIdentifier || currentMember.hoTen === memberIdentifier)) {
+        target = currentMember;
+      }
+
+      if (!target) {
+        // Tạo profile hiển thị tối thiểu từ tên hoặc ID
+        target = {
+          id: memberIdentifier,
+          hoTen: memberIdentifier,
+          chucVu: 'Thành viên CLB',
+          lop: '---',
+          mssv: '---',
+          khoa: '---',
+          boMon: '---',
+          soCa: 0,
+          theTrang: 'Khỏe mạnh',
+          status: 'Sẵn sàng',
+          sdt: '---',
+          ice: '---',
+          yTe: '---',
+          avatar: ''
+        };
+      }
+
+      viewingOtherMember = target;
+
+      document.getElementById("otherMemName").innerText = target.hoTen;
+      document.getElementById("otherMemRole").innerText = target.chucVu || 'Thành viên';
+      document.getElementById("otherMemId").innerText = "ID: " + (target.id || '---');
+      document.getElementById("otherMemDuty").innerText = (target.soCa || 0) + " ca";
+      document.getElementById("otherMemStat").innerText = target.status || 'Sẵn sàng';
+
+      // Thể trạng thành viên khác
+      const fitStatus = target.theTrang || 'Khỏe mạnh';
+      const fitConfig = THE_TRANG_MAP[fitStatus] || THE_TRANG_MAP['Khỏe mạnh'];
+      const fitPill = document.getElementById("otherMemFitPill");
+      const fitTagRow = document.getElementById("otherMemFitTagRow");
+      const fitText = document.getElementById("otherMemFit");
+      
+      if (fitPill) {
+        fitPill.style.background = fitConfig.bg;
+        fitPill.style.borderColor = fitConfig.border;
+      }
+      if (fitTagRow) fitTagRow.style.color = fitConfig.tagColor;
+      if (fitText) {
+        fitText.style.color = fitConfig.textColor;
+        fitText.innerText = getShortTheTrangText(fitStatus);
+      }
+
+      document.getElementById("otherClass").innerText = target.lop || '---';
+      document.getElementById("otherMssv").innerText = target.mssv || '---';
+      document.getElementById("otherFaculty").innerText = target.khoa || '---';
+      document.getElementById("otherDept").innerText = target.boMon || '---';
+      document.getElementById("otherPhone").innerText = target.sdt || '---';
+      document.getElementById("otherIce").innerText = target.ice || '---';
+      document.getElementById("otherMed").innerText = target.yTe || 'Bình thường';
+
+      const initial = (target.hoTen || "A").split(" ").pop().charAt(0).toUpperCase();
+      const avtBox = document.getElementById("otherMemAvatarBox");
+      if (target.avatar && target.avatar.startsWith("data:image")) {
+        avtBox.innerHTML = `<img src="${target.avatar}" alt="Avatar">`;
+      } else {
+        avtBox.innerHTML = `<span>${initial}</span>`;
+      }
+
+      if (target.isAdmin) {
+        document.getElementById("otherMemBadgeAdm").classList.remove("hidden");
+      } else {
+        document.getElementById("otherMemBadgeAdm").classList.add("hidden");
+      }
+
+      document.getElementById("modalMemberDetail").classList.remove("hidden");
+    }
+
+    function closeMemberProfileModal() {
+      document.getElementById("modalMemberDetail").classList.add("hidden");
+      viewingOtherMember = null;
+    }
+
+    function closeMemberProfileModalOnBackdrop(e) {
+      if (e.target.id === "modalMemberDetail") {
+        closeMemberProfileModal();
+      }
+    }
+
+    function callTargetMemberPhone() {
+      if (viewingOtherMember && viewingOtherMember.sdt && viewingOtherMember.sdt !== '---') {
+        makePhoneCall(viewingOtherMember.sdt);
+      } else {
+        triggerAquaNotification("Thông Báo", "Thành viên này chưa cập nhật số điện thoại!", "warning");
+      }
+    }
+
+    function callTargetMemberIce() {
+      if (viewingOtherMember && viewingOtherMember.ice && viewingOtherMember.ice !== '---') {
+        makePhoneCall(viewingOtherMember.ice);
+      } else {
+        triggerAquaNotification("Thông Báo", "Chưa có thông tin số người thân khẩn cấp (ICE)!", "warning");
+      }
+    }
+
+    /* ================= DANH BẠ TOÀN THỂ THÀNH VIÊN CLB ================= */
+    function openDirectoryModal() {
+      const modal = document.getElementById("modalDirectory");
+      const container = document.getElementById("directoryListContainer");
+      const searchInput = document.getElementById("iptSearchDirectory");
+      if (searchInput) searchInput.value = "";
+
+      renderDirectoryList(membersList);
+      modal.classList.remove("hidden");
+    }
+
+    function closeDirectoryModal() {
+      document.getElementById("modalDirectory").classList.add("hidden");
+    }
+
+    function closeDirectoryModalOnBackdrop(e) {
+      if (e.target.id === "modalDirectory") {
+        closeDirectoryModal();
+      }
+    }
+
+    function filterDirectoryMembers() {
+      const q = (document.getElementById("iptSearchDirectory").value || "").toLowerCase().trim();
+      if (!q) {
+        renderDirectoryList(membersList);
+        return;
+      }
+      const filtered = membersList.filter(m => 
+        (m.hoTen && m.hoTen.toLowerCase().includes(q)) ||
+        (m.id && m.id.toLowerCase().includes(q)) ||
+        (m.mssv && m.mssv.toLowerCase().includes(q)) ||
+        (m.chucVu && m.chucVu.toLowerCase().includes(q)) ||
+        (m.boMon && m.boMon.toLowerCase().includes(q))
+      );
+      renderDirectoryList(filtered);
+    }
+
+    function renderDirectoryList(list) {
+      const container = document.getElementById("directoryListContainer");
+      if (!list || !list.length) {
+        container.innerHTML = `<div style="text-align: center; font-size: 11.5px; color: #94a3b8; padding: 18px;">Không tìm thấy thành viên phù hợp.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(m => {
+        const initial = (m.hoTen || "A").split(" ").pop().charAt(0).toUpperCase();
+        const shortFit = getShortTheTrangText(m.theTrang);
+        return `
+          <div onclick="openMemberProfileModal('${m.id}')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 14px; background: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; width: 100%; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
+              <div style="width: 34px; height: 34px; border-radius: 12px; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; overflow: hidden;">
+                ${m.avatar && m.avatar.startsWith('data:image') ? `<img src="${m.avatar}" style="width:100%;height:100%;object-fit:cover;">` : initial}
+              </div>
+              <div style="min-width: 0; flex: 1;">
+                <h5 style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.hoTen}</h5>
+                <p style="font-size: 10px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.chucVu || 'Thành viên'} &bull; ${m.id}</p>
+              </div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0; margin-left: 6px;">
+              <span style="font-size: 9.5px; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0;">${shortFit}</span>
+              <span style="display: block; font-size: 9.5px; color: #6366f1; font-weight: 700; margin-top: 2px;">${m.soCa || 0} ca</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function renderTasks() {
       const container = document.getElementById("listTasksContainer");
       document.getElementById("badgeTaskCount").innerText = tasksList.length + " Lệnh";
@@ -2321,7 +2807,7 @@
 
             ${t.assignedMembers && t.assignedMembers.length > 0 ? `
               <p style="font-size: 10px; color: #6b21a8; margin-top: 4px; font-weight: 700;">
-                👥 Thành viên nhận lệnh: ${t.assignedMembers.join(', ')}
+                👥 Nhận lệnh: ${t.assignedMembers.map(mId => `<span onclick="openMemberProfileModal('${mId}')" style="text-decoration: underline; cursor: pointer;">${mId}</span>`).join(', ')}
               </p>
             ` : ''}
 
@@ -2509,7 +2995,7 @@
       c.innerHTML = swapsList.map(s => `
         <div style="padding: 9px; border-radius: 13px; background: rgba(255, 255, 255, 0.9); border: 1px solid #e2e8f0; font-size: 11px;">
           <div style="display: flex; justify-content: space-between; font-weight: 800; color: #0f172a;">
-            <span>${s.fromMemberId} xin đổi ca</span>
+            <span onclick="openMemberProfileModal('${s.fromMemberId}')" style="cursor: pointer; text-decoration: underline;">${s.fromMemberId} xin đổi ca</span>
             <span style="color: ${s.status === 'approved' ? '#15803d' : s.status === 'rejected' ? '#b91c1c' : '#d97706'};">
               ${s.status === 'approved' ? '✓ Đã duyệt' : s.status === 'rejected' ? '✕ Bác bỏ' : 'Chờ duyệt'}
             </span>
@@ -2563,7 +3049,6 @@
         const isVideo = file.type.startsWith('video');
 
         if (isVideo) {
-          // Trích xuất khung hình thumbnail video để upload siêu nhẹ dưới 15KB
           const video = document.createElement('video');
           video.preload = 'metadata';
           video.src = URL.createObjectURL(file);
@@ -2604,7 +3089,6 @@
           return;
         }
 
-        // Nén ảnh canvas siêu tốc (dưới 15KB)
         const reader = new FileReader();
         reader.onload = (event) => {
           const img = new Image();
@@ -2879,9 +3363,9 @@
         let tagsMeta = "";
         if (p.tags && p.tags.length > 0) {
           if (p.tags.length === 1) {
-            tagsMeta = ` cùng với <strong style="color:var(--primary);">@${p.tags[0]}</strong>`;
+            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${p.tags[0]}</strong>`;
           } else {
-            tagsMeta = ` cùng với <strong style="color:var(--primary);">@${p.tags[0]}</strong> và <strong style="color:var(--primary);">${p.tags.length - 1} người khác</strong>`;
+            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${p.tags[0]}</strong> và <strong style="color:var(--primary);">${p.tags.length - 1} người khác</strong>`;
           }
         }
 
@@ -2935,11 +3419,13 @@
           <div class="acrylic-card fb-post-card">
             <div class="fb-post-header">
               <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
-                <div class="fb-avatar-circle">
+                <div class="fb-avatar-circle" onclick="${p.isAnonymous ? '' : `openMemberProfileModal('${p.authorId || p.authorName}')`}">
                   ${p.isAnonymous ? '<svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' : (p.authorAvatar && p.authorAvatar.startsWith('data:image') ? `<img src="${p.authorAvatar}">` : (p.authorName || 'A').charAt(0))}
                 </div>
                 <div style="min-width: 0; flex: 1;">
-                  <h4 class="fb-post-author-name">${p.authorName}${tagsMeta}</h4>
+                  <h4 class="fb-post-author-name">
+                    <span onclick="${p.isAnonymous ? '' : `openMemberProfileModal('${p.authorId || p.authorName}')`}">${p.authorName}</span>${tagsMeta}
+                  </h4>
                   <div class="fb-post-meta-sub">
                     <span>${p.createdAt || 'Vừa xong'}</span>
                     <span>&bull;</span>
@@ -2997,12 +3483,12 @@
                 ${(p.comments || []).map(c => `
                   <div>
                     <div class="fb-comment-item">
-                      <div class="fb-comment-avatar">
+                      <div class="fb-comment-avatar" onclick="openMemberProfileModal('${c.authorId || c.authorName}')">
                         ${(c.authorName || 'A').charAt(0)}
                       </div>
                       <div>
                         <div class="fb-comment-bubble-box">
-                          <h5 class="fb-comment-user">${c.authorName}</h5>
+                          <h5 class="fb-comment-user" onclick="openMemberProfileModal('${c.authorId || c.authorName}')">${c.authorName}</h5>
                           <p class="fb-comment-text">${c.text || c.commentText || c.content || ''}</p>
                         </div>
                         <div class="fb-comment-footer-actions">
@@ -3016,12 +3502,12 @@
                       <div class="fb-reply-branch">
                         ${c.replies.map(r => `
                           <div class="fb-comment-item">
-                            <div class="fb-comment-avatar" style="width:24px;height:24px;font-size:9.5px;">
+                            <div class="fb-comment-avatar" style="width:24px;height:24px;font-size:9.5px;" onclick="openMemberProfileModal('${r.authorId || r.authorName}')">
                               ${(r.authorName || 'A').charAt(0)}
                             </div>
                             <div>
                               <div class="fb-comment-bubble-box" style="background:#ffffff;">
-                                <h5 class="fb-comment-user" style="color:var(--primary);">${r.authorName}</h5>
+                                <h5 class="fb-comment-user" style="color:var(--primary);" onclick="openMemberProfileModal('${r.authorId || r.authorName}')">${r.authorName}</h5>
                                 <p class="fb-comment-text">${r.text || r.commentText || r.content || ''}</p>
                               </div>
                               <div class="fb-comment-footer-actions">
@@ -3130,16 +3616,18 @@
             if (!parent.replies) parent.replies = [];
             parent.replies.push({
               id: 'REP_' + Date.now(),
+              authorId: currentMember ? currentMember.id : 'CLB001',
               authorName: currentMember ? currentMember.hoTen : 'Thành viên',
               text: text,
               time: 'Vừa xong'
             });
           } else {
-            post.comments.push({ id: 'CMT_' + Date.now(), authorName: currentMember ? currentMember.hoTen : 'Thành viên', text: text, time: 'Vừa xong', replies: [] });
+            post.comments.push({ id: 'CMT_' + Date.now(), authorId: currentMember ? currentMember.id : 'CLB001', authorName: currentMember ? currentMember.hoTen : 'Thành viên', text: text, time: 'Vừa xong', replies: [] });
           }
         } else {
           post.comments.push({
             id: 'CMT_' + Date.now(),
+            authorId: currentMember ? currentMember.id : 'CLB001',
             authorName: currentMember ? currentMember.hoTen : 'Thành viên',
             text: text,
             time: 'Vừa xong',
@@ -3177,10 +3665,16 @@
     function callContactDirect() {
       if (currentMember && currentMember.sdt && currentMember.sdt !== '---' && !currentMember.sdt.includes('CLB')) {
         makePhoneCall(currentMember.sdt);
-      } else if (currentMember && currentMember.ice && currentMember.ice !== '---') {
+      } else {
+        triggerAquaNotification("Thông Báo", "Chưa có thông tin số điện thoại liên hệ cá nhân.", "warning");
+      }
+    }
+
+    function callEmergencyDirect() {
+      if (currentMember && currentMember.ice && currentMember.ice !== '---') {
         makePhoneCall(currentMember.ice);
       } else {
-        triggerAquaNotification("Thông Báo", "Chưa có thông tin số điện thoại liên hệ.", "warning");
+        triggerAquaNotification("Cấp Cứu ICE", "Chưa cập nhật số liên hệ khẩn cấp (ICE) của người thân!", "error");
       }
     }
 
