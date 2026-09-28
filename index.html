@@ -22,8 +22,8 @@
       --primary-light: #818cf8;
       --primary-dark: #4f46e5;
       --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #6366f1 55%, #4f46e5 100%);
-      --acrylic-bg: rgba(255, 255, 255, 0.78);
-      --acrylic-border: rgba(255, 255, 255, 0.92);
+      --acrylic-bg: rgba(255, 255, 255, 0.82);
+      --acrylic-border: rgba(255, 255, 255, 0.95);
       --acrylic-shadow: 0 16px 36px -8px rgba(99, 102, 241, 0.12), inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
       --text-main: #0f172a;
       --text-muted: #64748b;
@@ -61,7 +61,6 @@
       position: relative;
     }
 
-    /* Đèn cực quang Aurora chuyển động ngầm mềm mại */
     .aurora-sphere {
       position: fixed;
       border-radius: 50%;
@@ -80,7 +79,6 @@
       100% { transform: translate(35px, 25px) scale(1.1); }
     }
 
-    /* Khối kính mờ Liquid Acrylic */
     .acrylic-card {
       position: relative;
       z-index: 1;
@@ -98,7 +96,6 @@
       transition: transform 0.25s var(--fluid-curve), box-shadow 0.25s var(--fluid-curve);
     }
 
-    /* Nút tương tác đàn hồi xúc giác ColorOS 17 */
     .spring-touch {
       transition: transform 0.2s var(--spring-physics), background 0.15s ease, opacity 0.15s ease, box-shadow 0.2s ease;
       cursor: pointer;
@@ -171,7 +168,6 @@
       box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.22);
     }
 
-    /* HEADER: Cân đối hoàn hảo, chống tràn 100% trên mọi kích thước màn hình Android & iOS */
     .header-bar-layout {
       display: flex;
       align-items: center;
@@ -203,11 +199,6 @@
       overflow: hidden;
       flex-shrink: 0;
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.28);
-    }
-    .header-crest img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
 
     .header-texts {
@@ -287,7 +278,7 @@
       height: 16px;
     }
 
-    /* Avatar có nút máy ảnh đổi ảnh chuyên nghiệp */
+    /* AVATAR VỚI ICON CAMERA VECTOR CHUẨN COLOROS 17 */
     .avatar-wrapper {
       position: relative;
       width: 66px;
@@ -314,19 +305,23 @@
       position: absolute;
       bottom: -3px;
       right: -3px;
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: #ffffff;
       border: 1.5px solid #e2e8f0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.14);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      color: #4f46e5;
+    }
+    .avatar-camera-pill svg {
+      width: 13px;
+      height: 13px;
     }
 
-    /* 3 Ô THÔNG SỐ (CỐNG HIẾN, THỂ TRẠNG, TRẠNG THÁI) */
+    /* 3 Ô THÔNG SỐ: CỐNG HIẾN, THỂ TRẠNG, TRẠNG THÁI VỚI ICON VECTOR */
     .metrics-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -336,7 +331,7 @@
       border-top: 1px solid rgba(241, 245, 249, 0.9);
     }
     .metric-pill {
-      padding: 10px 4px;
+      padding: 9px 4px;
       border-radius: 17px;
       text-align: center;
       cursor: pointer;
@@ -344,20 +339,27 @@
       box-shadow: 0 2px 7px rgba(148, 163, 184, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.85);
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     .metric-pill:active {
       transform: scale(0.95);
     }
-    .metric-tag {
+    .metric-tag-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
       font-size: 9px;
       font-weight: 800;
       text-transform: uppercase;
-      display: block;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
       letter-spacing: 0.3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    }
+    .metric-tag-row svg {
+      width: 11px;
+      height: 11px;
     }
     .metric-number {
       font-size: 11px;
@@ -390,7 +392,6 @@
       text-align: right;
     }
 
-    /* Đáy dock biến hình ColorOS 17 */
     .bottom-dock {
       position: fixed;
       bottom: max(env(safe-area-inset-bottom, 0px) + 10px, 14px);
@@ -451,7 +452,6 @@
       stroke-width: 2.2;
     }
 
-    /* AQUA DYNAMICS FLUID ISLAND: KHẮC PHỤC TRIỆT ĐỂ LỖI BÓNG MA & CHỒNG CHÉO */
     .aqua-fluid-island {
       position: fixed;
       top: max(env(safe-area-inset-top, 0px) + 8px, 12px);
@@ -485,7 +485,6 @@
       pointer-events: auto;
     }
 
-    /* Banner Nhiệm Vụ Khẩn (Nhẹ nhàng, không chèn ép tiêu đề) */
     .urgent-duty-strip {
       width: 100%;
       max-width: 440px;
@@ -589,6 +588,29 @@
       gap: 5px;
     }
 
+    /* BỘ VECTOR REACTION CHIPS CHUẨN COLOROS 17 */
+    .reaction-chip {
+      padding: 4px 8px;
+      border-radius: 11px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      background: rgba(255, 255, 255, 0.88);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #475569;
+    }
+    .reaction-chip:active {
+      transform: scale(0.92);
+    }
+    .reaction-chip svg {
+      width: 14px;
+      height: 14px;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -596,16 +618,15 @@
 </head>
 
 <body>
-  <!-- Quả cầu cực quang Aurora chạy ngầm -->
   <div class="aurora-sphere aurora-1"></div>
   <div class="aurora-sphere aurora-2"></div>
   <div class="aurora-sphere aurora-3"></div>
 
-  <!-- VIÊN THUỐC AQUA DYNAMICS FLUID ISLAND ĐỘC BẢN: TUYỆT ĐỐI KHÔNG LỘ VẾT KHI ẨN -->
+  <!-- VIÊN THUỐC AQUA DYNAMICS FLUID ISLAND -->
   <div id="aquaIslandPill" class="aqua-fluid-island">
     <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
       <div id="aquaIslandIconBox" style="width: 32px; height: 32px; border-radius: 11px; background: rgba(99, 102, 241, 0.28); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #a5b4fc;">
-        ⚡
+        <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       </div>
       <div style="min-width: 0; flex: 1;">
         <h4 id="aquaIslandTitle" style="font-size: 11.5px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Thông Báo Nhiệm Vụ</h4>
@@ -631,7 +652,7 @@
     </button>
   </div>
 
-  <!-- HEADER: THIẾT KẾ MỚI CÂN ĐỐI 100%, TUYỆT ĐỐI KHÔNG BAO GIỜ BỊ ĐÈ CHỮ HAY TRÀN -->
+  <!-- HEADER GỌN GÀNG -->
   <header class="acrylic-card header-bar-layout">
     <div class="header-identity">
       <div id="hdrAvatar" class="header-crest" title="Câu Lạc Bộ Thể Thao">
@@ -648,7 +669,6 @@
       </div>
     </div>
 
-    <!-- Cụm công cụ bên phải (Gọn gàng, kích thước 34x34px, không chèn ép title) -->
     <div class="header-actions-cluster">
       <button id="btnHdrAdmin" onclick="openAdminModal()" class="spring-touch icon-square-btn hidden" style="color: #7e22ce; background: #faf5ff; border-color: #e9d5ff;" title="Bảng Quản Trị Admin">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -696,17 +716,19 @@
     </div>
   </main>
 
-  <!-- MÀN HÌNH CHÍNH CỦA ỨNG DỤNG -->
+  <!-- MÀN HÌNH CHÍNH ỨNG DỤNG -->
   <main id="viewApp" class="hidden" style="width: 100%; max-width: 440px;">
     
     <!-- ================= TAB 0: HỒ SƠ & THẺ ĐỊNH DANH ================= -->
     <div id="tabContentProfile">
       <section class="acrylic-card">
         <div style="display: flex; align-items: center; gap: 13px;">
-          <!-- Avatar Thành Viên với nút Camera góc tinh tế -->
+          <!-- Avatar Thành Viên với Vector Camera Badge -->
           <div id="memAvatarBox" class="avatar-wrapper" onclick="openAvatarModal()" title="Chạm để đổi ảnh đại diện">
             <span id="memAvatarInitial">A</span>
-            <span class="avatar-camera-pill">📷</span>
+            <span class="avatar-camera-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </span>
           </div>
 
           <div style="flex: 1; min-width: 0;">
@@ -719,20 +741,29 @@
           </div>
         </div>
 
-        <!-- 3 Ô CHỈ SỐ: CỐNG HIẾN, THỂ TRẠNG, TRẠNG THÁI -->
+        <!-- 3 Ô CHỈ SỐ: CỐNG HIẾN, THỂ TRẠNG, TRẠNG THÁI (VECTOR ICONS THUẦN TÚY) -->
         <div class="metrics-row">
           <div class="metric-pill" style="background: rgba(238, 242, 255, 0.88);">
-            <span class="metric-tag" style="color: #6366f1;">Cống Hiến</span>
+            <div class="metric-tag-row" style="color: #6366f1;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span>Cống Hiến</span>
+            </div>
             <span id="memDuty" class="metric-number" style="color: #4f46e5;">0 ca</span>
           </div>
           
           <div class="metric-pill" style="background: rgba(240, 253, 244, 0.88);" onclick="openTheTrangModal()" title="Chạm để cập nhật thể trạng">
-            <span class="metric-tag" style="color: #16a34a;">Thể Trạng ✏️</span>
+            <div class="metric-tag-row" style="color: #16a34a;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <span>Thể Trạng</span>
+            </div>
             <span id="memFit" class="metric-number" style="color: #15803d;">Khỏe mạnh</span>
           </div>
 
           <div class="metric-pill" id="cardStatusBox" style="background: rgba(236, 253, 245, 0.88);" title="Tự động cập nhật theo nhiệm vụ">
-            <span class="metric-tag" id="cardStatusLabel" style="color: #047857;">Trạng Thái ⚡</span>
+            <div class="metric-tag-row" id="cardStatusLabel" style="color: #047857;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Trạng Thái</span>
+            </div>
             <span id="memStat" class="metric-number" style="color: #065f46;">Sẵn sàng</span>
           </div>
         </div>
@@ -794,7 +825,7 @@
 
           <label style="display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 700; color: #64748b; cursor: pointer; background: rgba(241, 245, 249, 0.85); padding: 3px 8px; border-radius: 12px;">
             <input type="checkbox" id="chkAnonymousPost" style="width: 12px; height: 12px; accent-color: var(--primary);">
-            <span>Ẩn Danh 🎭</span>
+            <span>Ẩn Danh</span>
           </label>
         </div>
 
@@ -831,7 +862,7 @@
     </div>
   </main>
 
-  <!-- ĐÁY DOCK BIẾN HÌNH (ẨN KHI CHƯA LOGIN, HIỆN KHI VÀO THẺ) -->
+  <!-- ĐÁY DOCK BIẾN HÌNH -->
   <nav id="bottomDock" class="bottom-dock hidden">
     <div id="dockPill" class="dock-pill-slider"></div>
     
@@ -879,7 +910,9 @@
 
       <div style="width: 104px; height: 104px; margin: 14px auto; border-radius: 26px; overflow: hidden; background: #e0e7ff; border: 2px solid var(--primary-light); display: flex; align-items: center; justify-content: center;">
         <img id="imgAvatarPreview" src="" style="width: 100%; height: 100%; object-fit: cover;" class="hidden">
-        <span id="txtAvatarPh" style="font-size: 30px;">📷</span>
+        <span id="txtAvatarPh" style="color: #4f46e5;">
+          <svg style="width: 36px; height: 36px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </span>
       </div>
 
       <label class="spring-touch btn-main" style="margin-bottom: 7px; cursor: pointer; width: 100%; padding: 10px;">
@@ -898,7 +931,7 @@
     </div>
   </div>
 
-  <!-- MODAL CẬP NHẬT THỂ TRẠNG -->
+  <!-- MODAL CẬP NHẬT THỂ TRẠNG VỚI VECTOR ICONS CHUẨN COLOROS 17 -->
   <div id="modalTheTrang" class="modal-backdrop hidden">
     <div class="acrylic-card" style="width: 100%; max-width: 320px; margin-bottom: 0;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a; text-align: center;">CẬP NHẬT THỂ TRẠNG</h3>
@@ -906,19 +939,24 @@
 
       <div style="display: flex; flex-direction: column; gap: 6px; margin: 12px 0;">
         <button onclick="selectTheTrang('Khỏe mạnh')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 10px 13px; font-weight: 800; color: #15803d; border-color: #bbf7d0;">
-          🟢 Khỏe mạnh (100% Sẵn sàng)
+          <svg style="width: 16px; height: 16px; color: #16a34a;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <span>Khỏe mạnh (100% Sẵn sàng)</span>
         </button>
         <button onclick="selectTheTrang('Chấn thương')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 10px 13px; font-weight: 800; color: #b91c1c; border-color: #fecdd3;">
-          🔴 Chấn thương (Cần nghỉ ngơi)
+          <svg style="width: 16px; height: 16px; color: #dc2626;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Chấn thương (Cần nghỉ ngơi)</span>
         </button>
         <button onclick="selectTheTrang('Đau bụng')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 10px 13px; font-weight: 800; color: #d97706; border-color: #fed7aa;">
-          🟡 Đau bụng / Tiêu hóa
+          <svg style="width: 16px; height: 16px; color: #d97706;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Đau bụng / Tiêu hóa</span>
         </button>
         <button onclick="selectTheTrang('Sốt / Cảm')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 10px 13px; font-weight: 800; color: #7c2d12; border-color: #fed7aa;">
-          🌡️ Sốt / Cảm cúm
+          <svg style="width: 16px; height: 16px; color: #ea580c;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+          <span>Sốt / Cảm cúm</span>
         </button>
         <button onclick="selectTheTrang('Cần hồi phục')" class="spring-touch btn-sub" style="justify-content: flex-start; padding: 10px 13px; font-weight: 800; color: #4338ca; border-color: #c7d2fe;">
-          ⚡ Quá tải / Cần hồi phục
+          <svg style="width: 16px; height: 16px; color: #6366f1;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a11 11 0 0 1-12 0"/><polyline points="12 2 12 12 16 14"/></svg>
+          <span>Quá tải / Cần hồi phục</span>
         </button>
       </div>
 
@@ -939,7 +977,7 @@
           Tự Khóa &amp; Xoay Ca
         </button>
         <button id="btnTaskModeSpecial" onclick="setTaskMode('special')" class="spring-touch" style="flex: 1; padding: 6px; font-size: 10.5px; font-weight: 800; border-radius: 10px; background: transparent; color: #64748b;">
-          Chỉ Định Đặc Biệt 🎯
+          Chỉ Định Đặc Biệt
         </button>
       </div>
 
@@ -1078,8 +1116,7 @@
   </div>
 
   <script>
-    /* Đường dẫn Web App Google Apps Script backend */
-    let BACKEND_URL = localStorage.getItem("CLB_CUSTOM_BACKEND_URL") || "https://script.google.com/macros/s/AKfycbycy8hAe5kNihFhAp6bXqgTb2AMtFRc5S2l97l8g58iHo-mB8lpW-enfkQzAe2WPs9T/exec";
+    let BACKEND_URL = localStorage.getItem("CLB_CUSTOM_BACKEND_URL") || "https://script.google.com/macros/s/AKfycbwvNsYMBiDo53EF5a2FrKRO3KAoWJqA-BMNTLZj0IbuPd_vCIRpPsjmPYqPRre1qhB/exec";
 
     let currentMember = null;
     let membersList = [];
@@ -1098,6 +1135,7 @@
     let aquaDismissTimeout = null;
     let notificationQueue = [];
     let isNotificationShowing = false;
+    let audioContext = null;
 
     document.addEventListener("DOMContentLoaded", () => {
       restoreSession();
@@ -1108,7 +1146,35 @@
           syncRealtimeData(false);
         }
       });
+
+      // Kích hoạt Audio Context sau cử chỉ đầu tiên để tránh bị trình duyệt chặn
+      document.addEventListener('click', initAudioContextOnce, { once: true });
+      document.addEventListener('touchstart', initAudioContextOnce, { once: true });
     });
+
+    function initAudioContextOnce() {
+      try {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioContext && audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+      } catch (e) {}
+    }
+
+    function clearForumDraftState() {
+      const ipt = document.getElementById("iptForumText");
+      if (ipt) ipt.value = "";
+      const chk = document.getElementById("chkAnonymousPost");
+      if (chk) chk.checked = false;
+      const fileInput = document.getElementById("fileMultiMedia");
+      if (fileInput) fileInput.value = "";
+      currentUploadedMediaList = [];
+      currentSelectedTags = [];
+      renderMediaPreviewGrid();
+      renderTaggedTagsUI();
+    }
 
     function restoreSession() {
       const saved = localStorage.getItem("CLB_MEMBER_SESSION");
@@ -1127,6 +1193,7 @@
     }
 
     function showLoginScreen() {
+      clearForumDraftState();
       document.getElementById("viewLogin").classList.remove("hidden");
       document.getElementById("viewApp").classList.add("hidden");
       document.getElementById("bottomDock").classList.add("hidden");
@@ -1139,23 +1206,21 @@
       hdrAvatar.onclick = null;
     }
 
-    /* KÊNH KẾT NỐI KÉP: Chống lỗi mạng 4G/di động */
     async function handleLoginSubmit() {
       const user = document.getElementById("iptUser").value.trim();
       const pass = document.getElementById("iptPass").value.trim();
-      if (!user) return triggerAquaNotification("Thiếu Thông Tin", "Vui lòng nhập Mã ID, MSSV hoặc SĐT!", "⚠️");
+      if (!user) return triggerAquaNotification("Thiếu Thông Tin", "Vui lòng nhập Mã ID, MSSV hoặc SĐT!", "warning");
 
       const btn = document.getElementById("btnSubmitLogin");
       btn.innerText = "Đang kết nối...";
       btn.disabled = true;
 
-      triggerAquaNotification("Đang Kết Nối", "Đang xác thực thông tin thẻ với máy chủ...", "⏳");
+      triggerAquaNotification("Đang Kết Nối", "Đang xác thực thông tin thẻ với máy chủ...", "loading");
 
       let data = null;
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-      // Kênh 1: POST
       try {
         const res = await fetch(BACKEND_URL, {
           method: "POST",
@@ -1166,7 +1231,6 @@
         clearTimeout(timeoutId);
         data = await res.json();
       } catch (postErr) {
-        // Kênh 2: GET Fallback
         try {
           const getUrl = `${BACKEND_URL}?action=login&identifier=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}&t=${Date.now()}`;
           const resGet = await fetch(getUrl);
@@ -1175,7 +1239,7 @@
           clearTimeout(timeoutId);
           btn.innerText = "Đăng Nhập Thẻ Số";
           btn.disabled = false;
-          triggerAquaNotification("Kết Nối Thất Bại", "Chạm bánh răng ⚙️ kiểm tra URL hoặc bấm Chế độ Offline!", "❌");
+          triggerAquaNotification("Kết Nối Thất Bại", "Chạm bánh răng kiểm tra URL hoặc bấm Chế độ Offline!", "error");
           return;
         }
       }
@@ -1184,18 +1248,19 @@
       btn.disabled = false;
 
       if (data && data.success) {
+        clearForumDraftState();
         currentMember = data.member;
         localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
         showAppScreen();
         syncRealtimeData(false);
-        triggerAquaNotification("Đăng Nhập Thành Công", `Chào mừng ${currentMember.hoTen} trở lại CLB.`, "👋");
+        triggerAquaNotification("Đăng Nhập Thành Công", `Chào mừng ${currentMember.hoTen} trở lại CLB.`, "success");
       } else {
-        triggerAquaNotification("Lỗi Đăng Nhập", (data && data.message) ? data.message : "Tài khoản hoặc mật khẩu không đúng!", "❌");
+        triggerAquaNotification("Lỗi Đăng Nhập", (data && data.message) ? data.message : "Tài khoản hoặc mật khẩu không đúng!", "error");
       }
     }
 
-    /* OFFLINE DEMO MODE */
     function enterOfflineDemoMode() {
+      clearForumDraftState();
       currentMember = {
         id: "CLB001",
         hoTen: "Nguyễn Văn A (Demo)",
@@ -1262,7 +1327,7 @@
 
       localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
       showAppScreen();
-      triggerAquaNotification("Chế Độ Demo Kích Hoạt", "Bạn đang xem giao diện ColorOS 17 với dữ liệu mẫu.", "⚡");
+      triggerAquaNotification("Chế Độ Demo Kích Hoạt", "Bạn đang xem giao diện ColorOS 17 với dữ liệu mẫu.", "success");
     }
 
     function openServerConfigModal() {
@@ -1276,11 +1341,11 @@
 
     function saveServerConfigAction() {
       const val = document.getElementById("iptCustomBackendUrl").value.trim();
-      if (!val) return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập link Web App!", "⚠️");
+      if (!val) return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập link Web App!", "warning");
       BACKEND_URL = val;
       localStorage.setItem("CLB_CUSTOM_BACKEND_URL", val);
       closeServerConfigModal();
-      triggerAquaNotification("Đã Lưu Cấu Hình", "Đã cập nhật URL máy chủ mới!", "✓");
+      triggerAquaNotification("Đã Lưu Cấu Hình", "Đã cập nhật URL máy chủ mới!", "success");
     }
 
     function cleanDateFormat(dateStr) {
@@ -1370,12 +1435,18 @@
       const forumBox = document.getElementById("forumAuthorAvtSmall");
       const initial = (hoTen || "A").split(" ").pop().charAt(0).toUpperCase();
 
+      const cameraPillHtml = `
+        <span class="avatar-camera-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </span>
+      `;
+
       if (avatarUrl && avatarUrl.startsWith("data:image")) {
-        memBox.innerHTML = `<img src="${avatarUrl}" alt="Avatar"><span class="avatar-camera-pill">📷</span>`;
-        hdrBox.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`;
+        memBox.innerHTML = `<img src="${avatarUrl}" alt="Avatar">${cameraPillHtml}`;
+        hdrBox.innerHTML = `<img src="${avatarUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
         if (forumBox) forumBox.innerHTML = `<img src="${avatarUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:11px;">`;
       } else {
-        memBox.innerHTML = `<span id="memAvatarInitial">${initial}</span><span class="avatar-camera-pill">📷</span>`;
+        memBox.innerHTML = `<span id="memAvatarInitial">${initial}</span>${cameraPillHtml}`;
         hdrBox.innerHTML = `${initial}`;
         if (forumBox) forumBox.innerHTML = `${initial}`;
       }
@@ -1419,10 +1490,10 @@
             document.getElementById("memFit").innerText = currentMember.theTrang || "Khỏe mạnh";
             renderAvatarUI(currentMember.avatar, currentMember.hoTen);
           }
-          if (isManual) triggerAquaNotification("Đồng Bộ Thành Công", "Dữ liệu mới nhất đã được cập nhật!", "✓");
+          if (isManual) triggerAquaNotification("Đồng Bộ Thành Công", "Dữ liệu mới nhất đã được cập nhật!", "success");
         }
       } catch (err) {
-        if (isManual) triggerAquaNotification("Đồng Bộ", "Đang thử lại kết nối ngầm...", "⏳");
+        if (isManual) triggerAquaNotification("Đồng Bộ", "Đang thử lại kết nối ngầm...", "loading");
       } finally {
         if (isManual) {
           setTimeout(() => {
@@ -1433,11 +1504,25 @@
       }
     }
 
-    /* AQUA DYNAMICS FLUID ISLAND: CƠ CHẾ HÀNG ĐỢI TUẦN TỰ, LOẠI BỎ TRIỆT ĐỂ BÓNG MA & XẾP CHỒNG */
-    function triggerAquaNotification(title, message, iconChar = "⚡") {
-      notificationQueue.push({ title, message, iconChar });
+    function triggerAquaNotification(title, message, iconType = "info") {
+      notificationQueue.push({ title, message, iconType });
       if (!isNotificationShowing) {
         processNextAquaNotification();
+      }
+    }
+
+    function getNotificationSvgIcon(type) {
+      switch (type) {
+        case 'success':
+          return `<svg style="width:16px;height:16px;color:#34d399;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+        case 'warning':
+          return `<svg style="width:16px;height:16px;color:#fbbf24;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+        case 'error':
+          return `<svg style="width:16px;height:16px;color:#f87171;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        case 'loading':
+          return `<svg style="width:16px;height:16px;color:#a5b4fc;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>`;
+        default:
+          return `<svg style="width:16px;height:16px;color:#818cf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`;
       }
     }
 
@@ -1448,32 +1533,31 @@
       }
 
       isNotificationShowing = true;
-      const { title, message, iconChar } = notificationQueue.shift();
+      const { title, message, iconType } = notificationQueue.shift();
 
       const pill = document.getElementById("aquaIslandPill");
       document.getElementById("aquaIslandTitle").innerText = title;
       document.getElementById("aquaIslandMsg").innerText = message;
-      document.getElementById("aquaIslandIconBox").innerText = iconChar;
+      document.getElementById("aquaIslandIconBox").innerHTML = getNotificationSvgIcon(iconType);
 
-      // Haptic phản hồi xúc giác
       if (navigator.vibrate) {
-        try { navigator.vibrate([30, 20, 45]); } catch (e) {}
+        try { navigator.vibrate([25, 20, 35]); } catch (e) {}
       }
 
-      // Âm thanh giọt nước ColorOS dịu nhẹ từ Web Audio API
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.12);
-        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.28);
+        if (audioContext && audioContext.state === 'running') {
+          const osc = audioContext.createOscillator();
+          const gain = audioContext.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(587.33, audioContext.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.12);
+          gain.gain.setValueAtTime(0.05, audioContext.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.25);
+          osc.connect(gain);
+          gain.connect(audioContext.destination);
+          osc.start();
+          osc.stop(audioContext.currentTime + 0.28);
+        }
       } catch (e) {}
 
       if (aquaDismissTimeout) clearTimeout(aquaDismissTimeout);
@@ -1489,7 +1573,6 @@
       const pill = document.getElementById("aquaIslandPill");
       pill.classList.remove("active");
 
-      // Chờ hoạt ảnh ẩn hoàn tất (420ms) trước khi xử lý tin tiếp theo trong hàng đợi
       setTimeout(() => {
         processNextAquaNotification();
       }, 430);
@@ -1507,7 +1590,7 @@
       if (myAssigned.length > 0) {
         document.getElementById("urgentAlertText").innerText = `Bạn vừa được điều động ${myAssigned.length} ca trực mới!`;
         box.classList.remove("hidden");
-        triggerAquaNotification("Lệnh Điều Động Mới", `Bạn có ${myAssigned.length} nhiệm vụ được phân công.`, "🚨");
+        triggerAquaNotification("Lệnh Điều Động Mới", `Bạn có ${myAssigned.length} nhiệm vụ được phân công.`, "warning");
       } else {
         box.classList.add("hidden");
       }
@@ -1554,7 +1637,7 @@
       if (!currentMember) return;
       currentMember.theTrang = val;
       document.getElementById("memFit").innerText = val;
-      triggerAquaNotification("Thể Trạng", "Cập nhật: " + val, "✓");
+      triggerAquaNotification("Thể Trạng", "Cập nhật: " + val, "success");
 
       try {
         await fetch(BACKEND_URL, {
@@ -1566,7 +1649,7 @@
     }
 
     function openAvatarModal() {
-      if (!currentMember) return triggerAquaNotification("Thông Báo", "Vui lòng đăng nhập trước khi đổi ảnh!", "⚠️");
+      if (!currentMember) return triggerAquaNotification("Thông Báo", "Vui lòng đăng nhập trước khi đổi ảnh!", "warning");
       document.getElementById("modalAvatar").classList.remove("hidden");
       const img = document.getElementById("imgAvatarPreview");
       const ph = document.getElementById("txtAvatarPh");
@@ -1610,7 +1693,7 @@
     }
 
     async function saveAvatarUpload() {
-      if (!pendingAvatarBase64) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn ảnh trước!", "⚠️");
+      if (!pendingAvatarBase64) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn ảnh trước!", "warning");
       const btn = document.getElementById("btnSaveAvatar");
       btn.innerText = "Đang lưu...";
       btn.disabled = true;
@@ -1619,7 +1702,7 @@
       localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
       renderAvatarUI(currentMember.avatar, currentMember.hoTen);
       closeAvatarModal();
-      triggerAquaNotification("Ảnh Đại Diện", "Đã lưu ảnh chân dung mới!", "✓");
+      triggerAquaNotification("Ảnh Đại Diện", "Đã lưu ảnh chân dung mới!", "success");
 
       try {
         await fetch(BACKEND_URL, {
@@ -1654,10 +1737,10 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
               <div>
                 <h4 style="font-size: 13px; font-weight: 800; color: #0f172a;">${t.title}</h4>
-                ${isSpecial ? '<span style="font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 6px; background: #fae8ff; color: #86198f;">🎯 Điều Lệnh Đặc Biệt</span>' : ''}
+                ${isSpecial ? '<span style="font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 6px; background: #fae8ff; color: #86198f;">Điều Lệnh Đặc Biệt</span>' : ''}
               </div>
               <div style="display: flex; gap: 4px; align-items: center;">
-                ${isLocked ? '<span style="font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #fee2e2; color: #b91c1c;">🔒 Đã Khóa</span>' : ''}
+                ${isLocked ? '<span style="font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #fee2e2; color: #b91c1c;">Đã Khóa</span>' : ''}
                 <span style="font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 9px; background: ${totalPeople >= t.quota ? '#fee2e2' : '#e0e7ff'}; color: ${totalPeople >= t.quota ? '#b91c1c' : '#4338ca'};">
                   ${totalPeople}/${t.quota} người
                 </span>
@@ -1687,7 +1770,7 @@
                   ✓ Đã Vào Ca
                 </button>
                 <button onclick="openSwapModal('${t.id}')" class="spring-touch btn-sub" style="padding: 8px 10px; font-size: 11px; color: #d97706; border-color: #fed7aa; font-weight: 800;">
-                  🔄 Xin Xoay Ca
+                  Xin Xoay Ca
                 </button>
               `}
             </div>
@@ -1698,7 +1781,7 @@
 
     async function claimTaskAction(taskId) {
       if (!currentMember) return;
-      triggerAquaNotification("Đang Xử Lý", "Đang ghi nhận tên vào ca...", "⏳");
+      triggerAquaNotification("Đang Xử Lý", "Đang ghi nhận tên vào ca...", "loading");
       try {
         const res = await fetch(BACKEND_URL, {
           method: "POST",
@@ -1706,10 +1789,10 @@
           body: JSON.stringify({ action: "claimTask", taskId: taskId, memberId: currentMember.id })
         });
         const d = await res.json();
-        triggerAquaNotification(d.success ? "Thành Công" : "Thông Báo", d.message || "Nhận ca thành công!", d.success ? "✓" : "❌");
+        triggerAquaNotification(d.success ? "Thành Công" : "Thông Báo", d.message || "Nhận ca thành công!", d.success ? "success" : "error");
         syncRealtimeData(false);
       } catch (e) {
-        triggerAquaNotification("Thành Công", "Đã ghi nhận ca trực!", "✓");
+        triggerAquaNotification("Thành Công", "Đã ghi nhận ca trực!", "success");
       }
     }
 
@@ -1725,10 +1808,10 @@
     async function confirmSubmitSwapAction() {
       const reason = document.getElementById("iptSwapReason").value.trim();
       const toMem = document.getElementById("selSwapTargetMember").value;
-      if (!reason) return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập lý do xin đổi ca!", "⚠️");
+      if (!reason) return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập lý do xin đổi ca!", "warning");
 
       closeSwapModal();
-      triggerAquaNotification("Đang Gửi", "Đang gửi yêu cầu đổi ca tới Ban Quản Trị...", "⏳");
+      triggerAquaNotification("Đang Gửi", "Đang gửi yêu cầu đổi ca tới Ban Quản Trị...", "loading");
 
       try {
         const res = await fetch(BACKEND_URL, {
@@ -1743,10 +1826,10 @@
           })
         });
         const d = await res.json();
-        triggerAquaNotification("Đã Gửi Yêu Cầu", d.message || "Đang chờ Ban Quản Trị duyệt!", "✓");
+        triggerAquaNotification("Đã Gửi Yêu Cầu", d.message || "Đang chờ Ban Quản Trị duyệt!", "success");
         syncRealtimeData(false);
       } catch (e) {
-        triggerAquaNotification("Thành Công", "Đã gửi yêu cầu xoay ca!", "✓");
+        triggerAquaNotification("Thành Công", "Đã gửi yêu cầu xoay ca!", "success");
       }
     }
 
@@ -1815,15 +1898,15 @@
       if (isSpecial) {
         const checkedBoxes = document.querySelectorAll(".chk-special-member:checked");
         designated = Array.from(checkedBoxes).map(b => b.value);
-        if (designated.length === 0) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn ít nhất 1 thành viên!", "⚠️");
+        if (designated.length === 0) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn ít nhất 1 thành viên!", "warning");
         quota = designated.length;
         deadline = '';
       }
 
-      if (!title || !loc || !time) return triggerAquaNotification("Cảnh Báo", "Vui lòng điền đủ thông tin lệnh!", "⚠️");
+      if (!title || !loc || !time) return triggerAquaNotification("Cảnh Báo", "Vui lòng điền đủ thông tin lệnh!", "warning");
 
       closeCreateTaskModal();
-      triggerAquaNotification("Đang Ban Hành", "Đang ghi nhận lệnh triệu tập mới...", "⏳");
+      triggerAquaNotification("Đang Ban Hành", "Đang ghi nhận lệnh triệu tập mới...", "loading");
 
       try {
         const res = await fetch(BACKEND_URL, {
@@ -1842,10 +1925,10 @@
           })
         });
         const d = await res.json();
-        triggerAquaNotification("Ban Hành Lệnh", d.message || "Đã tạo lệnh mới!", d.success ? "✓" : "❌");
+        triggerAquaNotification("Ban Hành Lệnh", d.message || "Đã tạo lệnh mới!", d.success ? "success" : "error");
         syncRealtimeData(false);
       } catch (e) {
-        triggerAquaNotification("Thành Công", "Đã tạo lệnh điều động!", "✓");
+        triggerAquaNotification("Thành Công", "Đã tạo lệnh điều động!", "success");
       }
     }
 
@@ -1869,9 +1952,9 @@
     async function adminAddDutyAction(amount) {
       const sel = document.getElementById("selAdminMember");
       const targetId = sel.value;
-      if (!targetId) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn thành viên!", "⚠️");
+      if (!targetId) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn thành viên!", "warning");
 
-      triggerAquaNotification("Đang Xử Lý", "Đang cộng ca cống hiến...", "⏳");
+      triggerAquaNotification("Đang Xử Lý", "Đang cộng ca cống hiến...", "loading");
       try {
         const res = await fetch(BACKEND_URL, {
           method: "POST",
@@ -1879,10 +1962,10 @@
           body: JSON.stringify({ action: "adjustDuty", adminId: currentMember.id, targetMemberId: targetId, amount: amount })
         });
         const d = await res.json();
-        triggerAquaNotification("Cộng Ca", d.message || "Đã cập nhật ca!", "✓");
+        triggerAquaNotification("Cộng Ca", d.message || "Đã cập nhật ca!", "success");
         syncRealtimeData(false);
       } catch (e) {
-        triggerAquaNotification("Thành Công", "Đã cộng ca thành công!", "✓");
+        triggerAquaNotification("Thành Công", "Đã cộng ca thành công!", "success");
       }
     }
 
@@ -1899,7 +1982,7 @@
           <div style="display: flex; justify-content: space-between; font-weight: 800; color: #0f172a;">
             <span>${s.fromMemberId} xin đổi ca</span>
             <span style="color: ${s.status === 'approved' ? '#15803d' : s.status === 'rejected' ? '#b91c1c' : '#d97706'};">
-              ${s.status === 'approved' ? '✓ Đã duyệt' : s.status === 'rejected' ? '✕ Bác bỏ' : '⏳ Chờ duyệt'}
+              ${s.status === 'approved' ? '✓ Đã duyệt' : s.status === 'rejected' ? '✕ Bác bỏ' : 'Chờ duyệt'}
             </span>
           </div>
           <p style="color: #64748b; margin-top: 2px;">Lý do: ${s.reason}</p>
@@ -1919,7 +2002,7 @@
     }
 
     async function resolveSwapAction(swapId, approved) {
-      triggerAquaNotification("Đang Xử Lý", "Đang cập nhật trạng thái yêu cầu...", "⏳");
+      triggerAquaNotification("Đang Xử Lý", "Đang cập nhật trạng thái yêu cầu...", "loading");
       try {
         const res = await fetch(BACKEND_URL, {
           method: "POST",
@@ -1927,10 +2010,10 @@
           body: JSON.stringify({ action: "resolveSwap", swapId: swapId, adminId: currentMember.id, approved: approved })
         });
         const d = await res.json();
-        triggerAquaNotification("Phê Duyệt", d.message || "Đã giải quyết yêu cầu!", "✓");
+        triggerAquaNotification("Phê Duyệt", d.message || "Đã giải quyết yêu cầu!", "success");
         syncRealtimeData(false);
       } catch (e) {
-        triggerAquaNotification("Thành Công", "Đã xử lý yêu cầu đổi ca!", "✓");
+        triggerAquaNotification("Thành Công", "Đã xử lý yêu cầu đổi ca!", "success");
       }
     }
 
@@ -1951,7 +2034,7 @@
       renderTaggedTagsUI();
       document.getElementById("modalTagFriends").classList.add("hidden");
       if (currentSelectedTags.length > 0) {
-        triggerAquaNotification("Gắn Thẻ", `Đã gắn thẻ ${currentSelectedTags.length} bạn!`, "🏷️");
+        triggerAquaNotification("Gắn Thẻ", `Đã gắn thẻ ${currentSelectedTags.length} bạn!`, "info");
       }
     }
 
@@ -1970,20 +2053,55 @@
       `).join('');
     }
 
+    /* NÉN ẢNH CANVAS CHỐNG TRÀN BỘ NHỚ Ô GOOGLE SHEETS */
     function handleMultiMediaSelect(e) {
       const files = Array.from(e.target.files);
       if (!files.length) return;
 
       files.forEach(file => {
         const isVideo = file.type.startsWith('video');
+        if (isVideo) {
+          triggerAquaNotification("Thông Báo", "Video được nạp trực tiếp tham chiếu!", "info");
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = (event) => {
-          currentUploadedMediaList.push({
-            url: event.target.result,
-            type: isVideo ? 'video' : 'image',
-            name: file.name
-          });
-          renderMediaPreviewGrid();
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const maxDim = 480; // Giới hạn kích thước ảnh tối đa 480px
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Nén JPEG chất lượng 0.6 (~20KB) để vừa vặn ô Google Sheets
+            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
+
+            currentUploadedMediaList.push({
+              url: compressedBase64,
+              type: 'image',
+              name: file.name
+            });
+            renderMediaPreviewGrid();
+          };
+          img.src = event.target.result;
         };
         reader.readAsDataURL(file);
       });
@@ -2002,12 +2120,7 @@
       box.classList.remove("hidden");
       grid.innerHTML = currentUploadedMediaList.map((m, idx) => `
         <div class="media-thumb">
-          ${m.type === 'video' ? `
-            <video src="${m.url}"></video>
-            <span style="position: absolute; bottom: 2px; left: 2px; font-size: 8px; color: white; background: rgba(0,0,0,0.6); padding: 1px 3px; border-radius: 4px;">▶ Video</span>
-          ` : `
-            <img src="${m.url}">
-          `}
+          <img src="${m.url}">
           <button onclick="removeMediaItem(${idx})" class="thumb-del">✕</button>
         </div>
       `).join('');
@@ -2021,7 +2134,8 @@
     function clearAllMediaUpload() {
       currentUploadedMediaList = [];
       renderMediaPreviewGrid();
-      document.getElementById("fileMultiMedia").value = '';
+      const fi = document.getElementById("fileMultiMedia");
+      if (fi) fi.value = '';
     }
 
     async function postToForum() {
@@ -2030,11 +2144,12 @@
       const isAnon = document.getElementById("chkAnonymousPost").checked;
 
       if (!val && !currentUploadedMediaList.length) {
-        return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập nội dung hoặc đính kèm ảnh/video!", "⚠️");
+        return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập nội dung hoặc đính kèm ảnh!", "warning");
       }
       
       const btn = document.getElementById("btnSendPost");
       btn.disabled = true;
+      btn.innerText = "Đang gửi...";
 
       const newPost = {
         id: "POST_" + Date.now(),
@@ -2055,15 +2170,12 @@
       
       const savedMedia = [...currentUploadedMediaList];
       const savedTags = [...currentSelectedTags];
-      ipt.value = "";
-      document.getElementById("chkAnonymousPost").checked = false;
-      currentSelectedTags = [];
-      renderTaggedTagsUI();
-      clearAllMediaUpload();
-      triggerAquaNotification("Diễn Đàn", isAnon ? "Đã đăng bài ẩn danh!" : "Đã đăng bài viết!", "✓");
+      
+      clearForumDraftState();
+      triggerAquaNotification("Diễn Đàn", isAnon ? "Đã đăng bài ẩn danh!" : "Đã đăng bài viết!", "success");
 
       try {
-        await fetch(BACKEND_URL, {
+        const res = await fetch(BACKEND_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({
@@ -2075,9 +2187,16 @@
             tags: savedTags
           })
         });
+        const d = await res.json();
+        if (!d.success) {
+          triggerAquaNotification("Lưu ý", d.message || "Đăng bài gặp lỗi máy chủ!", "warning");
+        }
         syncRealtimeData(false);
-      } catch (e) {} finally {
+      } catch (e) {
+        triggerAquaNotification("Thông Báo", "Đã lưu bài viết nội bộ!", "success");
+      } finally {
         btn.disabled = false;
+        btn.innerHTML = `<span>Đăng Tin</span><svg style="width:12px;height:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
       }
     }
 
@@ -2098,7 +2217,7 @@
 
       postsList = postsList.filter(p => p.id !== postId);
       renderPosts();
-      triggerAquaNotification("Đã Xóa", "Bài viết đã được gỡ khỏi diễn đàn!", "🗑️");
+      triggerAquaNotification("Đã Xóa", "Bài viết đã được gỡ khỏi diễn đàn!", "success");
 
       try {
         await fetch(BACKEND_URL, {
@@ -2135,7 +2254,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
               <div style="display: flex; align-items: center; gap: 7px;">
                 <div style="width: 32px; height: 32px; border-radius: 11px; background: ${p.isAnonymous ? '#f1f5f9' : '#e0e7ff'}; color: ${p.isAnonymous ? '#64748b' : '#4f46e5'}; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12.5px; overflow: hidden;">
-                  ${p.isAnonymous ? '🎭' : (p.authorAvatar && p.authorAvatar.startsWith('data:image') ? `<img src="${p.authorAvatar}" style="width:100%;height:100%;object-fit:cover;">` : (p.authorName || 'A').charAt(0))}
+                  ${p.isAnonymous ? '<svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' : (p.authorAvatar && p.authorAvatar.startsWith('data:image') ? `<img src="${p.authorAvatar}" style="width:100%;height:100%;object-fit:cover;">` : (p.authorName || 'A').charAt(0))}
                 </div>
                 <div>
                   <div style="display: flex; align-items: center; gap: 4px;">
@@ -2175,22 +2294,28 @@
               </div>
             ` : ''}
 
+            <!-- BỘ REACTION VECTOR COLOROS 17 THUẦN TÚY -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 9px; padding-top: 7px; border-top: 1px solid rgba(241, 245, 249, 0.9);">
               <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
-                <button onclick="reactPost('${p.id}', 'like')" class="spring-touch btn-sub" style="padding: 3px 7px; font-size: 10.5px;">
-                  👍 <span>${reactions.like || 0}</span>
+                <button onclick="reactPost('${p.id}', 'like')" class="reaction-chip" title="Thích">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                  <span>${reactions.like || 0}</span>
                 </button>
-                <button onclick="reactPost('${p.id}', 'love')" class="spring-touch btn-sub" style="padding: 3px 7px; font-size: 10.5px;">
-                  ❤️ <span>${reactions.love || 0}</span>
+                <button onclick="reactPost('${p.id}', 'love')" class="reaction-chip" title="Yêu thích">
+                  <svg viewBox="0 0 24 24" fill="#e11d48" stroke="#e11d48" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <span style="color:#e11d48;">${reactions.love || 0}</span>
                 </button>
-                <button onclick="reactPost('${p.id}', 'haha')" class="spring-touch btn-sub" style="padding: 3px 7px; font-size: 10.5px;">
-                  😂 <span>${reactions.haha || 0}</span>
+                <button onclick="reactPost('${p.id}', 'haha')" class="reaction-chip" title="Haha">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                  <span style="color:#d97706;">${reactions.haha || 0}</span>
                 </button>
-                <button onclick="reactPost('${p.id}', 'sad')" class="spring-touch btn-sub" style="padding: 3px 7px; font-size: 10.5px;">
-                  😢 <span>${reactions.sad || 0}</span>
+                <button onclick="reactPost('${p.id}', 'sad')" class="reaction-chip" title="Buồn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                  <span style="color:#6366f1;">${reactions.sad || 0}</span>
                 </button>
-                <button onclick="reactPost('${p.id}', 'angry')" class="spring-touch btn-sub" style="padding: 3px 7px; font-size: 10.5px;">
-                  😡 <span>${reactions.angry || 0}</span>
+                <button onclick="reactPost('${p.id}', 'angry')" class="reaction-chip" title="Phẫn nộ">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-1.5-4-1.5-4 1.5-4 1.5"/><line x1="7.5" y1="8.5" x2="10.5" y2="10"/><line x1="16.5" y1="8.5" x2="13.5" y2="10"/></svg>
+                  <span style="color:#dc2626;">${reactions.angry || 0}</span>
                 </button>
               </div>
               <span style="font-size: 10px; font-weight: 700; color: #94a3b8;">${totalComments} phản hồi</span>
@@ -2235,7 +2360,6 @@
                 `).join('')}
               </div>
 
-              <!-- Chỉ báo đang trả lời ai -->
               <div id="replyIndicator_${p.id}" class="hidden" style="margin-top: 6px; padding: 4px 9px; border-radius: 9px; background: rgba(224, 231, 255, 0.92); font-size: 10px; color: #4338ca; display: flex; justify-content: space-between; align-items: center;">
                 <span id="replyIndicatorText_${p.id}">Đang trả lời...</span>
                 <button onclick="cancelReplying('${p.id}')" style="border: none; background: transparent; color: #4338ca; font-weight: 800; cursor: pointer;">✕</button>
@@ -2347,7 +2471,7 @@
 
     function makePhoneCall(phone) {
       if (!phone || phone === '---' || phone.includes('Chủ nhiệm') || phone.includes('Trưởng ban')) {
-        return triggerAquaNotification("Thông Báo", "Chưa có số điện thoại.", "⚠️");
+        return triggerAquaNotification("Thông Báo", "Chưa có số điện thoại.", "warning");
       }
       window.location.href = "tel:" + phone.replace(/[^0-9+]/g, "");
     }
@@ -2358,15 +2482,16 @@
       } else if (currentMember && currentMember.ice && currentMember.ice !== '---') {
         makePhoneCall(currentMember.ice);
       } else {
-        triggerAquaNotification("Thông Báo", "Chưa có thông tin số điện thoại liên hệ.", "⚠️");
+        triggerAquaNotification("Thông Báo", "Chưa có thông tin số điện thoại liên hệ.", "warning");
       }
     }
 
     function logout() {
+      clearForumDraftState();
       localStorage.removeItem("CLB_MEMBER_SESSION");
       currentMember = null;
       showLoginScreen();
-      triggerAquaNotification("Đăng Xuất", "Đã đăng xuất khỏi thẻ số!", "✓");
+      triggerAquaNotification("Đăng Xuất", "Đã đăng xuất khỏi thẻ số!", "success");
     }
   </script>
 </body>
