@@ -23,7 +23,6 @@
       --primary-dark: #4f46e5;
       --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #6366f1 55%, #4f46e5 100%);
       --emerald-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
-      --emergency-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 60%, #b91c1c 100%);
       --acrylic-bg: rgba(255, 255, 255, 0.88);
       --acrylic-border: rgba(255, 255, 255, 0.95);
       --acrylic-shadow: 0 16px 36px -8px rgba(99, 102, 241, 0.12), inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
@@ -43,13 +42,12 @@
       user-select: none;
     }
 
-    /* Cho phép chọn văn bản đối với thông tin cần sao chép */
     .selectable-text, .info-data, .fb-post-body-text, .fb-comment-text {
       user-select: text !important;
       -webkit-user-select: text !important;
     }
 
-    /* THANH CUỘN SIÊU MƯỢT LIQUID ACRYLIC COLOROS 17 */
+    /* THANH CUỘN SIÊU MƯỢT LIQUID ACRYLIC */
     .custom-scroll {
       overflow-y: auto;
       scrollbar-width: thin;
@@ -69,9 +67,6 @@
       border-radius: 9999px;
       transition: background 0.2s ease;
     }
-    .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: rgba(99, 102, 241, 0.5);
-    }
 
     body {
       background-color: #f1f5fb;
@@ -86,8 +81,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: max(env(safe-area-inset-top, 0px) + 14px, 20px);
-      padding-bottom: max(env(safe-area-inset-bottom, 0px) + 88px, 104px);
+      padding-top: max(env(safe-area-inset-top, 0px) + 12px, 16px);
+      padding-bottom: max(env(safe-area-inset-bottom, 0px) + 84px, 98px);
       padding-left: max(env(safe-area-inset-left, 0px), 12px);
       padding-right: max(env(safe-area-inset-right, 0px), 12px);
       overflow-x: hidden;
@@ -112,7 +107,6 @@
     }
     .aurora-1 { width: 300px; height: 300px; background: #c7d2fe; top: -50px; left: -50px; }
     .aurora-2 { width: 320px; height: 320px; background: #fed7aa; bottom: -50px; right: -50px; animation-duration: 24s; }
-    .aurora-3 { width: 220px; height: 220px; background: #bae6fd; top: 40%; left: 55%; animation-duration: 18s; }
 
     @keyframes floatAurora {
       0% { transform: translate3d(0, 0, 0) scale(1); }
@@ -134,7 +128,6 @@
       margin-bottom: 11px;
       contain: layout style;
       transform: translate3d(0,0,0);
-      transition: transform 0.25s var(--fluid-curve), box-shadow 0.25s var(--fluid-curve);
     }
 
     .spring-touch {
@@ -174,62 +167,6 @@
       box-shadow: 0 2px 6px rgba(148, 163, 184, 0.06);
     }
 
-    .call-actions-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 13px;
-    }
-
-    .btn-call-native {
-      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-      color: #1d4ed8;
-      border: 1.2px solid #bfdbfe;
-      font-weight: 800;
-      font-size: 12px;
-      padding: 12px 10px;
-      border-radius: 17px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      box-shadow: 0 3px 12px rgba(59, 130, 246, 0.12);
-    }
-
-    .btn-call-emergency {
-      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-      color: #b91c1c;
-      border: 1.2px solid #fecdd3;
-      font-weight: 800;
-      font-size: 12px;
-      padding: 12px 10px;
-      border-radius: 17px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      box-shadow: 0 3px 12px rgba(239, 68, 68, 0.15);
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-call-emergency::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
-      animation: emergencyPulse 2.4s infinite;
-      pointer-events: none;
-    }
-    @keyframes emergencyPulse {
-      0%, 100% { transform: scale(0.9); opacity: 0.5; }
-      50% { transform: scale(1.18); opacity: 1; }
-    }
-
     .input-box {
       width: 100%;
       padding: 11px 14px;
@@ -241,7 +178,7 @@
       font-weight: 600;
       outline: none;
       margin-top: 4px;
-      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
     .input-box:focus {
       background: #ffffff;
@@ -256,7 +193,7 @@
       padding: 10px 14px;
       border-radius: 22px;
       margin-bottom: 11px;
-      gap: 8px;
+      gap: 10px;
     }
     .header-identity {
       display: flex;
@@ -276,7 +213,6 @@
       justify-content: center;
       font-weight: 800;
       font-size: 15px;
-      overflow: hidden;
       flex-shrink: 0;
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.28);
     }
@@ -287,14 +223,14 @@
     .header-title-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      white-space: nowrap;
+      gap: 7px;
     }
     .header-title-text {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 900;
       color: #0f172a;
       letter-spacing: -0.2px;
+      white-space: nowrap;
     }
     .live-dot-indicator {
       display: inline-flex;
@@ -303,11 +239,12 @@
       font-size: 9.5px;
       font-weight: 800;
       color: #047857;
-      background: rgba(236, 253, 245, 0.92);
+      background: rgba(236, 253, 245, 0.95);
       border: 1px solid #a7f3d0;
-      padding: 1.5px 6px;
-      border-radius: 10px;
+      padding: 1px 6px;
+      border-radius: 9px;
       flex-shrink: 0;
+      white-space: nowrap;
     }
     .live-dot-core {
       width: 5px;
@@ -333,14 +270,14 @@
     .header-actions-cluster {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       flex-shrink: 0;
     }
     .icon-square-btn {
       width: 36px;
       height: 36px;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(226, 232, 240, 0.9);
       color: #475569;
@@ -348,10 +285,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-    }
-    .icon-square-btn svg {
-      width: 17px;
-      height: 17px;
     }
 
     .avatar-wrapper {
@@ -391,12 +324,7 @@
       justify-content: center;
       color: #4f46e5;
     }
-    .avatar-camera-pill svg {
-      width: 13px;
-      height: 13px;
-    }
 
-    /* BẢNG CHỈ SỐ: CO GIÃN THÔNG MINH, CHỐNG TRÀN CHỮ */
     .metrics-row {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -410,7 +338,6 @@
       border-radius: 17px;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.18s var(--spring-physics), background 0.3s ease, border-color 0.3s ease;
       box-shadow: 0 2px 7px rgba(148, 163, 184, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.85);
       min-width: 0;
@@ -418,10 +345,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-    }
-    .metric-pill:active {
-      transform: scale(0.95);
     }
     .metric-tag-row {
       display: inline-flex;
@@ -432,16 +355,9 @@
       font-weight: 800;
       text-transform: uppercase;
       margin-bottom: 3px;
-      letter-spacing: 0.2px;
-      max-width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-    .metric-tag-row svg {
-      width: 11px;
-      height: 11px;
-      flex-shrink: 0;
     }
     .metric-number {
       font-size: 11px;
@@ -451,9 +367,42 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      padding: 0 2px;
-      line-height: 1.25;
       text-align: center;
+    }
+
+    .call-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 13px;
+    }
+    .btn-call-native {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      color: #1d4ed8;
+      border: 1.2px solid #bfdbfe;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 12px 10px;
+      border-radius: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-call-emergency {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      color: #b91c1c;
+      border: 1.2px solid #fecdd3;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 12px 10px;
+      border-radius: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
     }
 
     .info-line {
@@ -495,12 +444,10 @@
       -webkit-backdrop-filter: blur(28px) saturate(180%);
       border: 1.5px solid rgba(255, 255, 255, 0.95);
       border-radius: 22px;
-      box-shadow: 0 12px 34px -4px rgba(99, 102, 241, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 34px -4px rgba(99, 102, 241, 0.16);
       display: flex;
       padding: 5px;
       z-index: 100;
-      box-sizing: border-box;
-      transition: transform 0.3s var(--fluid-curve), opacity 0.3s var(--fluid-curve);
     }
     .dock-pill-slider {
       position: absolute;
@@ -536,11 +483,6 @@
     .dock-tab-item.active {
       color: #ffffff !important;
     }
-    .dock-tab-item svg {
-      width: 17px;
-      height: 17px;
-      stroke-width: 2.2;
-    }
 
     .aqua-fluid-island {
       position: fixed;
@@ -550,8 +492,7 @@
       width: calc(100% - 28px);
       max-width: 410px;
       background: rgba(15, 23, 42, 0.94);
-      backdrop-filter: blur(28px) saturate(190%);
-      -webkit-backdrop-filter: blur(28px) saturate(190%);
+      backdrop-filter: blur(28px);
       border: 1px solid rgba(255, 255, 255, 0.22);
       border-radius: 20px;
       padding: 9px 13px;
@@ -565,7 +506,6 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      will-change: transform, opacity;
       transition: transform 0.42s var(--spring-physics), opacity 0.25s ease, visibility 0.42s;
     }
     .aqua-fluid-island.active {
@@ -573,24 +513,6 @@
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-    }
-
-    .urgent-duty-strip {
-      width: 100%;
-      max-width: 440px;
-      padding: 9px 13px;
-      border-radius: 18px;
-      margin-bottom: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(254, 242, 242, 0.94);
-      backdrop-filter: blur(16px);
-      border: 1px solid #fecdd3;
-      color: #991b1b;
-      font-size: 11px;
-      font-weight: 700;
-      box-shadow: 0 3px 12px rgba(239, 68, 68, 0.1);
     }
 
     .modal-backdrop {
@@ -613,10 +535,6 @@
       padding: 6px 2px;
       margin-top: 6px;
       max-width: 100%;
-      scrollbar-width: none;
-    }
-    .media-strip::-webkit-scrollbar {
-      display: none;
     }
     .media-thumb {
       position: relative;
@@ -634,45 +552,27 @@
       height: 100%;
       object-fit: cover;
     }
-    .media-thumb-video-badge {
-      position: absolute;
-      bottom: 4px;
-      left: 4px;
-      background: rgba(0,0,0,0.65);
-      color: white;
-      border-radius: 6px;
-      padding: 1px 4px;
-      font-size: 8px;
-      font-weight: 800;
-    }
     .thumb-del {
       position: absolute;
       top: 3px;
       right: 3px;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(4px);
       color: white;
       border: 1px solid rgba(255,255,255,0.4);
-      font-size: 11px;
-      font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
       cursor: pointer;
     }
 
     .fb-post-card {
       padding: 14px 14px 10px 14px;
       border-radius: 24px;
-    }
-    .fb-post-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
     }
     .fb-avatar-circle {
       width: 40px;
@@ -688,39 +588,12 @@
       overflow: hidden;
       flex-shrink: 0;
       border: 1.5px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 3px 8px rgba(99, 102, 241, 0.2);
       cursor: pointer;
     }
     .fb-avatar-circle img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-    .fb-post-author-name {
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #0f172a;
-      line-height: 1.3;
-      cursor: pointer;
-    }
-    .fb-post-author-name:hover {
-      color: var(--primary);
-    }
-    .fb-post-meta-sub {
-      font-size: 10.5px;
-      color: #64748b;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 1px;
-    }
-    .fb-post-body-text {
-      font-size: 13px;
-      color: #1e293b;
-      line-height: 1.5;
-      word-break: break-word;
-      white-space: pre-line;
     }
 
     .fb-mosaic-grid {
@@ -730,51 +603,37 @@
       display: grid;
       gap: 4px;
       cursor: pointer;
-      position: relative;
-      max-width: 100%;
     }
     .fb-mosaic-1 { grid-template-columns: 1fr; }
-    .fb-mosaic-1 .fb-mosaic-cell { max-height: 280px; aspect-ratio: 16/10; }
-    
+    .fb-mosaic-1 .fb-mosaic-cell { max-height: 260px; aspect-ratio: 16/10; }
     .fb-mosaic-2 { grid-template-columns: 1fr 1fr; }
-    .fb-mosaic-2 .fb-mosaic-cell { aspect-ratio: 1; height: 165px; }
-
+    .fb-mosaic-2 .fb-mosaic-cell { aspect-ratio: 1; height: 160px; }
     .fb-mosaic-3 { grid-template-columns: 1.2fr 1fr; grid-template-rows: 1fr 1fr; }
-    .fb-mosaic-3 .fb-mosaic-cell:first-child { grid-row: span 2; height: 194px; }
-    .fb-mosaic-3 .fb-mosaic-cell { height: 95px; }
-
+    .fb-mosaic-3 .fb-mosaic-cell:first-child { grid-row: span 2; height: 184px; }
+    .fb-mosaic-3 .fb-mosaic-cell { height: 90px; }
     .fb-mosaic-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    .fb-mosaic-4 .fb-mosaic-cell { aspect-ratio: 1; height: 105px; }
+    .fb-mosaic-4 .fb-mosaic-cell { aspect-ratio: 1; height: 100px; }
 
     .fb-mosaic-cell {
       position: relative;
       background: #0f172a;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .fb-mosaic-cell img, .fb-mosaic-cell video {
+    .fb-mosaic-cell img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.25s ease;
-    }
-    .fb-mosaic-cell:hover img {
-      transform: scale(1.02);
     }
     .fb-mosaic-more-overlay {
       position: absolute;
       inset: 0;
       background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(4px);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
       font-weight: 900;
-      letter-spacing: 0.5px;
     }
 
     .fb-summary-bar {
@@ -788,31 +647,6 @@
       color: #64748b;
       font-weight: 600;
     }
-    .fb-stacked-reactions {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .fb-reaction-icon-stack {
-      display: inline-flex;
-      align-items: center;
-    }
-    .fb-reaction-mini-bubble {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1.5px solid #ffffff;
-      margin-left: -5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .fb-reaction-mini-bubble:first-child {
-      margin-left: 0;
-    }
-
     .fb-action-bar {
       display: grid;
       grid-template-columns: 1fr 1.2fr 1fr;
@@ -833,21 +667,9 @@
       justify-content: center;
       gap: 6px;
       cursor: pointer;
-      transition: background 0.15s, color 0.15s, transform 0.15s;
-    }
-    .fb-action-btn:hover {
-      background: rgba(241, 245, 249, 0.9);
-      color: #0f172a;
-    }
-    .fb-action-btn:active {
-      transform: scale(0.95);
     }
     .fb-action-btn.active-like {
       color: var(--primary) !important;
-    }
-    .fb-action-btn svg {
-      width: 16px;
-      height: 16px;
     }
 
     .fb-reaction-hover-dock {
@@ -855,14 +677,11 @@
       bottom: calc(100% + 6px);
       left: 4px;
       background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(24px) saturate(200%);
-      -webkit-backdrop-filter: blur(24px) saturate(200%);
-      border: 1.5px solid rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(24px);
       border-radius: 30px;
       padding: 5px 8px;
       box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.22);
       display: flex;
-      align-items: center;
       gap: 6px;
       z-index: 50;
       animation: popReactionDock 0.25s var(--spring-physics);
@@ -878,14 +697,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: transform 0.2s var(--spring-physics);
       background: transparent;
       border: none;
       font-size: 19px;
-    }
-    .fb-dock-item:hover {
-      transform: scale(1.35) translateY(-5px);
+      cursor: pointer;
     }
 
     .fb-comment-item {
@@ -905,14 +720,7 @@
       font-weight: 800;
       font-size: 11px;
       flex-shrink: 0;
-      margin-top: 2px;
-      overflow: hidden;
       cursor: pointer;
-    }
-    .fb-comment-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
     .fb-comment-bubble-box {
       background: var(--fb-bubble);
@@ -922,47 +730,7 @@
       display: inline-block;
       max-width: 90%;
     }
-    .fb-comment-user {
-      font-size: 11px;
-      font-weight: 800;
-      color: #0f172a;
-      cursor: pointer;
-    }
-    .fb-comment-user:hover {
-      color: var(--primary);
-    }
-    .fb-comment-text {
-      font-size: 11.5px;
-      color: #1e293b;
-      margin-top: 2px;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-    .fb-comment-footer-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 2px;
-      padding-left: 10px;
-      font-size: 10px;
-      font-weight: 700;
-      color: #64748b;
-    }
-    .fb-comment-footer-actions button {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: #64748b;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 0;
-    }
-    .fb-comment-footer-actions button:hover {
-      color: var(--primary);
-      text-decoration: underline;
-    }
-
     .fb-reply-branch {
-      position: relative;
       margin-left: 36px;
       margin-top: 5px;
       padding-left: 12px;
@@ -977,7 +745,6 @@
       inset: 0;
       background: rgba(0, 0, 0, 0.95);
       backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
       z-index: 10000;
       display: flex;
       flex-direction: column;
@@ -991,60 +758,6 @@
       opacity: 1;
       pointer-events: auto;
     }
-    .lightbox-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: white;
-      z-index: 2;
-    }
-    .lightbox-body {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-    }
-    .lightbox-media-container {
-      max-width: 100%;
-      max-height: 80vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .lightbox-media-container img, .lightbox-media-container video {
-      max-width: 100%;
-      max-height: 78vh;
-      object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      animation: zoomInMedia 0.28s var(--spring-physics);
-    }
-    @keyframes zoomInMedia {
-      0% { transform: scale(0.85); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .lightbox-nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      z-index: 5;
-    }
-    .lightbox-nav-prev { left: 8px; }
-    .lightbox-nav-next { right: 8px; }
 
     .action-sheet-backdrop {
       position: fixed;
@@ -1095,9 +808,6 @@
       gap: 10px;
       cursor: pointer;
     }
-    .action-sheet-btn:hover {
-      background: rgba(241, 245, 249, 0.9);
-    }
 
     .the-trang-option-item {
       display: flex;
@@ -1108,12 +818,8 @@
       border: 1px solid #e2e8f0;
       background: #ffffff;
       cursor: pointer;
-      transition: transform 0.15s ease, background 0.15s ease;
       width: 100%;
       text-align: left;
-    }
-    .the-trang-option-item:active {
-      transform: scale(0.97);
     }
 
     .hidden {
@@ -1125,9 +831,7 @@
 <body>
   <div class="aurora-sphere aurora-1"></div>
   <div class="aurora-sphere aurora-2"></div>
-  <div class="aurora-sphere aurora-3"></div>
 
-  <!-- VIÊN THUỐC AQUA DYNAMICS FLUID ISLAND -->
   <div id="aquaIslandPill" class="aqua-fluid-island">
     <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
       <div id="aquaIslandIconBox" style="width: 32px; height: 32px; border-radius: 11px; background: rgba(99, 102, 241, 0.28); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #a5b4fc;">
@@ -1139,29 +843,14 @@
       </div>
     </div>
     <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
-      <button onclick="handleAquaIslandAction()" id="btnAquaAction" class="spring-touch" style="background: var(--primary); color: white; padding: 5px 11px; border-radius: 11px; font-size: 10px; font-weight: 800;">
-        Xem
-      </button>
       <button onclick="dismissAquaIsland()" style="background: transparent; border: none; color: #94a3b8; font-size: 14px; cursor: pointer; padding: 4px;">✕</button>
     </div>
   </div>
 
-  <!-- Dải Báo Động Nhiệm Vụ Khẩn -->
-  <div id="urgentAlertBox" class="urgent-duty-strip hidden">
-    <div style="display: flex; align-items: center; gap: 7px; min-width: 0;">
-      <svg style="width: 15px; height: 15px; color: #dc2626; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span id="urgentAlertText" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Bạn vừa có điều động nhiệm vụ mới!</span>
-    </div>
-    <button onclick="switchDockTab(1)" class="spring-touch" style="background: #b91c1c; color: white; padding: 4px 9px; border-radius: 9px; font-size: 10px; font-weight: 800; flex-shrink: 0;">
-      Xem Ngay
-    </button>
-  </div>
-
-  <!-- HEADER GỌN GÀNG VỚI NÚT DANH BẠ CLB -->
   <header class="acrylic-card header-bar-layout">
     <div class="header-identity">
-      <div id="hdrAvatar" class="header-crest" title="Câu Lạc Bộ Thể Thao">
-        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div id="hdrAvatar" class="header-crest" title="CLB Thể Thao">
+        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
       <div class="header-texts">
         <div class="header-title-row">
@@ -1174,31 +863,18 @@
       </div>
     </div>
 
+    <!-- Chỉ giữ lại 2 nút Squircle: Danh bạ CLB và Menu Tùy Chọn 3 Chấm -->
     <div class="header-actions-cluster">
-      <!-- Nút Xem Danh Bạ CLB -->
       <button onclick="openDirectoryModal()" class="spring-touch icon-square-btn" title="Danh bạ thành viên CLB" style="color: #4f46e5; background: #eef2ff; border-color: #c7d2fe;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </button>
 
-      <button id="btnHdrAdmin" onclick="openAdminModal()" class="spring-touch icon-square-btn hidden" style="color: #7e22ce; background: #faf5ff; border-color: #e9d5ff;" title="Bảng Quản Trị Admin">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </button>
-
-      <button onclick="openServerConfigModal()" class="spring-touch icon-square-btn" title="Cấu hình máy chủ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      </button>
-
-      <button onclick="syncRealtimeData(true)" id="btnRefresh" class="spring-touch icon-square-btn" title="Đồng bộ thời gian thực">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-      </button>
-
-      <button id="btnHdrLogout" onclick="logout()" class="spring-touch icon-square-btn hidden" style="color: #e11d48; border-color: #fecdd3; background: rgba(255, 241, 242, 0.9);" title="Đăng xuất">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <button onclick="openHeaderMoreActionSheet()" class="spring-touch icon-square-btn" title="Tùy chọn khác">
+        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
       </button>
     </div>
   </header>
 
-  <!-- MÀN HÌNH ĐĂNG NHẬP -->
   <main id="viewLogin" class="acrylic-card" style="text-align: center; margin-top: 6px;">
     <div style="width: 56px; height: 56px; margin: 0 auto 11px auto; border-radius: 18px; background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: var(--primary); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(99, 102, 241, 0.2);">
       <svg style="width: 28px; height: 28px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
@@ -1226,7 +902,6 @@
     </div>
   </main>
 
-  <!-- MÀN HÌNH CHÍNH ỨNG DỤNG -->
   <main id="viewApp" class="hidden" style="width: 100%; max-width: 440px;">
     
     <!-- ================= TAB 0: HỒ SƠ & THẺ ĐỊNH DANH ================= -->
@@ -1236,7 +911,7 @@
           <div id="memAvatarBox" class="avatar-wrapper" onclick="openAvatarModal()" title="Chạm để đổi ảnh đại diện">
             <span id="memAvatarInitial">A</span>
             <span class="avatar-camera-pill">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <svg style="width:13px;height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </span>
           </div>
 
@@ -1250,45 +925,38 @@
           </div>
         </div>
 
-        <!-- BẢNG CHỈ SỐ: CO GIÃN TỐI ƯU KHÔNG BỊ TRÀN CHỮ -->
+        <!-- BẢNG CHỈ SỐ: CO GIÃN TỐI ƯU -->
         <div class="metrics-row">
           <div class="metric-pill" style="background: rgba(238, 242, 255, 0.88);">
             <div class="metric-tag-row" style="color: #6366f1;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               <span>Cống Hiến</span>
             </div>
             <span id="memDuty" class="metric-number" style="color: #4f46e5;">0 ca</span>
           </div>
           
-          <!-- THỂ TRẠNG VỚI CƠ CHẾ ĐỔI MÀU NĂNG ĐỘNG & CHỐNG TRÀN CHỮ -->
           <div class="metric-pill" id="memFitPill" style="background: rgba(240, 253, 244, 0.88); border-color: #bbf7d0;" onclick="openTheTrangModal()" title="Chạm để cập nhật thể trạng">
             <div class="metric-tag-row" id="memFitTagRow" style="color: #16a34a;">
-              <span id="memFitIcon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-              </span>
               <span>Thể Trạng</span>
             </div>
             <span id="memFit" class="metric-number" style="color: #15803d;">Khỏe mạnh</span>
           </div>
 
-          <div class="metric-pill" id="cardStatusBox" style="background: rgba(236, 253, 245, 0.88);" title="Tự động cập nhật theo nhiệm vụ">
+          <div class="metric-pill" id="cardStatusBox" style="background: rgba(236, 253, 245, 0.88);">
             <div class="metric-tag-row" id="cardStatusLabel" style="color: #047857;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               <span>Trạng Thái</span>
             </div>
             <span id="memStat" class="metric-number" style="color: #065f46;">Sẵn sàng</span>
           </div>
         </div>
 
-        <!-- CẶP NÚT GỌI THÀNH VIÊN VÀ LIÊN HỆ CẤP CỨU KHẨN CẤP (ICE) -->
         <div class="call-actions-grid">
           <button onclick="callContactDirect()" class="spring-touch btn-call-native" title="Gọi số điện thoại chính thức của thành viên">
-            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             <span>Gọi Thành Viên</span>
           </button>
 
-          <button onclick="callEmergencyDirect()" class="spring-touch btn-call-emergency" title="Bấm gọi ngay người thân khẩn cấp (ICE) khi xảy ra sự cố trên sân">
-            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <button onclick="callEmergencyDirect()" class="spring-touch btn-call-emergency" title="Bấm gọi ngay người thân khẩn cấp (ICE)">
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             <span>🚨 Khẩn Cấp (ICE)</span>
           </button>
         </div>
@@ -1296,10 +964,8 @@
 
       <section class="acrylic-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-          <h3 style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">
-            Chi Tiết Hồ Sơ
-          </h3>
-          <span style="font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer;" onclick="openDirectoryModal()">Xem danh bạ CLB &rsaquo;</span>
+          <h3 style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Chi Tiết Hồ Sơ</h3>
+          <span style="font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer;" onclick="openDirectoryModal()">Danh bạ CLB &rsaquo;</span>
         </div>
         <div class="info-line"><span class="info-label">Lớp:</span><span id="dClass" class="info-data selectable-text">---</span></div>
         <div class="info-line"><span class="info-label">MSSV:</span><span id="dMssv" class="info-data selectable-text" style="font-family: monospace;">---</span></div>
@@ -1312,18 +978,33 @@
       </section>
     </div>
 
-    <!-- ================= TAB 1: LỆNH ĐIỀU ĐỘNG XOAY TUA ================= -->
+    <!-- ================= TAB 1: LỆNH ĐIỀU ĐỘNG & TRUNG TÂM DUYỆT XOAY CA ================= -->
     <div id="tabContentTasks" class="hidden">
-      <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 13px; margin-bottom: 8px; background: rgba(250, 245, 255, 0.9); border-color: #e9d5ff;">
+      <!-- KHU VỰC ADMIN DUYỆT ĐỔI CA & TẠO LỆNH -->
+      <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 13px; margin-bottom: 8px; background: rgba(250, 245, 255, 0.92); border-color: #e9d5ff;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <h4 style="font-size: 12.5px; font-weight: 800; color: #6b21a8;">Khu Vực Quản Trị Viên</h4>
-            <p style="font-size: 10px; color: #9333ea;">Ban hành lệnh &amp; chỉ định đặc biệt</p>
+            <h4 style="font-size: 13px; font-weight: 800; color: #6b21a8;">Khu Vực Quản Trị Viên</h4>
+            <p style="font-size: 10px; color: #9333ea;">Duyệt đổi ca &amp; Ban hành điều lệnh</p>
           </div>
-          <button onclick="openCreateTaskModal()" class="spring-touch" style="padding: 7px 13px; font-size: 11px; font-weight: 800; border-radius: 13px; background: #9333ea; color: white; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.28);">
-            + Tạo Lệnh Mới
-          </button>
+          <div style="display: flex; gap: 6px;">
+            <button onclick="openCreateTaskModal()" class="spring-touch" style="padding: 7px 11px; font-size: 11px; font-weight: 800; border-radius: 12px; background: #9333ea; color: white;">
+              + Tạo Lệnh
+            </button>
+            <button onclick="openAdminModal()" class="spring-touch" style="padding: 7px 10px; font-size: 11px; font-weight: 800; border-radius: 12px; background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe;">
+              Duyệt Ca <span id="badgePendingSwapCount" style="background:#dc2626;color:white;padding:1px 5px;border-radius:8px;font-size:9px;" class="hidden">0</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- DANH SÁCH YÊU CẦU ĐỔI CA CHỜ DUYỆT (HIỂN THỊ TRỰC TIẾP CHO ADMIN) -->
+      <div id="adminPendingSwapsCard" class="acrylic-card hidden" style="padding: 12px; margin-bottom: 9px; border-color: #fbcfe8; background: rgba(253, 242, 248, 0.9);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
+          <h4 style="font-size: 12px; font-weight: 800; color: #9d174d;">Yêu Cầu Xin Xoay Ca Cần Duyệt</h4>
+          <span style="font-size: 9.5px; color: #be185d; font-weight: 700;">Hành động tức thì</span>
+        </div>
+        <div id="adminInlinePendingSwapsContainer" style="display: flex; flex-direction: column; gap: 6px;"></div>
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; padding: 0 3px;">
@@ -1356,30 +1037,29 @@
           </div>
         </div>
 
-        <!-- DANH SÁCH TAG ĐỒNG ĐỘI -->
         <div id="taggedMembersBox" class="hidden" style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; padding-left: 48px;"></div>
 
-        <!-- REEL XEM TRƯỚC ẢNH / VIDEO (THUMBNAIL REEL SIÊU GỌN) -->
+        <!-- REEL XEM TRƯỚC ẢNH / VIDEO (THUMBNAIL SIÊU GỌN GÀNG) -->
         <div id="multiMediaPreviewBox" class="hidden" style="margin-top: 6px; padding-left: 48px;">
-          <div id="mediaThumbnailsGrid" class="media-strip"></div>
+          <div id="mediaThumbnailsGrid" class="media-strip custom-scroll"></div>
         </div>
 
-        <!-- THANH CÔNG CỤ DƯỚI COMPOSER -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(241, 245, 249, 0.95);">
           <div style="display: flex; align-items: center; gap: 6px;">
             <label class="spring-touch btn-sub" style="padding: 7px 11px; cursor: pointer;" title="Thêm ảnh hoặc video">
-              <svg style="color: #10b981; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <svg style="color: #10b981; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               <span>Ảnh / Video</span>
               <input type="file" id="fileMultiMedia" accept="image/*,video/*" multiple class="hidden" onchange="handleMultiMediaSelect(event)">
             </label>
 
             <button onclick="openTagMemberModal()" class="spring-touch btn-sub" style="padding: 7px 11px;" title="Gắn thẻ đồng đội">
-              <svg style="color: var(--primary); width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <svg style="color: var(--primary); width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
               <span>Gắn thẻ</span>
             </button>
           </div>
           
-          <button onclick="postToForum()" id="btnSendPost" class="spring-touch btn-main" style="padding: 8px 18px; font-size: 12px;">
+          <!-- NÚT ĐĂNG TỐC ĐỘ 0.05s OPTIMISTIC UI -->
+          <button onclick="postToForumOptimistic()" id="btnSendPost" class="spring-touch btn-main" style="padding: 8px 18px; font-size: 12px;">
             <span>Đăng</span>
             <svg style="width: 13px; height: 13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
@@ -1391,38 +1071,118 @@
     </div>
   </main>
 
-  <!-- ĐÁY DOCK BIẾN HÌNH -->
   <nav id="bottomDock" class="bottom-dock hidden">
     <div id="dockPill" class="dock-pill-slider"></div>
     
     <button onclick="switchDockTab(0)" class="dock-tab-item active" id="btnDock0">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+      <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
       <span>Hồ Sơ</span>
     </button>
     <button onclick="switchDockTab(1)" class="dock-tab-item" id="btnDock1">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+      <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
       <span>Điều Động</span>
     </button>
     <button onclick="switchDockTab(2)" class="dock-tab-item" id="btnDock2">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <span>Diễn Đàn</span>
     </button>
   </nav>
 
+  <!-- ACTION SHEET TÙY CHỌN DÀNH CHO HEADER (GOM TOÀN BỘ CÁC NÚT PHỤ VÀO ĐÂY) -->
+  <div id="headerMoreActionSheet" class="action-sheet-backdrop" onclick="closeHeaderMoreActionSheet(event)">
+    <div class="action-sheet-card">
+      <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; margin-bottom: 4px;">
+        <h4 style="font-size: 13.5px; font-weight: 900; color: #0f172a;">TÙY CHỌN HỆ THỐNG</h4>
+        <p style="font-size: 10.5px; color: #64748b;">Quản trị, đồng bộ và cấu hình ứng dụng</p>
+      </div>
+
+      <button id="btnSheetAdmin" onclick="openAdminModalFromSheet()" class="action-sheet-btn hidden" style="color: #7e22ce;">
+        <svg style="width: 18px; height: 18px; color: #7e22ce;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Bảng Quản Trị Admin (Duyệt Đổi Ca)</span>
+      </button>
+
+      <button onclick="executeSyncRealtimeFromSheet()" class="action-sheet-btn">
+        <svg style="width: 18px; height: 18px; color: #0284c7;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        <span>Đồng bộ dữ liệu thời gian thực</span>
+      </button>
+
+      <button onclick="openServerConfigFromSheet()" class="action-sheet-btn">
+        <svg style="width: 18px; height: 18px; color: #64748b;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Cấu hình máy chủ (/exec)</span>
+      </button>
+
+      <button id="btnSheetLogout" onclick="logoutFromSheet()" class="action-sheet-btn hidden" style="color: #e11d48; border-top: 1px solid #f1f5f9;">
+        <svg style="width: 18px; height: 18px; color: #e11d48;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Đăng xuất khỏi thẻ số</span>
+      </button>
+
+      <button onclick="closeHeaderMoreActionSheetDirect()" class="action-sheet-btn" style="color: #64748b; justify-content: center; margin-top: 2px;">
+        <span>Đóng</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL XIN ĐỔI CA (DUTY SWAP REQUEST) -->
+  <div id="modalSwapRequest" class="modal-backdrop hidden" onclick="closeSwapModalOnBackdrop(event)">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 370px; max-height: 85vh; margin-bottom: 0; padding: 16px;">
+      <h3 style="font-size: 14.5px; font-weight: 900; color: #b45309; text-align: center;">YÊU CẦU XIN ĐỔI CA TRỰC</h3>
+      <p style="font-size: 10.5px; color: #64748b; text-align: center; margin-top: 2px;">Gửi yêu cầu tới Ban Quản Trị hoặc đồng đội</p>
+
+      <div style="margin: 12px 0; padding: 10px; border-radius: 14px; background: #fffbeb; border: 1px solid #fef3c7;">
+        <h5 id="swapTaskTitleDisplay" style="font-size: 12px; font-weight: 800; color: #92400e;">Ca trực: ---</h5>
+        <p id="swapTaskTimeDisplay" style="font-size: 10.5px; color: #b45309; margin-top: 2px;">Thời gian: ---</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #64748b;">LÝ DO XIN ĐỔI CA</label>
+          <select id="selSwapReason" class="input-box" style="font-size: 11.5px; padding: 9px;">
+            <option value="Bận lịch học / Thi cử đột xuất">Bận lịch học / Thi cử đột xuất</option>
+            <option value="Sức khỏe không đảm bảo / Ốm sốt">Sức khỏe không đảm bảo / Ốm sốt</option>
+            <option value="Chấn thương trong buổi tập">Chấn thương trong buổi tập</option>
+            <option value="Trùng lịch gia đình khẩn cấp">Trùng lịch gia đình khẩn cấp</option>
+            <option value="Lý do cá nhân khác">Lý do cá nhân khác</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #64748b;">GHI CHÚ CHI TIẾT (TÙY CHỌN)</label>
+          <textarea id="iptSwapReasonDetail" placeholder="Nhập thêm chi tiết để Admin nắm rõ tình hình..." class="input-box" style="height: 54px; font-size: 11.5px;"></textarea>
+        </div>
+
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #64748b;">NGƯỜI NHẬN THAY THẾ</label>
+          <select id="selSwapTargetMember" class="input-box" style="font-size: 11.5px; padding: 9px;">
+            <option value="Ban Quản Trị điều phối">-- Nhờ Ban Quản Trị chỉ định người ít ca nhất --</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 7px; margin-top: 13px;">
+        <button onclick="submitSwapRequestAction()" class="spring-touch btn-main" style="flex: 1.5; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 10px;">
+          Gửi Yêu Cầu
+        </button>
+        <button onclick="closeSwapRequestModal()" class="spring-touch btn-sub" style="flex: 1; padding: 10px;">
+          Hủy
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- HD LIGHTBOX MODAL (XEM ẢNH NÉT TOÀN MÀN HÌNH) -->
   <div id="lightboxModal" class="lightbox-screen" onclick="closeLightboxOnBackdrop(event)">
-    <div class="lightbox-header">
+    <div style="display: flex; align-items: center; justify-content: space-between; color: white; z-index: 2;">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span id="lbCounter" style="font-size: 13px; font-weight: 800; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 12px; backdrop-filter: blur(8px);">1 / 1</span>
+        <span id="lbCounter" style="font-size: 13px; font-weight: 800; background: rgba(255,255,255,0.2); padding: 3px 10px; border-radius: 12px;">1 / 1</span>
         <span id="lbAuthorTag" style="font-size: 12px; color: #cbd5e1; font-weight: 600;">Ảnh CLB</span>
       </div>
       <button onclick="closeLightbox()" class="spring-touch" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.22); color: white; border: none; font-size: 16px;">✕</button>
     </div>
 
-    <div class="lightbox-body">
-      <button id="lbBtnPrev" onclick="navigateLightbox(-1)" class="lightbox-nav-btn lightbox-nav-prev hidden">‹</button>
-      <div id="lbMediaContainer" class="lightbox-media-container"></div>
-      <button id="lbBtnNext" onclick="navigateLightbox(1)" class="lightbox-nav-btn lightbox-nav-next hidden">›</button>
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; width: 100%;">
+      <button id="lbBtnPrev" onclick="navigateLightbox(-1)" class="lightbox-nav-btn hidden" style="position: absolute; left: 8px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); font-size: 22px; cursor: pointer;">‹</button>
+      <div id="lbMediaContainer" style="max-width: 100%; max-height: 80vh; display: flex; align-items: center; justify-content: center;"></div>
+      <button id="lbBtnNext" onclick="navigateLightbox(1)" class="lightbox-nav-btn hidden" style="position: absolute; right: 8px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); font-size: 22px; cursor: pointer;">›</button>
     </div>
 
     <div style="text-align: center; color: #94a3b8; font-size: 11px; z-index: 2;">
@@ -1430,9 +1190,9 @@
     </div>
   </div>
 
-  <!-- MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC (MEMBER PROFILE INSPECTOR - BỎ THANH TRƯỢT THÔ, CUSTOM SMOOTH SCROLL) -->
+  <!-- MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC (MEMBER PROFILE INSPECTOR) -->
   <div id="modalMemberDetail" class="modal-backdrop hidden" onclick="closeMemberProfileModalOnBackdrop(event)">
-    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 380px; max-height: 85vh; margin-bottom: 0; position: relative; padding: 16px;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 380px; max-height: 85vh; margin-bottom: 0; padding: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
         <span style="font-size: 10.5px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Hồ Sơ Thành Viên</span>
         <button onclick="closeMemberProfileModal()" class="spring-touch" style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 14px;">✕</button>
@@ -1452,7 +1212,6 @@
         </div>
       </div>
 
-      <!-- Chỉ số nhanh của thành viên khác -->
       <div class="metrics-row" style="margin-top: 0; padding-top: 10px; margin-bottom: 12px;">
         <div class="metric-pill" style="background: rgba(238, 242, 255, 0.88); cursor: default;">
           <div class="metric-tag-row" style="color: #6366f1;">
@@ -1487,11 +1246,11 @@
       </div>
 
       <div class="call-actions-grid" style="margin-top: 14px;">
-        <button id="btnCallOtherPhone" onclick="callTargetMemberPhone()" class="spring-touch btn-call-native">
+        <button onclick="callTargetMemberPhone()" class="spring-touch btn-call-native">
           <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           <span>Gọi Điện Thoại</span>
         </button>
-        <button id="btnCallOtherIce" onclick="callTargetMemberIce()" class="spring-touch btn-call-emergency">
+        <button onclick="callTargetMemberIce()" class="spring-touch btn-call-emergency">
           <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span>🚨 Gọi Khẩn (ICE)</span>
         </button>
@@ -1499,7 +1258,7 @@
     </div>
   </div>
 
-  <!-- MODAL DANH BẠ TOÀN THỂ THÀNH VIÊN CLB (CUSTOM SMOOTH SCROLL) -->
+  <!-- MODAL DANH BẠ TOÀN THỂ THÀNH VIÊN CLB -->
   <div id="modalDirectory" class="modal-backdrop hidden" onclick="closeDirectoryModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 390px; max-height: 82vh; margin-bottom: 0; padding: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -1532,141 +1291,51 @@
     </div>
   </div>
 
-  <!-- MODAL CẬP NHẬT THỂ TRẠNG VỚI THANH CUỘN SIÊU MƯỢT / CUSTOM SCROLL -->
+  <!-- MODAL CẬP NHẬT THỂ TRẠNG VỚI THANH CUỘN SIÊU MƯỢT -->
   <div id="modalTheTrang" class="modal-backdrop hidden" onclick="closeTheTrangModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 360px; max-height: 82vh; margin-bottom: 0; padding: 16px;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a; text-align: center;">CẬP NHẬT THỂ TRẠNG</h3>
-      <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Mỗi lựa chọn tự động đổi màu sắc &amp; huy hiệu nhận diện</p>
+      <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Tự động đổi màu sắc nhận diện</p>
 
       <div style="display: flex; flex-direction: column; gap: 6px; margin: 12px 0;">
         <button type="button" onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')" class="the-trang-option-item" style="border-color: #bbf7d0; background: #f0fdf4;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #15803d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Khỏe mạnh</h5>
-              <p style="font-size: 9.5px; color: #16a34a;">100% Sẵn sàng thi đấu</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #16a34a; flex-shrink: 0;">100%</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #15803d;">Khỏe mạnh</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #16a34a;">100%</span>
         </button>
 
         <button type="button" onclick="selectTheTrang('Sung sức (Đạt đỉnh phong độ)')" class="the-trang-option-item" style="border-color: #99f6e4; background: #f0fdfa;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #ccfbf1; color: #0d9488; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #0f766e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Sung sức 🔥</h5>
-              <p style="font-size: 9.5px; color: #0d9488;">Đạt đỉnh phong độ</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #0d9488; flex-shrink: 0;">MAX</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #0f766e;">Sung sức 🔥</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #0d9488;">MAX</span>
         </button>
 
         <button type="button" onclick="selectTheTrang('Căng cơ / Mỏi cơ nhẹ')" class="the-trang-option-item" style="border-color: #fde68a; background: #fefce8;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #fef08a; color: #d97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #b45309; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Căng cơ nhẹ</h5>
-              <p style="font-size: 9.5px; color: #d97706;">Cần giãn cơ trước trận</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #d97706; flex-shrink: 0;">80%</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #b45309;">Căng cơ nhẹ</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #d97706;">80%</span>
         </button>
 
         <button type="button" onclick="selectTheTrang('Chấn thương nhẹ (Theo dõi)')" class="the-trang-option-item" style="border-color: #fed7aa; background: #fff7ed;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #ffedd5; color: #ea580c; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #c2410c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chấn thương nhẹ</h5>
-              <p style="font-size: 9.5px; color: #ea580c;">Đang theo dõi phục hồi</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #ea580c; flex-shrink: 0;">Theo dõi</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #c2410c;">Chấn thương nhẹ</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #ea580c;">Theo dõi</span>
         </button>
 
         <button type="button" onclick="selectTheTrang('Chấn thương nặng (Nghỉ đấu)')" class="the-trang-option-item" style="border-color: #fecdd3; background: #fef2f2;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #b91c1c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Chấn thương nặng</h5>
-              <p style="font-size: 9.5px; color: #dc2626;">Tạm nghỉ đấu</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #dc2626; flex-shrink: 0;">Nghỉ</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #b91c1c;">Chấn thương nặng</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #dc2626;">Nghỉ</span>
         </button>
 
         <button type="button" onclick="selectTheTrang('Sốt / Cảm cúm')" class="the-trang-option-item" style="border-color: #e9d5ff; background: #faf5ff;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #f3e8ff; color: #9333ea; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #7e22ce; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Sốt / Cảm cúm 🤒</h5>
-              <p style="font-size: 9.5px; color: #9333ea;">Nghỉ ngơi hồi phục</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #9333ea; flex-shrink: 0;">Nghỉ</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #7e22ce;">Sốt / Cảm cúm 🤒</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #9333ea;">Nghỉ</span>
         </button>
 
         <button type="button" onclick="selectTheTrang('Đau bụng / Tiêu hóa')" class="the-trang-option-item" style="border-color: #fef08a; background: #fefce8;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #fef9c3; color: #ca8a04; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #a16207; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Đau bụng / Tiêu hóa</h5>
-              <p style="font-size: 9.5px; color: #ca8a04;">Sức khỏe đường ruột</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #ca8a04; flex-shrink: 0;">Yếu</span>
-        </button>
-
-        <button type="button" onclick="selectTheTrang('Quá tải / Cần hồi phục')" class="the-trang-option-item" style="border-color: #c7d2fe; background: #eef2ff;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #e0e7ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #4338ca; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Quá tải / Cần hồi phục</h5>
-              <p style="font-size: 9.5px; color: #4f46e5;">Cơ bắp cần nạp lại năng lượng</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #4f46e5; flex-shrink: 0;">Hồi phục</span>
-        </button>
-
-        <button type="button" onclick="selectTheTrang('Đang vật lý trị liệu')" class="the-trang-option-item" style="border-color: #bae6fd; background: #f0f9ff;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #0369a1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Vật lý trị liệu</h5>
-              <p style="font-size: 9.5px; color: #0284c7;">Tập phục hồi chức năng</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #0284c7; flex-shrink: 0;">Trị liệu</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #a16207;">Đau bụng / Tiêu hóa</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #ca8a04;">Yếu</span>
         </button>
 
         <button type="button" onclick="selectTheTrang('Bận học / Thi cử')" class="the-trang-option-item" style="border-color: #cbd5e1; background: #f8fafc;">
-          <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-            <div style="width: 30px; height: 30px; border-radius: 10px; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            </div>
-            <div style="min-width: 0;">
-              <h5 style="font-size: 12px; font-weight: 800; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Bận học / Thi cử</h5>
-              <p style="font-size: 9.5px; color: #64748b;">Lịch học trùng lịch CLB</p>
-            </div>
-          </div>
-          <span style="font-size: 10px; font-weight: 800; color: #64748b; flex-shrink: 0;">Bận</span>
+          <h5 style="font-size: 12px; font-weight: 800; color: #475569;">Bận học / Thi cử</h5>
+          <span style="font-size: 10px; font-weight: 800; color: #64748b;">Bận</span>
         </button>
       </div>
 
@@ -1789,12 +1458,18 @@
     </div>
   </div>
 
-  <!-- MODAL ADMIN (CUSTOM SMOOTH SCROLL) -->
+  <!-- MODAL ADMIN TRUNG TÂM PHÊ DUYỆT XOAY CA -->
   <div id="modalAdmin" class="modal-backdrop hidden">
-    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 370px; max-height: 82vh; margin-bottom: 0; padding: 16px;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 380px; max-height: 85vh; margin-bottom: 0; padding: 16px;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #6b21a8; text-align: center;">TRUNG TÂM QUẢN TRỊ ADMIN</h3>
-      
-      <div style="margin: 12px 0; padding: 11px; background: rgba(253, 244, 255, 0.88); border-radius: 16px; border: 1px solid #f5d0fe;">
+      <p style="font-size: 10.5px; color: #64748b; text-align: center; margin-top: 2px;">Phê duyệt đổi ca &amp; cộng điểm cống hiến</p>
+
+      <div style="margin: 12px 0 10px 0;">
+        <h4 style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 6px;">Yêu Cầu Xin Xoay Ca Đang Chờ Duyệt</h4>
+        <div id="listAdminModalSwapsContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 6px; max-height: 190px;"></div>
+      </div>
+
+      <div style="padding: 11px; background: rgba(253, 244, 255, 0.88); border-radius: 16px; border: 1px solid #f5d0fe; margin-top: 10px;">
         <h4 style="font-size: 10.5px; font-weight: 800; color: #86198f; text-transform: uppercase;">Cộng Ca Cống Hiến Cho Thành Viên</h4>
         <div style="display: flex; gap: 5px; margin-top: 5px;">
           <select id="selAdminMember" class="input-box" style="flex: 2; margin-top: 0; font-size: 11px; padding: 8px;">
@@ -1806,20 +1481,16 @@
         </div>
       </div>
 
-      <h4 style="font-size: 10.5px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">Danh Sách Yêu Cầu Xin Xoay Ca</h4>
-      <div id="listSwapsContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 5px; max-height: 180px;"></div>
-
       <button onclick="closeAdminModal()" class="spring-touch btn-sub" style="width: 100%; margin-top: 13px;">
         Đóng Bảng Admin
       </button>
     </div>
   </div>
 
-  <!-- MODAL GẮN THẺ BẠN BÈ (CUSTOM SMOOTH SCROLL) -->
+  <!-- MODAL GẮN THẺ BẠN BÈ -->
   <div id="modalTagFriends" class="modal-backdrop hidden">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 320px; max-height: 75vh; margin-bottom: 0; padding: 16px;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a; text-align: center;">GẮN THẺ ĐỒNG ĐỘI (@)</h3>
-      <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Chọn đồng đội bạn muốn nhắc tên trong bài viết</p>
       <div id="tagMemberListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 5px; margin: 11px 0; max-height: 220px;"></div>
       <button onclick="applyTagSelection()" class="spring-touch btn-main" style="width: 100%; padding: 10px;">
         Xác Nhận Gắn Thẻ
@@ -1845,6 +1516,7 @@
     let currentReplyingTarget = null;
     let activePostActionId = null;
     let activePostActionAuthorId = null;
+    let activeSwapTargetTaskId = null;
     let notificationQueue = [];
     let isNotificationShowing = false;
     let aquaDismissTimeout = null;
@@ -1853,118 +1525,23 @@
     let currentLightboxMediaList = [];
     let currentLightboxIndex = 0;
 
-    // BẢNG MÃ MÀU VÀ ICON CHO 10 CẤP ĐỘ THỂ TRẠNG VỚI TÊN HIỂN THỊ RÚT GỌN CHỐNG TRÀN
     const THE_TRANG_MAP = {
-      'Khỏe mạnh (100% Sẵn sàng)': {
-        shortName: 'Khỏe mạnh',
-        bg: 'rgba(240, 253, 244, 0.9)',
-        border: '#bbf7d0',
-        textColor: '#15803d',
-        tagColor: '#16a34a',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>'
-      },
-      'Khỏe mạnh': {
-        shortName: 'Khỏe mạnh',
-        bg: 'rgba(240, 253, 244, 0.9)',
-        border: '#bbf7d0',
-        textColor: '#15803d',
-        tagColor: '#16a34a',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>'
-      },
-      'Sung sức (Đạt đỉnh phong độ)': {
-        shortName: 'Sung sức 🔥',
-        bg: 'rgba(240, 253, 250, 0.9)',
-        border: '#99f6e4',
-        textColor: '#0f766e',
-        tagColor: '#0d9488',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
-      },
-      'Căng cơ / Mỏi cơ nhẹ': {
-        shortName: 'Căng cơ nhẹ',
-        bg: 'rgba(254, 252, 232, 0.9)',
-        border: '#fde68a',
-        textColor: '#b45309',
-        tagColor: '#d97706',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>'
-      },
-      'Chấn thương nhẹ (Theo dõi)': {
-        shortName: 'Chấn thương nhẹ',
-        bg: 'rgba(255, 247, 237, 0.9)',
-        border: '#fed7aa',
-        textColor: '#c2410c',
-        tagColor: '#ea580c',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-      },
-      'Chấn thương nặng (Nghỉ đấu)': {
-        shortName: 'Chấn thương nặng',
-        bg: 'rgba(254, 242, 242, 0.9)',
-        border: '#fecdd3',
-        textColor: '#b91c1c',
-        tagColor: '#dc2626',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
-      },
-      'Chấn thương': {
-        shortName: 'Chấn thương',
-        bg: 'rgba(254, 242, 242, 0.9)',
-        border: '#fecdd3',
-        textColor: '#b91c1c',
-        tagColor: '#dc2626',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
-      },
-      'Sốt / Cảm cúm': {
-        shortName: 'Sốt / Cảm 🤒',
-        bg: 'rgba(250, 245, 255, 0.9)',
-        border: '#e9d5ff',
-        textColor: '#7e22ce',
-        tagColor: '#9333ea',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>'
-      },
-      'Đau bụng / Tiêu hóa': {
-        shortName: 'Đau bụng',
-        bg: 'rgba(254, 252, 232, 0.9)',
-        border: '#fef08a',
-        textColor: '#a16207',
-        tagColor: '#ca8a04',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>'
-      },
-      'Quá tải / Cần hồi phục': {
-        shortName: 'Quá tải',
-        bg: 'rgba(238, 242, 255, 0.9)',
-        border: '#c7d2fe',
-        textColor: '#4338ca',
-        tagColor: '#4f46e5',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg>'
-      },
-      'Đang vật lý trị liệu': {
-        shortName: 'Trị liệu',
-        bg: 'rgba(240, 249, 255, 0.9)',
-        border: '#bae6fd',
-        textColor: '#0369a1',
-        tagColor: '#0284c7',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>'
-      },
-      'Bận học / Thi cử': {
-        shortName: 'Bận học / Thi',
-        bg: 'rgba(248, 250, 252, 0.9)',
-        border: '#cbd5e1',
-        textColor: '#475569',
-        tagColor: '#64748b',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>'
-      }
+      'Khỏe mạnh (100% Sẵn sàng)': { shortName: 'Khỏe mạnh', bg: 'rgba(240, 253, 244, 0.9)', border: '#bbf7d0', textColor: '#15803d', tagColor: '#16a34a' },
+      'Khỏe mạnh': { shortName: 'Khỏe mạnh', bg: 'rgba(240, 253, 244, 0.9)', border: '#bbf7d0', textColor: '#15803d', tagColor: '#16a34a' },
+      'Sung sức (Đạt đỉnh phong độ)': { shortName: 'Sung sức 🔥', bg: 'rgba(240, 253, 250, 0.9)', border: '#99f6e4', textColor: '#0f766e', tagColor: '#0d9488' },
+      'Căng cơ / Mỏi cơ nhẹ': { shortName: 'Căng cơ nhẹ', bg: 'rgba(254, 252, 232, 0.9)', border: '#fde68a', textColor: '#b45309', tagColor: '#d97706' },
+      'Chấn thương nhẹ (Theo dõi)': { shortName: 'Chấn thương nhẹ', bg: 'rgba(255, 247, 237, 0.9)', border: '#fed7aa', textColor: '#c2410c', tagColor: '#ea580c' },
+      'Chấn thương nặng (Nghỉ đấu)': { shortName: 'Chấn thương nặng', bg: 'rgba(254, 242, 242, 0.9)', border: '#fecdd3', textColor: '#b91c1c', tagColor: '#dc2626' },
+      'Sốt / Cảm cúm': { shortName: 'Sốt / Cảm 🤒', bg: 'rgba(250, 245, 255, 0.9)', border: '#e9d5ff', textColor: '#7e22ce', tagColor: '#9333ea' },
+      'Đau bụng / Tiêu hóa': { shortName: 'Đau bụng', bg: 'rgba(254, 252, 232, 0.9)', border: '#fef08a', textColor: '#a16207', tagColor: '#ca8a04' },
+      'Bận học / Thi cử': { shortName: 'Bận học / Thi', bg: 'rgba(248, 250, 252, 0.9)', border: '#cbd5e1', textColor: '#475569', tagColor: '#64748b' }
     };
 
-    // HÀM BẢO VỆ XSS TOÀN DIỆN
     function escapeHTML(str) {
       if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
-    // CHUẨN HÓA TIẾNG VIỆT TÌM KIẾM
     function removeVietnameseTones(str) {
       if (!str) return '';
       str = str.toLowerCase();
@@ -1978,15 +1555,11 @@
       return str;
     }
 
-    // TÍNH THỜI GIAN TƯƠNG ĐỐI
     function formatRelativeTime(dateInput) {
       if (!dateInput) return 'Vừa xong';
       let date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-      if (isNaN(date.getTime())) {
-        return String(dateInput);
-      }
-      const now = new Date();
-      const diffSec = Math.floor((now - date) / 1000);
+      if (isNaN(date.getTime())) return String(dateInput);
+      const diffSec = Math.floor((new Date() - date) / 1000);
       if (diffSec < 45) return 'Vừa xong';
       if (diffSec < 3600) return `${Math.floor(diffSec / 60)} phút trước`;
       if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} giờ trước`;
@@ -2010,24 +1583,62 @@
 
     function initAudioContextOnce() {
       try {
-        if (!audioContext) {
-          audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioContext && audioContext.state === 'suspended') {
-          audioContext.resume();
-        }
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext && audioContext.state === 'suspended') audioContext.resume();
       } catch (e) {}
     }
 
-    function lockBodyScroll() {
-      document.body.classList.add("modal-open");
+    function lockBodyScroll() { document.body.classList.add("modal-open"); }
+    function unlockBodyScroll() {
+      const anyModalOpen = document.querySelectorAll(".modal-backdrop:not(.hidden), .lightbox-screen.active, .action-sheet-backdrop.active").length > 0;
+      if (!anyModalOpen) document.body.classList.remove("modal-open");
     }
 
-    function unlockBodyScroll() {
-      const anyModalOpen = document.querySelectorAll(".modal-backdrop:not(.hidden), .lightbox-screen.active").length > 0;
-      if (!anyModalOpen) {
-        document.body.classList.remove("modal-open");
+    function openHeaderMoreActionSheet() {
+      const sheet = document.getElementById("headerMoreActionSheet");
+      const btnAdmin = document.getElementById("btnSheetAdmin");
+      const btnLogout = document.getElementById("btnSheetLogout");
+
+      if (currentMember) {
+        btnLogout.classList.remove("hidden");
+        if (currentMember.isAdmin) btnAdmin.classList.remove("hidden");
+        else btnAdmin.classList.add("hidden");
+      } else {
+        btnLogout.classList.add("hidden");
+        btnAdmin.classList.add("hidden");
       }
+
+      sheet.classList.add("active");
+      lockBodyScroll();
+    }
+
+    function closeHeaderMoreActionSheet(e) {
+      if (e.target.id === "headerMoreActionSheet") closeHeaderMoreActionSheetDirect();
+    }
+
+    function closeHeaderMoreActionSheetDirect() {
+      document.getElementById("headerMoreActionSheet").classList.remove("active");
+      unlockBodyScroll();
+    }
+
+    function openAdminModalFromSheet() {
+      closeHeaderMoreActionSheetDirect();
+      openAdminModal();
+    }
+
+    function executeSyncRealtimeFromSheet() {
+      closeHeaderMoreActionSheetDirect();
+      syncRealtimeData(true);
+    }
+
+    function openServerConfigFromSheet() {
+      closeHeaderMoreActionSheetDirect();
+      openServerConfigModal();
+    }
+
+    function logoutFromSheet() {
+      closeHeaderMoreActionSheetDirect();
+      logout();
     }
 
     function clearForumDraftState() {
@@ -2051,14 +1662,10 @@
 
       if (isAnon) {
         authorSpan.innerText = "Thành viên ẩn danh 🎭";
-        if (avtBox) {
-          avtBox.innerHTML = `<svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
-        }
+        if (avtBox) avtBox.innerHTML = `<svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
       } else {
         authorSpan.innerText = currentMember ? currentMember.hoTen : "Nguyễn Văn A";
-        if (avtBox && currentMember) {
-          renderAvatarUI(currentMember.avatar, currentMember.hoTen);
-        }
+        if (avtBox && currentMember) renderAvatarUI(currentMember.avatar, currentMember.hoTen);
       }
     }
 
@@ -2083,13 +1690,10 @@
       document.getElementById("viewLogin").classList.remove("hidden");
       document.getElementById("viewApp").classList.add("hidden");
       document.getElementById("bottomDock").classList.add("hidden");
-      document.getElementById("btnHdrLogout").classList.add("hidden");
-      document.getElementById("btnHdrAdmin").classList.add("hidden");
       document.getElementById("hdrStatus").innerText = "Cổng Định Danh Số";
       
       const hdrAvatar = document.getElementById("hdrAvatar");
-      hdrAvatar.innerHTML = `<svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
-      hdrAvatar.onclick = null;
+      hdrAvatar.innerHTML = `<svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
     }
 
     async function handleLoginSubmit() {
@@ -2125,7 +1729,7 @@
           clearTimeout(timeoutId);
           btn.innerText = "Đăng Nhập Thẻ Số";
           btn.disabled = false;
-          triggerAquaNotification("Kết Nối Thất Bại", "Chạm bánh răng kiểm tra URL hoặc bấm Chế độ Offline!", "error");
+          triggerAquaNotification("Kết Nối Thất Bại", "Chạm menu ⋮ để kiểm tra URL hoặc bấm Chế độ Offline!", "error");
           return;
         }
       }
@@ -2168,56 +1772,16 @@
 
       membersList = [
         currentMember,
-        {
-          id: "CLB002",
-          hoTen: "Trần Hải Yến",
-          chucVu: "Phó chủ nhiệm",
-          lop: "K65-QTKD",
-          mssv: "20220102",
-          khoa: "Khoa QTKD",
-          boMon: "Hậu cần & Sự kiện",
-          ngaySinh: "20/11/2004",
-          sdt: "0988776655",
-          ice: "0911223344",
-          yTe: "Nhóm A (Dị ứng hải sản)",
-          soCa: 10,
-          theTrang: "Sung sức (Đạt đỉnh phong độ)",
-          status: "Sẵn sàng",
-          avatar: "",
-          isAdmin: true
-        },
-        {
-          id: "CLB003",
-          hoTen: "Lê Hoàng Nam",
-          chucVu: "Thành viên ban Chuyên môn",
-          lop: "K64-CK",
-          mssv: "20210988",
-          khoa: "Khoa Cơ Khí",
-          boMon: "Bóng đá Nam",
-          ngaySinh: "08/09/2003",
-          sdt: "0901234567",
-          ice: "0909887766",
-          yTe: "Nhóm B (Đã mổ sụn chêm)",
-          soCa: 6,
-          theTrang: "Căng cơ / Mỏi cơ nhẹ",
-          status: "Đang làm nhiệm vụ",
-          avatar: "",
-          isAdmin: false
-        }
+        { id: "CLB002", hoTen: "Trần Hải Yến", chucVu: "Phó chủ nhiệm", lop: "K65-QTKD", mssv: "20220102", khoa: "Khoa QTKD", boMon: "Hậu cần & Sự kiện", ngaySinh: "20/11/2004", sdt: "0988776655", ice: "0911223344", yTe: "Nhóm A (Dị ứng hải sản)", soCa: 10, theTrang: "Sung sức (Đạt đỉnh phong độ)", status: "Sẵn sàng", avatar: "", isAdmin: true },
+        { id: "CLB003", hoTen: "Lê Hoàng Nam", chucVu: "Thành viên ban Chuyên môn", lop: "K64-CK", mssv: "20210988", khoa: "Khoa Cơ Khí", boMon: "Bóng đá Nam", ngaySinh: "08/09/2003", sdt: "0901234567", ice: "0909887766", yTe: "Nhóm B (Đã mổ sụn chêm)", soCa: 6, theTrang: "Căng cơ / Mỏi cơ nhẹ", status: "Sẵn sàng", avatar: "", isAdmin: false }
       ];
 
       tasksList = [
-        {
-          id: "TASK_DEMO_1",
-          title: "Trực bàn trọng tài giải bóng đá sinh viên",
-          location: "Nhà Thi Đấu Đa Năng",
-          time: "08:00 - 11:30 Thứ Bảy",
-          quota: 3,
-          joinedMembers: ["CLB002"],
-          assignedMembers: ["CLB001"],
-          status: "active",
-          taskType: "standard"
-        }
+        { id: "TASK_DEMO_1", title: "Trực bàn trọng tài giải bóng đá sinh viên", location: "Nhà Thi Đấu Đa Năng", time: "08:00 - 11:30 Thứ Bảy", quota: 3, joinedMembers: ["CLB002"], assignedMembers: ["CLB001"], status: "active", taskType: "standard" }
+      ];
+
+      swapsList = [
+        { id: "SWAP_DEMO_1", taskId: "TASK_DEMO_1", fromMemberId: "CLB001", toMemberId: "Ban Quản Trị điều phối", reason: "Bận lịch thi môn Giải Tích 2", time: "Vừa xong", status: "pending" }
       ];
 
       postsList = [
@@ -2227,58 +1791,20 @@
           authorName: "Nguyễn Văn A",
           authorAvatar: "",
           isAnonymous: false,
-          content: "Chào mừng toàn thể anh chị em đến với phiên bản Diễn Đàn Thể Thao chuẩn Facebook! Giờ đây các bạn có thể đăng ảnh nhanh như chớp, chạm vào tên đồng đội để xem ngay hồ sơ cá nhân và nút gọi khẩn cấp ICE nhé! 🔥⚽",
+          content: "Chào mừng toàn thể anh chị em đến với phiên bản Flagship! Giao diện đăng bài tối ưu 0.05s cực nhanh, Header tinh gọn chuẩn ColorOS 17, và Trung tâm duyệt xoay ca chuyên nghiệp! 🔥⚽",
           mediaList: [
-            { url: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=75", type: "image" },
-            { url: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=75", type: "image" }
+            { url: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=75", type: "image" }
           ],
-          tags: ["ToànCLB", "GiảiMùaThu"],
-          reactions: { like: 14, love: 9, haha: 3, sad: 0, angry: 0 },
-          comments: [
-            {
-              id: "CMT_1",
-              authorId: "CLB002",
-              authorName: "Trần Hải Yến",
-              text: "Chạm vào tên anh xem được ngay nhóm máu và số cấp cứu ICE, quá tiện cho đội sơ cứu sân bãi luôn!",
-              time: "10 phút trước",
-              replies: [
-                {
-                  id: "REP_1",
-                  authorId: "CLB001",
-                  authorName: "Nguyễn Văn A",
-                  text: "Đúng rồi em, vừa bảo vệ anh em vừa hỗ trợ y tế kịp thời!",
-                  time: "Vừa xong"
-                }
-              ]
-            }
-          ],
-          createdAt: "25 phút trước"
+          tags: ["ToànCLB"],
+          reactions: { like: 12, love: 8, haha: 2, sad: 0, angry: 0 },
+          comments: [],
+          createdAt: "Vừa xong"
         }
       ];
 
       localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
       showAppScreen();
-      triggerAquaNotification("Chế Độ Demo Kích Hoạt", "Bạn đang trải nghiệm giao diện Facebook Feed & ColorOS 17 chuẩn.", "success");
-    }
-
-    function openServerConfigModal() {
-      document.getElementById("iptCustomBackendUrl").value = BACKEND_URL;
-      document.getElementById("modalServerConfig").classList.remove("hidden");
-      lockBodyScroll();
-    }
-
-    function closeServerConfigModal() {
-      document.getElementById("modalServerConfig").classList.add("hidden");
-      unlockBodyScroll();
-    }
-
-    function saveServerConfigAction() {
-      const val = document.getElementById("iptCustomBackendUrl").value.trim();
-      if (!val) return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập link Web App!", "warning");
-      BACKEND_URL = val;
-      localStorage.setItem("CLB_CUSTOM_BACKEND_URL", val);
-      closeServerConfigModal();
-      triggerAquaNotification("Đã Lưu Cấu Hình", "Đã cập nhật URL máy chủ mới!", "success");
+      triggerAquaNotification("Chế Độ Demo Kích Hoạt", "Bạn đang trải nghiệm giao diện siêu tốc chuẩn ColorOS 17.", "success");
     }
 
     function cleanDateFormat(dateStr) {
@@ -2286,9 +1812,7 @@
       const s = String(dateStr).trim();
       if (s.includes('GMT') || s.includes('00:00:00') || !isNaN(Date.parse(s))) {
         const d = new Date(s);
-        if (!isNaN(d.getTime())) {
-          return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-        }
+        if (!isNaN(d.getTime())) return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
       }
       return s;
     }
@@ -2306,7 +1830,6 @@
       
       const pill = document.getElementById("memFitPill");
       const tagRow = document.getElementById("memFitTagRow");
-      const iconSpan = document.getElementById("memFitIcon");
       const textSpan = document.getElementById("memFit");
 
       if (pill) {
@@ -2314,7 +1837,6 @@
         pill.style.borderColor = config.border;
       }
       if (tagRow) tagRow.style.color = config.tagColor;
-      if (iconSpan) iconSpan.innerHTML = config.icon;
       if (textSpan) {
         textSpan.style.color = config.textColor;
         textSpan.innerText = getShortTheTrangText(status);
@@ -2326,7 +1848,6 @@
       document.getElementById("viewLogin").classList.add("hidden");
       document.getElementById("viewApp").classList.remove("hidden");
       document.getElementById("bottomDock").classList.remove("hidden");
-      document.getElementById("btnHdrLogout").classList.remove("hidden");
       document.getElementById("hdrStatus").innerText = currentMember.hoTen;
 
       document.getElementById("memName").innerText = currentMember.hoTen;
@@ -2352,16 +1873,15 @@
 
       if (currentMember.isAdmin) {
         document.getElementById("badgeAdm").classList.remove("hidden");
-        document.getElementById("btnHdrAdmin").classList.remove("hidden");
         document.getElementById("adminTaskToolbar").classList.remove("hidden");
       } else {
         document.getElementById("badgeAdm").classList.add("hidden");
-        document.getElementById("btnHdrAdmin").classList.add("hidden");
         document.getElementById("adminTaskToolbar").classList.add("hidden");
       }
 
       renderAvatarUI(currentMember.avatar, currentMember.hoTen);
       renderTasks();
+      renderAdminPendingSwaps();
       renderPosts();
       switchDockTab(0);
     }
@@ -2404,7 +1924,7 @@
 
       const cameraPillHtml = `
         <span class="avatar-camera-pill">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <svg style="width:13px;height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </span>
       `;
 
@@ -2425,12 +1945,6 @@
         return;
       }
 
-      const btnRef = document.getElementById("btnRefresh");
-      if (isManual) {
-        btnRef.style.transform = "rotate(360deg)";
-        btnRef.style.transition = "transform 0.4s ease";
-      }
-
       try {
         const memberIdParam = currentMember ? currentMember.id : '';
         const res = await fetch(`${BACKEND_URL}?action=syncAll&memberId=${encodeURIComponent(memberIdParam)}&t=${Date.now()}`);
@@ -2444,25 +1958,18 @@
           if (data.tasks) {
             tasksList = data.tasks;
             renderTasks();
-            checkUrgentAssignments();
             updateMemberStatusFromTasks();
           }
           if (data.swaps) {
             swapsList = data.swaps;
             renderSwapsList();
+            renderAdminPendingSwaps();
           }
           if (data.posts) {
-            // Focus Guard: Nếu đang gõ bình luận, tạm hoãn render để không xóa mất text của người dùng
             const activeEl = document.activeElement;
             const isTypingComment = activeEl && activeEl.id && activeEl.id.startsWith("iptComment_") && activeEl.value.trim().length > 0;
             if (!isTypingComment) {
-              postsList = data.posts.map(newP => {
-                const oldP = postsList.find(p => p.id === newP.id);
-                if (oldP && oldP.comments && oldP.comments.length > (newP.comments || []).length) {
-                  return { ...newP, comments: oldP.comments };
-                }
-                return newP;
-              });
+              postsList = data.posts;
               renderPosts();
             }
           }
@@ -2477,36 +1984,12 @@
         }
       } catch (err) {
         if (isManual) triggerAquaNotification("Đồng Bộ", "Đang thử lại kết nối ngầm...", "loading");
-      } finally {
-        if (isManual) {
-          setTimeout(() => {
-            btnRef.style.transform = "none";
-            btnRef.style.transition = "none";
-          }, 400);
-        }
       }
     }
 
     function triggerAquaNotification(title, message, iconType = "info") {
       notificationQueue.push({ title, message, iconType });
-      if (!isNotificationShowing) {
-        processNextAquaNotification();
-      }
-    }
-
-    function getNotificationSvgIcon(type) {
-      switch (type) {
-        case 'success':
-          return `<svg style="width:16px;height:16px;color:#34d399;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
-        case 'warning':
-          return `<svg style="width:16px;height:16px;color:#fbbf24;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
-        case 'error':
-          return `<svg style="width:16px;height:16px;color:#f87171;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-        case 'loading':
-          return `<svg style="width:16px;height:16px;color:#a5b4fc;animation:spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>`;
-        default:
-          return `<svg style="width:16px;height:16px;color:#818cf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`;
-      }
+      if (!isNotificationShowing) processNextAquaNotification();
     }
 
     function processNextAquaNotification() {
@@ -2516,12 +1999,11 @@
       }
 
       isNotificationShowing = true;
-      const { title, message, iconType } = notificationQueue.shift();
+      const { title, message } = notificationQueue.shift();
 
       const pill = document.getElementById("aquaIslandPill");
       document.getElementById("aquaIslandTitle").innerText = title;
       document.getElementById("aquaIslandMsg").innerText = message;
-      document.getElementById("aquaIslandIconBox").innerHTML = getNotificationSvgIcon(iconType);
 
       if (navigator.vibrate) {
         try { navigator.vibrate([25, 20, 35]); } catch (e) {}
@@ -2534,7 +2016,7 @@
           osc.type = "sine";
           osc.frequency.setValueAtTime(587.33, audioContext.currentTime);
           osc.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.12);
-          gain.gain.setValueAtTime(0.05, audioContext.currentTime);
+          gain.gain.setValueAtTime(0.04, audioContext.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.25);
           osc.connect(gain);
           gain.connect(audioContext.destination);
@@ -2548,7 +2030,7 @@
 
       aquaDismissTimeout = setTimeout(() => {
         dismissAquaIsland();
-      }, 3400);
+      }, 3200);
     }
 
     function dismissAquaIsland() {
@@ -2558,24 +2040,7 @@
 
       setTimeout(() => {
         processNextAquaNotification();
-      }, 430);
-    }
-
-    function handleAquaIslandAction() {
-      dismissAquaIsland();
-      switchDockTab(1);
-    }
-
-    function checkUrgentAssignments() {
-      if (!currentMember) return;
-      const myAssigned = tasksList.filter(t => Array.isArray(t.assignedMembers) && t.assignedMembers.includes(currentMember.id));
-      const box = document.getElementById("urgentAlertBox");
-      if (myAssigned.length > 0) {
-        document.getElementById("urgentAlertText").innerText = `Bạn vừa được điều động ${myAssigned.length} ca trực mới!`;
-        box.classList.remove("hidden");
-      } else {
-        box.classList.add("hidden");
-      }
+      }, 400);
     }
 
     function startAutoSyncLoop() {
@@ -2590,9 +2055,7 @@
     function switchDockTab(idx) {
       activeTabIndex = idx;
       const pill = document.getElementById("dockPill");
-      if (pill) {
-        pill.style.transform = `translateX(${idx * 100}%)`;
-      }
+      if (pill) pill.style.transform = `translateX(${idx * 100}%)`;
 
       document.getElementById("tabContentProfile").classList.toggle("hidden", idx !== 0);
       document.getElementById("tabContentTasks").classList.toggle("hidden", idx !== 1);
@@ -2607,284 +2070,6 @@
       });
     }
 
-    function openTheTrangModal() {
-      document.getElementById("modalTheTrang").classList.remove("hidden");
-      lockBodyScroll();
-    }
-    function closeTheTrangModal() {
-      document.getElementById("modalTheTrang").classList.add("hidden");
-      unlockBodyScroll();
-    }
-    function closeTheTrangModalOnBackdrop(e) {
-      if (e.target.id === "modalTheTrang") {
-        closeTheTrangModal();
-      }
-    }
-
-    async function selectTheTrang(val) {
-      closeTheTrangModal();
-      if (!currentMember) return;
-      
-      currentMember.theTrang = val;
-      updateTheTrangUI(val);
-      localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
-      triggerAquaNotification("Thể Trạng", "Đã cập nhật: " + getShortTheTrangText(val), "success");
-
-      try {
-        await fetch(BACKEND_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "updateTheTrang", memberId: currentMember.id, theTrang: val })
-        });
-      } catch (e) {}
-    }
-
-    function openAvatarModal() {
-      if (!currentMember) return triggerAquaNotification("Thông Báo", "Vui lòng đăng nhập trước khi đổi ảnh!", "warning");
-      document.getElementById("modalAvatar").classList.remove("hidden");
-      lockBodyScroll();
-      const img = document.getElementById("imgAvatarPreview");
-      const ph = document.getElementById("txtAvatarPh");
-      if (currentMember.avatar && currentMember.avatar.startsWith("data:image")) {
-        img.src = currentMember.avatar;
-        img.classList.remove("hidden");
-        ph.classList.add("hidden");
-      } else {
-        img.classList.add("hidden");
-        ph.classList.remove("hidden");
-      }
-    }
-
-    function closeAvatarModal() {
-      document.getElementById("modalAvatar").classList.add("hidden");
-      unlockBodyScroll();
-      pendingAvatarBase64 = null;
-    }
-
-    function previewAvatarUpload(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          canvas.width = 180;
-          canvas.height = 180;
-          const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, 180, 180);
-          pendingAvatarBase64 = canvas.toDataURL("image/jpeg", 0.75);
-
-          const prev = document.getElementById("imgAvatarPreview");
-          prev.src = pendingAvatarBase64;
-          prev.classList.remove("hidden");
-          document.getElementById("txtAvatarPh").classList.add("hidden");
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function saveAvatarUpload() {
-      if (!pendingAvatarBase64) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn ảnh trước!", "warning");
-      const btn = document.getElementById("btnSaveAvatar");
-      btn.innerText = "Đang lưu...";
-      btn.disabled = true;
-
-      currentMember.avatar = pendingAvatarBase64;
-      localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
-      renderAvatarUI(currentMember.avatar, currentMember.hoTen);
-      closeAvatarModal();
-      triggerAquaNotification("Ảnh Đại Diện", "Đã lưu ảnh chân dung mới!", "success");
-
-      try {
-        await fetch(BACKEND_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "updateAvatar", memberId: currentMember.id, avatarBase64: pendingAvatarBase64 })
-        });
-      } catch (e) {} finally {
-        btn.innerText = "Lưu Ảnh";
-        btn.disabled = false;
-      }
-    }
-
-    /* ================= TÍNH NĂNG XEM HỒ SƠ THÀNH VIÊN KHÁC ================= */
-    function openMemberProfileModal(memberIdentifier) {
-      if (!memberIdentifier) return;
-
-      let target = membersList.find(m => m.id === memberIdentifier || m.hoTen === memberIdentifier);
-      
-      if (!target && currentMember && (currentMember.id === memberIdentifier || currentMember.hoTen === memberIdentifier)) {
-        target = currentMember;
-      }
-
-      if (!target) {
-        target = {
-          id: memberIdentifier,
-          hoTen: memberIdentifier,
-          chucVu: 'Thành viên CLB',
-          lop: '---',
-          mssv: '---',
-          khoa: '---',
-          boMon: '---',
-          soCa: 0,
-          theTrang: 'Khỏe mạnh',
-          status: 'Sẵn sàng',
-          sdt: '---',
-          ice: '---',
-          yTe: '---',
-          avatar: ''
-        };
-      }
-
-      viewingOtherMember = target;
-
-      document.getElementById("otherMemName").innerText = target.hoTen;
-      document.getElementById("otherMemRole").innerText = target.chucVu || 'Thành viên';
-      document.getElementById("otherMemId").innerText = "ID: " + (target.id || '---');
-      document.getElementById("otherMemDuty").innerText = (target.soCa || 0) + " ca";
-      document.getElementById("otherMemStat").innerText = target.status || 'Sẵn sàng';
-
-      const fitStatus = target.theTrang || 'Khỏe mạnh';
-      const fitConfig = THE_TRANG_MAP[fitStatus] || THE_TRANG_MAP['Khỏe mạnh'];
-      const fitPill = document.getElementById("otherMemFitPill");
-      const fitTagRow = document.getElementById("otherMemFitTagRow");
-      const fitText = document.getElementById("otherMemFit");
-      
-      if (fitPill) {
-        fitPill.style.background = fitConfig.bg;
-        fitPill.style.borderColor = fitConfig.border;
-      }
-      if (fitTagRow) fitTagRow.style.color = fitConfig.tagColor;
-      if (fitText) {
-        fitText.style.color = fitConfig.textColor;
-        fitText.innerText = getShortTheTrangText(fitStatus);
-      }
-
-      document.getElementById("otherClass").innerText = target.lop || '---';
-      document.getElementById("otherMssv").innerText = target.mssv || '---';
-      document.getElementById("otherFaculty").innerText = target.khoa || '---';
-      document.getElementById("otherDept").innerText = target.boMon || '---';
-      document.getElementById("otherPhone").innerText = target.sdt || '---';
-      document.getElementById("otherIce").innerText = target.ice || '---';
-      document.getElementById("otherMed").innerText = target.yTe || 'Bình thường';
-
-      const initial = (target.hoTen || "A").split(" ").pop().charAt(0).toUpperCase();
-      const avtBox = document.getElementById("otherMemAvatarBox");
-      if (target.avatar && target.avatar.startsWith("data:image")) {
-        avtBox.innerHTML = `<img src="${target.avatar}" alt="Avatar">`;
-      } else {
-        avtBox.innerHTML = `<span>${initial}</span>`;
-      }
-
-      if (target.isAdmin) {
-        document.getElementById("otherMemBadgeAdm").classList.remove("hidden");
-      } else {
-        document.getElementById("otherMemBadgeAdm").classList.add("hidden");
-      }
-
-      document.getElementById("modalMemberDetail").classList.remove("hidden");
-      lockBodyScroll();
-    }
-
-    function closeMemberProfileModal() {
-      document.getElementById("modalMemberDetail").classList.add("hidden");
-      unlockBodyScroll();
-      viewingOtherMember = null;
-    }
-
-    function closeMemberProfileModalOnBackdrop(e) {
-      if (e.target.id === "modalMemberDetail") {
-        closeMemberProfileModal();
-      }
-    }
-
-    function callTargetMemberPhone() {
-      if (viewingOtherMember && viewingOtherMember.sdt && viewingOtherMember.sdt !== '---') {
-        makePhoneCall(viewingOtherMember.sdt);
-      } else {
-        triggerAquaNotification("Thông Báo", "Thành viên này chưa cập nhật số điện thoại!", "warning");
-      }
-    }
-
-    function callTargetMemberIce() {
-      if (viewingOtherMember && viewingOtherMember.ice && viewingOtherMember.ice !== '---') {
-        makePhoneCall(viewingOtherMember.ice);
-      } else {
-        triggerAquaNotification("Thông Báo", "Chưa có thông tin số người thân khẩn cấp (ICE)!", "warning");
-      }
-    }
-
-    /* ================= DANH BẠ TOÀN THỂ THÀNH VIÊN CLB ================= */
-    function openDirectoryModal() {
-      const modal = document.getElementById("modalDirectory");
-      const searchInput = document.getElementById("iptSearchDirectory");
-      if (searchInput) searchInput.value = "";
-
-      renderDirectoryList(membersList);
-      modal.classList.remove("hidden");
-      lockBodyScroll();
-    }
-
-    function closeDirectoryModal() {
-      document.getElementById("modalDirectory").classList.add("hidden");
-      unlockBodyScroll();
-    }
-
-    function closeDirectoryModalOnBackdrop(e) {
-      if (e.target.id === "modalDirectory") {
-        closeDirectoryModal();
-      }
-    }
-
-    function filterDirectoryMembers() {
-      const rawQ = (document.getElementById("iptSearchDirectory").value || "").trim();
-      if (!rawQ) {
-        renderDirectoryList(membersList);
-        return;
-      }
-      const q = removeVietnameseTones(rawQ);
-      const filtered = membersList.filter(m => 
-        (m.hoTen && removeVietnameseTones(m.hoTen).includes(q)) ||
-        (m.id && m.id.toLowerCase().includes(q)) ||
-        (m.mssv && m.mssv.toLowerCase().includes(q)) ||
-        (m.chucVu && removeVietnameseTones(m.chucVu).includes(q)) ||
-        (m.boMon && removeVietnameseTones(m.boMon).includes(q))
-      );
-      renderDirectoryList(filtered);
-    }
-
-    function renderDirectoryList(list) {
-      const container = document.getElementById("directoryListContainer");
-      if (!list || !list.length) {
-        container.innerHTML = `<div style="text-align: center; font-size: 11.5px; color: #94a3b8; padding: 18px;">Không tìm thấy thành viên phù hợp.</div>`;
-        return;
-      }
-
-      container.innerHTML = list.map(m => {
-        const initial = (m.hoTen || "A").split(" ").pop().charAt(0).toUpperCase();
-        const shortFit = getShortTheTrangText(m.theTrang);
-        return `
-          <div onclick="openMemberProfileModal('${m.id}')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 14px; background: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; width: 100%; text-align: left; cursor: pointer;">
-            <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
-              <div style="width: 34px; height: 34px; border-radius: 12px; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; overflow: hidden;">
-                ${m.avatar && m.avatar.startsWith('data:image') ? `<img src="${m.avatar}" style="width:100%;height:100%;object-fit:cover;">` : initial}
-              </div>
-              <div style="min-width: 0; flex: 1;">
-                <h5 style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(m.hoTen)}</h5>
-                <p style="font-size: 10px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(m.chucVu || 'Thành viên')} &bull; ${m.id}</p>
-              </div>
-            </div>
-            <div style="text-align: right; flex-shrink: 0; margin-left: 6px;">
-              <span style="font-size: 9.5px; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0;">${shortFit}</span>
-              <span style="display: block; font-size: 9.5px; color: #6366f1; font-weight: 700; margin-top: 2px;">${m.soCa || 0} ca</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
     function renderTasks() {
       const container = document.getElementById("listTasksContainer");
       document.getElementById("badgeTaskCount").innerText = tasksList.length + " Lệnh";
@@ -2897,6 +2082,7 @@
       container.innerHTML = tasksList.map(t => {
         const isJoined = currentMember && Array.isArray(t.joinedMembers) && t.joinedMembers.includes(currentMember.id);
         const isAssigned = currentMember && Array.isArray(t.assignedMembers) && t.assignedMembers.includes(currentMember.id);
+        const isInDuty = isJoined || isAssigned;
         const isLocked = t.status === 'locked';
         const isSpecial = t.taskType === 'special';
         const totalPeople = (t.joinedMembers ? t.joinedMembers.length : 0) + (t.assignedMembers ? t.assignedMembers.length : 0);
@@ -2917,20 +2103,17 @@
             </div>
             <p style="font-size: 11px; color: #64748b; margin-top: 3px;">📍 ${escapeHTML(t.location)} &bull; ⏰ ${escapeHTML(t.time)}</p>
 
-            ${t.assignedMembers && t.assignedMembers.length > 0 ? `
-              <p style="font-size: 10px; color: #6b21a8; margin-top: 4px; font-weight: 700;">
-                👥 Nhận lệnh: ${t.assignedMembers.map(mId => `<span onclick="openMemberProfileModal('${mId}')" style="text-decoration: underline; cursor: pointer;">${mId}</span>`).join(', ')}
-              </p>
-            ` : ''}
-
-            ${isAssigned ? `
-              <div style="margin-top: 7px; padding: 6px 9px; background: rgba(254, 242, 242, 0.9); border-radius: 11px; border: 1px solid #fecdd3; font-size: 10px; color: #b91c1c; font-weight: 700;">
-                ⚠️ Bạn đã được chỉ định vào ca này!
+            ${isInDuty ? `
+              <div style="margin-top: 7px; padding: 6px 9px; background: rgba(254, 243, 199, 0.9); border-radius: 11px; border: 1px solid #fef3c7; font-size: 10px; color: #b45309; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+                <span>✓ Bạn đang được phân công vào ca này</span>
+                <button onclick="openSwapRequestModal('${t.id}', '${escapeHTML(t.title)}', '${escapeHTML(t.time)}')" class="spring-touch" style="padding: 3px 8px; border-radius: 8px; background: #d97706; color: white; font-size: 9.5px; font-weight: 800;">
+                  🔄 Xin Đổi Ca
+                </button>
               </div>
             ` : ''}
 
             <div style="display: flex; gap: 6px; margin-top: 9px; padding-top: 9px; border-top: 1px solid rgba(241, 245, 249, 0.9);">
-              ${!isJoined && !isAssigned ? `
+              ${!isInDuty ? `
                 <button onclick="claimTaskAction('${t.id}')" class="spring-touch btn-main" style="flex: 1.5; padding: 8px 10px; font-size: 11px;" ${isLocked ? 'disabled style="opacity:0.5;"' : ''}>
                   Nhận Ca
                 </button>
@@ -2962,146 +2145,132 @@
       }
     }
 
-    function openCreateTaskModal() {
-      populateMemberDropdowns();
-      setTaskMode('standard');
-      document.getElementById("modalCreateTask").classList.remove("hidden");
+    function openSwapRequestModal(taskId, taskTitle, taskTime) {
+      activeSwapTargetTaskId = taskId;
+      document.getElementById("swapTaskTitleDisplay").innerText = "Ca trực: " + taskTitle;
+      document.getElementById("swapTaskTimeDisplay").innerText = "Thời gian: " + taskTime;
+
+      const sel = document.getElementById("selSwapTargetMember");
+      const candidateOpts = membersList
+        .filter(m => m.id !== currentMember.id)
+        .map(m => `<option value="${m.id}">${escapeHTML(m.hoTen)} (${m.id} - ${m.soCa || 0} ca)</option>`)
+        .join('');
+      sel.innerHTML = `<option value="Ban Quản Trị điều phối">-- Nhờ Ban Quản Trị chỉ định người ít ca nhất --</option>` + candidateOpts;
+
+      document.getElementById("modalSwapRequest").classList.remove("hidden");
       lockBodyScroll();
     }
-    function closeCreateTaskModal() {
-      document.getElementById("modalCreateTask").classList.add("hidden");
+
+    function closeSwapRequestModal() {
+      document.getElementById("modalSwapRequest").classList.add("hidden");
       unlockBodyScroll();
+      activeSwapTargetTaskId = null;
     }
 
-    function setTaskMode(mode) {
-      currentTaskCreateMode = mode;
-      const bStd = document.getElementById("btnTaskModeStandard");
-      const bSpc = document.getElementById("btnTaskModeSpecial");
-      const boxStd = document.getElementById("boxStandardTaskSettings");
-      const boxSpc = document.getElementById("boxSpecialTaskSettings");
-
-      if (mode === 'standard') {
-        bStd.style.background = "white";
-        bStd.style.color = "#6b21a8";
-        bSpc.style.background = "transparent";
-        bSpc.style.color = "#64748b";
-        boxStd.classList.remove("hidden");
-        boxSpc.classList.add("hidden");
-      } else {
-        bSpc.style.background = "white";
-        bSpc.style.color = "#6b21a8";
-        bStd.style.background = "transparent";
-        bStd.style.color = "#64748b";
-        boxStd.classList.add("hidden");
-        boxSpc.classList.remove("hidden");
-        renderSpecialTaskCheckboxes();
-      }
+    function closeSwapModalOnBackdrop(e) {
+      if (e.target.id === "modalSwapRequest") closeSwapRequestModal();
     }
 
-    function renderSpecialTaskCheckboxes() {
-      const container = document.getElementById("specialTaskMemberListContainer");
-      if (!container) return;
-      container.innerHTML = membersList.map(m => `
-        <label style="display: flex; align-items: center; justify-content: space-between; padding: 6px 9px; border-radius: 9px; background: #ffffff; border: 1px solid #f0e7ff; font-size: 11px; cursor: pointer;">
-          <span style="font-weight: 700; color: #4a044e;">${escapeHTML(m.hoTen)} (${m.id})</span>
-          <input type="checkbox" value="${m.id}" onchange="updateSpecialSelectedCount()" class="chk-special-member" style="width: 14px; height: 14px; accent-color: #9333ea;">
-        </label>
-      `).join('');
-      updateSpecialSelectedCount();
-    }
+    async function submitSwapRequestAction() {
+      if (!activeSwapTargetTaskId || !currentMember) return;
+      const reasonCategory = document.getElementById("selSwapReason").value;
+      const reasonDetail = document.getElementById("iptSwapReasonDetail").value.trim();
+      const targetMember = document.getElementById("selSwapTargetMember").value;
+      const fullReason = reasonDetail ? `${reasonCategory} (${reasonDetail})` : reasonCategory;
 
-    function updateSpecialSelectedCount() {
-      const count = document.querySelectorAll(".chk-special-member:checked").length;
-      const badge = document.getElementById("selectedSpecialCountBadge");
-      if (badge) badge.innerText = `Đã chọn: ${count}`;
-    }
-
-    async function submitCreateTaskAction() {
-      const title = document.getElementById("iptTaskTitle").value.trim();
-      const loc = document.getElementById("iptTaskLocation").value.trim();
-      const time = document.getElementById("iptTaskTime").value.trim();
-      const isSpecial = currentTaskCreateMode === 'special';
-
-      let quota = document.getElementById("iptTaskQuota").value;
-      let deadline = document.getElementById("iptTaskDeadline").value;
-      let designated = [];
-
-      if (isSpecial) {
-        const checkedBoxes = document.querySelectorAll(".chk-special-member:checked");
-        designated = Array.from(checkedBoxes).map(b => b.value);
-        if (designated.length === 0) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn ít nhất 1 thành viên!", "warning");
-        quota = designated.length;
-        deadline = '';
-      }
-
-      if (!title || !loc || !time) return triggerAquaNotification("Cảnh Báo", "Vui lòng điền đủ thông tin lệnh!", "warning");
-
-      closeCreateTaskModal();
-      triggerAquaNotification("Đang Ban Hành", "Đang ghi nhận lệnh triệu tập mới...", "loading");
+      closeSwapRequestModal();
+      triggerAquaNotification("Đang Gửi Yêu Cầu", "Đang gửi đơn xin đổi ca tới BQT...", "loading");
 
       try {
         const res = await fetch(BACKEND_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({
-            action: "createTask",
-            adminId: currentMember.id,
-            title: title,
-            location: loc,
-            time: time,
-            quota: quota,
-            lockDeadline: deadline,
-            isSpecial: isSpecial,
-            designatedMembers: designated
+            action: "requestSwap",
+            taskId: activeSwapTargetTaskId,
+            fromMemberId: currentMember.id,
+            toMemberId: targetMember,
+            reason: fullReason
           })
         });
         const d = await res.json();
-        triggerAquaNotification("Ban Hành Lệnh", d.message || "Đã tạo lệnh mới!", d.success ? "success" : "error");
+        triggerAquaNotification("Đổi Ca", d.message || "Đã gửi yêu cầu đổi ca thành công!", "success");
         syncRealtimeData(false);
       } catch (e) {
-        triggerAquaNotification("Thành Công", "Đã tạo lệnh điều động!", "success");
+        triggerAquaNotification("Thành Công", "Đã gửi yêu cầu đổi ca!", "success");
       }
     }
 
-    function openAdminModal() {
-      populateMemberDropdowns();
-      renderSwapsList();
-      document.getElementById("modalAdmin").classList.remove("hidden");
-      lockBodyScroll();
-    }
-    function closeAdminModal() {
-      document.getElementById("modalAdmin").classList.add("hidden");
-      unlockBodyScroll();
+    function renderAdminPendingSwaps() {
+      const container = document.getElementById("adminInlinePendingSwapsContainer");
+      const card = document.getElementById("adminPendingSwapsCard");
+      const badge = document.getElementById("badgePendingSwapCount");
+      if (!container || !card) return;
+
+      const pendingSwaps = swapsList.filter(s => s.status === 'pending');
+      if (badge) {
+        if (pendingSwaps.length > 0) {
+          badge.innerText = pendingSwaps.length;
+          badge.classList.remove("hidden");
+        } else {
+          badge.classList.add("hidden");
+        }
+      }
+
+      if (!currentMember || !currentMember.isAdmin || pendingSwaps.length === 0) {
+        card.classList.add("hidden");
+        return;
+      }
+
+      card.classList.remove("hidden");
+      container.innerHTML = pendingSwaps.map(s => `
+        <div style="padding: 9px 11px; border-radius: 14px; background: white; border: 1px solid #fbcfe8; display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 11.5px; font-weight: 800; color: #831843;">
+              <span onclick="openMemberProfileModal('${s.fromMemberId}')" style="text-decoration: underline; cursor: pointer;">${s.fromMemberId}</span> xin đổi ca
+            </span>
+            <span style="font-size: 9.5px; color: #db2777; font-weight: 700;">${s.time || 'Vừa xong'}</span>
+          </div>
+          <p style="font-size: 10.5px; color: #475569;"><strong>Lý do:</strong> ${escapeHTML(s.reason)}</p>
+          <p style="font-size: 10px; color: #64748b;"><strong>Đề xuất:</strong> ${escapeHTML(s.toMemberId)}</p>
+          
+          <div style="display: flex; gap: 6px; margin-top: 4px;">
+            <button onclick="resolveSwapDirect('${s.id}', true)" class="spring-touch" style="flex: 1; padding: 6px; border-radius: 10px; background: #059669; color: white; font-size: 10.5px; font-weight: 800;">
+              ✓ Duyệt Đổi Ca
+            </button>
+            <button onclick="resolveSwapDirect('${s.id}', false)" class="spring-touch" style="flex: 1; padding: 6px; border-radius: 10px; background: #f1f5f9; color: #b91c1c; font-size: 10.5px; font-weight: 800; border: 1px solid #fecdd3;">
+              ✕ Bác Bỏ
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
-    function populateMemberDropdowns() {
-      const selAdmin = document.getElementById("selAdminMember");
-      const opts = membersList.map(m => `<option value="${m.id}">${escapeHTML(m.hoTen)} (${m.id} - ${m.soCa} ca)</option>`).join('');
-      if (selAdmin) selAdmin.innerHTML = `<option value="">-- Chọn thành viên --</option>` + opts;
-    }
+    async function resolveSwapDirect(swapId, approved) {
+      if (!currentMember || !currentMember.isAdmin) return;
+      triggerAquaNotification("Đang Xử Lý", approved ? "Đang phê duyệt đổi ca..." : "Đang bác bỏ yêu cầu...", "loading");
 
-    async function adminAddDutyAction(amount) {
-      const sel = document.getElementById("selAdminMember");
-      const targetId = sel.value;
-      if (!targetId) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn thành viên!", "warning");
-
-      triggerAquaNotification("Đang Xử Lý", "Đang cộng ca cống hiến...", "loading");
       try {
         const res = await fetch(BACKEND_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "adjustDuty", adminId: currentMember.id, targetMemberId: targetId, amount: amount })
+          body: JSON.stringify({
+            action: "resolveSwap",
+            swapId: swapId,
+            adminId: currentMember.id,
+            approved: approved
+          })
         });
         const d = await res.json();
-        triggerAquaNotification("Cộng Ca", d.message || "Đã cập nhật ca!", "success");
+        triggerAquaNotification("Phê Duyệt", d.message || "Đã xử lý yêu cầu!", d.success ? "success" : "error");
         syncRealtimeData(false);
       } catch (e) {
-        triggerAquaNotification("Thành Công", "Đã cộng ca thành công!", "success");
+        triggerAquaNotification("Thành Công", "Đã cập nhật trạng thái ca trực!", "success");
       }
     }
 
     function renderSwapsList() {
-      const c = document.getElementById("listSwapsContainer");
+      const c = document.getElementById("listAdminModalSwapsContainer");
       if (!c) return;
       if (!swapsList.length) {
         c.innerHTML = `<div style="font-size: 11px; color: #94a3b8; text-align: center; padding: 10px;">Chưa có yêu cầu xin đổi ca nào.</div>`;
@@ -3111,172 +2280,23 @@
       c.innerHTML = swapsList.map(s => `
         <div style="padding: 9px; border-radius: 13px; background: rgba(255, 255, 255, 0.9); border: 1px solid #e2e8f0; font-size: 11px;">
           <div style="display: flex; justify-content: space-between; font-weight: 800; color: #0f172a;">
-            <span onclick="openMemberProfileModal('${s.fromMemberId}')" style="cursor: pointer; text-decoration: underline;">${s.fromMemberId} xin đổi ca</span>
+            <span onclick="openMemberProfileModal('${s.fromMemberId}')" style="cursor: pointer; text-decoration: underline;">${s.fromMemberId} xin đổi</span>
             <span style="color: ${s.status === 'approved' ? '#15803d' : s.status === 'rejected' ? '#b91c1c' : '#d97706'};">
               ${s.status === 'approved' ? '✓ Đã duyệt' : s.status === 'rejected' ? '✕ Bác bỏ' : 'Chờ duyệt'}
             </span>
           </div>
           <p style="color: #64748b; margin-top: 2px;">Lý do: ${escapeHTML(s.reason)}</p>
+          ${s.status === 'pending' ? `
+            <div style="display: flex; gap: 5px; margin-top: 5px;">
+              <button onclick="resolveSwapDirect('${s.id}', true)" class="spring-touch" style="flex: 1; padding: 4px; border-radius: 8px; background: #059669; color: white; font-size: 10px; font-weight: 800;">Duyệt</button>
+              <button onclick="resolveSwapDirect('${s.id}', false)" class="spring-touch" style="flex: 1; padding: 4px; border-radius: 8px; background: #fee2e2; color: #b91c1c; font-size: 10px; font-weight: 800;">Bác bỏ</button>
+            </div>
+          ` : ''}
         </div>
       `).join('');
     }
 
-    function openTagMemberModal() {
-      const container = document.getElementById("tagMemberListContainer");
-      container.innerHTML = membersList.map(m => `
-        <label style="display: flex; align-items: center; justify-content: space-between; padding: 7px 9px; border-radius: 10px; background: rgba(248, 250, 252, 0.9); border: 1px solid #e2e8f0; font-size: 11px; cursor: pointer;">
-          <span style="font-weight: 700; color: #1e293b;">${escapeHTML(m.hoTen)} (${m.id})</span>
-          <input type="checkbox" value="${escapeHTML(m.hoTen)}" ${currentSelectedTags.includes(m.hoTen) ? 'checked' : ''} class="tag-checkbox" style="width: 15px; height: 15px; accent-color: var(--primary);">
-        </label>
-      `).join('');
-      document.getElementById("modalTagFriends").classList.remove("hidden");
-      lockBodyScroll();
-    }
-
-    function applyTagSelection() {
-      const boxes = document.querySelectorAll(".tag-checkbox:checked");
-      currentSelectedTags = Array.from(boxes).map(b => b.value);
-      renderTaggedTagsUI();
-      document.getElementById("modalTagFriends").classList.add("hidden");
-      unlockBodyScroll();
-      if (currentSelectedTags.length > 0) {
-        triggerAquaNotification("Gắn Thẻ", `Đã gắn thẻ ${currentSelectedTags.length} bạn!`, "info");
-      }
-    }
-
-    function renderTaggedTagsUI() {
-      const box = document.getElementById("taggedMembersBox");
-      if (!currentSelectedTags.length) {
-        box.classList.add("hidden");
-        box.innerHTML = '';
-        return;
-      }
-      box.classList.remove("hidden");
-      box.innerHTML = currentSelectedTags.map(t => `
-        <span style="font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 8px; background: #e0e7ff; color: #4338ca; display: inline-flex; align-items: center; gap: 4px;">
-          @${t}
-        </span>
-      `).join('');
-    }
-
-    function handleMultiMediaSelect(e) {
-      const files = Array.from(e.target.files);
-      if (!files.length) return;
-
-      files.forEach(file => {
-        const isVideo = file.type.startsWith('video');
-
-        if (isVideo) {
-          const video = document.createElement('video');
-          video.preload = 'metadata';
-          const videoUrl = URL.createObjectURL(file);
-          video.src = videoUrl;
-          video.muted = true;
-          video.playsInline = true;
-          video.onloadeddata = () => {
-            video.currentTime = 0.5;
-          };
-          video.onseeked = () => {
-            const canvas = document.createElement("canvas");
-            const maxDim = 360;
-            let width = video.videoWidth || 360;
-            let height = video.videoHeight || 240;
-            if (width > height) {
-              if (width > maxDim) {
-                height = Math.round((height * maxDim) / width);
-                width = maxDim;
-              }
-            } else {
-              if (height > maxDim) {
-                width = Math.round((width * maxDim) / height);
-                height = maxDim;
-              }
-            }
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(video, 0, 0, width, height);
-
-            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.52);
-            URL.revokeObjectURL(videoUrl);
-            currentUploadedMediaList.push({
-              url: compressedBase64,
-              type: 'video',
-              name: file.name
-            });
-            renderMediaPreviewGrid();
-          };
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const maxDim = 380;
-            let width = img.width;
-            let height = img.height;
-
-            if (width > height) {
-              if (width > maxDim) {
-                height = Math.round((height * maxDim) / width);
-                width = maxDim;
-              }
-            } else {
-              if (height > maxDim) {
-                width = Math.round((width * maxDim) / height);
-                height = maxDim;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.52);
-
-            currentUploadedMediaList.push({
-              url: compressedBase64,
-              type: 'image',
-              name: file.name
-            });
-            renderMediaPreviewGrid();
-          };
-          img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-      e.target.value = '';
-    }
-
-    function renderMediaPreviewGrid() {
-      const box = document.getElementById("multiMediaPreviewBox");
-      const grid = document.getElementById("mediaThumbnailsGrid");
-
-      if (!currentUploadedMediaList.length) {
-        box.classList.add("hidden");
-        grid.innerHTML = '';
-        return;
-      }
-
-      box.classList.remove("hidden");
-      grid.innerHTML = currentUploadedMediaList.map((m, idx) => `
-        <div class="media-thumb">
-          <img src="${m.url}" alt="Preview">
-          ${m.type === 'video' ? '<span class="media-thumb-video-badge">▶ Video</span>' : ''}
-          <button type="button" onclick="removeMediaItem(${idx})" class="thumb-del" title="Xóa ảnh này">✕</button>
-        </div>
-      `).join('');
-    }
-
-    function removeMediaItem(index) {
-      currentUploadedMediaList.splice(index, 1);
-      renderMediaPreviewGrid();
-    }
-
-    async function postToForum() {
+    async function postToForumOptimistic() {
       const ipt = document.getElementById("iptForumText");
       const val = ipt.value.trim();
       const isAnon = document.getElementById("chkAnonymousPost").checked;
@@ -3284,13 +2304,10 @@
       if (!val && !currentUploadedMediaList.length) {
         return triggerAquaNotification("Cảnh Báo", "Vui lòng nhập nội dung hoặc đính kèm ảnh!", "warning");
       }
-      
-      const btn = document.getElementById("btnSendPost");
-      btn.disabled = true;
-      btn.innerText = "Đang lưu...";
 
+      const tempId = "POST_" + Date.now();
       const newPost = {
-        id: "POST_" + Date.now(),
+        id: tempId,
         authorId: currentMember ? currentMember.id : "CLB001",
         authorName: isAnon ? "Thành viên ẩn danh" : (currentMember ? currentMember.hoTen : "Thành viên"),
         authorAvatar: isAnon ? "" : (currentMember ? currentMember.avatar : ""),
@@ -3303,21 +2320,22 @@
         createdAt: "Vừa xong"
       };
 
-      // Đăng bài tức thì (Optimistic UI)
+      // ĐĂNG NGAY LẬP TỨC (OPTIMISTIC UI - 0.05 GIÂY)
       postsList.unshift(newPost);
       renderPosts();
-      
+
       const savedMedia = [...currentUploadedMediaList];
       const savedTags = [...currentSelectedTags];
       
       clearForumDraftState();
       triggerAquaNotification("Diễn Đàn", isAnon ? "Đã đăng bài ẩn danh!" : "Đã đăng bài viết!", "success");
 
+      // GỬI CHẠY NGẦM ĐỒNG BỘ
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-        const res = await fetch(BACKEND_URL, {
+        await fetch(BACKEND_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({
@@ -3331,133 +2349,8 @@
           signal: controller.signal
         });
         clearTimeout(timeoutId);
-        const d = await res.json();
-        if (!d.success) {
-          triggerAquaNotification("Lưu ý", d.message || "Gặp sự cố khi lưu máy chủ!", "warning");
-        }
       } catch (e) {
-        // Vẫn giữ bài viết hiển thị cục bộ mượt mà
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<span>Đăng</span><svg style="width:13px;height:13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`;
-      }
-    }
-
-    /* ACTION SHEET 3 CHẤM BÀI VIẾT */
-    function openPostActionSheet(postId, authorId) {
-      activePostActionId = postId;
-      activePostActionAuthorId = authorId;
-      const sheet = document.getElementById("postActionSheet");
-      const delBtn = document.getElementById("btnSheetDeletePost");
-      
-      const isAdm = currentMember && currentMember.isAdmin;
-      const isMyPost = currentMember && currentMember.id === authorId;
-
-      if (isAdm || isMyPost) {
-        delBtn.classList.remove("hidden");
-      } else {
-        delBtn.classList.add("hidden");
-      }
-
-      sheet.classList.add("active");
-      lockBodyScroll();
-    }
-
-    function closePostActionSheet(e) {
-      if (e.target.id === "postActionSheet") {
-        closePostActionSheetDirect();
-      }
-    }
-
-    function closePostActionSheetDirect() {
-      document.getElementById("postActionSheet").classList.remove("active");
-      unlockBodyScroll();
-      activePostActionId = null;
-      activePostActionAuthorId = null;
-    }
-
-    function executeCopyPostLink() {
-      closePostActionSheetDirect();
-      navigator.clipboard.writeText(window.location.href);
-      triggerAquaNotification("Đã Sao Chép", "Đã sao chép liên kết bài viết vào bộ nhớ tạm!", "success");
-    }
-
-    async function executeSheetDeletePost() {
-      const postId = activePostActionId;
-      closePostActionSheetDirect();
-      if (!postId) return;
-
-      postsList = postsList.filter(p => p.id !== postId);
-      renderPosts();
-      triggerAquaNotification("Đã Xóa", "Bài viết đã được gỡ khỏi diễn đàn!", "success");
-
-      try {
-        await fetch(BACKEND_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            action: "deletePost",
-            postId: postId,
-            memberId: currentMember ? currentMember.id : ""
-          })
-        });
-      } catch (e) {}
-    }
-
-    function openLightbox(postId, startIndex = 0) {
-      const post = postsList.find(p => p.id === postId);
-      if (!post || !post.mediaList || post.mediaList.length === 0) return;
-
-      currentLightboxMediaList = post.mediaList;
-      currentLightboxIndex = startIndex;
-
-      lockBodyScroll();
-      document.getElementById("lightboxModal").classList.add("active");
-      document.getElementById("lbAuthorTag").innerText = `Ảnh của ${post.authorName}`;
-
-      updateLightboxContent();
-    }
-
-    function closeLightbox() {
-      document.getElementById("lightboxModal").classList.remove("active");
-      unlockBodyScroll();
-      currentLightboxMediaList = [];
-    }
-
-    function closeLightboxOnBackdrop(e) {
-      if (e.target.id === "lightboxModal" || e.target.classList.contains("lightbox-body")) {
-        closeLightbox();
-      }
-    }
-
-    function navigateLightbox(dir) {
-      currentLightboxIndex += dir;
-      if (currentLightboxIndex < 0) currentLightboxIndex = currentLightboxMediaList.length - 1;
-      if (currentLightboxIndex >= currentLightboxMediaList.length) currentLightboxIndex = 0;
-      updateLightboxContent();
-    }
-
-    function updateLightboxContent() {
-      const container = document.getElementById("lbMediaContainer");
-      const counter = document.getElementById("lbCounter");
-      const prevBtn = document.getElementById("lbBtnPrev");
-      const nextBtn = document.getElementById("lbBtnNext");
-
-      counter.innerText = `${currentLightboxIndex + 1} / ${currentLightboxMediaList.length}`;
-
-      if (currentLightboxMediaList.length > 1) {
-        prevBtn.classList.remove("hidden");
-        nextBtn.classList.remove("hidden");
-      } else {
-        prevBtn.classList.add("hidden");
-        nextBtn.classList.add("hidden");
-      }
-
-      const media = currentLightboxMediaList[currentLightboxIndex];
-      if (media.type === 'video') {
-        container.innerHTML = `<video src="${media.url}" controls autoplay playsinline style="max-width:100%;max-height:78vh;"></video>`;
-      } else {
-        container.innerHTML = `<img src="${media.url}" alt="HD Fullview">`;
+        // Vẫn bảo toàn bài đăng hiển thị mượt mà trên UI
       }
     }
 
@@ -3466,9 +2359,6 @@
       if (!postsList.length) {
         container.innerHTML = `
           <div class="acrylic-card" style="text-align: center; padding: 28px 14px;">
-            <div style="width: 52px; height: 52px; border-radius: 50%; background: #e0e7ff; color: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto;">
-              <svg style="width: 26px; height: 26px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
             <h4 style="font-size: 13.5px; font-weight: 800; color: #0f172a;">Chưa có bài viết nào</h4>
             <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Hãy là người đầu tiên chia sẻ hoạt động thể thao cùng CLB!</p>
           </div>
@@ -3479,76 +2369,35 @@
       container.innerHTML = postsList.map(p => {
         const reactions = p.reactions || { like: 0, love: 0, haha: 0, sad: 0, angry: 0 };
         const totalReactions = (reactions.like || 0) + (reactions.love || 0) + (reactions.haha || 0) + (reactions.sad || 0) + (reactions.angry || 0);
-        const mediaList = p.mediaList || (p.mediaUrl ? [{ url: p.mediaUrl, type: p.mediaType || 'image' }] : []);
+        const mediaList = p.mediaList || [];
         const totalComments = (p.comments || []).reduce((acc, c) => acc + 1 + (c.replies ? c.replies.length : 0), 0);
 
         let tagsMeta = "";
         if (p.tags && p.tags.length > 0) {
-          if (p.tags.length === 1) {
-            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${escapeHTML(p.tags[0])}</strong>`;
-          } else {
-            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${escapeHTML(p.tags[0])}</strong> và <strong style="color:var(--primary);">${p.tags.length - 1} người khác</strong>`;
-          }
+          tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${escapeHTML(p.tags[0])}</strong>`;
         }
 
         let mediaGridHtml = "";
         if (mediaList.length === 1) {
-          mediaGridHtml = `
-            <div class="fb-mosaic-grid fb-mosaic-1" onclick="openLightbox('${p.id}', 0)">
-              <div class="fb-mosaic-cell">
-                <img src="${mediaList[0].url}" alt="Media">
-              </div>
-            </div>
-          `;
+          mediaGridHtml = `<div class="fb-mosaic-grid fb-mosaic-1" onclick="openLightbox('${p.id}', 0)"><div class="fb-mosaic-cell"><img src="${mediaList[0].url}" alt="Media"></div></div>`;
         } else if (mediaList.length === 2) {
-          mediaGridHtml = `
-            <div class="fb-mosaic-grid fb-mosaic-2">
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 0)"><img src="${mediaList[0].url}" alt="Media 1"></div>
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 1)"><img src="${mediaList[1].url}" alt="Media 2"></div>
-            </div>
-          `;
-        } else if (mediaList.length === 3) {
-          mediaGridHtml = `
-            <div class="fb-mosaic-grid fb-mosaic-3">
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 0)"><img src="${mediaList[0].url}" alt="Media 1"></div>
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 1)"><img src="${mediaList[1].url}" alt="Media 2"></div>
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 2)"><img src="${mediaList[2].url}" alt="Media 3"></div>
-            </div>
-          `;
-        } else if (mediaList.length >= 4) {
-          const remain = mediaList.length - 4;
-          mediaGridHtml = `
-            <div class="fb-mosaic-grid fb-mosaic-4">
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 0)"><img src="${mediaList[0].url}" alt="Media 1"></div>
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 1)"><img src="${mediaList[1].url}" alt="Media 2"></div>
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 2)"><img src="${mediaList[2].url}" alt="Media 3"></div>
-              <div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 3)">
-                <img src="${mediaList[3].url}" alt="Media 4">
-                ${remain > 0 ? `<div class="fb-mosaic-more-overlay">+${remain}</div>` : ''}
-              </div>
-            </div>
-          `;
+          mediaGridHtml = `<div class="fb-mosaic-grid fb-mosaic-2"><div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 0)"><img src="${mediaList[0].url}"></div><div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 1)"><img src="${mediaList[1].url}"></div></div>`;
+        } else if (mediaList.length >= 3) {
+          mediaGridHtml = `<div class="fb-mosaic-grid fb-mosaic-3"><div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 0)"><img src="${mediaList[0].url}"></div><div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 1)"><img src="${mediaList[1].url}"></div><div class="fb-mosaic-cell" onclick="openLightbox('${p.id}', 2)"><img src="${mediaList[2].url}"></div></div>`;
         }
-
-        let reactionIconsStack = "";
-        if (reactions.love > 0) reactionIconsStack += `<span class="fb-reaction-mini-bubble" style="background:#e11d48;color:white;">❤️</span>`;
-        if (reactions.like > 0) reactionIconsStack += `<span class="fb-reaction-mini-bubble" style="background:#2563eb;color:white;">👍</span>`;
-        if (reactions.haha > 0) reactionIconsStack += `<span class="fb-reaction-mini-bubble" style="background:#d97706;color:white;">😆</span>`;
-        if (reactions.sad > 0) reactionIconsStack += `<span class="fb-reaction-mini-bubble" style="background:#6366f1;color:white;">😢</span>`;
-        if (reactions.angry > 0) reactionIconsStack += `<span class="fb-reaction-mini-bubble" style="background:#dc2626;color:white;">😡</span>`;
 
         return `
           <div class="acrylic-card fb-post-card">
-            <div class="fb-post-header">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
               <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
                 <div class="fb-avatar-circle" onclick="${p.isAnonymous ? '' : `openMemberProfileModal('${p.authorId || p.authorName}')`}">
                   ${p.isAnonymous ? '<svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' : (p.authorAvatar && p.authorAvatar.startsWith('data:image') ? `<img src="${p.authorAvatar}">` : escapeHTML((p.authorName || 'A').charAt(0)))}
                 </div>
                 <div style="min-width: 0; flex: 1;">
-                  <h4 class="fb-post-author-name">
+                  <h4 style="font-size: 13.5px; font-weight: 800; color: #0f172a; line-height: 1.3;">
                     <span onclick="${p.isAnonymous ? '' : `openMemberProfileModal('${p.authorId || p.authorName}')`}">${escapeHTML(p.authorName)}</span>${tagsMeta}
                   </h4>
-                  <div class="fb-post-meta-sub">
+                  <div style="font-size: 10.5px; color: #64748b; font-weight: 600; display: flex; align-items: center; gap: 5px; margin-top: 1px;">
                     <span>${formatRelativeTime(p.createdAt)}</span>
                     <span>&bull;</span>
                     <span>${p.isAnonymous ? '🎭 Ẩn danh' : '🌐 Thành viên'}</span>
@@ -3567,35 +2416,32 @@
 
             ${(totalReactions > 0 || totalComments > 0) ? `
               <div class="fb-summary-bar">
-                <div class="fb-stacked-reactions">
-                  <div class="fb-reaction-icon-stack">${reactionIconsStack}</div>
-                  <span style="margin-left: 3px; font-weight: 700;">${totalReactions > 0 ? totalReactions : ''}</span>
-                </div>
-                <div>${totalComments} bình luận</div>
+                <span>❤️👍 ${totalReactions > 0 ? totalReactions : ''}</span>
+                <span>${totalComments} bình luận</span>
               </div>
             ` : ''}
 
             <div class="fb-action-bar" id="actionBar_${p.id}">
               <div id="hoverDock_${p.id}" class="fb-reaction-hover-dock hidden">
-                <button onclick="reactPost('${p.id}', 'like')" class="fb-dock-item" title="Thích">👍</button>
-                <button onclick="reactPost('${p.id}', 'love')" class="fb-dock-item" title="Yêu thích">❤️</button>
-                <button onclick="reactPost('${p.id}', 'haha')" class="fb-dock-item" title="Haha">😆</button>
-                <button onclick="reactPost('${p.id}', 'sad')" class="fb-dock-item" title="Buồn">😢</button>
-                <button onclick="reactPost('${p.id}', 'angry')" class="fb-dock-item" title="Phẫn nộ">😡</button>
+                <button onclick="reactPost('${p.id}', 'like')" class="fb-dock-item">👍</button>
+                <button onclick="reactPost('${p.id}', 'love')" class="fb-dock-item">❤️</button>
+                <button onclick="reactPost('${p.id}', 'haha')" class="fb-dock-item">😆</button>
+                <button onclick="reactPost('${p.id}', 'sad')" class="fb-dock-item">😢</button>
+                <button onclick="reactPost('${p.id}', 'angry')" class="fb-dock-item">😡</button>
               </div>
 
               <button onclick="toggleReactionDock('${p.id}')" class="fb-action-btn ${reactions.like > 0 ? 'active-like' : ''}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
                 <span>Thích</span>
               </button>
 
               <button onclick="focusCommentBox('${p.id}')" class="fb-action-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 <span>Bình luận</span>
               </button>
 
               <button onclick="openPostActionSheet('${p.id}', '${p.authorId}')" class="fb-action-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 <span>Chia sẻ</span>
               </button>
             </div>
@@ -3610,12 +2456,12 @@
                       </div>
                       <div>
                         <div class="fb-comment-bubble-box">
-                          <h5 class="fb-comment-user" onclick="openMemberProfileModal('${c.authorId || c.authorName}')">${escapeHTML(c.authorName)}</h5>
-                          <p class="fb-comment-text selectable-text">${escapeHTML(c.text || c.commentText || c.content || '')}</p>
+                          <h5 style="font-size: 11px; font-weight: 800; color: #0f172a; cursor: pointer;" onclick="openMemberProfileModal('${c.authorId || c.authorName}')">${escapeHTML(c.authorName)}</h5>
+                          <p class="fb-comment-text selectable-text" style="font-size: 11.5px; margin-top: 2px;">${escapeHTML(c.text || c.commentText || '')}</p>
                         </div>
-                        <div class="fb-comment-footer-actions">
+                        <div style="display: flex; gap: 12px; margin-top: 2px; padding-left: 10px; font-size: 10px; font-weight: 700; color: #64748b;">
                           <span>${formatRelativeTime(c.time)}</span>
-                          <button onclick="setReplyingComment('${p.id}', '${c.id || c.authorName}', '${c.authorName}')">Trả lời</button>
+                          <button onclick="setReplyingComment('${p.id}', '${c.id || c.authorName}', '${c.authorName}')" style="background: transparent; border: none; cursor: pointer; color: #64748b; font-size: 10px; font-weight: 700;">Trả lời</button>
                         </div>
                       </div>
                     </div>
@@ -3629,12 +2475,11 @@
                             </div>
                             <div>
                               <div class="fb-comment-bubble-box" style="background:#ffffff;">
-                                <h5 class="fb-comment-user" style="color:var(--primary);" onclick="openMemberProfileModal('${r.authorId || r.authorName}')">${escapeHTML(r.authorName)}</h5>
-                                <p class="fb-comment-text selectable-text">${escapeHTML(r.text || r.commentText || r.content || '')}</p>
+                                <h5 style="font-size: 10.5px; font-weight: 800; color: var(--primary);" onclick="openMemberProfileModal('${r.authorId || r.authorName}')">${escapeHTML(r.authorName)}</h5>
+                                <p class="fb-comment-text selectable-text" style="font-size: 11px;">${escapeHTML(r.text || r.commentText || '')}</p>
                               </div>
-                              <div class="fb-comment-footer-actions">
+                              <div style="font-size: 9.5px; color: #64748b; padding-left: 8px; margin-top: 1px;">
                                 <span>${formatRelativeTime(r.time)}</span>
-                                <button onclick="setReplyingComment('${p.id}', '${c.id || c.authorName}', '${r.authorName}')">Trả lời lại</button>
                               </div>
                             </div>
                           </div>
@@ -3651,9 +2496,6 @@
               </div>
 
               <div style="display: flex; gap: 7px; margin-top: 8px; align-items: center;">
-                <div class="fb-comment-avatar" style="width: 28px; height: 28px;">
-                  ${escapeHTML((currentMember ? currentMember.hoTen : 'A').charAt(0))}
-                </div>
                 <input type="text" id="iptComment_${p.id}" placeholder="Viết bình luận công khai..." class="input-box" style="margin-top: 0; padding: 7px 12px; font-size: 11.5px; border-radius: 18px; flex: 1;">
                 <button onclick="submitCommentAction('${p.id}')" class="spring-touch" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; border: none; display: flex; align-items: center; justify-content: center;">
                   <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -3667,9 +2509,7 @@
 
     function toggleReactionDock(postId) {
       const dock = document.getElementById("hoverDock_" + postId);
-      if (dock) {
-        dock.classList.toggle("hidden");
-      }
+      if (dock) dock.classList.toggle("hidden");
     }
 
     function focusCommentBox(postId) {
@@ -3731,30 +2571,14 @@
       const post = postsList.find(p => p.id === postId);
       if (post) {
         if (!post.comments) post.comments = [];
-        
         if (replyTarget && replyTarget.postId === postId) {
           const parent = post.comments.find(c => c.id === replyTarget.commentId || c.authorName === replyTarget.commentId);
           if (parent) {
             if (!parent.replies) parent.replies = [];
-            parent.replies.push({
-              id: 'REP_' + Date.now(),
-              authorId: currentMember ? currentMember.id : 'CLB001',
-              authorName: currentMember ? currentMember.hoTen : 'Thành viên',
-              text: text,
-              time: 'Vừa xong'
-            });
-          } else {
-            post.comments.push({ id: 'CMT_' + Date.now(), authorId: currentMember ? currentMember.id : 'CLB001', authorName: currentMember ? currentMember.hoTen : 'Thành viên', text: text, time: 'Vừa xong', replies: [] });
+            parent.replies.push({ id: 'REP_' + Date.now(), authorName: currentMember ? currentMember.hoTen : 'Thành viên', text: text, time: 'Vừa xong' });
           }
         } else {
-          post.comments.push({
-            id: 'CMT_' + Date.now(),
-            authorId: currentMember ? currentMember.id : 'CLB001',
-            authorName: currentMember ? currentMember.hoTen : 'Thành viên',
-            text: text,
-            time: 'Vừa xong',
-            replies: []
-          });
+          post.comments.push({ id: 'CMT_' + Date.now(), authorName: currentMember ? currentMember.hoTen : 'Thành viên', text: text, time: 'Vừa xong', replies: [] });
         }
         renderPosts();
       }
@@ -3766,39 +2590,455 @@
         await fetch(BACKEND_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            action: "addComment",
-            postId: postId,
-            authorId: currentMember ? currentMember.id : "CLB001",
-            commentText: text,
-            replyToId: replyTarget ? replyTarget.commentId : null
-          })
+          body: JSON.stringify({ action: "addComment", postId: postId, authorId: currentMember ? currentMember.id : "CLB001", commentText: text, replyToId: replyTarget ? replyTarget.commentId : null })
         });
       } catch (e) {}
     }
 
-    function makePhoneCall(phone) {
-      if (!phone || phone === '---' || phone.includes('Chủ nhiệm') || phone.includes('Trưởng ban')) {
-        return triggerAquaNotification("Thông Báo", "Chưa có số điện thoại.", "warning");
+    function handleMultiMediaSelect(e) {
+      const files = Array.from(e.target.files);
+      if (!files.length) return;
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const maxDim = 360;
+            let width = img.width;
+            let height = img.height;
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL("image/jpeg", 0.52);
+            currentUploadedMediaList.push({ url: compressedBase64, type: 'image' });
+            renderMediaPreviewGrid();
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      e.target.value = '';
+    }
+
+    function renderMediaPreviewGrid() {
+      const box = document.getElementById("multiMediaPreviewBox");
+      const grid = document.getElementById("mediaThumbnailsGrid");
+      if (!currentUploadedMediaList.length) {
+        box.classList.add("hidden");
+        grid.innerHTML = '';
+        return;
       }
+      box.classList.remove("hidden");
+      grid.innerHTML = currentUploadedMediaList.map((m, idx) => `
+        <div class="media-thumb">
+          <img src="${m.url}" alt="Preview">
+          <button type="button" onclick="removeMediaItem(${idx})" class="thumb-del">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removeMediaItem(index) {
+      currentUploadedMediaList.splice(index, 1);
+      renderMediaPreviewGrid();
+    }
+
+    function openMemberProfileModal(memberIdentifier) {
+      if (!memberIdentifier) return;
+      let target = membersList.find(m => m.id === memberIdentifier || m.hoTen === memberIdentifier);
+      if (!target && currentMember && (currentMember.id === memberIdentifier || currentMember.hoTen === memberIdentifier)) target = currentMember;
+      if (!target) target = { id: memberIdentifier, hoTen: memberIdentifier, chucVu: 'Thành viên CLB', soCa: 0, theTrang: 'Khỏe mạnh', status: 'Sẵn sàng', sdt: '---', ice: '---' };
+
+      viewingOtherMember = target;
+      document.getElementById("otherMemName").innerText = target.hoTen;
+      document.getElementById("otherMemRole").innerText = target.chucVu || 'Thành viên';
+      document.getElementById("otherMemId").innerText = "ID: " + (target.id || '---');
+      document.getElementById("otherMemDuty").innerText = (target.soCa || 0) + " ca";
+      document.getElementById("otherMemStat").innerText = target.status || 'Sẵn sàng';
+      document.getElementById("otherMemFit").innerText = getShortTheTrangText(target.theTrang);
+      document.getElementById("otherClass").innerText = target.lop || '---';
+      document.getElementById("otherMssv").innerText = target.mssv || '---';
+      document.getElementById("otherFaculty").innerText = target.khoa || '---';
+      document.getElementById("otherDept").innerText = target.boMon || '---';
+      document.getElementById("otherPhone").innerText = target.sdt || '---';
+      document.getElementById("otherIce").innerText = target.ice || '---';
+      document.getElementById("otherMed").innerText = target.yTe || 'Bình thường';
+
+      const initial = (target.hoTen || "A").split(" ").pop().charAt(0).toUpperCase();
+      const avtBox = document.getElementById("otherMemAvatarBox");
+      if (target.avatar && target.avatar.startsWith("data:image")) avtBox.innerHTML = `<img src="${target.avatar}">`;
+      else avtBox.innerHTML = `<span>${initial}</span>`;
+
+      document.getElementById("modalMemberDetail").classList.remove("hidden");
+      lockBodyScroll();
+    }
+
+    function closeMemberProfileModal() {
+      document.getElementById("modalMemberDetail").classList.add("hidden");
+      unlockBodyScroll();
+      viewingOtherMember = null;
+    }
+
+    function closeMemberProfileModalOnBackdrop(e) {
+      if (e.target.id === "modalMemberDetail") closeMemberProfileModal();
+    }
+
+    function callTargetMemberPhone() {
+      if (viewingOtherMember && viewingOtherMember.sdt && viewingOtherMember.sdt !== '---') makePhoneCall(viewingOtherMember.sdt);
+      else triggerAquaNotification("Thông Báo", "Thành viên này chưa cập nhật SĐT!", "warning");
+    }
+
+    function callTargetMemberIce() {
+      if (viewingOtherMember && viewingOtherMember.ice && viewingOtherMember.ice !== '---') makePhoneCall(viewingOtherMember.ice);
+      else triggerAquaNotification("Thông Báo", "Chưa có thông tin số cấp cứu (ICE)!", "warning");
+    }
+
+    function openDirectoryModal() {
+      document.getElementById("iptSearchDirectory").value = "";
+      renderDirectoryList(membersList);
+      document.getElementById("modalDirectory").classList.remove("hidden");
+      lockBodyScroll();
+    }
+
+    function closeDirectoryModal() {
+      document.getElementById("modalDirectory").classList.add("hidden");
+      unlockBodyScroll();
+    }
+
+    function closeDirectoryModalOnBackdrop(e) {
+      if (e.target.id === "modalDirectory") closeDirectoryModal();
+    }
+
+    function filterDirectoryMembers() {
+      const rawQ = (document.getElementById("iptSearchDirectory").value || "").trim();
+      if (!rawQ) {
+        renderDirectoryList(membersList);
+        return;
+      }
+      const q = removeVietnameseTones(rawQ);
+      const filtered = membersList.filter(m => 
+        (m.hoTen && removeVietnameseTones(m.hoTen).includes(q)) ||
+        (m.id && m.id.toLowerCase().includes(q)) ||
+        (m.chucVu && removeVietnameseTones(m.chucVu).includes(q))
+      );
+      renderDirectoryList(filtered);
+    }
+
+    function renderDirectoryList(list) {
+      const container = document.getElementById("directoryListContainer");
+      if (!list || !list.length) {
+        container.innerHTML = `<div style="text-align: center; font-size: 11.5px; color: #94a3b8; padding: 18px;">Không tìm thấy thành viên.</div>`;
+        return;
+      }
+      container.innerHTML = list.map(m => {
+        const initial = (m.hoTen || "A").split(" ").pop().charAt(0).toUpperCase();
+        return `
+          <div onclick="openMemberProfileModal('${m.id}')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 14px; background: rgba(255, 255, 255, 0.95); border: 1px solid #e2e8f0; width: 100%; text-align: left;">
+            <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
+              <div style="width: 34px; height: 34px; border-radius: 12px; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; overflow: hidden;">
+                ${m.avatar && m.avatar.startsWith('data:image') ? `<img src="${m.avatar}" style="width:100%;height:100%;object-fit:cover;">` : initial}
+              </div>
+              <div style="min-width: 0; flex: 1;">
+                <h5 style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(m.hoTen)}</h5>
+                <p style="font-size: 10px; color: #64748b;">${escapeHTML(m.chucVu || 'Thành viên')} &bull; ${m.id}</p>
+              </div>
+            </div>
+            <span style="font-size: 9.5px; color: #6366f1; font-weight: 700;">${m.soCa || 0} ca</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openLightbox(postId, startIndex = 0) {
+      const post = postsList.find(p => p.id === postId);
+      if (!post || !post.mediaList || !post.mediaList.length) return;
+      currentLightboxMediaList = post.mediaList;
+      currentLightboxIndex = startIndex;
+      lockBodyScroll();
+      document.getElementById("lightboxModal").classList.add("active");
+      document.getElementById("lbAuthorTag").innerText = `Ảnh của ${post.authorName}`;
+      updateLightboxContent();
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightboxModal").classList.remove("active");
+      unlockBodyScroll();
+      currentLightboxMediaList = [];
+    }
+
+    function closeLightboxOnBackdrop(e) {
+      if (e.target.id === "lightboxModal") closeLightbox();
+    }
+
+    function navigateLightbox(dir) {
+      currentLightboxIndex += dir;
+      if (currentLightboxIndex < 0) currentLightboxIndex = currentLightboxMediaList.length - 1;
+      if (currentLightboxIndex >= currentLightboxMediaList.length) currentLightboxIndex = 0;
+      updateLightboxContent();
+    }
+
+    function updateLightboxContent() {
+      const container = document.getElementById("lbMediaContainer");
+      document.getElementById("lbCounter").innerText = `${currentLightboxIndex + 1} / ${currentLightboxMediaList.length}`;
+      const media = currentLightboxMediaList[currentLightboxIndex];
+      container.innerHTML = `<img src="${media.url}" alt="HD" style="max-width:100%;max-height:78vh;object-fit:contain;border-radius:12px;">`;
+    }
+
+    function openPostActionSheet(postId, authorId) {
+      activePostActionId = postId;
+      activePostActionAuthorId = authorId;
+      const sheet = document.getElementById("postActionSheet");
+      const delBtn = document.getElementById("btnSheetDeletePost");
+      const isAdm = currentMember && currentMember.isAdmin;
+      const isMyPost = currentMember && currentMember.id === authorId;
+      if (isAdm || isMyPost) delBtn.classList.remove("hidden");
+      else delBtn.classList.add("hidden");
+      sheet.classList.add("active");
+      lockBodyScroll();
+    }
+
+    function closePostActionSheet(e) {
+      if (e.target.id === "postActionSheet") closePostActionSheetDirect();
+    }
+
+    function closePostActionSheetDirect() {
+      document.getElementById("postActionSheet").classList.remove("active");
+      unlockBodyScroll();
+      activePostActionId = null;
+    }
+
+    function executeCopyPostLink() {
+      closePostActionSheetDirect();
+      navigator.clipboard.writeText(window.location.href);
+      triggerAquaNotification("Đã Sao Chép", "Đã sao chép liên kết vào bộ nhớ tạm!", "success");
+    }
+
+    async function executeSheetDeletePost() {
+      const postId = activePostActionId;
+      closePostActionSheetDirect();
+      if (!postId) return;
+      postsList = postsList.filter(p => p.id !== postId);
+      renderPosts();
+      triggerAquaNotification("Đã Xóa", "Bài viết đã được gỡ khỏi diễn đàn!", "success");
+      try {
+        await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "deletePost", postId: postId, memberId: currentMember ? currentMember.id : "" })
+        });
+      } catch (e) {}
+    }
+
+    function openTheTrangModal() { document.getElementById("modalTheTrang").classList.remove("hidden"); lockBodyScroll(); }
+    function closeTheTrangModal() { document.getElementById("modalTheTrang").classList.add("hidden"); unlockBodyScroll(); }
+    function closeTheTrangModalOnBackdrop(e) { if (e.target.id === "modalTheTrang") closeTheTrangModal(); }
+
+    async function selectTheTrang(val) {
+      closeTheTrangModal();
+      if (!currentMember) return;
+      currentMember.theTrang = val;
+      updateTheTrangUI(val);
+      localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
+      triggerAquaNotification("Thể Trạng", "Đã cập nhật: " + getShortTheTrangText(val), "success");
+      try {
+        await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "updateTheTrang", memberId: currentMember.id, theTrang: val })
+        });
+      } catch (e) {}
+    }
+
+    function openAvatarModal() { document.getElementById("modalAvatar").classList.remove("hidden"); lockBodyScroll(); }
+    function closeAvatarModal() { document.getElementById("modalAvatar").classList.add("hidden"); unlockBodyScroll(); pendingAvatarBase64 = null; }
+    function previewAvatarUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = 180; canvas.height = 180;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, 180, 180);
+          pendingAvatarBase64 = canvas.toDataURL("image/jpeg", 0.75);
+          const prev = document.getElementById("imgAvatarPreview");
+          prev.src = pendingAvatarBase64;
+          prev.classList.remove("hidden");
+          document.getElementById("txtAvatarPh").classList.add("hidden");
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function saveAvatarUpload() {
+      if (!pendingAvatarBase64) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn ảnh trước!", "warning");
+      currentMember.avatar = pendingAvatarBase64;
+      localStorage.setItem("CLB_MEMBER_SESSION", JSON.stringify(currentMember));
+      renderAvatarUI(currentMember.avatar, currentMember.hoTen);
+      closeAvatarModal();
+      triggerAquaNotification("Ảnh Đại Diện", "Đã lưu ảnh chân dung mới!", "success");
+      try {
+        await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "updateAvatar", memberId: currentMember.id, avatarBase64: pendingAvatarBase64 })
+        });
+      } catch (e) {}
+    }
+
+    function openServerConfigModal() { document.getElementById("iptCustomBackendUrl").value = BACKEND_URL; document.getElementById("modalServerConfig").classList.remove("hidden"); lockBodyScroll(); }
+    function closeServerConfigModal() { document.getElementById("modalServerConfig").classList.add("hidden"); unlockBodyScroll(); }
+    function saveServerConfigAction() {
+      const val = document.getElementById("iptCustomBackendUrl").value.trim();
+      if (!val) return;
+      BACKEND_URL = val;
+      localStorage.setItem("CLB_CUSTOM_BACKEND_URL", val);
+      closeServerConfigModal();
+      triggerAquaNotification("Cấu Hình", "Đã lưu URL máy chủ!", "success");
+    }
+
+    function openCreateTaskModal() { populateMemberDropdowns(); setTaskMode('standard'); document.getElementById("modalCreateTask").classList.remove("hidden"); lockBodyScroll(); }
+    function closeCreateTaskModal() { document.getElementById("modalCreateTask").classList.add("hidden"); unlockBodyScroll(); }
+
+    function setTaskMode(mode) {
+      currentTaskCreateMode = mode;
+      const bStd = document.getElementById("btnTaskModeStandard");
+      const bSpc = document.getElementById("btnTaskModeSpecial");
+      const boxStd = document.getElementById("boxStandardTaskSettings");
+      const boxSpc = document.getElementById("boxSpecialTaskSettings");
+      if (mode === 'standard') {
+        bStd.style.background = "white"; bStd.style.color = "#6b21a8";
+        bSpc.style.background = "transparent"; bSpc.style.color = "#64748b";
+        boxStd.classList.remove("hidden"); boxSpc.classList.add("hidden");
+      } else {
+        bSpc.style.background = "white"; bSpc.style.color = "#6b21a8";
+        bStd.style.background = "transparent"; bStd.style.color = "#64748b";
+        boxStd.classList.add("hidden"); boxSpc.classList.remove("hidden");
+        renderSpecialTaskCheckboxes();
+      }
+    }
+
+    function renderSpecialTaskCheckboxes() {
+      const container = document.getElementById("specialTaskMemberListContainer");
+      if (!container) return;
+      container.innerHTML = membersList.map(m => `
+        <label style="display: flex; align-items: center; justify-content: space-between; padding: 6px 9px; border-radius: 9px; background: #ffffff; border: 1px solid #f0e7ff; font-size: 11px; cursor: pointer;">
+          <span style="font-weight: 700; color: #4a044e;">${escapeHTML(m.hoTen)} (${m.id})</span>
+          <input type="checkbox" value="${m.id}" onchange="updateSpecialSelectedCount()" class="chk-special-member" style="width: 14px; height: 14px; accent-color: #9333ea;">
+        </label>
+      `).join('');
+      updateSpecialSelectedCount();
+    }
+
+    function updateSpecialSelectedCount() {
+      const count = document.querySelectorAll(".chk-special-member:checked").length;
+      document.getElementById("selectedSpecialCountBadge").innerText = `Đã chọn: ${count}`;
+    }
+
+    async function submitCreateTaskAction() {
+      const title = document.getElementById("iptTaskTitle").value.trim();
+      const loc = document.getElementById("iptTaskLocation").value.trim();
+      const time = document.getElementById("iptTaskTime").value.trim();
+      const isSpecial = currentTaskCreateMode === 'special';
+      let quota = document.getElementById("iptTaskQuota").value;
+      let deadline = document.getElementById("iptTaskDeadline").value;
+      let designated = [];
+
+      if (isSpecial) {
+        designated = Array.from(document.querySelectorAll(".chk-special-member:checked")).map(b => b.value);
+        if (!designated.length) return triggerAquaNotification("Cảnh Báo", "Vui lòng chọn thành viên!", "warning");
+        quota = designated.length; deadline = '';
+      }
+      if (!title || !loc || !time) return triggerAquaNotification("Cảnh Báo", "Vui lòng điền đủ thông tin!", "warning");
+
+      closeCreateTaskModal();
+      triggerAquaNotification("Ban Hành Lệnh", "Đang ghi nhận nhiệm vụ mới...", "loading");
+
+      try {
+        await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "createTask", adminId: currentMember.id, title, location: loc, time, quota, lockDeadline: deadline, isSpecial, designatedMembers: designated })
+        });
+        syncRealtimeData(false);
+      } catch (e) {}
+    }
+
+    function openAdminModal() { populateMemberDropdowns(); renderSwapsList(); document.getElementById("modalAdmin").classList.remove("hidden"); lockBodyScroll(); }
+    function closeAdminModal() { document.getElementById("modalAdmin").classList.add("hidden"); unlockBodyScroll(); }
+
+    function populateMemberDropdowns() {
+      const selAdmin = document.getElementById("selAdminMember");
+      if (selAdmin) {
+        const opts = membersList.map(m => `<option value="${m.id}">${escapeHTML(m.hoTen)} (${m.id} - ${m.soCa || 0} ca)</option>`).join('');
+        selAdmin.innerHTML = `<option value="">-- Chọn thành viên --</option>` + opts;
+      }
+    }
+
+    async function adminAddDutyAction(amount) {
+      const sel = document.getElementById("selAdminMember");
+      const targetId = sel.value;
+      if (!targetId) return;
+      triggerAquaNotification("Đang Xử Lý", "Đang cộng ca...", "loading");
+      try {
+        await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "adjustDuty", adminId: currentMember.id, targetMemberId: targetId, amount })
+        });
+        syncRealtimeData(false);
+      } catch (e) {}
+    }
+
+    function openTagMemberModal() {
+      const container = document.getElementById("tagMemberListContainer");
+      container.innerHTML = membersList.map(m => `
+        <label style="display: flex; align-items: center; justify-content: space-between; padding: 7px 9px; border-radius: 10px; background: rgba(248, 250, 252, 0.9); border: 1px solid #e2e8f0; font-size: 11px; cursor: pointer;">
+          <span style="font-weight: 700; color: #1e293b;">${escapeHTML(m.hoTen)}</span>
+          <input type="checkbox" value="${escapeHTML(m.hoTen)}" ${currentSelectedTags.includes(m.hoTen) ? 'checked' : ''} class="tag-checkbox" style="width: 15px; height: 15px; accent-color: var(--primary);">
+        </label>
+      `).join('');
+      document.getElementById("modalTagFriends").classList.remove("hidden");
+      lockBodyScroll();
+    }
+
+    function applyTagSelection() {
+      currentSelectedTags = Array.from(document.querySelectorAll(".tag-checkbox:checked")).map(b => b.value);
+      renderTaggedTagsUI();
+      document.getElementById("modalTagFriends").classList.add("hidden");
+      unlockBodyScroll();
+    }
+
+    function renderTaggedTagsUI() {
+      const box = document.getElementById("taggedMembersBox");
+      if (!currentSelectedTags.length) { box.classList.add("hidden"); box.innerHTML = ''; return; }
+      box.classList.remove("hidden");
+      box.innerHTML = currentSelectedTags.map(t => `<span style="font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 8px; background: #e0e7ff; color: #4338ca;">@${t}</span>`).join('');
+    }
+
+    function makePhoneCall(phone) {
+      if (!phone || phone === '---') return;
       window.location.href = "tel:" + phone.replace(/[^0-9+]/g, "");
     }
-
-    function callContactDirect() {
-      if (currentMember && currentMember.sdt && currentMember.sdt !== '---' && !currentMember.sdt.includes('CLB')) {
-        makePhoneCall(currentMember.sdt);
-      } else {
-        triggerAquaNotification("Thông Báo", "Chưa có thông tin số điện thoại liên hệ cá nhân.", "warning");
-      }
-    }
-
-    function callEmergencyDirect() {
-      if (currentMember && currentMember.ice && currentMember.ice !== '---') {
-        makePhoneCall(currentMember.ice);
-      } else {
-        triggerAquaNotification("Cấp Cứu ICE", "Chưa cập nhật số liên hệ khẩn cấp (ICE) của người thân!", "error");
-      }
-    }
+    function callContactDirect() { if (currentMember && currentMember.sdt) makePhoneCall(currentMember.sdt); }
+    function callEmergencyDirect() { if (currentMember && currentMember.ice) makePhoneCall(currentMember.ice); }
 
     function logout() {
       clearForumDraftState();
