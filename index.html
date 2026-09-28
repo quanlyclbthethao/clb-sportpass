@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>CLB Thể Thao - Digital Pass & Forum</title>
+  <title>CLB Thể Thao - Digital Pass & Forum Flagship</title>
   
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#f1f5fb">
@@ -22,6 +22,7 @@
       --primary-light: #818cf8;
       --primary-dark: #4f46e5;
       --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #6366f1 55%, #4f46e5 100%);
+      --emerald-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
       --emergency-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 60%, #b91c1c 100%);
       --acrylic-bg: rgba(255, 255, 255, 0.88);
       --acrylic-border: rgba(255, 255, 255, 0.95);
@@ -42,6 +43,36 @@
       user-select: none;
     }
 
+    /* Cho phép chọn văn bản đối với thông tin cần sao chép */
+    .selectable-text, .info-data, .fb-post-body-text, .fb-comment-text {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+    }
+
+    /* THANH CUỘN SIÊU MƯỢT LIQUID ACRYLIC COLOROS 17 */
+    .custom-scroll {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(99, 102, 241, 0.28) transparent;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.25);
+      border-radius: 9999px;
+      transition: background 0.2s ease;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.5);
+    }
+
     body {
       background-color: #f1f5fb;
       background-image: 
@@ -49,6 +80,7 @@
         radial-gradient(at 100% 100%, rgba(254, 215, 226, 0.48) 0px, transparent 50%),
         radial-gradient(at 50% 50%, rgba(224, 231, 255, 0.42) 0px, transparent 55%);
       background-attachment: fixed;
+      min-height: 100vh;
       min-height: 100dvh;
       color: var(--text-main);
       display: flex;
@@ -114,6 +146,7 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
+      touch-action: manipulation;
     }
     .spring-touch:active {
       transform: scale(0.94);
@@ -124,7 +157,7 @@
       color: #ffffff;
       font-weight: 800;
       font-size: 13px;
-      padding: 12px 20px;
+      padding: 11px 18px;
       border-radius: 17px;
       box-shadow: 0 6px 18px rgba(99, 102, 241, 0.32);
     }
@@ -188,13 +221,13 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 70%);
-      animation: emergencyPulse 2.5s infinite;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.15) 0%, transparent 70%);
+      animation: emergencyPulse 2.4s infinite;
       pointer-events: none;
     }
     @keyframes emergencyPulse {
-      0%, 100% { transform: scale(0.9); opacity: 0.6; }
-      50% { transform: scale(1.15); opacity: 1; }
+      0%, 100% { transform: scale(0.9); opacity: 0.5; }
+      50% { transform: scale(1.18); opacity: 1; }
     }
 
     .input-box {
@@ -304,8 +337,8 @@
       flex-shrink: 0;
     }
     .icon-square-btn {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(12px);
@@ -317,8 +350,8 @@
       cursor: pointer;
     }
     .icon-square-btn svg {
-      width: 16px;
-      height: 16px;
+      width: 17px;
+      height: 17px;
     }
 
     .avatar-wrapper {
@@ -363,7 +396,7 @@
       height: 13px;
     }
 
-    /* BẢNG CHỈ SỐ: FIX TRIỆT ĐỂ LỒI CHỮ & CĂN CHỈNH CO GIÃN THÔNG MINH */
+    /* BẢNG CHỈ SỐ: CO GIÃN THÔNG MINH, CHỐNG TRÀN CHỮ */
     .metrics-row {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -616,13 +649,13 @@
       position: absolute;
       top: 3px;
       right: 3px;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(4px);
       color: white;
-      border: none;
+      border: 1px solid rgba(255,255,255,0.4);
       font-size: 11px;
       font-weight: 900;
       display: flex;
@@ -942,7 +975,7 @@
     .lightbox-screen {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.94);
+      background: rgba(0, 0, 0, 0.95);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       z-index: 10000;
@@ -1268,14 +1301,14 @@
           </h3>
           <span style="font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer;" onclick="openDirectoryModal()">Xem danh bạ CLB &rsaquo;</span>
         </div>
-        <div class="info-line"><span class="info-label">Lớp:</span><span id="dClass" class="info-data">---</span></div>
-        <div class="info-line"><span class="info-label">MSSV:</span><span id="dMssv" class="info-data" style="font-family: monospace;">---</span></div>
-        <div class="info-line"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="info-data">---</span></div>
-        <div class="info-line"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="info-data">---</span></div>
-        <div class="info-line"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="info-data">---</span></div>
-        <div class="info-line"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="info-data" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-line"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="info-data" style="color: #dc2626; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-line"><span class="info-label">Y Tế &amp; Sức Khỏe:</span><span id="dMed" class="info-data" style="color: #e11d48;">---</span></div>
+        <div class="info-line"><span class="info-label">Lớp:</span><span id="dClass" class="info-data selectable-text">---</span></div>
+        <div class="info-line"><span class="info-label">MSSV:</span><span id="dMssv" class="info-data selectable-text" style="font-family: monospace;">---</span></div>
+        <div class="info-line"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="info-data selectable-text">---</span></div>
+        <div class="info-line"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="info-data selectable-text">---</span></div>
+        <div class="info-line"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="info-data selectable-text">---</span></div>
+        <div class="info-line"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="info-data selectable-text" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-line"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="info-data selectable-text" style="color: #dc2626; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-line"><span class="info-label">Y Tế &amp; Sức Khỏe:</span><span id="dMed" class="info-data selectable-text" style="color: #e11d48;">---</span></div>
       </section>
     </div>
 
@@ -1314,7 +1347,7 @@
               <span id="composerAuthorName" style="font-size: 13px; font-weight: 800; color: #0f172a;">Nguyễn Văn A</span>
               
               <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700; color: #64748b; cursor: pointer; background: rgba(241, 245, 249, 0.95); padding: 3px 9px; border-radius: 12px; border: 1px solid #e2e8f0;">
-                <input type="checkbox" id="chkAnonymousPost" style="width: 12px; height: 12px; accent-color: var(--primary);">
+                <input type="checkbox" id="chkAnonymousPost" onchange="toggleAnonymousComposer(this.checked)" style="width: 12px; height: 12px; accent-color: var(--primary);">
                 <span>Ẩn danh 🎭</span>
               </label>
             </div>
@@ -1397,9 +1430,9 @@
     </div>
   </div>
 
-  <!-- MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC (MEMBER PROFILE INSPECTOR) -->
+  <!-- MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC (MEMBER PROFILE INSPECTOR - BỎ THANH TRƯỢT THÔ, CUSTOM SMOOTH SCROLL) -->
   <div id="modalMemberDetail" class="modal-backdrop hidden" onclick="closeMemberProfileModalOnBackdrop(event)">
-    <div class="acrylic-card" style="width: 100%; max-width: 380px; max-height: 85vh; overflow-y: auto; margin-bottom: 0; position: relative;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 380px; max-height: 85vh; margin-bottom: 0; position: relative; padding: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
         <span style="font-size: 10.5px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Hồ Sơ Thành Viên</span>
         <button onclick="closeMemberProfileModal()" class="spring-touch" style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 14px;">✕</button>
@@ -1444,13 +1477,13 @@
       </div>
 
       <div style="border-top: 1px solid #f1f5f9; padding-top: 8px;">
-        <div class="info-line"><span class="info-label">Lớp:</span><span id="otherClass" class="info-data">---</span></div>
-        <div class="info-line"><span class="info-label">MSSV:</span><span id="otherMssv" class="info-data" style="font-family: monospace;">---</span></div>
-        <div class="info-line"><span class="info-label">Khoa / Viện:</span><span id="otherFaculty" class="info-data">---</span></div>
-        <div class="info-line"><span class="info-label">Bộ Môn / Ban:</span><span id="otherDept" class="info-data">---</span></div>
-        <div class="info-line"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="info-data" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-line"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="info-data" style="color: #dc2626; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-line"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="info-data" style="color: #e11d48;">---</span></div>
+        <div class="info-line"><span class="info-label">Lớp:</span><span id="otherClass" class="info-data selectable-text">---</span></div>
+        <div class="info-line"><span class="info-label">MSSV:</span><span id="otherMssv" class="info-data selectable-text" style="font-family: monospace;">---</span></div>
+        <div class="info-line"><span class="info-label">Khoa / Viện:</span><span id="otherFaculty" class="info-data selectable-text">---</span></div>
+        <div class="info-line"><span class="info-label">Bộ Môn / Ban:</span><span id="otherDept" class="info-data selectable-text">---</span></div>
+        <div class="info-line"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="info-data selectable-text" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-line"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="info-data selectable-text" style="color: #dc2626; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-line"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="info-data selectable-text" style="color: #e11d48;">---</span></div>
       </div>
 
       <div class="call-actions-grid" style="margin-top: 14px;">
@@ -1466,9 +1499,9 @@
     </div>
   </div>
 
-  <!-- MODAL DANH BẠ TOÀN THỂ THÀNH VIÊN CLB -->
+  <!-- MODAL DANH BẠ TOÀN THỂ THÀNH VIÊN CLB (CUSTOM SMOOTH SCROLL) -->
   <div id="modalDirectory" class="modal-backdrop hidden" onclick="closeDirectoryModalOnBackdrop(event)">
-    <div class="acrylic-card" style="width: 100%; max-width: 390px; max-height: 80vh; overflow-y: auto; margin-bottom: 0;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 390px; max-height: 82vh; margin-bottom: 0; padding: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a;">DANH BẠ THÀNH VIÊN CLB</h3>
         <button onclick="closeDirectoryModal()" class="spring-touch" style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 14px;">✕</button>
@@ -1476,7 +1509,7 @@
 
       <input type="text" id="iptSearchDirectory" oninput="filterDirectoryMembers()" placeholder="Tìm theo tên, ID, MSSV, ban..." class="input-box" style="margin-top: 0; margin-bottom: 10px; font-size: 11.5px; padding: 8px 12px;">
 
-      <div id="directoryListContainer" style="display: flex; flex-direction: column; gap: 7px; max-height: 55vh; overflow-y: auto;"></div>
+      <div id="directoryListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 7px; max-height: 58vh; padding-right: 2px;"></div>
     </div>
   </div>
 
@@ -1499,9 +1532,9 @@
     </div>
   </div>
 
-  <!-- MODAL CẬP NHẬT THỂ TRẠNG VỚI 10 MỤC TINH CHỈNH KHÔNG LỒI CHỮ -->
+  <!-- MODAL CẬP NHẬT THỂ TRẠNG VỚI THANH CUỘN SIÊU MƯỢT / CUSTOM SCROLL -->
   <div id="modalTheTrang" class="modal-backdrop hidden" onclick="closeTheTrangModalOnBackdrop(event)">
-    <div class="acrylic-card" style="width: 100%; max-width: 360px; max-height: 80vh; overflow-y: auto; margin-bottom: 0;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 360px; max-height: 82vh; margin-bottom: 0; padding: 16px;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a; text-align: center;">CẬP NHẬT THỂ TRẠNG</h3>
       <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Mỗi lựa chọn tự động đổi màu sắc &amp; huy hiệu nhận diện</p>
 
@@ -1696,7 +1729,7 @@
 
   <!-- MODAL TẠO LỆNH ĐIỀU ĐỘNG -->
   <div id="modalCreateTask" class="modal-backdrop hidden">
-    <div class="acrylic-card" style="width: 100%; max-width: 360px; margin-bottom: 0;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 360px; max-height: 85vh; margin-bottom: 0; padding: 16px;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #6b21a8; text-align: center;">TẠO LỆNH ĐIỀU ĐỘNG</h3>
       <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Tự khóa sổ hoặc chỉ định nhiều người trực tiếp</p>
 
@@ -1741,7 +1774,7 @@
             </label>
             <span id="selectedSpecialCountBadge" style="font-size: 9px; font-weight: 800; color: #9333ea; background: #f3e8ff; padding: 1px 5px; border-radius: 6px;">Đã chọn: 0</span>
           </div>
-          <div id="specialTaskMemberListContainer" style="max-height: 130px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 13px; padding: 4px; background: rgba(250, 245, 255, 0.88); display: flex; flex-direction: column; gap: 4px;"></div>
+          <div id="specialTaskMemberListContainer" class="custom-scroll" style="max-height: 140px; border: 1px solid #e2e8f0; border-radius: 13px; padding: 4px; background: rgba(250, 245, 255, 0.88); display: flex; flex-direction: column; gap: 4px;"></div>
         </div>
       </div>
 
@@ -1756,9 +1789,9 @@
     </div>
   </div>
 
-  <!-- MODAL ADMIN -->
+  <!-- MODAL ADMIN (CUSTOM SMOOTH SCROLL) -->
   <div id="modalAdmin" class="modal-backdrop hidden">
-    <div class="acrylic-card" style="width: 100%; max-width: 370px; max-height: 80vh; overflow-y: auto; margin-bottom: 0;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 370px; max-height: 82vh; margin-bottom: 0; padding: 16px;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #6b21a8; text-align: center;">TRUNG TÂM QUẢN TRỊ ADMIN</h3>
       
       <div style="margin: 12px 0; padding: 11px; background: rgba(253, 244, 255, 0.88); border-radius: 16px; border: 1px solid #f5d0fe;">
@@ -1774,7 +1807,7 @@
       </div>
 
       <h4 style="font-size: 10.5px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">Danh Sách Yêu Cầu Xin Xoay Ca</h4>
-      <div id="listSwapsContainer" style="display: flex; flex-direction: column; gap: 5px; max-height: 180px; overflow-y: auto;"></div>
+      <div id="listSwapsContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 5px; max-height: 180px;"></div>
 
       <button onclick="closeAdminModal()" class="spring-touch btn-sub" style="width: 100%; margin-top: 13px;">
         Đóng Bảng Admin
@@ -1782,12 +1815,12 @@
     </div>
   </div>
 
-  <!-- MODAL GẮN THẺ BẠN BÈ -->
+  <!-- MODAL GẮN THẺ BẠN BÈ (CUSTOM SMOOTH SCROLL) -->
   <div id="modalTagFriends" class="modal-backdrop hidden">
-    <div class="acrylic-card" style="width: 100%; max-width: 320px; max-height: 75vh; overflow-y: auto; margin-bottom: 0;">
+    <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 320px; max-height: 75vh; margin-bottom: 0; padding: 16px;">
       <h3 style="font-size: 14.5px; font-weight: 900; color: #0f172a; text-align: center;">GẮN THẺ ĐỒNG ĐỘI (@)</h3>
       <p style="font-size: 11px; color: #64748b; text-align: center; margin-top: 2px;">Chọn đồng đội bạn muốn nhắc tên trong bài viết</p>
-      <div id="tagMemberListContainer" style="display: flex; flex-direction: column; gap: 5px; margin: 11px 0;"></div>
+      <div id="tagMemberListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 5px; margin: 11px 0; max-height: 220px;"></div>
       <button onclick="applyTagSelection()" class="spring-touch btn-main" style="width: 100%; padding: 10px;">
         Xác Nhận Gắn Thẻ
       </button>
@@ -1920,12 +1953,53 @@
       }
     };
 
+    // HÀM BẢO VỆ XSS TOÀN DIỆN
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // CHUẨN HÓA TIẾNG VIỆT TÌM KIẾM
+    function removeVietnameseTones(str) {
+      if (!str) return '';
+      str = str.toLowerCase();
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+      str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+      str = str.replace(/đ/g, "d");
+      return str;
+    }
+
+    // TÍNH THỜI GIAN TƯƠNG ĐỐI
+    function formatRelativeTime(dateInput) {
+      if (!dateInput) return 'Vừa xong';
+      let date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+      if (isNaN(date.getTime())) {
+        return String(dateInput);
+      }
+      const now = new Date();
+      const diffSec = Math.floor((now - date) / 1000);
+      if (diffSec < 45) return 'Vừa xong';
+      if (diffSec < 3600) return `${Math.floor(diffSec / 60)} phút trước`;
+      if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} giờ trước`;
+      if (diffSec < 172800) return 'Hôm qua';
+      return cleanDateFormat(dateInput);
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       restoreSession();
       startAutoSyncLoop();
 
       document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && currentMember) {
+        if (!document.hidden && currentMember && navigator.onLine) {
           syncRealtimeData(false);
         }
       });
@@ -1945,17 +2019,47 @@
       } catch (e) {}
     }
 
+    function lockBodyScroll() {
+      document.body.classList.add("modal-open");
+    }
+
+    function unlockBodyScroll() {
+      const anyModalOpen = document.querySelectorAll(".modal-backdrop:not(.hidden), .lightbox-screen.active").length > 0;
+      if (!anyModalOpen) {
+        document.body.classList.remove("modal-open");
+      }
+    }
+
     function clearForumDraftState() {
       const ipt = document.getElementById("iptForumText");
       if (ipt) ipt.value = "";
       const chk = document.getElementById("chkAnonymousPost");
       if (chk) chk.checked = false;
+      toggleAnonymousComposer(false);
       const fileInput = document.getElementById("fileMultiMedia");
       if (fileInput) fileInput.value = "";
       currentUploadedMediaList = [];
       currentSelectedTags = [];
       renderMediaPreviewGrid();
       renderTaggedTagsUI();
+    }
+
+    function toggleAnonymousComposer(isAnon) {
+      const authorSpan = document.getElementById("composerAuthorName");
+      const avtBox = document.getElementById("forumAuthorAvtSmall");
+      if (!authorSpan) return;
+
+      if (isAnon) {
+        authorSpan.innerText = "Thành viên ẩn danh 🎭";
+        if (avtBox) {
+          avtBox.innerHTML = `<svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+        }
+      } else {
+        authorSpan.innerText = currentMember ? currentMember.hoTen : "Nguyễn Văn A";
+        if (avtBox && currentMember) {
+          renderAvatarUI(currentMember.avatar, currentMember.hoTen);
+        }
+      }
     }
 
     function restoreSession() {
@@ -2160,10 +2264,12 @@
     function openServerConfigModal() {
       document.getElementById("iptCustomBackendUrl").value = BACKEND_URL;
       document.getElementById("modalServerConfig").classList.remove("hidden");
+      lockBodyScroll();
     }
 
     function closeServerConfigModal() {
       document.getElementById("modalServerConfig").classList.add("hidden");
+      unlockBodyScroll();
     }
 
     function saveServerConfigAction() {
@@ -2191,7 +2297,6 @@
       if (!fullText) return 'Khỏe mạnh';
       const config = THE_TRANG_MAP[fullText];
       if (config && config.shortName) return config.shortName;
-      // Nếu chuỗi dài bất thường, cắt ngắn an toàn
       return fullText.split('(')[0].trim();
     }
 
@@ -2229,7 +2334,6 @@
       document.getElementById("memId").innerText = "ID: " + currentMember.id;
       document.getElementById("memDuty").innerText = (currentMember.soCa || 0) + " ca";
       
-      // Cập nhật thể trạng với màu sắc tương ứng và chữ rút gọn chống tràn
       updateTheTrangUI(currentMember.theTrang);
 
       const composerName = document.getElementById("composerAuthorName");
@@ -2266,8 +2370,8 @@
       if (!currentMember) return;
       const myId = currentMember.id;
       const isCurrentlyAssigned = tasksList.some(t => {
-        const inJoined = t.joinedMembers && t.joinedMembers.includes(myId);
-        const inAssigned = t.assignedMembers && t.assignedMembers.includes(myId);
+        const inJoined = Array.isArray(t.joinedMembers) && t.joinedMembers.includes(myId);
+        const inAssigned = Array.isArray(t.assignedMembers) && t.assignedMembers.includes(myId);
         return (inJoined || inAssigned) && t.status !== 'completed';
       });
 
@@ -2316,6 +2420,11 @@
     }
 
     async function syncRealtimeData(isManual = false) {
+      if (!navigator.onLine) {
+        if (isManual) triggerAquaNotification("Ngoại Tuyến", "Thiết bị hiện đang mất kết nối mạng!", "warning");
+        return;
+      }
+
       const btnRef = document.getElementById("btnRefresh");
       if (isManual) {
         btnRef.style.transform = "rotate(360deg)";
@@ -2347,7 +2456,6 @@
             const activeEl = document.activeElement;
             const isTypingComment = activeEl && activeEl.id && activeEl.id.startsWith("iptComment_") && activeEl.value.trim().length > 0;
             if (!isTypingComment) {
-              // Hợp nhất bình luận cục bộ để không bao giờ bị mất bình luận vừa gửi
               postsList = data.posts.map(newP => {
                 const oldP = postsList.find(p => p.id === newP.id);
                 if (oldP && oldP.comments && oldP.comments.length > (newP.comments || []).length) {
@@ -2460,12 +2568,11 @@
 
     function checkUrgentAssignments() {
       if (!currentMember) return;
-      const myAssigned = tasksList.filter(t => t.assignedMembers && t.assignedMembers.includes(currentMember.id));
+      const myAssigned = tasksList.filter(t => Array.isArray(t.assignedMembers) && t.assignedMembers.includes(currentMember.id));
       const box = document.getElementById("urgentAlertBox");
       if (myAssigned.length > 0) {
         document.getElementById("urgentAlertText").innerText = `Bạn vừa được điều động ${myAssigned.length} ca trực mới!`;
         box.classList.remove("hidden");
-        triggerAquaNotification("Lệnh Điều Động Mới", `Bạn có ${myAssigned.length} nhiệm vụ được phân công.`, "warning");
       } else {
         box.classList.add("hidden");
       }
@@ -2474,7 +2581,7 @@
     function startAutoSyncLoop() {
       if (syncIntervalId) clearInterval(syncIntervalId);
       syncIntervalId = setInterval(() => {
-        if (!document.hidden && currentMember) {
+        if (!document.hidden && currentMember && navigator.onLine) {
           syncRealtimeData(false);
         }
       }, 15000);
@@ -2502,9 +2609,11 @@
 
     function openTheTrangModal() {
       document.getElementById("modalTheTrang").classList.remove("hidden");
+      lockBodyScroll();
     }
     function closeTheTrangModal() {
       document.getElementById("modalTheTrang").classList.add("hidden");
+      unlockBodyScroll();
     }
     function closeTheTrangModalOnBackdrop(e) {
       if (e.target.id === "modalTheTrang") {
@@ -2533,6 +2642,7 @@
     function openAvatarModal() {
       if (!currentMember) return triggerAquaNotification("Thông Báo", "Vui lòng đăng nhập trước khi đổi ảnh!", "warning");
       document.getElementById("modalAvatar").classList.remove("hidden");
+      lockBodyScroll();
       const img = document.getElementById("imgAvatarPreview");
       const ph = document.getElementById("txtAvatarPh");
       if (currentMember.avatar && currentMember.avatar.startsWith("data:image")) {
@@ -2547,6 +2657,7 @@
 
     function closeAvatarModal() {
       document.getElementById("modalAvatar").classList.add("hidden");
+      unlockBodyScroll();
       pendingAvatarBase64 = null;
     }
 
@@ -2602,7 +2713,6 @@
     function openMemberProfileModal(memberIdentifier) {
       if (!memberIdentifier) return;
 
-      // Tìm thông tin thành viên trong mảng membersList hoặc bài viết
       let target = membersList.find(m => m.id === memberIdentifier || m.hoTen === memberIdentifier);
       
       if (!target && currentMember && (currentMember.id === memberIdentifier || currentMember.hoTen === memberIdentifier)) {
@@ -2610,7 +2720,6 @@
       }
 
       if (!target) {
-        // Tạo profile hiển thị tối thiểu từ tên hoặc ID
         target = {
           id: memberIdentifier,
           hoTen: memberIdentifier,
@@ -2637,7 +2746,6 @@
       document.getElementById("otherMemDuty").innerText = (target.soCa || 0) + " ca";
       document.getElementById("otherMemStat").innerText = target.status || 'Sẵn sàng';
 
-      // Thể trạng thành viên khác
       const fitStatus = target.theTrang || 'Khỏe mạnh';
       const fitConfig = THE_TRANG_MAP[fitStatus] || THE_TRANG_MAP['Khỏe mạnh'];
       const fitPill = document.getElementById("otherMemFitPill");
@@ -2677,10 +2785,12 @@
       }
 
       document.getElementById("modalMemberDetail").classList.remove("hidden");
+      lockBodyScroll();
     }
 
     function closeMemberProfileModal() {
       document.getElementById("modalMemberDetail").classList.add("hidden");
+      unlockBodyScroll();
       viewingOtherMember = null;
     }
 
@@ -2709,16 +2819,17 @@
     /* ================= DANH BẠ TOÀN THỂ THÀNH VIÊN CLB ================= */
     function openDirectoryModal() {
       const modal = document.getElementById("modalDirectory");
-      const container = document.getElementById("directoryListContainer");
       const searchInput = document.getElementById("iptSearchDirectory");
       if (searchInput) searchInput.value = "";
 
       renderDirectoryList(membersList);
       modal.classList.remove("hidden");
+      lockBodyScroll();
     }
 
     function closeDirectoryModal() {
       document.getElementById("modalDirectory").classList.add("hidden");
+      unlockBodyScroll();
     }
 
     function closeDirectoryModalOnBackdrop(e) {
@@ -2728,17 +2839,18 @@
     }
 
     function filterDirectoryMembers() {
-      const q = (document.getElementById("iptSearchDirectory").value || "").toLowerCase().trim();
-      if (!q) {
+      const rawQ = (document.getElementById("iptSearchDirectory").value || "").trim();
+      if (!rawQ) {
         renderDirectoryList(membersList);
         return;
       }
+      const q = removeVietnameseTones(rawQ);
       const filtered = membersList.filter(m => 
-        (m.hoTen && m.hoTen.toLowerCase().includes(q)) ||
+        (m.hoTen && removeVietnameseTones(m.hoTen).includes(q)) ||
         (m.id && m.id.toLowerCase().includes(q)) ||
         (m.mssv && m.mssv.toLowerCase().includes(q)) ||
-        (m.chucVu && m.chucVu.toLowerCase().includes(q)) ||
-        (m.boMon && m.boMon.toLowerCase().includes(q))
+        (m.chucVu && removeVietnameseTones(m.chucVu).includes(q)) ||
+        (m.boMon && removeVietnameseTones(m.boMon).includes(q))
       );
       renderDirectoryList(filtered);
     }
@@ -2760,8 +2872,8 @@
                 ${m.avatar && m.avatar.startsWith('data:image') ? `<img src="${m.avatar}" style="width:100%;height:100%;object-fit:cover;">` : initial}
               </div>
               <div style="min-width: 0; flex: 1;">
-                <h5 style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.hoTen}</h5>
-                <p style="font-size: 10px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.chucVu || 'Thành viên'} &bull; ${m.id}</p>
+                <h5 style="font-size: 12.5px; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(m.hoTen)}</h5>
+                <p style="font-size: 10px; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHTML(m.chucVu || 'Thành viên')} &bull; ${m.id}</p>
               </div>
             </div>
             <div style="text-align: right; flex-shrink: 0; margin-left: 6px;">
@@ -2783,17 +2895,17 @@
       }
 
       container.innerHTML = tasksList.map(t => {
-        const isJoined = currentMember && t.joinedMembers.includes(currentMember.id);
-        const isAssigned = currentMember && t.assignedMembers && t.assignedMembers.includes(currentMember.id);
+        const isJoined = currentMember && Array.isArray(t.joinedMembers) && t.joinedMembers.includes(currentMember.id);
+        const isAssigned = currentMember && Array.isArray(t.assignedMembers) && t.assignedMembers.includes(currentMember.id);
         const isLocked = t.status === 'locked';
         const isSpecial = t.taskType === 'special';
-        const totalPeople = t.joinedMembers.length + (t.assignedMembers ? t.assignedMembers.length : 0);
+        const totalPeople = (t.joinedMembers ? t.joinedMembers.length : 0) + (t.assignedMembers ? t.assignedMembers.length : 0);
 
         return `
           <div class="acrylic-card" style="padding: 13px;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
               <div>
-                <h4 style="font-size: 13px; font-weight: 800; color: #0f172a;">${t.title}</h4>
+                <h4 style="font-size: 13px; font-weight: 800; color: #0f172a;">${escapeHTML(t.title)}</h4>
                 ${isSpecial ? '<span style="font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 6px; background: #fae8ff; color: #86198f;">Điều Lệnh Đặc Biệt</span>' : ''}
               </div>
               <div style="display: flex; gap: 4px; align-items: center;">
@@ -2803,7 +2915,7 @@
                 </span>
               </div>
             </div>
-            <p style="font-size: 11px; color: #64748b; margin-top: 3px;">📍 ${t.location} &bull; ⏰ ${t.time}</p>
+            <p style="font-size: 11px; color: #64748b; margin-top: 3px;">📍 ${escapeHTML(t.location)} &bull; ⏰ ${escapeHTML(t.time)}</p>
 
             ${t.assignedMembers && t.assignedMembers.length > 0 ? `
               <p style="font-size: 10px; color: #6b21a8; margin-top: 4px; font-weight: 700;">
@@ -2854,9 +2966,11 @@
       populateMemberDropdowns();
       setTaskMode('standard');
       document.getElementById("modalCreateTask").classList.remove("hidden");
+      lockBodyScroll();
     }
     function closeCreateTaskModal() {
       document.getElementById("modalCreateTask").classList.add("hidden");
+      unlockBodyScroll();
     }
 
     function setTaskMode(mode) {
@@ -2889,7 +3003,7 @@
       if (!container) return;
       container.innerHTML = membersList.map(m => `
         <label style="display: flex; align-items: center; justify-content: space-between; padding: 6px 9px; border-radius: 9px; background: #ffffff; border: 1px solid #f0e7ff; font-size: 11px; cursor: pointer;">
-          <span style="font-weight: 700; color: #4a044e;">${m.hoTen} (${m.id})</span>
+          <span style="font-weight: 700; color: #4a044e;">${escapeHTML(m.hoTen)} (${m.id})</span>
           <input type="checkbox" value="${m.id}" onchange="updateSpecialSelectedCount()" class="chk-special-member" style="width: 14px; height: 14px; accent-color: #9333ea;">
         </label>
       `).join('');
@@ -2953,14 +3067,16 @@
       populateMemberDropdowns();
       renderSwapsList();
       document.getElementById("modalAdmin").classList.remove("hidden");
+      lockBodyScroll();
     }
     function closeAdminModal() {
       document.getElementById("modalAdmin").classList.add("hidden");
+      unlockBodyScroll();
     }
 
     function populateMemberDropdowns() {
       const selAdmin = document.getElementById("selAdminMember");
-      const opts = membersList.map(m => `<option value="${m.id}">${m.hoTen} (${m.id} - ${m.soCa} ca)</option>`).join('');
+      const opts = membersList.map(m => `<option value="${m.id}">${escapeHTML(m.hoTen)} (${m.id} - ${m.soCa} ca)</option>`).join('');
       if (selAdmin) selAdmin.innerHTML = `<option value="">-- Chọn thành viên --</option>` + opts;
     }
 
@@ -3000,7 +3116,7 @@
               ${s.status === 'approved' ? '✓ Đã duyệt' : s.status === 'rejected' ? '✕ Bác bỏ' : 'Chờ duyệt'}
             </span>
           </div>
-          <p style="color: #64748b; margin-top: 2px;">Lý do: ${s.reason}</p>
+          <p style="color: #64748b; margin-top: 2px;">Lý do: ${escapeHTML(s.reason)}</p>
         </div>
       `).join('');
     }
@@ -3009,11 +3125,12 @@
       const container = document.getElementById("tagMemberListContainer");
       container.innerHTML = membersList.map(m => `
         <label style="display: flex; align-items: center; justify-content: space-between; padding: 7px 9px; border-radius: 10px; background: rgba(248, 250, 252, 0.9); border: 1px solid #e2e8f0; font-size: 11px; cursor: pointer;">
-          <span style="font-weight: 700; color: #1e293b;">${m.hoTen} (${m.id})</span>
-          <input type="checkbox" value="${m.hoTen}" ${currentSelectedTags.includes(m.hoTen) ? 'checked' : ''} class="tag-checkbox" style="width: 15px; height: 15px; accent-color: var(--primary);">
+          <span style="font-weight: 700; color: #1e293b;">${escapeHTML(m.hoTen)} (${m.id})</span>
+          <input type="checkbox" value="${escapeHTML(m.hoTen)}" ${currentSelectedTags.includes(m.hoTen) ? 'checked' : ''} class="tag-checkbox" style="width: 15px; height: 15px; accent-color: var(--primary);">
         </label>
       `).join('');
       document.getElementById("modalTagFriends").classList.remove("hidden");
+      lockBodyScroll();
     }
 
     function applyTagSelection() {
@@ -3021,6 +3138,7 @@
       currentSelectedTags = Array.from(boxes).map(b => b.value);
       renderTaggedTagsUI();
       document.getElementById("modalTagFriends").classList.add("hidden");
+      unlockBodyScroll();
       if (currentSelectedTags.length > 0) {
         triggerAquaNotification("Gắn Thẻ", `Đã gắn thẻ ${currentSelectedTags.length} bạn!`, "info");
       }
@@ -3051,7 +3169,8 @@
         if (isVideo) {
           const video = document.createElement('video');
           video.preload = 'metadata';
-          video.src = URL.createObjectURL(file);
+          const videoUrl = URL.createObjectURL(file);
+          video.src = videoUrl;
           video.muted = true;
           video.playsInline = true;
           video.onloadeddata = () => {
@@ -3079,6 +3198,7 @@
             ctx.drawImage(video, 0, 0, width, height);
 
             const compressedBase64 = canvas.toDataURL("image/jpeg", 0.52);
+            URL.revokeObjectURL(videoUrl);
             currentUploadedMediaList.push({
               url: compressedBase64,
               type: 'video',
@@ -3146,7 +3266,7 @@
         <div class="media-thumb">
           <img src="${m.url}" alt="Preview">
           ${m.type === 'video' ? '<span class="media-thumb-video-badge">▶ Video</span>' : ''}
-          <button type="button" onclick="removeMediaItem(${idx})" class="thumb-del">✕</button>
+          <button type="button" onclick="removeMediaItem(${idx})" class="thumb-del" title="Xóa ảnh này">✕</button>
         </div>
       `).join('');
     }
@@ -3240,6 +3360,7 @@
       }
 
       sheet.classList.add("active");
+      lockBodyScroll();
     }
 
     function closePostActionSheet(e) {
@@ -3250,6 +3371,7 @@
 
     function closePostActionSheetDirect() {
       document.getElementById("postActionSheet").classList.remove("active");
+      unlockBodyScroll();
       activePostActionId = null;
       activePostActionAuthorId = null;
     }
@@ -3289,7 +3411,7 @@
       currentLightboxMediaList = post.mediaList;
       currentLightboxIndex = startIndex;
 
-      document.body.classList.add("modal-open");
+      lockBodyScroll();
       document.getElementById("lightboxModal").classList.add("active");
       document.getElementById("lbAuthorTag").innerText = `Ảnh của ${post.authorName}`;
 
@@ -3297,8 +3419,8 @@
     }
 
     function closeLightbox() {
-      document.body.classList.remove("modal-open");
       document.getElementById("lightboxModal").classList.remove("active");
+      unlockBodyScroll();
       currentLightboxMediaList = [];
     }
 
@@ -3363,9 +3485,9 @@
         let tagsMeta = "";
         if (p.tags && p.tags.length > 0) {
           if (p.tags.length === 1) {
-            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${p.tags[0]}</strong>`;
+            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${escapeHTML(p.tags[0])}</strong>`;
           } else {
-            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${p.tags[0]}</strong> và <strong style="color:var(--primary);">${p.tags.length - 1} người khác</strong>`;
+            tagsMeta = ` cùng với <strong style="color:var(--primary); cursor:pointer;" onclick="openMemberProfileModal('${p.tags[0]}')">@${escapeHTML(p.tags[0])}</strong> và <strong style="color:var(--primary);">${p.tags.length - 1} người khác</strong>`;
           }
         }
 
@@ -3420,14 +3542,14 @@
             <div class="fb-post-header">
               <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
                 <div class="fb-avatar-circle" onclick="${p.isAnonymous ? '' : `openMemberProfileModal('${p.authorId || p.authorName}')`}">
-                  ${p.isAnonymous ? '<svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' : (p.authorAvatar && p.authorAvatar.startsWith('data:image') ? `<img src="${p.authorAvatar}">` : (p.authorName || 'A').charAt(0))}
+                  ${p.isAnonymous ? '<svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' : (p.authorAvatar && p.authorAvatar.startsWith('data:image') ? `<img src="${p.authorAvatar}">` : escapeHTML((p.authorName || 'A').charAt(0)))}
                 </div>
                 <div style="min-width: 0; flex: 1;">
                   <h4 class="fb-post-author-name">
-                    <span onclick="${p.isAnonymous ? '' : `openMemberProfileModal('${p.authorId || p.authorName}')`}">${p.authorName}</span>${tagsMeta}
+                    <span onclick="${p.isAnonymous ? '' : `openMemberProfileModal('${p.authorId || p.authorName}')`}">${escapeHTML(p.authorName)}</span>${tagsMeta}
                   </h4>
                   <div class="fb-post-meta-sub">
-                    <span>${p.createdAt || 'Vừa xong'}</span>
+                    <span>${formatRelativeTime(p.createdAt)}</span>
                     <span>&bull;</span>
                     <span>${p.isAnonymous ? '🎭 Ẩn danh' : '🌐 Thành viên'}</span>
                   </div>
@@ -3439,7 +3561,7 @@
               </button>
             </div>
 
-            <div class="fb-post-body-text">${p.content}</div>
+            <div class="fb-post-body-text selectable-text">${escapeHTML(p.content)}</div>
 
             ${mediaGridHtml}
 
@@ -3484,15 +3606,15 @@
                   <div>
                     <div class="fb-comment-item">
                       <div class="fb-comment-avatar" onclick="openMemberProfileModal('${c.authorId || c.authorName}')">
-                        ${(c.authorName || 'A').charAt(0)}
+                        ${escapeHTML((c.authorName || 'A').charAt(0))}
                       </div>
                       <div>
                         <div class="fb-comment-bubble-box">
-                          <h5 class="fb-comment-user" onclick="openMemberProfileModal('${c.authorId || c.authorName}')">${c.authorName}</h5>
-                          <p class="fb-comment-text">${c.text || c.commentText || c.content || ''}</p>
+                          <h5 class="fb-comment-user" onclick="openMemberProfileModal('${c.authorId || c.authorName}')">${escapeHTML(c.authorName)}</h5>
+                          <p class="fb-comment-text selectable-text">${escapeHTML(c.text || c.commentText || c.content || '')}</p>
                         </div>
                         <div class="fb-comment-footer-actions">
-                          <span>${c.time || 'Vừa xong'}</span>
+                          <span>${formatRelativeTime(c.time)}</span>
                           <button onclick="setReplyingComment('${p.id}', '${c.id || c.authorName}', '${c.authorName}')">Trả lời</button>
                         </div>
                       </div>
@@ -3503,15 +3625,15 @@
                         ${c.replies.map(r => `
                           <div class="fb-comment-item">
                             <div class="fb-comment-avatar" style="width:24px;height:24px;font-size:9.5px;" onclick="openMemberProfileModal('${r.authorId || r.authorName}')">
-                              ${(r.authorName || 'A').charAt(0)}
+                              ${escapeHTML((r.authorName || 'A').charAt(0))}
                             </div>
                             <div>
                               <div class="fb-comment-bubble-box" style="background:#ffffff;">
-                                <h5 class="fb-comment-user" style="color:var(--primary);" onclick="openMemberProfileModal('${r.authorId || r.authorName}')">${r.authorName}</h5>
-                                <p class="fb-comment-text">${r.text || r.commentText || r.content || ''}</p>
+                                <h5 class="fb-comment-user" style="color:var(--primary);" onclick="openMemberProfileModal('${r.authorId || r.authorName}')">${escapeHTML(r.authorName)}</h5>
+                                <p class="fb-comment-text selectable-text">${escapeHTML(r.text || r.commentText || r.content || '')}</p>
                               </div>
                               <div class="fb-comment-footer-actions">
-                                <span>${r.time || 'Vừa xong'}</span>
+                                <span>${formatRelativeTime(r.time)}</span>
                                 <button onclick="setReplyingComment('${p.id}', '${c.id || c.authorName}', '${r.authorName}')">Trả lời lại</button>
                               </div>
                             </div>
@@ -3530,7 +3652,7 @@
 
               <div style="display: flex; gap: 7px; margin-top: 8px; align-items: center;">
                 <div class="fb-comment-avatar" style="width: 28px; height: 28px;">
-                  ${(currentMember ? currentMember.hoTen : 'A').charAt(0)}
+                  ${escapeHTML((currentMember ? currentMember.hoTen : 'A').charAt(0))}
                 </div>
                 <input type="text" id="iptComment_${p.id}" placeholder="Viết bình luận công khai..." class="input-box" style="margin-top: 0; padding: 7px 12px; font-size: 11.5px; border-radius: 18px; flex: 1;">
                 <button onclick="submitCommentAction('${p.id}')" class="spring-touch" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; border: none; display: flex; align-items: center; justify-content: center;">
