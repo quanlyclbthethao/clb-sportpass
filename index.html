@@ -656,6 +656,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      will-change: transform, opacity;
       transition: transform 0.38s var(--spring-physics), opacity 0.25s ease, visibility 0.38s, box-shadow 0.25s ease;
     }
     .aqua-pill.active {
@@ -664,6 +665,52 @@
       visibility: visible;
       pointer-events: auto;
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    /* NÚT TÁC VỤ ĐIỀU ĐỘNG CHUẨN ĐỘ TƯƠNG PHẢN WCAG AAA */
+    .btn-duty-swap {
+      background: #fef3c7 !important;
+      color: #78350f !important;
+      border: 1.5px solid #b45309 !important;
+      font-weight: 800 !important;
+      font-size: 11.5px !important;
+      padding: 9px 12px !important;
+      border-radius: 14px !important;
+      box-shadow: 0 2px 6px rgba(180, 83, 9, 0.14) !important;
+      flex: 1;
+    }
+    .btn-duty-swap:hover { background: #fde68a !important; }
+    .btn-duty-swap:active { transform: scale(0.95); }
+
+    .btn-duty-ai {
+      background: #faf5ff !important;
+      color: #581c87 !important;
+      border: 1.5px solid #7e22ce !important;
+      font-weight: 800 !important;
+      font-size: 11px !important;
+      padding: 9px 12px !important;
+      border-radius: 14px !important;
+      margin-left: 6px;
+      box-shadow: 0 2px 6px rgba(126, 34, 206, 0.14) !important;
+      flex-shrink: 0;
+    }
+    .btn-duty-ai:hover { background: #f3e8ff !important; }
+    .btn-duty-ai:active { transform: scale(0.95); }
+
+    /* DẢI CHIP CHỈ TIÊU BAN TRƯỢT NGANG KHÔNG VỠ DÒNG */
+    .dept-quota-slider {
+      display: flex;
+      gap: 5px;
+      overflow-x: auto;
+      padding: 4px 2px 6px 2px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .dept-quota-slider::-webkit-scrollbar { display: none; }
+
+    /* KHOẢNG ĐỆM AN TOÀN TRÁNH BOTTOM BAR CHE NỘI DUNG */
+    .tab-content-container {
+      padding-bottom: 96px !important;
     }
 
     .modal-backdrop {
@@ -805,62 +852,7 @@
             </span>
           </div>
 
-          <div style="flex: 1; min-width: 0;">
-            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-              <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nguyễn Văn A</h2>
-              <span id="badgeAdm" class="hidden" style="font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #f3e8ff; color: #7e22ce;">Admin</span>
-            </div>
-            <p id="memRole" style="font-size: 12px; font-weight: 700; color: var(--primary); margin-top: 1px;">Chủ nhiệm CLB</p>
-            <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: CLB001</p>
-          </div>
-        </div>
-
-        <!-- 3 Thẻ chỉ số đối xứng 1/3 tuyệt đối với Text-Overflow Ellipsis -->
-        <div class="metrics-grid">
-          <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
-            <span style="font-size: 8.5px; font-weight: 800; color: #4338ca; text-transform: uppercase;">Cống Hiến</span>
-            <span id="memDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
-          </div>
-
-          <div class="metric-item" id="memFitPill" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0; cursor: pointer;" onclick="openTheTrangModal()" title="Chạm để cập nhật thể trạng">
-            <span style="font-size: 8.5px; font-weight: 800; color: #15803d; text-transform: uppercase;">Thể Trạng</span>
-            <span id="memFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
-          </div>
-
-          <div class="metric-item" id="memStatPill" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
-            <span style="font-size: 8.5px; font-weight: 800; color: #065f46; text-transform: uppercase;">Trạng Thái</span>
-            <span id="memStat" class="metric-val" style="color: #047857;" title="Sẵn sàng">Sẵn sàng</span>
-          </div>
-        </div>
-
-        <div class="call-grid">
-          <button onclick="callContactDirect()" class="spring-touch btn-call-normal">
-            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <span>Gọi Thành Viên</span>
-          </button>
-
-          <button onclick="callEmergencyDirect()" class="spring-touch btn-call-ice">
-            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span>🚨 Khẩn Cấp (ICE)</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- Bảng thông tin cá nhân chuẩn WCAG AA Contrast -->
-      <section class="acrylic-card">
-        <h3 style="font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px;">Hồ Sơ Thành Viên</h3>
-        <div class="info-row"><span class="info-label">Lớp:</span><span id="dClass" class="selectable-text info-value">---</span></div>
-        <div class="info-row"><span class="info-label">MSSV:</span><span id="dMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
-        <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="selectable-text info-value">---</span></div>
-        <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="selectable-text info-value">---</span></div>
-        <div class="info-row"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="selectable-text info-value">---</span></div>
-        <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callEmergencyDirect()">---</span></div>
-        <div class="info-row"><span class="info-label">Y Tế &amp; Sức Khỏe:</span><span id="dMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
-      </section>
-    </div>
-
-    <div id="tabContentTasks" class="hidden">
+    <div id="tabContentTasks" class="hidden tab-content-container">
       <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 12px; margin-bottom: 9px; background: rgba(250, 245, 255, 0.94); border-color: #e9d5ff;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div>
@@ -886,7 +878,7 @@
       <div id="listTasksContainer" style="display: flex; flex-direction: column; gap: 9px;"></div>
     </div>
 
-    <div id="tabContentForum" class="hidden">
+    <div id="tabContentForum" class="hidden tab-content-container">
       <div class="fb-composer">
         <div class="fb-composer-head">
           <div id="forumComposerAvt" class="fb-circle-avt">A</div>
@@ -1157,14 +1149,22 @@
 
       <div style="display: flex; flex-direction: column; gap: 7px; margin-top: 11px;">
         <div>
-          <label style="font-size: 10px; font-weight: 800; color: #334155;">TIÊU ĐỀ NHIỆM VỤ</label>
-          <input type="text" id="iptTaskTitle" placeholder="Ví dụ: Trực bàn giải Cầu lông..." class="input-box">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label style="font-size: 10px; font-weight: 800; color: #334155;">TIÊU ĐỀ NHIỆM VỤ *</label>
+            <span style="font-size: 9px; color: #64748b; font-weight: 700;">Tối thiểu 5 ký tự</span>
+          </div>
+          <input type="text" id="iptTaskTitle" placeholder="Ví dụ: Trực bàn giải Cầu lông HUST..." class="input-box">
+          <p id="errTaskTitle" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
           <div>
-            <label style="font-size: 10px; font-weight: 800; color: #334155;">ĐỊA ĐIỂM</label>
-            <input type="text" id="iptTaskLocation" placeholder="Nhà thi đấu" class="input-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label style="font-size: 10px; font-weight: 800; color: #334155;">ĐỊA ĐIỂM *</label>
+              <span style="font-size: 9px; color: #64748b; font-weight: 700;">≥ 3 ký tự</span>
+            </div>
+            <input type="text" id="iptTaskLocation" placeholder="Ví dụ: NTĐ Bách Khoa, SVĐ..." class="input-box">
+            <p id="errTaskLocation" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
           </div>
           <div>
             <label style="font-size: 10px; font-weight: 800; color: #334155;">TỔNG CHỈ TIÊU (NGƯỜI)</label>
@@ -1174,12 +1174,13 @@
 
         <div>
           <label style="font-size: 10px; font-weight: 800; color: #334155;">THỜI GIAN THỰC HIỆN</label>
-          <input type="text" id="iptTaskTime" placeholder="14:00 - 18:00 Thứ Bảy" class="input-box">
+          <input type="text" id="iptTaskTime" placeholder="Ví dụ: 14:00 - 18:00 Thứ Bảy" class="input-box">
         </div>
 
         <div>
           <label style="font-size: 10px; font-weight: 800; color: #334155;">HẠN TỰ KHÓA &amp; AI ĐIỀU ĐỘNG THEO BAN</label>
           <input type="datetime-local" id="iptTaskDeadline" class="input-box">
+          <p id="errTaskDeadline" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
         </div>
 
         <div style="margin-top: 4px; padding: 9px; background: #faf5ff; border: 1.2px solid #e9d5ff; border-radius: 15px;">
@@ -1242,6 +1243,24 @@
     let currentLightboxIndex = 0;
     let currentActivePostForActionSheet = null;
     let currentSelectedTargetMemberForProfile = null;
+
+    let isTaskActionPending = false; // Debounce flag chống double-click
+
+    // Chuẩn hóa tự động các từ viết tắt thể thao & cơ sở vật chất
+    function formatSportsText(str) {
+      if (!str) return '';
+      let s = str.trim();
+      const acronyms = [
+        'THCS', 'THPT', 'SVĐ', 'NTĐ', 'KTX', 'CLB', 
+        'HUST', 'ĐHBK', 'CNTT', 'QTKD', 'BHT', 'BCN'
+      ];
+      acronyms.forEach(acr => {
+        const re = new RegExp('\\b' + acr + '\\b', 'gi');
+        s = s.replace(re, acr);
+      });
+      // Viết hoa chữ cái đầu câu
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       loadStateFromLocalMirror();
@@ -2170,6 +2189,10 @@
     function openCreateTaskModal() {
       document.getElementById('modalCreateTask').classList.remove('hidden');
       document.body.classList.add('modal-open');
+      // Reset lỗi
+      document.getElementById('errTaskTitle').style.display = 'none';
+      document.getElementById('errTaskLocation').style.display = 'none';
+      document.getElementById('errTaskDeadline').style.display = 'none';
     }
 
     function closeCreateTaskModal() {
@@ -2182,17 +2205,60 @@
     }
 
     async function submitCreateTaskAction() {
-      const title = document.getElementById('iptTaskTitle').value.trim();
-      const loc = document.getElementById('iptTaskLocation').value.trim();
-      const time = document.getElementById('iptTaskTime').value.trim();
+      const rawTitle = document.getElementById('iptTaskTitle').value.trim();
+      const rawLoc = document.getElementById('iptTaskLocation').value.trim();
+      const rawTime = document.getElementById('iptTaskTime').value.trim();
       const quota = Number(document.getElementById('iptTaskQuota').value) || 1;
       const deadline = document.getElementById('iptTaskDeadline').value;
 
-      if (!title) return showAquaIsland('Lỗi', 'Vui lòng nhập tiêu đề lệnh!');
+      const errTitle = document.getElementById('errTaskTitle');
+      const errLoc = document.getElementById('errTaskLocation');
+      const errDeadline = document.getElementById('errTaskDeadline');
+
+      errTitle.style.display = 'none';
+      errLoc.style.display = 'none';
+      errDeadline.style.display = 'none';
+
+      // 1. Kiểm tra Tiêu đề tối thiểu 5 ký tự và không dùng placeholder vô nghĩa
+      if (!rawTitle || rawTitle.length < 5) {
+        errTitle.innerText = '⚠️ Tiêu đề lệnh cần tối thiểu 5 ký tự mô tả rõ ràng!';
+        errTitle.style.display = 'block';
+        document.getElementById('iptTaskTitle').focus();
+        return;
+      }
+      if (/^(.)\1+$/i.test(rawTitle) || /^(test|abc|xxx|jjj|hhh)$/i.test(rawTitle)) {
+        errTitle.innerText = '⚠️ Vui lòng không sử dụng ký tự lặp hoặc từ ngữ vô nghĩa!';
+        errTitle.style.display = 'block';
+        document.getElementById('iptTaskTitle').focus();
+        return;
+      }
+
+      // 2. Kiểm tra Địa điểm tối thiểu 3 ký tự và chuẩn hóa từ viết tắt
+      if (!rawLoc || rawLoc.length < 3) {
+        errLoc.innerText = '⚠️ Địa điểm cần tối thiểu 3 ký tự (Ví dụ: NTĐ Bách Khoa, Sân Cỏ...)!';
+        errLoc.style.display = 'block';
+        document.getElementById('iptTaskLocation').focus();
+        return;
+      }
+
+      // 3. Kiểm tra Hạn chót nếu có
+      if (deadline) {
+        const deadlineTime = new Date(deadline).getTime();
+        if (deadlineTime <= Date.now()) {
+          errDeadline.innerText = '⚠️ Hạn tự khóa phải sau thời điểm hiện tại!';
+          errDeadline.style.display = 'block';
+          return;
+        }
+      }
+
+      // Tự động chuẩn hóa viết hoa từ viết tắt
+      const title = formatSportsText(rawTitle);
+      const loc = formatSportsText(rawLoc);
+      const time = rawTime ? formatSportsText(rawTime) : 'Linh hoạt theo thông báo';
 
       const deptQuotas = {};
       document.querySelectorAll('#deptQuotaContainer > div').forEach(r => {
-        const name = r.querySelector('.dept-name').value.trim();
+        const name = formatSportsText(r.querySelector('.dept-name').value.trim());
         const num = Number(r.querySelector('.dept-num').value) || 0;
         if (name && num > 0) deptQuotas[name] = num;
       });
@@ -2200,8 +2266,8 @@
       const newTask = {
         id: 'TASK_' + Date.now(),
         title: title,
-        location: loc || 'Sân tập CLB',
-        time: time || 'Linh hoạt',
+        location: loc,
+        time: time,
         quota: quota,
         joinedMembers: [],
         assignedMembers: [],
@@ -2215,7 +2281,7 @@
       saveStateToLocalMirror();
       renderTasksFeed();
       closeCreateTaskModal();
-      showAquaIsland('Lệnh Điều Động', 'Đã ban hành lệnh điều động phân theo ban!');
+      showAquaIsland('Lệnh Điều Động', `Đã ban hành: ${title}`);
 
       try {
         await fetch(BACKEND_URL, {
@@ -2254,46 +2320,74 @@
         const deptQuotas = t.departmentQuotas || {};
         const deptKeys = Object.keys(deptQuotas);
 
+        // Kiểm tra tính cấp thiết & hạn chót
+        const isUrgent = totalIn === 0 && t.quota > 0;
+        let deadlineLabel = '';
+        if (t.lockDeadline) {
+          const d = new Date(t.lockDeadline);
+          if (!isNaN(d.getTime())) {
+            const h = String(d.getHours()).padStart(2, '0');
+            const m = String(d.getMinutes()).padStart(2, '0');
+            const dateStr = `${d.getDate()}/${d.getMonth() + 1}`;
+            deadlineLabel = `Hạn chót: ${h}:${m} ${dateStr}`;
+          }
+        }
+
         return `
-          <div class="acrylic-card" style="padding:13px;">
+          <div class="acrylic-card" style="padding:13px; position:relative;">
+            ${isUrgent ? `
+              <div style="display:flex; align-items:center; gap:5px; margin-bottom:6px; background:#fff1f2; border:1px solid #fecdd3; padding:3px 8px; border-radius:9px; color:#be123c; font-size:10px; font-weight:800;">
+                <span style="font-size:11px;">🚨</span>
+                <span>Cần huy động khẩn cấp &bull; Chưa có thành viên nhận ca</span>
+              </div>
+            ` : ''}
+
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
               <div>
-                <span style="font-size:9.5px; font-weight:800; padding:2px 6px; border-radius:7px; background:#e0e7ff; color:#4f46e5;">
-                  Điều Lệnh Thể Thao
+                <span style="font-size:9.5px; font-weight:800; padding:2.5px 7px; border-radius:7px; background:#e0e7ff; color:#4338ca; letter-spacing:0.2px;">
+                  ĐIỀU LỆNH THỂ THAO
                 </span>
-                <h4 style="font-size:13.5px; font-weight:900; color:#0f172a; margin-top:3px;">${t.title}</h4>
+                <h4 style="font-size:13.5px; font-weight:900; color:#0f172a; margin-top:4px; line-height:1.4;">${t.title}</h4>
               </div>
-              <span style="font-size:10px; font-weight:800; padding:2px 7px; border-radius:10px; background:#f1f5f9; color:#334155;">
+              <span style="font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:10px; background:${isFull ? '#ecfdf5' : '#f8fafc'}; color:${isFull ? '#047857' : '#334155'}; border:1px solid ${isFull ? '#a7f3d0' : '#e2e8f0'}; white-space:nowrap; flex-shrink:0;">
                 ${totalIn} / ${t.quota} bạn
               </span>
             </div>
 
-            <p style="font-size:11px; color:#475569; font-weight:600;">📍 ${t.location} &bull; ⏰ ${t.time}</p>
+            <p style="font-size:11px; color:#475569; font-weight:600; line-height:1.4;">📍 ${t.location} &bull; ⏰ ${t.time}</p>
+
+            ${deadlineLabel ? `
+              <p style="font-size:10px; color:#b45309; font-weight:700; margin-top:3px;">⏳ ${deadlineLabel}</p>
+            ` : ''}
 
             ${deptKeys.length > 0 ? `
-              <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:7px;">
-                ${deptKeys.map(k => `<span style="font-size:10px; font-weight:700; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:2px 6px; color:#334155;">🎯 ${k}: ${deptQuotas[k]}</span>`).join('')}
+              <div class="dept-quota-slider" style="margin-top:7px;">
+                ${deptKeys.map(k => `
+                  <span style="font-size:10px; font-weight:700; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:2.5px 7px; color:#1e293b; white-space:nowrap; flex-shrink:0;">
+                    🎯 ${k}: ${deptQuotas[k]}
+                  </span>
+                `).join('')}
               </div>
             ` : ''}
 
             ${assigned.length ? `
-              <div style="margin-top:6px; font-size:10px; color:#9333ea; font-weight:700;">
-                🎯 AI Agent tự động chỉ định: ${assigned.join(', ')}
+              <div style="margin-top:6px; font-size:10px; color:#7e22ce; font-weight:800; background:#faf5ff; border:1px solid #e9d5ff; padding:3px 7px; border-radius:8px;">
+                ⚡ AI Agent chỉ định: ${assigned.join(', ')}
               </div>
             ` : ''}
 
-            <div style="display:flex; gap:6px; margin-top:10px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-top:11px;">
               ${(!isJoined && !isAssigned) ? `
-                <button onclick="claimTaskAction('${t.id}')" ${isFull ? 'disabled' : ''} class="spring-touch btn-main" style="flex:1; padding:8px; font-size:11px; ${isFull ? 'opacity:0.5;' : ''}">
+                <button onclick="claimTaskAction('${t.id}')" ${isFull ? 'disabled' : ''} class="spring-touch btn-main" style="flex:1; padding:9px 12px; font-size:11.5px; ${isFull ? 'opacity:0.55; cursor:not-allowed;' : ''}">
                   ${isFull ? 'Đã Đủ Quân Số' : 'Nhận Ca Trực'}
                 </button>
               ` : `
-                <button onclick="requestDutySwap('${t.id}')" class="spring-touch btn-sub" style="flex:1; color:#b45309; background:#fffbeb; border-color:#fde68a;">
+                <button onclick="requestDutySwap('${t.id}')" class="spring-touch btn-duty-swap">
                   🔄 Xin Đổi Ca
                 </button>
               `}
               ${currentUser && currentUser.isAdmin ? `
-                <button onclick="triggerAiScheduleForTask('${t.id}')" class="spring-touch btn-sub" style="color:#6b21a8; background:#faf5ff; border-color:#d8b4fe;" title="Kích hoạt AI Agent chỉ định bù ngay">
+                <button onclick="triggerAiScheduleForTask('${t.id}')" class="spring-touch btn-duty-ai" title="Kích hoạt AI Agent chỉ định bù ngay">
                   ⚡ AI Chỉ Định
                 </button>
               ` : ''}
@@ -2305,6 +2399,9 @@
 
     async function claimTaskAction(taskId) {
       if (!currentUser) return;
+      if (isTaskActionPending) return; // Debounce bảo vệ chống double-click
+
+      isTaskActionPending = true;
       try {
         const res = await fetch(BACKEND_URL, {
           method: 'POST',
@@ -2319,39 +2416,57 @@
           t.joinedMembers.push(currentUser.id);
           saveStateToLocalMirror();
           renderTasksFeed();
-          showAquaIsland('Nhận Ca', 'Đã ghi nhận ca trực!');
+          showAquaIsland('Nhận Ca', 'Đã ghi nhận ca trực thành công!');
         }
+      } finally {
+        setTimeout(() => { isTaskActionPending = false; }, 600);
       }
     }
 
     function requestDutySwap(taskId) {
-      const reason = prompt('Nhập lý do xin đổi ca (Ví dụ: Trùng lịch thi, việc bận đột xuất...):');
-      if (!reason) return;
+      if (isTaskActionPending) return;
 
-      showAquaIsland('Đổi Ca', 'Đã gửi yêu cầu đổi ca đến Ban Quản Trị');
+      const reason = prompt('Nhập lý do xin đổi ca (Ví dụ: Trùng lịch thi THPT, việc bận đột xuất...):');
+      if (!reason || !reason.trim()) return;
+
+      isTaskActionPending = true;
+      showAquaIsland('Đổi Ca', 'Đang gửi yêu cầu đổi ca tới Ban Quản Trị...');
+
       fetch(BACKEND_URL, {
         method: 'POST',
         body: JSON.stringify({
           action: 'requestSwap',
           taskId: taskId,
           fromMemberId: currentUser.id,
-          reason: reason
+          reason: formatSportsText(reason)
         })
-      }).catch(() => {});
+      })
+      .then(() => {
+        showAquaIsland('Đổi Ca', 'Đã gửi yêu cầu đổi ca thành công!');
+      })
+      .catch(() => {})
+      .finally(() => {
+        setTimeout(() => { isTaskActionPending = false; }, 600);
+      });
     }
 
     async function triggerAiScheduleForTask(taskId) {
-      showAquaIsland('AI Agent', 'Đang quét chỉ tiêu ban và tự động xếp ca...');
+      if (isTaskActionPending) return;
+      isTaskActionPending = true;
+
+      showAquaIsland('AI Agent', 'Đang rà soát chỉ tiêu ban và tự động xếp ca...');
       try {
         const res = await fetch(BACKEND_URL, {
           method: 'POST',
           body: JSON.stringify({ action: 'triggerAiDispatcher', adminId: currentUser.id, taskId: taskId })
         });
         const json = await res.json();
-        showAquaIsland('AI Agent', json.message);
+        showAquaIsland('AI Agent', json.message || 'Đã phân bổ quân số!');
         triggerAppSync();
       } catch (e) {
         showAquaIsland('AI Agent', 'Đã hoàn tất cân bằng quân số!');
+      } finally {
+        setTimeout(() => { isTaskActionPending = false; }, 800);
       }
     }
 
@@ -2472,17 +2587,28 @@
       document.getElementById('aquaIslandTitle').innerText = title;
       document.getElementById('aquaIslandMsg').innerText = msg;
       
+      // Hủy timer cũ ngay lập tức để tránh animation leak / flicker
+      if (aquaTimer) {
+        clearTimeout(aquaTimer);
+        aquaTimer = null;
+      }
+
       requestAnimationFrame(() => {
         p.classList.add('active');
       });
       
-      clearTimeout(aquaTimer);
-      aquaTimer = setTimeout(() => dismissAquaIsland(), 3500);
+      aquaTimer = setTimeout(() => {
+        dismissAquaIsland();
+      }, 3500);
     }
 
     function dismissAquaIsland() {
       const p = document.getElementById('aquaIslandPill');
       p.classList.remove('active');
+      if (aquaTimer) {
+        clearTimeout(aquaTimer);
+        aquaTimer = null;
+      }
     }
 
     function openHeaderMoreActionSheet() {
