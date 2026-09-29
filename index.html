@@ -841,7 +841,7 @@
 
   <main id="viewApp" class="hidden" style="width: 100%; max-width: 440px;">
     
-    <div id="tabContentProfile">
+    <div id="tabContentProfile" class="tab-content-container">
       <section class="acrylic-card">
         <div style="display: flex; align-items: center; gap: 13px;">
           <!-- Khung Avatar chuẩn công thái học với Touch Target rộng 34px -->
@@ -851,6 +851,59 @@
               <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </span>
           </div>
+
+          <div style="flex: 1; min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nguyễn Văn A</h2>
+              <span id="badgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 1.5px 6px; border-radius: 7px; background: #f3e8ff; color: #7e22ce;">Admin</span>
+            </div>
+            <p id="memRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Chủ nhiệm CLB</p>
+            <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: CLB001</p>
+          </div>
+        </div>
+
+        <!-- LƯỚI THẺ CHỈ SỐ CÂN ĐỐI 1/3 TUYỆT ĐỐI -->
+        <div class="metrics-grid">
+          <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
+            <span style="font-size: 8.5px; font-weight: 800; color: #4338ca;">Cống Hiến</span>
+            <span id="memDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
+          </div>
+          <div id="boxMemFit" class="metric-item spring-touch" onclick="openTheTrangModal()" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0; cursor: pointer;" title="Chạm để cập nhật thể trạng">
+            <span style="font-size: 8.5px; font-weight: 800; color: #15803d;">Thể Trạng ✏️</span>
+            <span id="memFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
+          </div>
+          <div id="boxMemStat" class="metric-item" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
+            <span style="font-size: 8.5px; font-weight: 800; color: #065f46;">Trạng Thái</span>
+            <span id="memStat" class="metric-val" style="color: #047857;">Sẵn sàng</span>
+          </div>
+        </div>
+
+        <div class="call-grid">
+          <button onclick="callContactDirect()" class="spring-touch btn-call-normal">
+            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Gọi Thành Viên</span>
+          </button>
+          <button onclick="callEmergencyDirect()" class="spring-touch btn-call-ice">
+            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>🚨 Khẩn Cấp (ICE)</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="acrylic-card">
+        <h3 style="font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 5px;">Hồ Sơ Thành Viên Chi Tiết</h3>
+        <div>
+          <div class="info-row"><span class="info-label">Lớp:</span><span id="dClass" class="selectable-text info-value">---</span></div>
+          <div class="info-row"><span class="info-label">MSSV:</span><span id="dMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
+          <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="selectable-text info-value">---</span></div>
+          <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="selectable-text info-value">---</span></div>
+          <div class="info-row"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="selectable-text info-value">---</span></div>
+          <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+          <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callEmergencyDirect()">---</span></div>
+          <div class="info-row"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="dMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
+        </div>
+      </section>
+    </div>
 
     <div id="tabContentTasks" class="hidden tab-content-container">
       <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 12px; margin-bottom: 9px; background: rgba(250, 245, 255, 0.94); border-color: #e9d5ff;">
@@ -1415,11 +1468,26 @@
       document.getElementById('memId').innerText = 'ID: ' + currentUser.id;
       document.getElementById('memDuty').innerText = (currentUser.soCa || 0) + ' ca';
       document.getElementById('memFit').innerText = currentUser.theTrang || 'Khỏe mạnh';
+      applyTheTrangStyle(document.getElementById('boxMemFit'), currentUser.theTrang);
       
       const statEl = document.getElementById('memStat');
-      const statVal = currentUser.status || 'Sẵn sàng';
+      const statBox = document.getElementById('boxMemStat');
+      const hasActiveDuty = rotationTasksList.some(t => t.status === 'active' && ((t.joinedMembers && t.joinedMembers.includes(currentUser.id)) || (t.assignedMembers && t.assignedMembers.includes(currentUser.id))));
+      const statVal = hasActiveDuty ? 'Đang nhận ca ⚡' : (currentUser.status || 'Sẵn sàng');
       statEl.innerText = statVal;
       statEl.setAttribute('title', statVal);
+
+      if (statBox) {
+        if (hasActiveDuty) {
+          statBox.style.background = 'rgba(254, 243, 199, 0.95)';
+          statBox.style.borderColor = '#fde68a';
+          statEl.style.color = '#b45309';
+        } else {
+          statBox.style.background = 'rgba(236, 253, 245, 0.95)';
+          statBox.style.borderColor = '#a7f3d0';
+          statEl.style.color = '#047857';
+        }
+      }
 
       document.getElementById('dClass').innerText = currentUser.lop || '---';
       document.getElementById('dMssv').innerText = currentUser.mssv || '---';
@@ -2511,6 +2579,7 @@
       if (!currentUser) return;
       currentUser.theTrang = val;
       document.getElementById('memFit').innerText = val;
+      applyTheTrangStyle(document.getElementById('boxMemFit'), val);
       saveStateToLocalMirror();
       showAquaIsland('Thể Trạng', 'Đã cập nhật: ' + val);
 
@@ -2520,6 +2589,40 @@
           body: JSON.stringify({ action: 'updateTheTrang', memberId: currentUser.id, theTrang: val })
         });
       } catch (e) {}
+    }
+
+    function applyTheTrangStyle(el, val) {
+      if (!el) return;
+      const s = (val || '').toLowerCase();
+      if (s.includes('sung sức') || s.includes('phong độ')) {
+        el.style.background = 'rgba(240, 253, 250, 0.95)';
+        el.style.borderColor = '#99f6e4';
+        const v = el.querySelector('.metric-val'); if (v) v.style.color = '#0f766e';
+      } else if (s.includes('căng cơ') || s.includes('mỏi')) {
+        el.style.background = 'rgba(254, 252, 232, 0.95)';
+        el.style.borderColor = '#fde68a';
+        const v = el.querySelector('.metric-val'); if (v) v.style.color = '#b45309';
+      } else if (s.includes('chấn thương nhẹ')) {
+        el.style.background = 'rgba(255, 247, 237, 0.95)';
+        el.style.borderColor = '#fed7aa';
+        const v = el.querySelector('.metric-val'); if (v) v.style.color = '#c2410c';
+      } else if (s.includes('chấn thương nặng') || s.includes('nghỉ đấu')) {
+        el.style.background = 'rgba(254, 242, 242, 0.95)';
+        el.style.borderColor = '#fecdd3';
+        const v = el.querySelector('.metric-val'); if (v) v.style.color = '#b91c1c';
+      } else if (s.includes('sốt') || s.includes('cảm')) {
+        el.style.background = 'rgba(250, 245, 255, 0.95)';
+        el.style.borderColor = '#e9d5ff';
+        const v = el.querySelector('.metric-val'); if (v) v.style.color = '#7e22ce';
+      } else if (s.includes('bận')) {
+        el.style.background = 'rgba(248, 250, 252, 0.95)';
+        el.style.borderColor = '#cbd5e1';
+        const v = el.querySelector('.metric-val'); if (v) v.style.color = '#334155';
+      } else {
+        el.style.background = 'rgba(240, 253, 244, 0.95)';
+        el.style.borderColor = '#bbf7d0';
+        const v = el.querySelector('.metric-val'); if (v) v.style.color = '#15803d';
+      }
     }
 
     function openAvatarModal() {
