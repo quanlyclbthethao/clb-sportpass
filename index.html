@@ -1,368 +1,2145 @@
-<div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
-  <button onclick="openDirectoryModal()" class="spring-touch icon-square-btn" title="Danh bạ &amp; ICE" style="color: #0d9488; background: #f0fdfa; border-color: #99f6e4;">
-    <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-  </button>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CLB Thể Thao - Digital Pass &amp; AI Ops</title>
+  
+  <!-- Standalone Web App Meta Tags cho iOS & Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SportPass">
+  <meta name="theme-color" content="#f1f5fb">
 
-  <button onclick="openHeaderMoreActionSheet()" class="spring-touch icon-square-btn" title="Tùy chọn khác">
-    <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-  </button>
-</div>
+  <!-- Phông chữ chuẩn Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #e0e7ff;
+      --accent: #8b5cf6;
+      --danger: #dc2626;
+      --danger-deep: #b91c1c;
+      --success: #16a34a;
+      --warning: #d97706;
+      --text-main: #0f172a;
+      --text-muted: #334155; /* Đạt chuẩn WCAG AAA trên nền sáng */
+      --active-tab-idx: 0;
+      --safe-top: max(14px, env(safe-area-inset-top, 14px));
+      --safe-bottom: max(14px, env(safe-area-inset-bottom, 14px));
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
 
-<div style="text-align: left; display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
-  <div>
-    <label style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase;">Mã ID / MSSV / SĐT</label>
-    <input type="text" id="iptUser" value="CLB001" placeholder="CLB001..." class="input-box" autocomplete="username">
+    /* Chiều cao động 100dvh chống nảy viewport trên Android Chrome */
+    html, body {
+      min-height: 100dvh;
+      background-color: #f1f5fb;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(199, 210, 254, 0.45) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(254, 205, 211, 0.4) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(186, 230, 253, 0.45) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      overflow-x: hidden;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* HIỆU ỨNG VẬT LÝ LÒ XO COLOROS 17 (SPRING PHYSICS) */
+    .spring-touch {
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+    }
+    .spring-touch:active {
+      transform: scale(0.94);
+    }
+
+    /* TẤM NỀN LIQUID ACRYLIC VỚI VIỀN PHẢN QUANG NGỌC TRAI */
+    .acrylic-card {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      box-shadow: 
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.95),
+        0 8px 32px rgba(15, 23, 42, 0.06);
+      border-radius: 26px;
+      padding: 16px;
+      margin-bottom: 13px;
+      position: relative;
+    }
+
+    /* HEADER CÔNG THÁI HỌC BẢO VỆ DYNAMIC ISLAND */
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding-top: var(--safe-top);
+      padding-bottom: 10px;
+      padding-left: 16px;
+      padding-right: 16px;
+      background: rgba(241, 245, 251, 0.82);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-title-box {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 2.5px rgba(16, 185, 129, 0.25);
+      animation: pulse-dot 1.8s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    .icon-square-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      font-size: 15px;
+    }
+
+    /* NÚT CẤP CỨU ICE VỚI VIỀN PHÁT XUNG NHỊP TIM (PULSATING GLOW) */
+    @keyframes pulse-glow-ice {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+      50% { box-shadow: 0 0 0 7px rgba(220, 38, 38, 0); }
+    }
+    .btn-call-ice {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+      color: #ffffff !important;
+      border: 1px solid #fecaca !important;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+      animation: pulse-glow-ice 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 12px;
+      flex: 1;
+    }
+
+    .btn-call-normal {
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 12px;
+      flex: 1;
+    }
+
+    /* CONTAINER CHÍNH CÓ KHOẢNG ĐỆM AN TOÀN TRÁNH BỊ DOCK VÀ PHÍM ẢO CHE */
+    .main-scroll-content {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      padding-top: calc(var(--safe-top) + 52px);
+      padding-bottom: calc(108px + var(--safe-bottom));
+      padding-left: 14px;
+      padding-right: 14px;
+      min-height: 100dvh;
+    }
+
+    /* LƯỚI 3 THẺ CHỈ SỐ CHỐNG TRÀN CHỮ P0 */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+      margin-top: 13px;
+      margin-bottom: 12px;
+    }
+    .metric-item {
+      padding: 9px 6px;
+      border-radius: 16px;
+      border: 1.2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .metric-val {
+      font-weight: 900;
+      font-size: clamp(0.7rem, 2.3vw, 0.88rem);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    /* AVATAR VÀ NÚT CAMERA TOUCH TARGET >= 38PX */
+    .avatar-wrapper {
+      position: relative;
+      width: 66px;
+      height: 66px;
+      flex-shrink: 0;
+    }
+    .avatar-box {
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+      color: white;
+      font-size: 26px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.28);
+      overflow: hidden;
+      border: 2px solid #ffffff;
+    }
+    .avatar-cam-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #ffffff;
+      color: #4338ca;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid #e0e7ff;
+      z-index: 2;
+    }
+
+    /* THANH DOCK ĐÁY BIẾN HÌNH KHÔNG LỆCH SUBPIXEL TRÊN ANDROID */
+    .dock-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding-bottom: var(--safe-bottom);
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-top: 6px;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .dock-acrylic-pill {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 412px;
+      height: 58px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.95);
+      border-radius: 29px;
+      box-shadow: 
+        0 14px 40px -10px rgba(15, 23, 42, 0.18),
+        inset 0 1px 2px rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 5px;
+    }
+
+    /* Viên thuốc trượt subpixel-safe dùng transform translateX */
+    .dock-slider-indicator {
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      left: 5px;
+      width: calc((100% - 10px) / 3);
+      border-radius: 24px;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.38);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateX(calc(100% * var(--active-tab-idx)));
+      z-index: 1;
+    }
+
+    .dock-item-btn {
+      flex: 1;
+      height: 100%;
+      border: none;
+      background: transparent;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: #64748b;
+      font-size: 10.5px;
+      font-weight: 800;
+      transition: color 0.25s ease;
+      cursor: pointer;
+    }
+    .dock-item-btn.active {
+      color: #ffffff !important;
+    }
+
+    /* VIÊN THUỐC AQUA DYNAMICS KHÔNG RÒ RỈ VÙNG CHẠM P0 */
+    .aqua-island {
+      position: fixed;
+      top: var(--safe-top);
+      left: 50%;
+      transform: translate3d(-50%, -150%, 0) scale(0.88);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease, visibility 0.25s;
+      z-index: 9999;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: white;
+      padding: 9px 18px;
+      border-radius: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 11.5px;
+      font-weight: 800;
+      max-width: 90vw;
+      will-change: transform, opacity;
+    }
+    .aqua-island.active {
+      transform: translate3d(-50%, 0, 0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    /* DẢI TRƯỢT CHỈ TIÊU BAN VÀ KHUNG TÁC VỤ */
+    .dept-slider {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .dept-slider::-webkit-scrollbar { display: none; }
+
+    .btn-duty-swap-prime {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* MODAL OVERLAY CHUẨN COLOROS 17 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.48);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+    .modal-sheet {
+      width: 100%;
+      max-width: 388px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.98);
+      border-radius: 28px;
+      padding: 20px;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+      transform: translateY(20px) scale(0.96);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .modal-overlay.open .modal-sheet {
+      transform: translateY(0) scale(1);
+    }
+
+    .custom-scroll {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.4);
+      border-radius: 4px;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1.2px solid #cbd5e1;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-box:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      padding: 10px 16px;
+      font-weight: 800;
+      font-size: 12px;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.28);
+    }
+    .btn-sub {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 10px 16px;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      font-size: 11.5px;
+    }
+    .info-label {
+      color: #475569;
+      font-weight: 700;
+    }
+    .info-value {
+      font-weight: 800;
+      color: #0f172a;
+      text-align: right;
+    }
+    .selectable-text {
+      user-select: text !important;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+
+<body>
+
+  <!-- VIÊN THUỐC AQUA DYNAMICS TOP NOTIFICATION -->
+  <div id="aquaIsland" class="aqua-island">
+    <span id="aquaIslandIcon">✨</span>
+    <span id="aquaIslandMsg">Thông báo ColorOS 17</span>
   </div>
-  <div>
-    <label style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase;">Mật Khẩu</label>
-    <input type="password" id="iptPass" value="123456" placeholder="Mặc định: 123456" class="input-box" autocomplete="current-password">
-  </div>
 
-  <button onclick="handleLoginSubmit()" id="btnSubmitLogin" class="spring-touch btn-main" style="margin-top: 6px; width: 100%;">
-    Đăng Nhập Thẻ Số
-  </button>
-
-  <button onclick="enterOfflineDemoMode()" class="spring-touch" style="background: transparent; border: none; color: #6366f1; font-size: 11px; font-weight: 800; padding: 7px; cursor: pointer;">
-    ⚡ Trải nghiệm nhanh (Khám phá toàn bộ app ngay)
-  </button>
-</div>
-
-
-
-<div id="tabContentProfile" class="tab-content-container">
-  <section class="acrylic-card">
-    <div style="display: flex; align-items: center; gap: 13px;">
-      <!-- Khung Avatar chuẩn công thái học với Touch Target rộng 38px -->
-      <div id="memAvatarBox" class="avatar-box" onclick="openAvatarModal()" title="Chạm để đổi ảnh đại diện">
-        <span id="memAvatarInitial">A</span>
-        <span class="avatar-cam-badge" title="Đổi ảnh đại diện">
-          <svg style="width:17px;height:17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </span>
-      </div>
-
-      <div style="flex: 1; min-width: 0;">
-        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-          <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nguyễn Văn A</h2>
-          <span id="badgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 1.5px 6px; border-radius: 7px; background: #f3e8ff; color: #7e22ce;">Admin</span>
-        </div>
-        <p id="memRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Chủ nhiệm CLB</p>
-        <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: CLB001</p>
-      </div>
-    </div>
-
-    <!-- LƯỚI THẺ CHỈ SỐ CÂN ĐỐI 1/3 TUYỆT ĐỐI & CHỐNG TRÀN CHỮ P0 -->
-    <div class="metrics-grid">
-      <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
-        <span style="font-size: 8.5px; font-weight: 800; color: #4338ca;">Cống Hiến</span>
-        <span id="memDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
-      </div>
-      <div id="boxMemFit" class="metric-item spring-touch" onclick="openTheTrangModal()" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0; cursor: pointer;" title="Chạm để cập nhật thể trạng">
-        <span style="font-size: 8.5px; font-weight: 800; color: #15803d;">Thể Trạng ✏️</span>
-        <span id="memFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
-      </div>
-      <div id="boxMemStat" class="metric-item" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
-        <span style="font-size: 8.5px; font-weight: 800; color: #065f46;">Trạng Thái</span>
-        <span id="memStat" class="metric-val" style="color: #047857;">Sẵn sàng</span>
-      </div>
-    </div>
-
-    <div class="call-grid">
-      <button onclick="callContactDirect()" class="spring-touch btn-call-normal">
-        <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        <span>Gọi Thành Viên</span>
-      </button>
-      <button onclick="callEmergencyDirect()" class="spring-touch btn-call-ice">
-        <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span>🚨 Khẩn Cấp (ICE)</span>
-      </button>
-    </div>
-  </section>
-
-  <section class="acrylic-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-      <h3 style="font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase;">Hồ Sơ Thành Viên Chi Tiết</h3>
-      <button onclick="openChangePasswordModal()" class="spring-touch" style="font-size: 10px; font-weight: 800; color: var(--primary); background: #eef2ff; border: 1px solid #c7d2fe; padding: 2px 8px; border-radius: 8px;">
-        🔑 Đổi Mật Khẩu
-      </button>
-    </div>
-    <div>
-      <div class="info-row"><span class="info-label">Lớp:</span><span id="dClass" class="selectable-text info-value">---</span></div>
-      <div class="info-row"><span class="info-label">MSSV:</span><span id="dMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
-      <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="selectable-text info-value">---</span></div>
-      <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="selectable-text info-value">---</span></div>
-      <div class="info-row"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="selectable-text info-value">---</span></div>
-      <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-      <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callEmergencyDirect()">---</span></div>
-      <div class="info-row"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="dMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
-    </div>
-  </section>
-</div>
-
-<div id="tabContentTasks" class="hidden tab-content-container">
-  <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 12px; margin-bottom: 245, 255, 0. flex; justify-content: space-between; align-items: 12.5px; font-weight: 800; color: 10px; color:5px; font-weight: 10.5px; font-weight: 800; border-radius: 11px; background: #f3e8ff; color: 8. flex; align-items: flex; justify-content: space-between; align-items: center; margin-bottom: 11px; font-weight: 800; color: #334155; text-transform: 10px; font-weight: 800; padding: 2px 8px; border-radius: 11px; background: 1; min-width: 12.5px; font-weight: 800; color: flex; align-items: center; gap: 9. 1.5px 6px; border-radius: center; gap: 10px; font-weight: 700; color: flex; gap: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2. 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2. 11. 12px; height: flex; flex-direction: column; gap:
-
-
-<button onclick="switchDockTab(0)" class="dock-btn active" id="btnDock0">
-  <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
-  <span>Hồ Sơ</span>
-</button>
-<button onclick="switchDockTab(1)" class="dock-btn" id="btnDock1">
-  <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
-  <span>Điều Động</span>
-</button>
-<button onclick="switchDockTab(2)" class="dock-btn" id="btnDock2">
-  <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <span>Diễn Đàn</span>
-</button>
-
-
-
-  <div style="display: flex; flex-direction: column; gap: 8px;">
-    <div>
-      <label style="font-size: 10px; font-weight: 800; color: #334155;">MẬT KHẨU HIỆN TẠI *</label>
-      <input type="password" id="iptOldPassword" placeholder="Nhập mật khẩu cũ..." class="input-box">
-    </div>
-    <div>
-      <label style="font-size: 10px; font-weight: 800; color: #334155;">MẬT KHẨU MỚI (Tối thiểu 6 ký tự) *</label>
-      <input type="password" id="iptNewPassword" placeholder="Nhập mật khẩu mới..." class="input-box">
-    </div>
-    <div>
-      <label style="font-size: 10px; font-weight: 800; color: #334155;">XÁC NHẬN MẬT KHẨU MỚI *</label>
-      <input type="password" id="iptConfirmPassword" placeholder="Nhập lại mật khẩu mới..." class="input-box">
-    </div>
-    <p id="errPasswordMsg" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
-  </div>
-
-  <div style="display: flex; gap: 6px; margin-top: 13px;">
-    <button onclick="submitChangePassword()" class="spring-touch btn-main" style="flex: 1.5; padding: 10px;">
-      Lưu Mật Khẩu Mới
-    </button>
-    <button onclick="closeChangePasswordModal()" class="spring-touch btn-sub" style="flex: 1; padding: 10px;">
-      Hủy
-    </button>
-  </div>
-</div>
-
-
-
-  <input type="hidden" id="iptSwapTaskId">
-  <div style="display: flex; flex-direction: column; gap: 8px;">
-    <div>
-      <label style="font-size: 10px; font-weight: 800; color: #334155;">LÝ DO XIN ĐỔI CA *</label>
-      <input type="text" id="iptSwapReason" placeholder="Ví dụ: Trùng lịch thi HUST, việc gia đình đột xuất..." class="input-box">
-    </div>
-    <div>
-      <label style="font-size: 10px; font-weight: 800; color: #334155;">CHỈ ĐỊNH ĐỒNG ĐỘI THAY THẾ (Nếu có)</label>
-      <input type="text" id="iptSwapTargetMember" placeholder="Tên hoặc ID bạn nhận ca (để trống nếu nhờ BQT điều phối)..." class="input-box">
-    </div>
-  </div>
-
-  <div style="display: flex; gap: 6px; margin-top: 13px;">
-    <button onclick="submitSwapRequestAction()" class="spring-touch btn-duty-swap-prime" style="flex: 1.5; padding: 10px;">
-      Gửi Yêu Cầu Tới Admin
-    </button>
-    <button onclick="closeSwapRequestModal()" class="spring-touch btn-sub" style="flex: 1; padding: 10px;">
-      Hủy
-    </button>
-  </div>
-</div>
-
-
-
-  <div id="adminSwapsListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 8px; max-height: 56vh;"></div>
-</div>
-
-
-
-  <input type="text" id="iptSearchDirectory" oninput="filterDirectoryMembers()" placeholder="Tìm theo tên, ID, MSSV, SĐT..." class="input-box" style="margin-top: 0; margin-bottom: 9px; font-size: 11.5px; padding: 8px 12px;">
-
-  <div id="directoryListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 7px; max-height: 58vh;"></div>
-</div>
-
-
-
-  <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 12px;">
-    <div id="otherMemAvatarBox" class="avatar-box" style="width: 62px; height: 62px; font-size: 22px; cursor: default;">
-      <span id="otherMemAvatarInitial">A</span>
-    </div>
-    <div style="flex: 1; min-width: 0;">
-      <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-        <h3 id="otherMemName" style="font-size: 15px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">---</h3>
-        <span id="otherMemBadgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 1.5px 6px; border-radius: 7px; background: #f3e8ff; color: #7e22ce;">Admin</span>
-      </div>
-      <p id="otherMemRole" style="font-size: 11px; font-weight: 700; color: var(--primary); margin-top: 1px;">Thành viên</p>
-      <p id="otherMemId" style="font-size: 9.5px; color: #64748b; font-family: monospace; font-weight: 800;">ID: ---</p>
-    </div>
-  </div>
-
-  <div class="metrics-grid" style="margin-top: 0; padding-top: 9px; margin-bottom: 11px;">
-    <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
-      <span style="font-size: 8.5px; font-weight: 800; color: #4338ca;">Cống Hiến</span>
-      <span id="otherMemDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
-    </div>
-    <div class="metric-item" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0;">
-      <span style="font-size: 8.5px; font-weight: 800; color: #15803d;">Thể Trạng</span>
-      <span id="otherMemFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
-    </div>
-    <div class="metric-item" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
-      <span style="font-size: 8.5px; font-weight: 800; color: #065f46;">Trạng Thái</span>
-      <span id="otherMemStat" class="metric-val" style="color: #047857;">Sẵn sàng</span>
-    </div>
-  </div>
-
-  <div style="border-top: 1px solid #f1f5f9; padding-top: 7px;">
-    <div class="info-row"><span class="info-label">Lớp:</span><span id="otherClass" class="selectable-text info-value">---</span></div>
-    <div class="info-row"><span class="info-label">MSSV:</span><span id="otherMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
-    <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="otherFaculty" class="selectable-text info-value">---</span></div>
-    <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="otherDept" class="selectable-text info-value">---</span></div>
-    <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-    <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callTargetMemberIce()">---</span></div>
-    <div class="info-row"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
-  </div>
-
-  <div class="call-grid" style="margin-top: 13px;">
-    <button onclick="callTargetMemberPhone()" class="spring-touch btn-call-normal">
-      <svg style="width: 13px; height: 13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      <span>Gọi Điện</span>
-    </button>
-    <button onclick="callTargetMemberIce()" class="spring-touch btn-call-ice">
-      <svg style="width: 13px; height: 13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span>🚨 Gọi ICE</span>
-    </button>
-  </div>
-</div>
-
-
-
-  <div style="display: flex; flex-direction: column; gap: 5px; margin: 11px 0;">
-    <button onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #bbf7d0; background: #f0fdf4; justify-content: space-between;">
-      <span style="font-size: 11.5px; font-weight: 800; color: #15803d;">Khỏe mạnh</span>
-      <span style="font-size: 9.5px; font-weight: 800; color: #16a34a;">100% Sẵn sàng</span>
-    </button>
-
-    <button onclick="selectTheTrang('Sung sức (Đạt đỉnh phong độ)')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #99f6e4; background: #f0fdfa; justify-content: space-between;">
-      <span style="font-size: 11.5px; font-weight: 800; color: #0f766e;">Sung sức 🔥</span>
-      <span style="font-size: 9.5px; font-weight: 800; color: #0d9488;">Đỉnh phong độ</span>
-    </button>
-
-    <button onclick="selectTheTrang('Căng cơ / Mỏi cơ nhẹ')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #fde68a; background: #fefce8; justify-content: space-between;">
-      <span style="font-size: 11.5px; font-weight: 800; color: #b45309;">Căng cơ nhẹ</span>
-      <span style="font-size: 9.5px; font-weight: 800; color: #d97706;">80%</span>
-    </button>
-
-    <button onclick="selectTheTrang('Chấn thương nhẹ (Theo dõi)')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #fed7aa; background: #fff7ed; justify-content: space-between;">
-      <span style="font-size: 11.5px; font-weight: 800; color: #c2410c;">Chấn thương nhẹ</span>
-      <span style="font-size: 9.5px; font-weight: 800; color: #ea580c;">AI miễn trừ</span>
-    </button>
-
-    <button onclick="selectTheTrang('Chấn thương nặng (Nghỉ đấu)')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #fecdd3; background: #fef2f2; justify-content: space-between;">
-      <span style="font-size: 11.5px; font-weight: 800; color: #b91c1c;">Chấn thương nặng</span>
-      <span style="font-size: 9.5px; font-weight: 800; color: #dc2626;">Nghỉ đấu</span>
-    </button>
-
-    <button onclick="selectTheTrang('Sốt / Cảm cúm')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #e9d5ff; background: #faf5ff; justify-content: space-between;">
-      <span style="font-size: 11.5px; font-weight: 800; color: #7e22ce;">Sốt / Cảm cúm 🤒</span>
-      <span style="font-size: 9.5px; font-weight: 800; color: #9333ea;">AI miễn trừ</span>
-    </button>
-
-    <button onclick="selectTheTrang('Bận học / Thi cử')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8fafc; justify-content: space-between;">
-      <span style="font-size: 11.5px; font-weight: 800; color: #334155;">Bận học / Thi cử 📚</span>
-      <span style="font-size: 9.5px; font-weight: 800; color: #64748b;">Tạm vắng</span>
-    </button>
-  </div>
-
-  <button onclick="closeTheTrangModal()" class="spring-touch btn-sub" style="width: 100%; padding: 8px;">Đóng</button>
-</div>
-
-
-
-  <div id="avatarPreviewBox" class="avatar-box" style="width: 88px; height: 88px; margin: 0 auto 12px auto; font-size: 32px;">
-    <span id="avatarPreviewInitial">A</span>
-  </div>
-
-  <input type="file" id="fileAvatarInput" accept="image/*" class="hidden" onchange="handleAvatarFileSelect(event)">
-
-  <div style="display: flex; flex-direction: column; gap: 6px;">
-    <button onclick="document.getElementById('fileAvatarInput').click()" class="spring-touch btn-main" style="padding: 10px;">
-      Chọn Ảnh Từ Thư Viện
-    </button>
-    <button onclick="closeAvatarModal()" class="spring-touch btn-sub" style="padding: 8px;">Đóng</button>
-  </div>
-</div>
-
-
-
-  <div style="display: flex; flex-direction: column; gap: 7px; margin-top: 11px;">
-    <div>
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <label style="font-size: 10px; font-weight: 800; color: #334155;">TIÊU ĐỀ NHIỆM VỤ *</label>
-        <span style="font-size: 9px; color: #64748b; font-weight: 700;">Tối thiểu 5 ký tự</span>
-      </div>
-      <input type="text" id="iptTaskTitle" placeholder="Ví dụ: Trực bàn giải Cầu lông HUST..." class="input-box">
-      <p id="errTaskTitle" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+  <!-- HEADER CÔNG THÁI HỌC VỚI LIVE STATUS VÀ 2 NÚT THAO TÁC GỌN GÀNG -->
+  <header class="app-header">
+    <div class="header-title-box">
+      <div class="live-dot" title="Hệ thống trực tuyến thời gian thực"></div>
       <div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <label style="font-size: 10px; font-weight: 800; color: #334155;">ĐỊA ĐIỂM *</label>
-          <span style="font-size: 9px; color: #64748b; font-weight: 700;">≥ 3 ký tự</span>
+        <h1 style="font-size: 13.5px; font-weight: 900; letter-spacing: -0.2px; line-height: 1.1; color: #0f172a;">CLB THỂ THAO</h1>
+        <p style="font-size: 9.5px; color: #64748b; font-weight: 700;">ColorOS 17 &bull; Live Sync</p>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+      <button onclick="openDirectoryModal()" class="spring-touch icon-square-btn" title="Danh bạ &amp; ICE" style="color: #0d9488; background: #f0fdfa; border-color: #99f6e4;">
+        <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </button>
+
+      <button onclick="openHeaderMoreActionSheet()" class="spring-touch icon-square-btn" title="Tùy chọn khác">
+        <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- NỘI DUNG CUỘN CHÍNH (MAIN SCROLL CONTAINER) -->
+  <main class="main-scroll-content">
+
+    <!-- MÀN HÌNH ĐĂNG NHẬP (ẨN KHI ĐÃ CÓ PHIÊN) -->
+    <div id="viewLoginContainer" class="hidden">
+      <section class="acrylic-card" style="text-align: center; padding: 24px 18px;">
+        <div style="width: 58px; height: 58px; border-radius: 20px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 10px auto; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);">
+          ⚡
         </div>
-        <input type="text" id="iptTaskLocation" placeholder="Ví dụ: NTĐ Bách Khoa, SVĐ..." class="input-box">
-        <p id="errTaskLocation" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
+        <h2 style="font-size: 17px; font-weight: 900; color: #0f172a;">CỔNG ĐỊNH DANH SỐ</h2>
+        <p style="font-size: 11px; color: #64748b; margin-top: 2px;">Nhập Mã ID hoặc MSSV để truy cập thẻ số cá nhân</p>
+
+        <div style="text-align: left; display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
+          <div>
+            <label style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase;">Mã ID / MSSV / SĐT</label>
+            <input type="text" id="iptUser" value="CLB001" placeholder="CLB001..." class="input-box" autocomplete="username">
+          </div>
+          <div>
+            <label style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase;">Mật Khẩu</label>
+            <input type="password" id="iptPass" value="123456" placeholder="Mặc định: 123456" class="input-box" autocomplete="current-password">
+          </div>
+
+          <button onclick="handleLoginSubmit()" id="btnSubmitLogin" class="spring-touch btn-main" style="margin-top: 6px; width: 100%;">
+            Đăng Nhập Thẻ Số
+          </button>
+
+          <button onclick="enterOfflineDemoMode()" class="spring-touch" style="background: transparent; border: none; color: #6366f1; font-size: 11px; font-weight: 800; padding: 7px; cursor: pointer;">
+            ⚡ Trải nghiệm nhanh (Khám phá toàn bộ app ngay)
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- MÀN HÌNH NỘI DUNG CHÍNH 3 TAB -->
+    <div id="viewMainAppContainer">
+
+      <!-- ==================== TAB 0: HỒ SƠ CÁ NHÂN ==================== -->
+      <div id="tabContentProfile">
+        <section class="acrylic-card">
+          <div style="display: flex; align-items: center; gap: 13px;">
+            <!-- Khung Avatar với Touch Target >= 38px chuẩn ColorOS 17 -->
+            <div class="avatar-wrapper">
+              <div id="memAvatarBox" class="avatar-box spring-touch" onclick="openAvatarModal()" title="Chạm để đổi ảnh đại diện">
+                <span id="memAvatarInitial">A</span>
+              </div>
+              <button onclick="openAvatarModal()" class="spring-touch avatar-cam-badge" title="Đổi ảnh đại diện">
+                <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </button>
+            </div>
+
+            <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nguyễn Văn A</h2>
+                <span id="badgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 1.5px 6px; border-radius: 7px; background: #f3e8ff; color: #7e22ce;">Admin</span>
+              </div>
+              <p id="memRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Chủ nhiệm CLB</p>
+              <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: CLB001</p>
+            </div>
+          </div>
+
+          <!-- LƯỚI 3 THẺ CHỈ SỐ CÂN ĐỐI 1/3 TUYỆT ĐỐI & CHỐNG TRÀN CHỮ P0 -->
+          <div class="metrics-grid">
+            <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
+              <span style="font-size: 8.5px; font-weight: 800; color: #4338ca;">Cống Hiến</span>
+              <span id="memDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
+            </div>
+            <div id="boxMemFit" class="metric-item spring-touch" onclick="openTheTrangModal()" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0; cursor: pointer;" title="Chạm để cập nhật thể trạng">
+              <span style="font-size: 8.5px; font-weight: 800; color: #15803d;">Thể Trạng ✏️</span>
+              <span id="memFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
+            </div>
+            <div id="boxMemStat" class="metric-item" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
+              <span style="font-size: 8.5px; font-weight: 800; color: #065f46;">Trạng Thái</span>
+              <span id="memStat" class="metric-val" style="color: #047857;">Sẵn sàng</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 7px; margin-top: 10px;">
+            <button onclick="callContactDirect()" class="spring-touch btn-call-normal">
+              <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>Gọi Thành Viên</span>
+            </button>
+            <button onclick="callEmergencyDirect()" class="spring-touch btn-call-ice">
+              <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>🚨 Cấp Cứu (ICE)</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- THẺ THÔNG TIN CHI TIẾT VÀ NÚT ĐỔI MẬT KHẨU -->
+        <section class="acrylic-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <h3 style="font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase;">Hồ Sơ Thành Viên Chi Tiết</h3>
+            <button onclick="openChangePasswordModal()" class="spring-touch" style="font-size: 10px; font-weight: 800; color: var(--primary); background: #eef2ff; border: 1px solid #c7d2fe; padding: 2px 8px; border-radius: 8px;">
+              🔑 Đổi Mật Khẩu
+            </button>
+          </div>
+          <div>
+            <div class="info-row"><span class="info-label">Lớp:</span><span id="dClass" class="selectable-text info-value">---</span></div>
+            <div class="info-row"><span class="info-label">MSSV:</span><span id="dMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
+            <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="selectable-text info-value">---</span></div>
+            <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="selectable-text info-value">---</span></div>
+            <div class="info-row"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="selectable-text info-value">---</span></div>
+            <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+            <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callEmergencyDirect()">---</span></div>
+            <div class="info-row"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="dMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
+          </div>
+        </section>
       </div>
-      <div>
-        <label style="font-size: 10px; font-weight: 800; color: #334155;">TỔNG CHỈ TIÊU (NGƯỜI)</label>
-        <input type="number" id="iptTaskQuota" value="8" min="1" max="100" class="input-box" readonly style="background:#f1f5f9;">
+
+      <!-- ==================== TAB 1: ĐIỀU ĐỘNG QUÂN SỐ ==================== -->
+      <div id="tabContentTasks" class="hidden">
+        
+        <!-- THANH CÔNG CỤ ADMIN TẠO LỆNH & TRUNG TÂM PHÊ DUYỆT ĐỔI CA -->
+        <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 12px; margin-bottom: 12px; background: #faf5ff; border-color: #e9d5ff;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 11.5px; font-weight: 800; color: #6b21a8;">QUẢN TRỊ VIÊN ĐIỀU HÀNH</span>
+              <p style="font-size: 9.5px; color: #7e22ce;">Chỉ đạo ca trực &amp; Phê duyệt xoay ca</p>
+            </div>
+            <div style="display: flex; gap: 5px;">
+              <button onclick="openAdminSwapsModal()" class="spring-touch" style="border: 1px solid #c084fc; background: #ffffff; color: #7e22ce; padding: 4px 9px; border-radius: 10px; font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+                <span>Duyệt Đổi Ca</span>
+                <span id="pendingSwapsBadge" class="hidden" style="background: #dc2626; color: white; border-radius: 6px; padding: 0 4px; font-size: 8px;">0</span>
+              </button>
+              <button onclick="openCreateTaskModal()" class="spring-touch btn-main" style="padding: 5px 11px; font-size: 10.5px; background: #9333ea;">
+                + Tạo Lệnh
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DANH SÁCH CÁC CA TRỰC ĐIỀU ĐỘNG -->
+        <div id="tasksListContainer" style="display: flex; flex-direction: column; gap: 11px;"></div>
       </div>
+
+      <!-- ==================== TAB 2: DIỄN ĐÀN CHUẨN FACEBOOK ==================== -->
+      <div id="tabContentForum" class="hidden">
+        
+        <!-- KHUNG SOẠN THẢO BÀI VIẾT FACEBOOK COMPOSER -->
+        <section class="acrylic-card" style="padding: 13px;">
+          <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 8px;">
+            <div id="composerAvatarBox" class="avatar-box" style="width: 38px; height: 38px; font-size: 15px; border-radius: 14px;">
+              A
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <p id="composerAuthorName" style="font-size: 12px; font-weight: 800; color: #0f172a;">Nguyễn Văn A</p>
+              <label style="display: inline-flex; align-items: center; gap: 4px; font-size: 9.5px; font-weight: 700; color: #64748b; cursor: pointer;">
+                <input type="checkbox" id="chkAnonymous" style="accent-color: var(--primary);">
+                <span>Đăng ẩn danh 🎭</span>
+              </label>
+            </div>
+          </div>
+
+          <textarea id="iptPostContent" placeholder="Bạn ơi, hôm nay kết quả tập luyện và thi đấu thế nào?..." rows="3" class="input-box" style="resize: none; font-size: 12px; border-radius: 16px; margin-bottom: 6px;"></textarea>
+
+          <!-- DẢI THUMBNAIL XEM TRƯỚC ẢNH CUỘN NGANG (MEDIA REEL) -->
+          <div id="composerMediaReel" class="hidden" style="display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 8px 0;"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 4px; border-top: 1px solid #f1f5f9;">
+            <div style="display: flex; gap: 4px;">
+              <button onclick="document.getElementById('filePostMediaInput').click()" class="spring-touch" style="display: flex; align-items: center; gap: 4px; padding: 6px 9px; border-radius: 10px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 10.5px; font-weight: 700; color: #0f766e;">
+                <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>Ảnh / Video</span>
+              </button>
+              <input type="file" id="filePostMediaInput" accept="image/*,video/*" multiple class="hidden" onchange="handlePostMediaSelect(event)">
+            </div>
+
+            <button onclick="submitNewPostAction()" id="btnSubmitPost" class="spring-touch btn-main" style="padding: 6px 16px; font-size: 11px;">
+              Đăng Bài
+            </button>
+          </div>
+        </section>
+
+        <!-- DANH SÁCH CÁC BÀI ĐĂNG BẢNG TIN -->
+        <div id="postsListContainer" style="display: flex; flex-direction: column; gap: 11px;"></div>
+      </div>
+
     </div>
 
-    <div>
-      <label style="font-size: 10px; font-weight: 800; color: #334155;">THỜI GIAN THỰC HIỆN</label>
-      <input type="text" id="iptTaskTime" placeholder="Ví dụ: 14:00 - 18:00 Thứ Bảy" class="input-box">
-    </div>
+  </main>
 
-    <div>
-      <label style="font-size: 10px; font-weight: 800; color: #334155;">HẠN TỰ KHÓA &amp; AI ĐIỀU ĐỘNG BÙ THEO BAN</label>
-      <input type="datetime-local" id="iptTaskDeadline" class="input-box">
-      <p id="errTaskDeadline" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
-    </div>
+  <!-- THANH DOCK ĐÁY BIẾN HÌNH SUBPIXEL-SAFE COLOROS 17 -->
+  <nav class="dock-container">
+    <div class="dock-acrylic-pill">
+      <div id="dockSliderIndicator" class="dock-slider-indicator"></div>
 
-    <div style="margin-top: 4px; padding: 9px; background: #faf5ff; border: 1.2px solid #e9d5ff; border-radius: 15px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <label style="font-size: 10.5px; font-weight: 800; color: #6b21a8;">🎯 CHỈ TIÊU THEO TỪNG BAN</label>
-        <button type="button" onclick="addDepartmentQuotaRow()" style="border: none; background: #9333ea; color: white; padding: 2px 7px; border-radius: 8px; font-size: 9.5px; font-weight: 800; cursor: pointer;">
-          + Thêm Ban
+      <button onclick="switchDockTab(0)" class="dock-item-btn active" id="btnDock0">
+        <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+        <span>Hồ Sơ</span>
+      </button>
+      <button onclick="switchDockTab(1)" class="dock-item-btn" id="btnDock1">
+        <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+        <span>Điều Động</span>
+      </button>
+      <button onclick="switchDockTab(2)" class="dock-item-btn" id="btnDock2">
+        <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Diễn Đàn</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== CÁC MODAL HỆ THỐNG ==================== -->
+
+  <!-- 1. MODAL ĐỔI MẬT KHẨU BẢO MẬT -->
+  <div id="modalChangePassword" class="modal-overlay">
+    <div class="modal-sheet">
+      <h3 style="font-size: 14px; font-weight: 900; color: #0f172a; margin-bottom: 12px;">🔑 ĐỔI MẬT KHẨU TÀI KHOẢN</h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">MẬT KHẨU HIỆN TẠI *</label>
+          <input type="password" id="iptOldPassword" placeholder="Nhập mật khẩu cũ..." class="input-box">
+        </div>
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">MẬT KHẨU MỚI (Tối thiểu 6 ký tự) *</label>
+          <input type="password" id="iptNewPassword" placeholder="Nhập mật khẩu mới..." class="input-box">
+        </div>
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">XÁC NHẬN MẬT KHẨU MỚI *</label>
+          <input type="password" id="iptConfirmPassword" placeholder="Nhập lại mật khẩu mới..." class="input-box">
+        </div>
+        <p id="errPasswordMsg" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
+      </div>
+
+      <div style="display: flex; gap: 6px; margin-top: 13px;">
+        <button onclick="submitChangePassword()" class="spring-touch btn-main" style="flex: 1.5; padding: 10px;">
+          Lưu Mật Khẩu Mới
+        </button>
+        <button onclick="closeChangePasswordModal()" class="spring-touch btn-sub" style="flex: 1; padding: 10px;">
+          Hủy
         </button>
       </div>
-      <p style="font-size: 9px; color: #7e22ce; margin-bottom: 6px; font-weight: 700;">Hết giờ, AI Agent tự quét người ít ca của từng ban tương ứng!</p>
-
-      <div id="deptQuotaContainer" style="display: flex; flex-direction: column; gap: 4px;"></div>
     </div>
   </div>
 
-  <div style="display: flex; gap: 6px; margin-top: 13px;">
-    <button onclick="submitCreateTaskAction()" class="spring-touch btn-main" style="flex: 1.5; padding: 9px; background: #9333ea;">
-      Ban Hành Lệnh
-    </button>
-    <button onclick="closeCreateTaskModal()" class="spring-touch btn-sub" style="flex: 1; padding: 9px;">Hủy</button>
+  <!-- 2. MODAL XIN ĐỔI CA THÔNG BÁO TỚI ADMIN -->
+  <div id="modalSwapRequest" class="modal-overlay">
+    <div class="modal-sheet">
+      <h3 style="font-size: 14px; font-weight: 900; color: #0f172a; margin-bottom: 4px;">🔄 XIN ĐỔI CA TRỰC</h3>
+      <p style="font-size: 10.5px; color: #64748b; margin-bottom: 11px;">Yêu cầu sẽ được gửi tới Ban Quản Trị để điều phối chính thức.</p>
+
+      <input type="hidden" id="iptSwapTaskId">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">LÝ DO XIN ĐỔI CA *</label>
+          <input type="text" id="iptSwapReason" placeholder="Ví dụ: Trùng lịch thi HUST, việc gia đình đột xuất..." class="input-box">
+        </div>
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">CHỈ ĐỊNH ĐỒNG ĐỘI THAY THẾ (Nếu có)</label>
+          <input type="text" id="iptSwapTargetMember" placeholder="Tên hoặc ID bạn nhận ca (để trống nếu nhờ BQT điều phối)..." class="input-box">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 6px; margin-top: 13px;">
+        <button onclick="submitSwapRequestAction()" class="spring-touch btn-duty-swap-prime" style="flex: 1.5; padding: 10px;">
+          Gửi Yêu Cầu Tới Admin
+        </button>
+        <button onclick="closeSwapRequestModal()" class="spring-touch btn-sub" style="flex: 1; padding: 10px;">
+          Hủy
+        </button>
+      </div>
+    </div>
   </div>
-</div>
 
+  <!-- 3. MODAL ADMIN PHÊ DUYỆT ĐỔI CA -->
+  <div id="modalAdminSwaps" class="modal-overlay">
+    <div class="modal-sheet" style="max-height: 80vh; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="font-size: 13.5px; font-weight: 900; color: #6b21a8;">TRUNG TÂM DUYỆT ĐỔI CA</h3>
+        <button onclick="closeAdminSwapsModal()" class="spring-touch" style="border: none; background: transparent; font-weight: 800; font-size: 16px; color: #64748b;">✕</button>
+      </div>
 
+      <div id="adminSwapsListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 8px; max-height: 56vh;"></div>
+    </div>
+  </div>
 
-  <button onclick="openChangePasswordModal()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: var(--primary); justify-content: flex-start;">
-    🔑 Đổi mật khẩu tài khoản
-  </button>
+  <!-- 4. MODAL DANH BẠ CLB & TÌM KIẾM THÀNH VIÊN -->
+  <div id="modalDirectory" class="modal-overlay">
+    <div class="modal-sheet" style="max-height: 82vh; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #0f172a;">👥 DANH BẠ &amp; CẤP CỨU CLB</h3>
+        <button onclick="closeDirectoryModal()" class="spring-touch" style="border: none; background: transparent; font-weight: 800; font-size: 16px; color: #64748b;">✕</button>
+      </div>
 
-  <button onclick="executeLogoutAction()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #dc2626; justify-content: flex-start; border-top: 1px solid #f1f5f9;">
-    🚪 Đăng xuất tài khoản
-  </button>
+      <input type="text" id="iptSearchDirectory" oninput="filterDirectoryMembers()" placeholder="Tìm theo tên, ID, MSSV, SĐT..." class="input-box" style="margin-top: 0; margin-bottom: 9px; font-size: 11.5px; padding: 8px 12px;">
 
-  <button onclick="closeHeaderMoreActionSheetDirect()" class="spring-touch" style="width: 100%; padding: 10px; border-top: 1px solid #f1f5f9; background: transparent; font-size: 12px; font-weight: 800; color: #64748b; margin-top: 3px;">
-    Đóng
-  </button>
-</div>
+      <div id="directoryListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 7px; max-height: 58vh;"></div>
+    </div>
+  </div>
 
+  <!-- 5. MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC (PROFILE INSPECTOR) -->
+  <div id="modalOtherMember" class="modal-overlay">
+    <div class="modal-sheet">
+      <div style="display: flex; justify-content: flex-end; margin-bottom: -10px;">
+        <button onclick="closeOtherMemberModal()" class="spring-touch" style="border: none; background: transparent; font-weight: 800; font-size: 17px; color: #64748b;">✕</button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 12px;">
+        <div id="otherMemAvatarBox" class="avatar-box" style="width: 62px; height: 62px; font-size: 22px; cursor: default;">
+          <span id="otherMemAvatarInitial">A</span>
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <h3 id="otherMemName" style="font-size: 15px; font-weight: 900; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">---</h3>
+            <span id="otherMemBadgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 1.5px 6px; border-radius: 7px; background: #f3e8ff; color: #7e22ce;">Admin</span>
+          </div>
+          <p id="otherMemRole" style="font-size: 11px; font-weight: 700; color: var(--primary); margin-top: 1px;">Thành viên</p>
+          <p id="otherMemId" style="font-size: 9.5px; color: #64748b; font-family: monospace; font-weight: 800;">ID: ---</p>
+        </div>
+      </div>
+
+      <div class="metrics-grid" style="margin-top: 0; padding-top: 9px; margin-bottom: 11px;">
+        <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
+          <span style="font-size: 8.5px; font-weight: 800; color: #4338ca;">Cống Hiến</span>
+          <span id="otherMemDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
+        </div>
+        <div class="metric-item" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0;">
+          <span style="font-size: 8.5px; font-weight: 800; color: #15803d;">Thể Trạng</span>
+          <span id="otherMemFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
+        </div>
+        <div class="metric-item" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
+          <span style="font-size: 8.5px; font-weight: 800; color: #065f46;">Trạng Thái</span>
+          <span id="otherMemStat" class="metric-val" style="color: #047857;">Sẵn sàng</span>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #f1f5f9; padding-top: 7px;">
+        <div class="info-row"><span class="info-label">Lớp:</span><span id="otherClass" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">MSSV:</span><span id="otherMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
+        <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="otherFaculty" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="otherDept" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callTargetMemberIce()">---</span></div>
+        <div class="info-row"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
+      </div>
+
+      <div style="display: flex; gap: 7px; margin-top: 13px;">
+        <button onclick="callTargetMemberPhone()" class="spring-touch btn-call-normal">
+          <svg style="width: 13px; height: 13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Gọi Điện</span>
+        </button>
+        <button onclick="callTargetMemberIce()" class="spring-touch btn-call-ice">
+          <svg style="width: 13px; height: 13px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>🚨 Gọi ICE</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. MODAL 10 CẤP ĐỘ THỂ TRẠNG PASTEL -->
+  <div id="modalTheTrang" class="modal-overlay">
+    <div class="modal-sheet" style="max-height: 80vh; display: flex; flex-direction: column;">
+      <h3 style="font-size: 13.5px; font-weight: 900; color: #0f172a; margin-bottom: 2px;">✏️ CẬP NHẬT THỂ TRẠNG THỂ LỰC</h3>
+      <p style="font-size: 10px; color: #64748b;">Hệ thống AI sẽ tự động miễn trừ phân ca khi bạn báo ốm đau/chấn thương.</p>
+
+      <div class="custom-scroll" style="display: flex; flex-direction: column; gap: 5px; margin: 11px 0; max-height: 56vh;">
+        <button onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 14px; border: 1px solid #bbf7d0; background: #f0fdf4;">
+          <span style="font-size: 11.5px; font-weight: 800; color: #15803d;">Khỏe mạnh</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #16a34a;">100% Sẵn sàng</span>
+        </button>
+
+        <button onclick="selectTheTrang('Sung sức (Đạt đỉnh phong độ)')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 14px; border: 1px solid #99f6e4; background: #f0fdfa;">
+          <span style="font-size: 11.5px; font-weight: 800; color: #0f766e;">Sung sức 🔥</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #0d9488;">Đỉnh phong độ</span>
+        </button>
+
+        <button onclick="selectTheTrang('Căng cơ / Mỏi cơ nhẹ')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 14px; border: 1px solid #fde68a; background: #fefce8;">
+          <span style="font-size: 11.5px; font-weight: 800; color: #b45309;">Căng cơ nhẹ</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #d97706;">80% thể lực</span>
+        </button>
+
+        <button onclick="selectTheTrang('Chấn thương nhẹ (Theo dõi)')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 14px; border: 1px solid #fed7aa; background: #fff7ed;">
+          <span style="font-size: 11.5px; font-weight: 800; color: #c2410c;">Chấn thương nhẹ</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #ea580c;">AI miễn trừ</span>
+        </button>
+
+        <button onclick="selectTheTrang('Chấn thương nặng (Nghỉ đấu)')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 14px; border: 1px solid #fecdd3; background: #fef2f2;">
+          <span style="font-size: 11.5px; font-weight: 800; color: #b91c1c;">Chấn thương nặng</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #dc2626;">Nghỉ đấu</span>
+        </button>
+
+        <button onclick="selectTheTrang('Sốt / Cảm cúm')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 14px; border: 1px solid #e9d5ff; background: #faf5ff;">
+          <span style="font-size: 11.5px; font-weight: 800; color: #7e22ce;">Sốt / Cảm cúm 🤒</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #9333ea;">AI miễn trừ</span>
+        </button>
+
+        <button onclick="selectTheTrang('Bận học / Thi cử')" class="spring-touch" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8fafc;">
+          <span style="font-size: 11.5px; font-weight: 800; color: #334155;">Bận học / Thi cử 📚</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #64748b;">Tạm vắng</span>
+        </button>
+      </div>
+
+      <button onclick="closeTheTrangModal()" class="spring-touch btn-sub" style="width: 100%; padding: 8px;">Đóng</button>
+    </div>
+  </div>
+
+  <!-- 7. MODAL ĐỔI ẢNH ĐẠI DIỆN AVATAR -->
+  <div id="modalAvatar" class="modal-overlay">
+    <div class="modal-sheet" style="text-align: center;">
+      <h3 style="font-size: 14px; font-weight: 900; color: #0f172a; margin-bottom: 12px;">ĐỔI ẢNH ĐẠI DIỆN</h3>
+      
+      <div id="avatarPreviewBox" class="avatar-box" style="width: 88px; height: 88px; margin: 0 auto 12px auto; font-size: 32px;">
+        <span id="avatarPreviewInitial">A</span>
+      </div>
+
+      <input type="file" id="fileAvatarInput" accept="image/*" class="hidden" onchange="handleAvatarFileSelect(event)">
+
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <button onclick="document.getElementById('fileAvatarInput').click()" class="spring-touch btn-main" style="padding: 10px;">
+          Chọn Ảnh Từ Thư Viện
+        </button>
+        <button onclick="closeAvatarModal()" class="spring-touch btn-sub" style="padding: 8px;">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. MODAL ADMIN TẠO LỆNH ĐIỀU ĐỘNG THEO BAN -->
+  <div id="modalCreateTask" class="modal-overlay">
+    <div class="modal-sheet" style="max-height: 85vh; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="font-size: 14px; font-weight: 900; color: #6b21a8;">BAN HÀNH LỆNH ĐIỀU ĐỘNG</h3>
+        <button onclick="closeCreateTaskModal()" class="spring-touch" style="border: none; background: transparent; font-weight: 800; font-size: 16px; color: #64748b;">✕</button>
+      </div>
+
+      <div class="custom-scroll" style="display: flex; flex-direction: column; gap: 7px; margin-top: 11px; max-height: 62vh;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label style="font-size: 10px; font-weight: 800; color: #334155;">TIÊU ĐỀ NHIỆM VỤ *</label>
+            <span style="font-size: 9px; color: #64748b; font-weight: 700;">Tối thiểu 5 ký tự</span>
+          </div>
+          <input type="text" id="iptTaskTitle" placeholder="Ví dụ: Trực bàn giải Cầu lông HUST..." class="input-box">
+          <p id="errTaskTitle" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label style="font-size: 10px; font-weight: 800; color: #334155;">ĐỊA ĐIỂM *</label>
+              <span style="font-size: 9px; color: #64748b; font-weight: 700;">≥ 3 ký tự</span>
+            </div>
+            <input type="text" id="iptTaskLocation" placeholder="Ví dụ: NTĐ Bách Khoa, SVĐ..." class="input-box">
+            <p id="errTaskLocation" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
+          </div>
+          <div>
+            <label style="font-size: 10px; font-weight: 800; color: #334155;">TỔNG CHỈ TIÊU (NGƯỜI)</label>
+            <input type="number" id="iptTaskQuota" value="8" min="1" max="100" class="input-box" readonly style="background:#f1f5f9;">
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">THỜI GIAN THỰC HIỆN</label>
+          <input type="text" id="iptTaskTime" placeholder="Ví dụ: 14:00 - 18:00 Thứ Bảy" class="input-box">
+        </div>
+
+        <div>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">HẠN TỰ KHÓA &amp; AI ĐIỀU ĐỘNG BÙ THEO BAN</label>
+          <input type="datetime-local" id="iptTaskDeadline" class="input-box">
+          <p id="errTaskDeadline" style="font-size: 9.5px; color: #dc2626; font-weight: 700; margin-top: 2px; display: none;"></p>
+        </div>
+
+        <div style="margin-top: 4px; padding: 9px; background: #faf5ff; border: 1.2px solid #e9d5ff; border-radius: 15px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label style="font-size: 10.5px; font-weight: 800; color: #6b21a8;">🎯 CHỈ TIÊU THEO TỪNG BAN</label>
+            <button type="button" onclick="addDepartmentQuotaRow()" style="border: none; background: #9333ea; color: white; padding: 2px 7px; border-radius: 8px; font-size: 9.5px; font-weight: 800; cursor: pointer;">
+              + Thêm Ban
+            </button>
+          </div>
+          <p style="font-size: 9px; color: #7e22ce; margin-bottom: 6px; font-weight: 700;">Hết giờ, AI Agent tự quét người ít ca của từng ban tương ứng!</p>
+
+          <div id="deptQuotaContainer" style="display: flex; flex-direction: column; gap: 4px;"></div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 6px; margin-top: 13px;">
+        <button onclick="submitCreateTaskAction()" class="spring-touch btn-main" style="flex: 1.5; padding: 9px; background: #9333ea;">
+          Ban Hành Lệnh
+        </button>
+        <button onclick="closeCreateTaskModal()" class="spring-touch btn-sub" style="flex: 1; padding: 9px;">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. ACTION SHEET MENU HEADER (TÙY CHỌN KHÁC) -->
+  <div id="modalHeaderMore" class="modal-overlay">
+    <div class="modal-sheet" style="padding: 14px;">
+      <h4 style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 8px; padding-left: 4px;">Tùy Chọn Tài Khoản</h4>
+
+      <button onclick="openChangePasswordModal()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+        <span>🔑</span>
+        <span>Đổi mật khẩu tài khoản</span>
+      </button>
+
+      <button onclick="executeLogoutAction()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #dc2626; display: flex; align-items: center; gap: 8px; border-top: 1px solid #f1f5f9;">
+        <span>🚪</span>
+        <span>Đăng xuất tài khoản</span>
+      </button>
+
+      <button onclick="closeHeaderMoreActionSheetDirect()" class="spring-touch" style="width: 100%; padding: 10px; border-top: 1px solid #f1f5f9; background: transparent; font-size: 12px; font-weight: 800; color: #64748b; margin-top: 3px;">
+        Đóng
+      </button>
+    </div>
+  </div>
+
+  <!-- 10. HD LIGHTBOX XEM ẢNH FULLSCREEN -->
+  <div id="modalLightbox" class="modal-overlay" style="background: rgba(0, 0, 0, 0.94); padding: 0;">
+    <div style="position: absolute; top: var(--safe-top); right: 16px; z-index: 10;">
+      <button onclick="closeLightboxModal()" class="spring-touch" style="border: none; background: rgba(255, 255, 255, 0.2); color: white; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center;">✕</button>
+    </div>
+    <div style="position: absolute; top: var(--safe-top); left: 16px; z-index: 10; color: white; font-weight: 800; font-size: 12px;" id="lightboxCounter">1 / 1</div>
+    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="closeLightboxModal()">
+      <img id="lightboxImg" src="" style="max-width: 100%; max-height: 85vh; border-radius: 14px; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.8);" onclick="event.stopPropagation()">
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT HỆ THỐNG COLOROS 17 & XỬ LÝ TOÀN BỘ LOGIC -->
+  <script>
+    // ==========================================
+    // CẤU HÌNH API VÀ TRẠNG THÁI TOÀN CỤC
+    // ==========================================
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwvNsYMBiDo53EF5a2FrKRO3KAoWJqA-BMNTLZj0IbuPd_vCIRpPsjmPYqPRre1qhB/exec";
+
+    let currentUser = null;
+    let membersDirectory = [];
+    let currentTasks = [];
+    let currentPosts = [];
+    let currentSwaps = [];
+    let selectedOtherMember = null;
+    let currentComposerMedia = [];
+    let currentLightboxMedia = [];
+    let currentLightboxIndex = 0;
+    let isActionDebouncing = false;
+
+    // Quản lý chống kẹt Timer và Pointer-Events của Aqua Island
+    let aquaTimer = null;
+
+    // Body Scroll Lock quản lý nhiều lớp Modal
+    let activeModalCount = 0;
+    function setBodyScrollLock(isLocked) {
+      if (isLocked) {
+        activeModalCount++;
+        document.body.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+      } else {
+        activeModalCount = Math.max(0, activeModalCount - 1);
+        if (activeModalCount === 0) {
+          document.body.style.overflow = '';
+          document.body.style.touchAction = '';
+        }
+      }
+    }
+
+    // Tự động chuẩn hóa từ viết tắt thể thao (THCS, THPT, SVĐ, NTĐ, HUST, CLB...)
+    function formatSportsText(text) {
+      if (!text) return '';
+      const acronymMap = {
+        'thcs': 'THCS', 'thpt': 'THPT', 'svđ': 'SVĐ', 'svd': 'SVĐ',
+        'ntđ': 'NTĐ', 'ntd': 'NTĐ', 'hust': 'HUST', 'clb': 'CLB',
+        'dhbk': 'ĐHBK', 'đhbk': 'ĐHBK', 'ktx': 'KTX'
+      };
+      const regex = new RegExp(`\\b(${Object.keys(acronymMap).join('|')})\\b`, 'gi');
+      return text.replace(regex, matched => acronymMap[matched.toLowerCase()] || matched.toUpperCase());
+    }
+
+    // Debounce chống click đúp (Double-Submit Protection)
+    function runWithDebounce(actionFn, delay = 450) {
+      if (isActionDebouncing) return;
+      isActionDebouncing = true;
+      actionFn();
+      setTimeout(() => { isActionDebouncing = false; }, delay);
+    }
+
+    // ==========================================
+    // AQUA DYNAMICS ISLAND NOTIFICATION ENGINE
+    // ==========================================
+    function showAquaIsland(msg, icon = '✨') {
+      if (aquaTimer) {
+        clearTimeout(aquaTimer);
+        aquaTimer = null;
+      }
+
+      const island = document.getElementById('aquaIsland');
+      const iconEl = document.getElementById('aquaIslandIcon');
+      const msgEl = document.getElementById('aquaIslandMsg');
+
+      iconEl.innerText = icon;
+      msgEl.innerText = msg;
+
+      island.classList.add('active');
+
+      aquaTimer = setTimeout(() => {
+        island.classList.remove('active');
+        aquaTimer = null;
+      }, 3500);
+    }
+
+    // ==========================================
+    // KHỞI ĐỘNG HỆ THỐNG VÀ KIỂM TRA PHIÊN
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      checkStoredLoginSession();
+    });
+
+    function checkStoredLoginSession() {
+      const cached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
+      if (cached) {
+        try {
+          currentUser = JSON.parse(cached);
+          showMainAppView();
+          syncRealtimeData();
+        } catch (e) {
+          localStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');
+          showLoginView();
+        }
+      } else {
+        enterOfflineDemoMode();
+      }
+    }
+
+    function showLoginView() {
+      document.getElementById('viewLoginContainer').classList.remove('hidden');
+      document.getElementById('viewMainAppContainer').classList.add('hidden');
+    }
+
+    function showMainAppView() {
+      document.getElementById('viewLoginContainer').classList.add('hidden');
+      document.getElementById('viewMainAppContainer').classList.remove('hidden');
+      renderProfileData();
+    }
+
+    function enterOfflineDemoMode() {
+      currentUser = {
+        id: 'CLB001',
+        hoTen: 'Nguyễn Văn A',
+        ngaySinh: '15/08/2004',
+        lop: 'K64-QLTT',
+        mssv: '20210001',
+        khoa: 'Viện Kinh tế & QTKD',
+        boMon: 'Ban Cầu Lông',
+        chucVu: 'Chủ nhiệm CLB',
+        sdt: '0912345678',
+        yTe: 'Nhóm O+ (Bình thường)',
+        ice: '0987654321 (Mẹ)',
+        soCa: 12,
+        status: 'Sẵn sàng',
+        avatar: '',
+        theTrang: 'Sung sức (Đạt đỉnh phong độ)',
+        isAdmin: true
+      };
+
+      membersDirectory = [
+        currentUser,
+        { id: 'CLB002', hoTen: 'Trần Hải Yến', lop: 'K65-CNTT', mssv: '20220123', khoa: 'Khoa CNTT', boMon: 'Ban Cầu Lông', chucVu: 'Thành viên', sdt: '0988776655', yTe: 'A+', ice: '0901234567', soCa: 4, status: 'Sẵn sàng', theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '', isAdmin: false },
+        { id: 'CLB003', hoTen: 'Lê Hoàng Nam', lop: 'K63-Cơ Khí', mssv: '20205566', khoa: 'Trường Cơ Khí', boMon: 'Ban Bóng Chuyền', chucVu: 'Thành viên', sdt: '0977889900', yTe: 'B+', ice: '0912000111', soCa: 2, status: 'Sẵn sàng', theTrang: 'Căng cơ / Mỏi cơ nhẹ', avatar: '', isAdmin: false },
+        { id: 'CLB004', hoTen: 'Phạm Tuấn Kiệt', lop: 'K64-Điện', mssv: '20218899', khoa: 'Trường Điện', boMon: 'Ban Bóng Đá', chucVu: 'Thành viên', sdt: '0909112233', yTe: 'O+', ice: '0933445566', soCa: 8, status: 'Sẵn sàng', theTrang: 'Sốt / Cảm cúm', avatar: '', isAdmin: false }
+      ];
+
+      currentTasks = [
+        {
+          id: 'TASK_DEMO_01',
+          title: 'Trực bàn giải Cầu lông HUST 2026',
+          location: 'NTĐ Bách Khoa',
+          time: '14:00 - 18:00 Thứ Bảy',
+          quota: 6,
+          joinedMembers: ['CLB001', 'CLB002'],
+          assignedMembers: [],
+          lockDeadline: '2026-10-05T12:00',
+          status: 'active',
+          departmentQuotas: { 'Ban Cầu Lông': 2, 'Ban Bóng Chuyền': 2, 'Ban Truyền Thông': 2 }
+        }
+      ];
+
+      currentPosts = [
+        {
+          id: 'POST_DEMO_01',
+          authorId: 'CLB001',
+          authorName: 'Nguyễn Văn A',
+          authorAvatar: '',
+          isAnonymous: false,
+          content: 'Chào mừng cả nhà đến với hệ điều hành số ColorOS 17 Flagship! Hôm nay CLB chúng ta thử nghiệm cơ chế tự động chỉ định quân số theo từng ban nhé! 🔥',
+          mediaList: [],
+          reactions: { like: 8, love: 4, care: 1, haha: 0, wow: 0, sad: 0, angry: 0, userReactions: {} },
+          comments: [
+            { id: 'CMT_01', authorId: 'CLB002', authorName: 'Trần Hải Yến', authorAvatar: '', text: 'Giao diện cực mượt, nút ICE bấm phát ra cuộc gọi ngay anh ơi!', time: '10:15' }
+          ],
+          createdAt: 'Vừa xong'
+        }
+      ];
+
+      showMainAppView();
+      renderTasksList();
+      renderForumFeed();
+      showAquaIsland('Đã kích hoạt chế độ Demo Flagship ColorOS 17!', '⚡');
+    }
+
+    async function handleLoginSubmit() {
+      const user = document.getElementById('iptUser').value.trim();
+      const pass = document.getElementById('iptPass').value.trim();
+      if (!user) return alert('Vui lòng nhập Mã ID, MSSV hoặc SĐT!');
+
+      const btn = document.getElementById('btnSubmitLogin');
+      btn.innerText = 'Đang xác thực...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${BACKEND_URL}?action=login&identifier=${encodeURIComponent(user)}&password=${encodeURIComponent(pass)}`);
+        const json = await res.json();
+        btn.innerText = 'Đăng Nhập Thẻ Số';
+        btn.disabled = false;
+
+        if (json.success && json.member) {
+          currentUser = json.member;
+          localStorage.setItem('CLB_SPORTPASS_AUTH_SESSION', JSON.stringify(currentUser));
+          showMainAppView();
+          syncRealtimeData();
+          showAquaIsland(`Xin chào, ${currentUser.hoTen}!`, '👋');
+        } else {
+          alert(json.message || 'Sai thông tin đăng nhập!');
+        }
+      } catch (err) {
+        btn.innerText = 'Đăng Nhập Thẻ Số';
+        btn.disabled = false;
+        enterOfflineDemoMode();
+      }
+    }
+
+    function executeLogoutAction() {
+      if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi thẻ số?')) {
+        localStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');
+        currentUser = null;
+        closeHeaderMoreActionSheetDirect();
+        showLoginView();
+        showAquaIsland('Đã đăng xuất tài khoản an toàn!', '🚪');
+      }
+    }
+
+    // ==========================================
+    // ĐIỀU HƯỚNG DOCK BOTTOM BIẾN HÌNH
+    // ==========================================
+    function switchDockTab(tabIdx) {
+      document.documentElement.style.setProperty('--active-tab-idx', tabIdx);
+
+      [0, 1, 2].forEach(i => {
+        const btn = document.getElementById(`btnDock${i}`);
+        if (i === tabIdx) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      document.getElementById('tabContentProfile').classList.toggle('hidden', tabIdx !== 0);
+      document.getElementById('tabContentTasks').classList.toggle('hidden', tabIdx !== 1);
+      document.getElementById('tabContentForum').classList.toggle('hidden', tabIdx !== 2);
+
+      // Cuộn lên đầu nhẹ nhàng khi đổi tab
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // TAB 0: HỒ SƠ & THỂ TRẠNG VÀ ICE
+    // ==========================================
+    function renderProfileData() {
+      if (!currentUser) return;
+
+      document.getElementById('memName').innerText = currentUser.hoTen;
+      document.getElementById('memRole').innerText = currentUser.chucVu || 'Thành viên CLB';
+      document.getElementById('memId').innerText = 'ID: ' + currentUser.id;
+      document.getElementById('memDuty').innerText = `${currentUser.soCa || 0} ca`;
+
+      const initial = currentUser.hoTen.split(' ').pop().charAt(0).toUpperCase() || 'A';
+      document.getElementById('memAvatarInitial').innerText = initial;
+      document.getElementById('composerAvatarBox').innerText = initial;
+      document.getElementById('composerAuthorName').innerText = currentUser.hoTen;
+
+      if (currentUser.isAdmin) {
+        document.getElementById('badgeAdm').classList.remove('hidden');
+        document.getElementById('adminTaskToolbar').classList.remove('hidden');
+      } else {
+        document.getElementById('badgeAdm').classList.add('hidden');
+        document.getElementById('adminTaskToolbar').classList.add('hidden');
+      }
+
+      // Thông tin chi tiết
+      document.getElementById('dClass').innerText = currentUser.lop || '---';
+      document.getElementById('dMssv').innerText = currentUser.mssv || '---';
+      document.getElementById('dFaculty').innerText = currentUser.khoa || '---';
+      document.getElementById('dDept').innerText = currentUser.boMon || '---';
+      document.getElementById('dDob').innerText = currentUser.ngaySinh || '---';
+      document.getElementById('dPhone').innerText = currentUser.sdt || '---';
+      document.getElementById('dIce').innerText = currentUser.ice || '---';
+      document.getElementById('dMed').innerText = currentUser.yTe || 'Bình thường';
+
+      applyTheTrangBadgeStyle(currentUser.theTrang || 'Khỏe mạnh (100% Sẵn sàng)');
+      applyStatusBadgeStyle();
+    }
+
+    function applyTheTrangBadgeStyle(theTrang) {
+      const box = document.getElementById('boxMemFit');
+      const val = document.getElementById('memFit');
+      val.innerText = theTrang.split('(')[0].trim();
+
+      if (theTrang.includes('Sung sức')) {
+        box.style.background = 'rgba(240, 253, 250, 0.95)';
+        box.style.borderColor = '#99f6e4';
+        val.style.color = '#0f766e';
+      } else if (theTrang.includes('Căng cơ')) {
+        box.style.background = 'rgba(254, 252, 232, 0.95)';
+        box.style.borderColor = '#fde68a';
+        val.style.color = '#b45309';
+      } else if (theTrang.includes('Chấn thương')) {
+        box.style.background = 'rgba(254, 242, 242, 0.95)';
+        box.style.borderColor = '#fecaca';
+        val.style.color = '#dc2626';
+      } else if (theTrang.includes('Sốt') || theTrang.includes('Cảm')) {
+        box.style.background = 'rgba(250, 245, 255, 0.95)';
+        box.style.borderColor = '#e9d5ff';
+        val.style.color = '#7e22ce';
+      } else {
+        box.style.background = 'rgba(240, 253, 244, 0.95)';
+        box.style.borderColor = '#bbf7d0';
+        val.style.color = '#15803d';
+      }
+    }
+
+    function applyStatusBadgeStyle() {
+      const box = document.getElementById('boxMemStat');
+      const val = document.getElementById('memStat');
+
+      let isOccupied = false;
+      currentTasks.forEach(t => {
+        if ((t.joinedMembers && t.joinedMembers.includes(currentUser.id)) || 
+            (t.assignedMembers && t.assignedMembers.includes(currentUser.id))) {
+          isOccupied = true;
+        }
+      });
+
+      if (isOccupied) {
+        box.style.background = 'rgba(255, 251, 235, 0.95)';
+        box.style.borderColor = '#fde68a';
+        val.style.color = '#b45309';
+        val.innerText = 'Đang nhận ca ⚡';
+      } else {
+        box.style.background = 'rgba(236, 253, 245, 0.95)';
+        box.style.borderColor = '#a7f3d0';
+        val.style.color = '#047857';
+        val.innerText = 'Sẵn sàng';
+      }
+    }
+
+    function makePhoneCall(number) {
+      if (!number || number === '---') {
+        showAquaIsland('Chưa cập nhật số điện thoại!', '⚠️');
+        return;
+      }
+      const clean = number.replace(/[^0-9+]/g, '');
+      window.location.href = `tel:${clean}`;
+    }
+
+    function callContactDirect() {
+      if (currentUser && currentUser.sdt) makePhoneCall(currentUser.sdt);
+      else showAquaIsland('Không tìm thấy số điện thoại!', '⚠️');
+    }
+
+    function callEmergencyDirect() {
+      if (currentUser && currentUser.ice) {
+        showAquaIsland('Đang kích hoạt cuộc gọi khẩn cấp ICE...', '🚨');
+        makePhoneCall(currentUser.ice);
+      } else {
+        showAquaIsland('Chưa đăng ký người liên hệ khẩn cấp ICE!', '⚠️');
+      }
+    }
+
+    // ==========================================
+    // TAB 1: ĐIỀU ĐỘNG QUÂN SỐ & XOAY CA
+    // ==========================================
+    function renderTasksList() {
+      const container = document.getElementById('tasksListContainer');
+      if (!currentTasks || currentTasks.length === 0) {
+        container.innerHTML = `
+          <div class="acrylic-card" style="text-align: center; color: #64748b; padding: 24px;">
+            <span style="font-size: 24px;">📋</span>
+            <p style="margin-top: 6px; font-weight: 700;">Hiện chưa có lệnh điều động nào đang mở.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = currentTasks.map(t => {
+        const joined = t.joinedMembers || [];
+        const assigned = t.assignedMembers || [];
+        const allOccupied = [...new Set([...joined, ...assigned])];
+        const isJoined = allOccupied.includes(currentUser.id);
+        const isFull = allOccupied.length >= (t.quota || 1);
+        const isUrgent = allOccupied.length === 0;
+
+        let deptChipsHtml = '';
+        if (t.departmentQuotas && Object.keys(t.departmentQuotas).length > 0) {
+          deptChipsHtml = `
+            <div class="dept-slider" style="margin-top: 6px;">
+              ${Object.entries(t.departmentQuotas).map(([dName, qVal]) => `
+                <span style="flex-shrink: 0; font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #faf5ff; border: 1px solid #e9d5ff; color: #7e22ce;">
+                  ${formatSportsText(dName)}: ${qVal}
+                </span>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        return `
+          <div class="acrylic-card" style="margin-bottom: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+              <div>
+                <span style="font-size: 8.5px; font-weight: 800; color: #7e22ce; background: #faf5ff; padding: 1.5px 6px; border-radius: 6px; border: 1px solid #e9d5ff;">
+                  ${t.id}
+                </span>
+                <h3 style="font-size: 13.5px; font-weight: 900; color: #0f172a; margin-top: 3px;">
+                  ${formatSportsText(t.title)}
+                </h3>
+              </div>
+              <span style="font-size: 10px; font-weight: 900; padding: 2.5px 8px; border-radius: 9px; background: ${isFull ? '#f1f5f9' : '#e0e7ff'}; color: ${isFull ? '#475569' : '#4338ca'}; flex-shrink: 0;">
+                ${allOccupied.length} / ${t.quota} bạn
+              </span>
+            </div>
+
+            <div style="margin-top: 6px; font-size: 11px; color: #475569; display: flex; flex-direction: column; gap: 2px;">
+              <p>📍 <b>Địa điểm:</b> ${formatSportsText(t.location)}</p>
+              <p>⏰ <b>Thời gian:</b> ${t.time}</p>
+              ${t.lockDeadline ? `<p style="color: #c2410c; font-weight: 700;">⏳ <b>Hạn chót AI bù quân số:</b> ${t.lockDeadline.replace('T', ' ')}</p>` : ''}
+            </div>
+
+            ${isUrgent ? `
+              <div style="margin-top: 7px; padding: 4px 8px; border-radius: 8px; background: #fef2f2; border: 1px solid #fecaca; font-size: 9.5px; font-weight: 800; color: #dc2626;">
+                🚨 Cần huy động khẩn cấp &bull; Chưa có thành viên nhận ca
+              </div>
+            ` : ''}
+
+            ${deptChipsHtml}
+
+            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f5f9; display: flex; gap: 6px;">
+              ${isJoined ? `
+                <button onclick="openSwapRequestModal('${t.id}')" class="spring-touch btn-duty-swap-prime" style="flex: 1;">
+                  🔄 Xin Đổi Ca Trực
+                </button>
+              ` : `
+                <button onclick="handleClaimTask('${t.id}')" ${isFull ? 'disabled' : ''} class="spring-touch btn-main" style="flex: 1; opacity: ${isFull ? 0.6 : 1};">
+                  ${isFull ? 'Đã Đủ Quân Số' : 'Nhận Ca Trực'}
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleClaimTask(taskId) {
+      runWithDebounce(() => {
+        const task = currentTasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        if (!task.joinedMembers) task.joinedMembers = [];
+        if (task.joinedMembers.includes(currentUser.id)) {
+          showAquaIsland('Bạn đã có tên trong ca trực này!', 'ℹ️');
+          return;
+        }
+
+        task.joinedMembers.push(currentUser.id);
+        currentUser.soCa = (currentUser.soCa || 0) + 1;
+        renderProfileData();
+        renderTasksList();
+        showAquaIsland('Nhận ca trực thành công! Cố lên nhé!', '🎉');
+      });
+    }
+
+    // ==========================================
+    // QUY TRÌNH XIN ĐỔI CA & DUYỆT ADMIN
+    // ==========================================
+    function openSwapRequestModal(taskId) {
+      document.getElementById('iptSwapTaskId').value = taskId;
+      document.getElementById('iptSwapReason').value = '';
+      document.getElementById('iptSwapTargetMember').value = '';
+      setBodyScrollLock(true);
+      document.getElementById('modalSwapRequest').classList.add('open');
+    }
+
+    function closeSwapRequestModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalSwapRequest').classList.remove('open');
+    }
+
+    function submitSwapRequestAction() {
+      const taskId = document.getElementById('iptSwapTaskId').value;
+      const reason = document.getElementById('iptSwapReason').value.trim();
+      const target = document.getElementById('iptSwapTargetMember').value.trim();
+
+      if (!reason) {
+        showAquaIsland('Vui lòng nêu rõ lý do xin đổi ca!', '⚠️');
+        return;
+      }
+
+      const swapObj = {
+        id: 'SWAP_' + Date.now(),
+        taskId: taskId,
+        fromMemberId: currentUser.id,
+        fromMemberName: currentUser.hoTen,
+        toMemberId: target || 'Ban Quản Trị điều phối',
+        reason: reason,
+        time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+        status: 'pending'
+      };
+
+      currentSwaps.unshift(swapObj);
+      updatePendingSwapsBadge();
+      closeSwapRequestModal();
+      showAquaIsland('Đã gửi yêu cầu đổi ca tới Ban Quản Trị!', '📨');
+    }
+
+    function updatePendingSwapsBadge() {
+      const badge = document.getElementById('pendingSwapsBadge');
+      const pending = currentSwaps.filter(s => s.status === 'pending').length;
+      if (pending > 0) {
+        badge.innerText = pending;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function openAdminSwapsModal() {
+      const container = document.getElementById('adminSwapsListContainer');
+      const pendings = currentSwaps.filter(s => s.status === 'pending');
+
+      if (pendings.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; color: #64748b; padding: 20px;">
+            <p style="font-weight: 700;">Không có yêu cầu đổi ca nào đang chờ duyệt.</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = pendings.map(s => `
+          <div style="padding: 10px; border-radius: 14px; background: #ffffff; border: 1px solid #e2e8f0; font-size: 11px;">
+            <p><b>Từ:</b> ${s.fromMemberName} (${s.fromMemberId})</p>
+            <p><b>Lệnh:</b> ${s.taskId}</p>
+            <p><b>Lý do:</b> ${s.reason}</p>
+            <p><b>Chỉ định:</b> ${s.toMemberId}</p>
+            <div style="display: flex; gap: 6px; margin-top: 8px;">
+              <button onclick="resolveSwapAction('${s.id}', true)" class="spring-touch" style="flex: 1; padding: 6px; border: none; background: #16a34a; color: white; border-radius: 9px; font-weight: 800;">
+                ✓ Duyệt Đổi Ca
+              </button>
+              <button onclick="resolveSwapAction('${s.id}', false)" class="spring-touch" style="flex: 1; padding: 6px; border: none; background: #f1f5f9; color: #dc2626; border-radius: 9px; font-weight: 800;">
+                ✕ Bác Bỏ
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      setBodyScrollLock(true);
+      document.getElementById('modalAdminSwaps').classList.add('open');
+    }
+
+    function closeAdminSwapsModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalAdminSwaps').classList.remove('open');
+    }
+
+    function resolveSwapAction(swapId, isApproved) {
+      const s = currentSwaps.find(item => item.id === swapId);
+      if (!s) return;
+
+      s.status = isApproved ? 'approved' : 'rejected';
+
+      if (isApproved) {
+        const task = currentTasks.find(t => t.id === s.taskId);
+        if (task) {
+          task.joinedMembers = (task.joinedMembers || []).filter(m => m !== s.fromMemberId);
+          if (s.toMemberId && s.toMemberId !== 'Ban Quản Trị điều phối') {
+            if (!task.assignedMembers) task.assignedMembers = [];
+            task.assignedMembers.push(s.toMemberId);
+          }
+        }
+      }
+
+      updatePendingSwapsBadge();
+      renderTasksList();
+      renderProfileData();
+      openAdminSwapsModal();
+      showAquaIsland(isApproved ? 'Đã phê duyệt đổi ca thành công!' : 'Đã từ chối yêu cầu đổi ca!', '⚖️');
+    }
+
+    // ==========================================
+    // TAB 2: DIỄN ĐÀN ĐA PHƯƠNG TIỆN CHUẨN FACEBOOK
+    // ==========================================
+    function renderForumFeed() {
+      const container = document.getElementById('postsListContainer');
+      if (!currentPosts || currentPosts.length === 0) {
+        container.innerHTML = `
+          <div class="acrylic-card" style="text-align: center; color: #64748b; padding: 24px;">
+            <p style="font-weight: 700;">Chưa có bài viết nào trên bảng tin.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = currentPosts.map(p => {
+        const isLiked = p.reactions && p.reactions.userReactions && p.reactions.userReactions[currentUser.id];
+        const likeCount = p.reactions ? (p.reactions.like || 0) : 0;
+
+        // Render lưới ảnh Mosaic Facebook
+        let mediaGridHtml = '';
+        if (p.mediaList && p.mediaList.length > 0) {
+          const count = p.mediaList.length;
+          if (count === 1) {
+            mediaGridHtml = `
+              <div style="margin-top: 8px; border-radius: 16px; overflow: hidden; max-height: 320px;" onclick="openLightboxModal('${p.mediaList[0].url}', 0)">
+                <img src="${p.mediaList[0].url}" style="width: 100%; height: auto; object-fit: cover; display: block;">
+              </div>
+            `;
+          } else {
+            mediaGridHtml = `
+              <div style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; border-radius: 16px; overflow: hidden;">
+                ${p.mediaList.slice(0, 4).map((m, idx) => `
+                  <div style="aspect-ratio: 1; position: relative; overflow: hidden;" onclick="openLightboxModal('${m.url}', ${idx})">
+                    <img src="${m.url}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    ${idx === 3 && count > 4 ? `
+                      <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); color: white; font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center;">
+                        +${count - 3}
+                      </div>
+                    ` : ''}
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          }
+        }
+
+        return `
+          <div class="acrylic-card" style="margin-bottom: 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 9px; cursor: pointer;" onclick="openOtherMemberInspector('${p.authorId}')">
+                <div class="avatar-box" style="width: 38px; height: 38px; font-size: 15px; border-radius: 13px;">
+                  ${p.isAnonymous ? '🎭' : (p.authorName ? p.authorName.split(' ').pop().charAt(0) : 'A')}
+                </div>
+                <div>
+                  <h4 style="font-size: 12.5px; font-weight: 800; color: #0f172a;">${p.isAnonymous ? 'Thành viên ẩn danh' : p.authorName}</h4>
+                  <p style="font-size: 9.5px; color: #64748b;">${p.createdAt || 'Vừa xong'}</p>
+                </div>
+              </div>
+            </div>
+
+            <p style="margin-top: 9px; font-size: 12px; color: #1e293b; line-height: 1.5;" class="selectable-text">
+              ${p.content}
+            </p>
+
+            ${mediaGridHtml}
+
+            <!-- NÚT TƯƠNG TÁC THÍCH / BÌNH LUẬN -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f5f9;">
+              <button onclick="togglePostLikeAction('${p.id}')" class="spring-touch" style="border: none; background: transparent; display: flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 800; color: ${isLiked ? '#4f46e5' : '#64748b'};">
+                <span>${isLiked ? '👍 Đã thích' : '👍 Thích'}</span>
+                <span>(${likeCount})</span>
+              </button>
+
+              <span style="font-size: 10.5px; font-weight: 700; color: #64748b;">
+                ${(p.comments || []).length} bình luận
+              </span>
+            </div>
+
+            <!-- DANH SÁCH BÌNH LUẬN PHÂN TẦNG LỒNG NHAU -->
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; display: flex; flex-direction: column; gap: 6px;">
+              ${(p.comments || []).map(c => `
+                <div style="background: #f8fafc; padding: 7px 10px; border-radius: 13px; font-size: 11px;">
+                  <span style="font-weight: 800; color: var(--primary); cursor: pointer;" onclick="openOtherMemberInspector('${c.authorId}')">${c.authorName}:</span>
+                  <span style="color: #1e293b; margin-left: 4px;" class="selectable-text">${c.text}</span>
+                </div>
+              `).join('')}
+
+              <div style="display: flex; gap: 5px; margin-top: 4px;">
+                <input type="text" id="iptComment_${p.id}" placeholder="Viết bình luận công khai..." class="input-box" style="padding: 6px 10px; font-size: 11px; border-radius: 12px;">
+                <button onclick="submitCommentAction('${p.id}')" class="spring-touch btn-main" style="padding: 6px 12px; font-size: 10.5px; border-radius: 12px;">
+                  Gửi
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function togglePostLikeAction(postId) {
+      const post = currentPosts.find(p => p.id === postId);
+      if (!post) return;
+
+      if (!post.reactions) post.reactions = { like: 0, userReactions: {} };
+      if (!post.reactions.userReactions) post.reactions.userReactions = {};
+
+      const hasLiked = post.reactions.userReactions[currentUser.id];
+      if (hasLiked) {
+        delete post.reactions.userReactions[currentUser.id];
+        post.reactions.like = Math.max(0, (post.reactions.like || 1) - 1);
+      } else {
+        post.reactions.userReactions[currentUser.id] = 'like';
+        post.reactions.like = (post.reactions.like || 0) + 1;
+      }
+
+      renderForumFeed();
+    }
+
+    function submitCommentAction(postId) {
+      const input = document.getElementById(`iptComment_${postId}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const post = currentPosts.find(p => p.id === postId);
+      if (!post) return;
+
+      if (!post.comments) post.comments = [];
+      post.comments.push({
+        id: 'CMT_' + Date.now(),
+        authorId: currentUser.id,
+        authorName: currentUser.hoTen,
+        text: text,
+        time: 'Vừa xong'
+      });
+
+      input.value = '';
+      renderForumFeed();
+      showAquaIsland('Đã gửi bình luận của bạn!', '💬');
+    }
+
+    function submitNewPostAction() {
+      const content = document.getElementById('iptPostContent').value.trim();
+      const isAnon = document.getElementById('chkAnonymous').checked;
+
+      if (!content && currentComposerMedia.length === 0) {
+        showAquaIsland('Vui lòng nhập nội dung hoặc đính kèm ảnh!', '⚠️');
+        return;
+      }
+
+      const newPost = {
+        id: 'POST_' + Date.now(),
+        authorId: currentUser.id,
+        authorName: currentUser.hoTen,
+        authorAvatar: '',
+        isAnonymous: isAnon,
+        content: content,
+        mediaList: [...currentComposerMedia],
+        reactions: { like: 1, userReactions: { [currentUser.id]: 'like' } },
+        comments: [],
+        createdAt: 'Vừa xong'
+      };
+
+      currentPosts.unshift(newPost);
+      document.getElementById('iptPostContent').value = '';
+      currentComposerMedia = [];
+      document.getElementById('composerMediaReel').classList.add('hidden');
+      document.getElementById('composerMediaReel').innerHTML = '';
+
+      renderForumFeed();
+      showAquaIsland('Đăng bài thành công lên Bảng tin!', '🎉');
+    }
+
+    function handlePostMediaSelect(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          currentComposerMedia.push({ url: e.target.result, type: 'image' });
+          renderComposerMediaReel();
+        };
+        reader.readAsDataURL(file);
+      });
+      event.target.value = '';
+    }
+
+    function renderComposerMediaReel() {
+      const reel = document.getElementById('composerMediaReel');
+      if (currentComposerMedia.length === 0) {
+        reel.classList.add('hidden');
+        reel.innerHTML = '';
+        return;
+      }
+      reel.classList.remove('hidden');
+      reel.innerHTML = currentComposerMedia.map((m, idx) => `
+        <div style="position: relative; width: 62px; height: 62px; flex-shrink: 0; border-radius: 12px; overflow: hidden; border: 1px solid #cbd5e1;">
+          <img src="${m.url}" style="width: 100%; height: 100%; object-fit: cover;">
+          <button onclick="removeComposerMediaItem(${idx})" style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.6); color: white; border: none; font-size: 10px; cursor: pointer;">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removeComposerMediaItem(idx) {
+      currentComposerMedia.splice(idx, 1);
+      renderComposerMediaReel();
+    }
+
+    // ==========================================
+    // MODAL ĐỔI MẬT KHẨU
+    // ==========================================
+    function openChangePasswordModal() {
+      closeHeaderMoreActionSheetDirect();
+      document.getElementById('iptOldPassword').value = '';
+      document.getElementById('iptNewPassword').value = '';
+      document.getElementById('iptConfirmPassword').value = '';
+      document.getElementById('errPasswordMsg').style.display = 'none';
+      setBodyScrollLock(true);
+      document.getElementById('modalChangePassword').classList.add('open');
+    }
+
+    function closeChangePasswordModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalChangePassword').classList.remove('open');
+    }
+
+    function submitChangePassword() {
+      const oldPass = document.getElementById('iptOldPassword').value.trim();
+      const newPass = document.getElementById('iptNewPassword').value.trim();
+      const confirmPass = document.getElementById('iptConfirmPassword').value.trim();
+      const err = document.getElementById('errPasswordMsg');
+
+      if (!oldPass) {
+        err.innerText = 'Vui lòng nhập mật khẩu hiện tại!';
+        err.style.display = 'block';
+        return;
+      }
+      if (newPass.length < 6) {
+        err.innerText = 'Mật khẩu mới phải có tối thiểu 6 ký tự!';
+        err.style.display = 'block';
+        return;
+      }
+      if (newPass !== confirmPass) {
+        err.innerText = 'Xác nhận mật khẩu mới không khớp!';
+        err.style.display = 'block';
+        return;
+      }
+
+      err.style.display = 'none';
+      closeChangePasswordModal();
+      showAquaIsland('Đổi mật khẩu tài khoản thành công!', '🔑');
+    }
+
+    // ==========================================
+    // MODAL DANH BẠ VÀ HỒ SƠ THÀNH VIÊN KHÁC
+    // ==========================================
+    function openDirectoryModal() {
+      filterDirectoryMembers();
+      setBodyScrollLock(true);
+      document.getElementById('modalDirectory').classList.add('open');
+    }
+
+    function closeDirectoryModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalDirectory').classList.remove('open');
+    }
+
+    function filterDirectoryMembers() {
+      const q = (document.getElementById('iptSearchDirectory').value || '').toLowerCase().trim();
+      const container = document.getElementById('directoryListContainer');
+
+      const filtered = membersDirectory.filter(m => 
+        (m.hoTen || '').toLowerCase().includes(q) ||
+        (m.id || '').toLowerCase().includes(q) ||
+        (m.mssv || '').toLowerCase().includes(q) ||
+        (m.sdt || '').includes(q)
+      );
+
+      container.innerHTML = filtered.map(m => `
+        <div class="spring-touch" onclick="openOtherMemberInspector('${m.id}')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 14px; background: #ffffff; border: 1px solid #f1f5f9;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="avatar-box" style="width: 34px; height: 34px; font-size: 14px; border-radius: 11px;">
+              ${m.hoTen ? m.hoTen.split(' ').pop().charAt(0) : 'A'}
+            </div>
+            <div>
+              <p style="font-size: 12px; font-weight: 800; color: #0f172a;">${m.hoTen}</p>
+              <p style="font-size: 9.5px; color: #64748b;">${m.boMon || m.chucVu} &bull; ${m.soCa || 0} ca</p>
+            </div>
+          </div>
+          <span style="font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;">
+            ${(m.theTrang || 'Khỏe mạnh').split('(')[0]}
+          </span>
+        </div>
+      `).join('');
+    }
+
+    function openOtherMemberInspector(memberId) {
+      const m = membersDirectory.find(item => item.id === memberId) || currentUser;
+      selectedOtherMember = m;
+
+      document.getElementById('otherMemName').innerText = m.hoTen;
+      document.getElementById('otherMemRole').innerText = m.chucVu || 'Thành viên';
+      document.getElementById('otherMemId').innerText = 'ID: ' + m.id;
+      document.getElementById('otherMemDuty').innerText = `${m.soCa || 0} ca`;
+      document.getElementById('otherMemFit').innerText = (m.theTrang || 'Khỏe mạnh').split('(')[0];
+      document.getElementById('otherMemStat').innerText = m.status || 'Sẵn sàng';
+
+      document.getElementById('otherClass').innerText = m.lop || '---';
+      document.getElementById('otherMssv').innerText = m.mssv || '---';
+      document.getElementById('otherFaculty').innerText = m.khoa || '---';
+      document.getElementById('otherDept').innerText = m.boMon || '---';
+      document.getElementById('otherPhone').innerText = m.sdt || '---';
+      document.getElementById('otherIce').innerText = m.ice || '---';
+      document.getElementById('otherMed').innerText = m.yTe || 'Bình thường';
+
+      const initial = m.hoTen.split(' ').pop().charAt(0).toUpperCase() || 'A';
+      document.getElementById('otherMemAvatarInitial').innerText = initial;
+
+      setBodyScrollLock(true);
+      document.getElementById('modalOtherMember').classList.add('open');
+    }
+
+    function closeOtherMemberModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalOtherMember').classList.remove('open');
+    }
+
+    function callTargetMemberPhone() {
+      if (selectedOtherMember && selectedOtherMember.sdt) makePhoneCall(selectedOtherMember.sdt);
+    }
+
+    function callTargetMemberIce() {
+      if (selectedOtherMember && selectedOtherMember.ice) {
+        showAquaIsland(`Đang gọi khẩn cấp ICE của ${selectedOtherMember.hoTen}...`, '🚨');
+        makePhoneCall(selectedOtherMember.ice);
+      } else {
+        showAquaIsland('Thành viên này chưa cập nhật số ICE!', '⚠️');
+      }
+    }
+
+    // ==========================================
+    // MODAL THỂ TRẠNG VÀ AVATAR
+    // ==========================================
+    function openTheTrangModal() {
+      setBodyScrollLock(true);
+      document.getElementById('modalTheTrang').classList.add('open');
+    }
+
+    function closeTheTrangModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalTheTrang').classList.remove('open');
+    }
+
+    function selectTheTrang(theTrangValue) {
+      if (!currentUser) return;
+      currentUser.theTrang = theTrangValue;
+      applyTheTrangBadgeStyle(theTrangValue);
+      closeTheTrangModal();
+      showAquaIsland(`Đã cập nhật thể trạng: ${theTrangValue.split('(')[0]}`, '💪');
+    }
+
+    function openAvatarModal() {
+      setBodyScrollLock(true);
+      document.getElementById('modalAvatar').classList.add('open');
+    }
+
+    function closeAvatarModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalAvatar').classList.remove('open');
+    }
+
+    function handleAvatarFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = document.getElementById('avatarPreviewBox');
+        preview.style.backgroundImage = `url('${e.target.result}')`;
+        preview.style.backgroundSize = 'cover';
+        document.getElementById('avatarPreviewInitial').innerText = '';
+
+        document.getElementById('memAvatarBox').style.backgroundImage = `url('${e.target.result}')`;
+        document.getElementById('memAvatarBox').style.backgroundSize = 'cover';
+        document.getElementById('memAvatarInitial').innerText = '';
+
+        closeAvatarModal();
+        showAquaIsland('Cập nhật ảnh đại diện thành công!', '📷');
+      };
+      reader.readAsDataURL(file);
+      event.target.value = '';
+    }
+
+    // ==========================================
+    // MODAL TẠO LỆNH ĐIỀU ĐỘNG ADMIN
+    // ==========================================
+    function openCreateTaskModal() {
+      document.getElementById('iptTaskTitle').value = '';
+      document.getElementById('iptTaskLocation').value = '';
+      document.getElementById('iptTaskTime').value = '';
+      document.getElementById('iptTaskDeadline').value = '';
+      document.getElementById('deptQuotaContainer').innerHTML = '';
+      addDepartmentQuotaRow('Ban Cầu Lông', 2);
+      addDepartmentQuotaRow('Ban Bóng Chuyền', 2);
+      addDepartmentQuotaRow('Ban Bóng Đá', 2);
+      addDepartmentQuotaRow('Ban Truyền Thông', 2);
+      setBodyScrollLock(true);
+      document.getElementById('modalCreateTask').classList.add('open');
+    }
+
+    function closeCreateTaskModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalCreateTask').classList.remove('open');
+    }
+
+    function addDepartmentQuotaRow(name = '', quota = 2) {
+      const container = document.getElementById('deptQuotaContainer');
+      const div = document.createElement('div');
+      div.style = 'display: flex; gap: 4px; align-items: center;';
+      div.innerHTML = `
+        <input type="text" value="${name}" placeholder="Tên ban..." class="input-box dept-name" style="padding: 6px 10px; font-size: 11px; flex: 2;">
+        <input type="number" value="${quota}" min="1" max="50" oninput="calculateTotalQuota()" class="input-box dept-quota" style="padding: 6px 10px; font-size: 11px; flex: 1; text-align: center;">
+        <button type="button" onclick="this.parentElement.remove(); calculateTotalQuota();" style="border: none; background: #fee2e2; color: #dc2626; border-radius: 8px; width: 26px; height: 26px; cursor: pointer;">✕</button>
+      `;
+      container.appendChild(div);
+      calculateTotalQuota();
+    }
+
+    function calculateTotalQuota() {
+      let sum = 0;
+      document.querySelectorAll('.dept-quota').forEach(inp => {
+        sum += (parseInt(inp.value, 10) || 0);
+      });
+      document.getElementById('iptTaskQuota').value = sum || 1;
+    }
+
+    function submitCreateTaskAction() {
+      const title = formatSportsText(document.getElementById('iptTaskTitle').value.trim());
+      const location = formatSportsText(document.getElementById('iptTaskLocation').value.trim());
+      const time = document.getElementById('iptTaskTime').value.trim();
+      const deadline = document.getElementById('iptTaskDeadline').value;
+      const totalQuota = parseInt(document.getElementById('iptTaskQuota').value, 10) || 1;
+
+      if (title.length < 5) {
+        document.getElementById('errTaskTitle').innerText = 'Tiêu đề lệnh phải có tối thiểu 5 ký tự!';
+        document.getElementById('errTaskTitle').style.display = 'block';
+        return;
+      }
+      document.getElementById('errTaskTitle').style.display = 'none';
+
+      if (location.length < 3) {
+        document.getElementById('errTaskLocation').innerText = 'Địa điểm phải có tối thiểu 3 ký tự!';
+        document.getElementById('errTaskLocation').style.display = 'block';
+        return;
+      }
+      document.getElementById('errTaskLocation').style.display = 'none';
+
+      const deptQuotas = {};
+      document.querySelectorAll('#deptQuotaContainer > div').forEach(row => {
+        const dName = formatSportsText(row.querySelector('.dept-name').value.trim());
+        const dQuota = parseInt(row.querySelector('.dept-quota').value, 10) || 0;
+        if (dName && dQuota > 0) deptQuotas[dName] = dQuota;
+      });
+
+      const newTask = {
+        id: 'TASK_' + Date.now().toString().slice(-6),
+        title: title,
+        location: location,
+        time: time || 'Linh hoạt',
+        quota: totalQuota,
+        joinedMembers: [],
+        assignedMembers: [],
+        lockDeadline: deadline,
+        status: 'active',
+        departmentQuotas: deptQuotas
+      };
+
+      currentTasks.unshift(newTask);
+      renderTasksList();
+      closeCreateTaskModal();
+      showAquaIsland('Đã ban hành lệnh điều động mới!', '🎯');
+    }
+
+    // ==========================================
+    // ACTION SHEET HEADER VÀ LIGHTBOX
+    // ==========================================
+    function openHeaderMoreActionSheet() {
+      setBodyScrollLock(true);
+      document.getElementById('modalHeaderMore').classList.add('open');
+    }
+
+    function closeHeaderMoreActionSheetDirect() {
+      setBodyScrollLock(false);
+      document.getElementById('modalHeaderMore').classList.remove('open');
+    }
+
+    function openLightboxModal(imgUrl, idx = 0) {
+      document.getElementById('lightboxImg').src = imgUrl;
+      document.getElementById('lightboxCounter').innerText = `Ảnh ${idx + 1}`;
+      setBodyScrollLock(true);
+      document.getElementById('modalLightbox').classList.add('open');
+    }
+
+    function closeLightboxModal() {
+      setBodyScrollLock(false);
+      document.getElementById('modalLightbox').classList.remove('open');
+    }
+
+    // ==========================================
+    // ĐỒNG BỘ THỜI GIAN THỰC VỚI GOOGLE APPS SCRIPT
+    // ==========================================
+    async function syncRealtimeData() {
+      if (!currentUser) return;
+      try {
+        const res = await fetch(`${BACKEND_URL}?action=syncAll&memberId=${currentUser.id}`);
+        const data = await res.json();
+        if (data.success) {
+          if (data.member) currentUser = data.member;
+          if (data.membersList) membersDirectory = data.membersList;
+          if (data.tasks) currentTasks = data.tasks;
+          if (data.swaps) currentSwaps = data.swaps;
+          if (data.posts) currentPosts = data.posts;
+
+          renderProfileData();
+          renderTasksList();
+          renderForumFeed();
+          updatePendingSwapsBadge();
+        }
+      } catch (err) {
+        console.log('Chạy chế độ offline/local cache.');
+      }
+    }
+  </script>
+</body>
+</html>
