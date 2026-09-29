@@ -3,14 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>CLB Thể Thao - Digital Pass &amp; AI Ops Agent</title>
-  
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#f1f5fb">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="SportPass">
+  <title>SportPass - ColorOS 17 & Facebook Feed</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,14 +11,15 @@
 
   <style>
     :root {
-      --primary: #4f46e5;
-      --primary-light: #818cf8;
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
       --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
       --fb-blue: #1877f2;
-      --acrylic-bg: rgba(255, 255, 255, 0.9);
+      --acrylic-bg: rgba(255, 255, 255, 0.88);
       --acrylic-border: rgba(255, 255, 255, 0.95);
-      --acrylic-shadow: 0 16px 36px -8px rgba(99, 102, 241, 0.12), inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
+      --acrylic-shadow: 0 16px 36px -8px rgba(99, 102, 241, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.95);
       --text-main: #0f172a;
+      --text-label: #334155;
       --text-muted: #64748b;
       --fb-bubble-bg: #f0f2f5;
       --spring-physics: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -36,7 +30,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
@@ -46,25 +40,12 @@
       -webkit-user-select: text !important;
     }
 
-    .custom-scroll {
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(99, 102, 241, 0.25) transparent;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-    }
-    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(99, 102, 241, 0.25);
-      border-radius: 9999px;
-    }
-
     body {
       background-color: #f1f5fb;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(199, 210, 254, 0.55) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(254, 215, 226, 0.45) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(224, 231, 255, 0.4) 0px, transparent 55%);
+        radial-gradient(at 0% 0%, rgba(199, 210, 254, 0.6) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(254, 215, 226, 0.5) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(224, 231, 255, 0.45) 0px, transparent 55%);
       background-attachment: fixed;
       min-height: 100vh;
       min-height: 100dvh;
@@ -72,10 +53,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: max(env(safe-area-inset-top, 0px) + 10px, 14px);
-      padding-bottom: max(env(safe-area-inset-bottom, 0px) + 84px, 96px);
-      padding-left: max(env(safe-area-inset-left, 0px), 12px);
-      padding-right: max(env(safe-area-inset-right, 0px), 12px);
+      padding-top: max(env(safe-area-inset-top, 0px) + 12px, 16px);
+      padding-bottom: max(env(safe-area-inset-bottom, 0px) + 90px, 106px);
+      padding-left: max(env(safe-area-inset-left, 0px), 14px);
+      padding-right: max(env(safe-area-inset-right, 0px), 14px);
       overflow-x: hidden;
       position: relative;
     }
@@ -88,18 +69,18 @@
     .aurora-sphere {
       position: fixed;
       border-radius: 50%;
-      filter: blur(65px);
+      filter: blur(70px);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.6;
-      animation: floatAurora 22s ease-in-out infinite alternate;
+      opacity: 0.65;
+      animation: floatAurora 20s ease-in-out infinite alternate;
     }
-    .aurora-1 { width: 320px; height: 320px; background: #c7d2fe; top: -60px; left: -60px; }
-    .aurora-2 { width: 340px; height: 340px; background: #fed7aa; bottom: -60px; right: -60px; animation-duration: 26s; }
+    .aurora-1 { width: 340px; height: 340px; background: #c7d2fe; top: -70px; left: -70px; }
+    .aurora-2 { width: 360px; height: 360px; background: #fed7aa; bottom: -70px; right: -70px; animation-duration: 25s; }
 
     @keyframes floatAurora {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(35px, 25px, 0) scale(1.1); }
+      100% { transform: translate3d(35px, 25px, 0) scale(1.12); }
     }
 
     .acrylic-card {
@@ -108,13 +89,13 @@
       width: 100%;
       max-width: 440px;
       background: var(--acrylic-bg);
-      backdrop-filter: blur(32px) saturate(200%);
-      -webkit-backdrop-filter: blur(32px) saturate(200%);
+      backdrop-filter: blur(36px) saturate(200%);
+      -webkit-backdrop-filter: blur(36px) saturate(200%);
       border: 1.5px solid var(--acrylic-border);
-      border-radius: 24px;
+      border-radius: 26px;
       box-shadow: var(--acrylic-shadow);
-      padding: 14px;
-      margin-bottom: 11px;
+      padding: 15px;
+      margin-bottom: 12px;
       contain: layout style;
     }
 
@@ -137,26 +118,26 @@
       font-weight: 800;
       font-size: 13px;
       padding: 11px 18px;
-      border-radius: 16px;
-      box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+      border-radius: 17px;
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.32);
     }
 
     .btn-sub {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(14px);
       color: #334155;
       font-weight: 700;
       font-size: 11.5px;
-      padding: 8px 12px;
-      border-radius: 13px;
-      border: 1px solid rgba(226, 232, 240, 0.9);
+      padding: 8px 13px;
+      border-radius: 14px;
+      border: 1px solid rgba(226, 232, 240, 0.92);
     }
 
     .input-box {
       width: 100%;
-      padding: 10px 13px;
-      border-radius: 15px;
-      background: rgba(255, 255, 255, 0.94);
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.95);
       border: 1.5px solid #cbd5e1;
       font-size: 12.5px;
       color: #0f172a;
@@ -166,45 +147,57 @@
     }
     .input-box:focus {
       background: #ffffff;
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+      border-color: #818cf8;
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.22);
     }
 
-    /* HEADER BAR */
+    .custom-scroll {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(99, 102, 241, 0.25) transparent;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.25);
+      border-radius: 9999px;
+    }
+
     .header-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 9px 13px;
-      border-radius: 20px;
-      margin-bottom: 11px;
+      padding: 10px 14px;
+      border-radius: 22px;
+      margin-bottom: 12px;
       gap: 10px;
     }
     .header-crest {
-      width: 38px;
-      height: 38px;
-      border-radius: 13px;
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
       background: var(--primary-gradient);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 15px;
+      font-weight: 900;
+      font-size: 16px;
       flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.28);
     }
     .live-dot {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      font-size: 9px;
+      font-size: 9.5px;
       font-weight: 800;
       color: #047857;
       background: rgba(236, 253, 245, 0.95);
       border: 1px solid #a7f3d0;
-      padding: 1px 6px;
-      border-radius: 9px;
+      padding: 1.5px 7px;
+      border-radius: 10px;
     }
     .live-dot-core {
       width: 5px;
@@ -219,76 +212,99 @@
       100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
     .icon-square-btn {
-      width: 35px;
-      height: 35px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      color: #475569;
+      width: 36px;
+      height: 36px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(226, 232, 240, 0.92);
+      color: #334155;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
     }
 
-    /* PROFILE & METRICS */
+    /* KHUNG AVATAR VÀ NÚT CAMERA TOUCH TARGET CHUẨN CÔNG THÁI HỌC */
     .avatar-box {
       position: relative;
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
+      width: 72px;
+      height: 72px;
+      border-radius: 24px;
       background: var(--primary-gradient);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 22px;
+      font-size: 26px;
       cursor: pointer;
       flex-shrink: 0;
-      box-shadow: 0 5px 15px rgba(99, 102, 241, 0.25);
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.28);
     }
-    .avatar-box img { width: 100%; height: 100%; border-radius: 20px; object-fit: cover; }
+    .avatar-box img { width: 100%; height: 100%; border-radius: 24px; object-fit: cover; }
     .avatar-cam-badge {
       position: absolute;
-      bottom: -3px;
-      right: -3px;
-      width: 22px;
-      height: 22px;
+      bottom: -4px;
+      right: -4px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: #ffffff;
-      border: 1.5px solid #e2e8f0;
+      border: 2px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #4f46e5;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+      cursor: pointer;
+      transition: transform 0.2s var(--spring-physics), background 0.15s ease;
+      touch-action: manipulation;
     }
+    .avatar-cam-badge:hover { transform: scale(1.08); background: #f8fafc; }
+    .avatar-cam-badge:active { transform: scale(0.92); }
 
+    /* LƯỚI THẺ CHỈ SỐ CÂN ĐỐI 1/3 TUYỆT ĐỐI */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 6px;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(241, 245, 249, 0.9);
+      gap: 8px;
+      margin-top: 13px;
+      padding-top: 13px;
+      border-top: 1px solid rgba(241, 245, 249, 0.95);
+      width: 100%;
     }
     .metric-item {
-      padding: 8px 4px;
-      border-radius: 15px;
+      padding: 9px 5px;
+      border-radius: 16px;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.95);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    }
+    .metric-val {
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      width: 100%;
+      display: block;
+      margin-top: 2px;
     }
 
     .call-grid {
       display: grid;
       grid-template-columns: 1fr 1.15fr;
-      gap: 8px;
-      margin-top: 12px;
+      gap: 9px;
+      margin-top: 13px;
     }
     .btn-call-normal {
       background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
@@ -296,8 +312,8 @@
       border: 1.2px solid #bfdbfe;
       font-weight: 800;
       font-size: 11.5px;
-      padding: 11px 8px;
-      border-radius: 15px;
+      padding: 11px 9px;
+      border-radius: 16px;
     }
     .btn-call-ice {
       background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
@@ -305,42 +321,50 @@
       border: 1.2px solid #fecdd3;
       font-weight: 800;
       font-size: 11.5px;
-      padding: 11px 8px;
-      border-radius: 15px;
+      padding: 11px 9px;
+      border-radius: 16px;
       animation: alertPulse 2.8s infinite;
     }
     @keyframes alertPulse {
       0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-      50% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+      50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
     }
 
+    /* ĐỘ TƯƠNG PHẢN CHUẨN WCAG AA */
     .info-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(241, 245, 249, 0.85);
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(241, 245, 249, 0.95);
       font-size: 11.5px;
     }
     .info-row:last-child { border-bottom: none; }
+    .info-label {
+      color: var(--text-label) !important;
+      font-weight: 700 !important;
+    }
+    .info-value {
+      color: var(--text-main);
+      font-weight: 800;
+    }
 
-    /* ================= FACEBOOK FEED CORE ================= */
     .fb-composer {
       background: var(--acrylic-bg);
-      border-radius: 22px;
-      padding: 12px 14px;
+      border-radius: 24px;
+      padding: 13px 15px;
       box-shadow: var(--acrylic-shadow);
-      margin-bottom: 11px;
+      margin-bottom: 12px;
     }
     .fb-composer-head {
       display: flex;
       align-items: center;
-      gap: 9px;
-      margin-bottom: 9px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
     .fb-circle-avt {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: var(--primary-gradient);
       color: white;
@@ -348,25 +372,25 @@
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 14.5px;
       flex-shrink: 0;
       overflow: hidden;
       border: 1.5px solid rgba(255, 255, 255, 0.95);
       cursor: pointer;
     }
     .fb-circle-avt img { width: 100%; height: 100%; object-fit: cover; }
-    
+
     .fb-composer-input {
       width: 100%;
       background: #f8fafc;
       border: 1.2px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 10px 12px;
+      border-radius: 17px;
+      padding: 10px 13px;
       font-size: 12.5px;
       color: #0f172a;
       resize: none;
       outline: none;
-      min-height: 60px;
+      min-height: 62px;
     }
     .fb-composer-input:focus {
       background: #ffffff;
@@ -377,8 +401,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 8px;
-      margin-top: 8px;
+      padding-top: 9px;
+      margin-top: 9px;
       border-top: 1px solid #f1f5f9;
     }
     .fb-tool-btn {
@@ -387,28 +411,27 @@
       gap: 5px;
       font-size: 11px;
       font-weight: 700;
-      color: #475569;
+      color: #334155;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 11px;
-      padding: 6px 9px;
+      border-radius: 12px;
+      padding: 6.5px 10px;
       cursor: pointer;
     }
 
-    /* FACEBOOK POST CARD */
     .fb-card {
       background: #ffffff;
-      border-radius: 22px;
-      padding: 13px;
-      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
-      border: 1px solid rgba(226, 232, 240, 0.85);
-      margin-bottom: 10px;
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+      border: 1px solid rgba(226, 232, 240, 0.88);
+      margin-bottom: 11px;
     }
     .fb-card-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
     }
     .fb-meta-line {
       display: flex;
@@ -418,10 +441,9 @@
       color: #64748b;
     }
 
-    /* FACEBOOK MOSAIC GRID */
     .fb-mosaic {
-      margin-top: 9px;
-      border-radius: 16px;
+      margin-top: 10px;
+      border-radius: 17px;
       overflow: hidden;
       display: grid;
       gap: 3px;
@@ -430,12 +452,12 @@
     .fb-mosaic-1 { grid-template-columns: 1fr; }
     .fb-mosaic-1 .fb-mosaic-item { max-height: 280px; aspect-ratio: 16/10; }
     .fb-mosaic-2 { grid-template-columns: 1fr 1fr; }
-    .fb-mosaic-2 .fb-mosaic-item { aspect-ratio: 1; height: 160px; }
+    .fb-mosaic-2 .fb-mosaic-item { aspect-ratio: 1; height: 165px; }
     .fb-mosaic-3 { grid-template-columns: 1.3fr 1fr; grid-template-rows: 1fr 1fr; }
-    .fb-mosaic-3 .fb-mosaic-item:first-child { grid-row: span 2; height: 180px; }
-    .fb-mosaic-3 .fb-mosaic-item { height: 88px; }
+    .fb-mosaic-3 .fb-mosaic-item:first-child { grid-row: span 2; height: 185px; }
+    .fb-mosaic-3 .fb-mosaic-item { height: 91px; }
     .fb-mosaic-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-    .fb-mosaic-4 .fb-mosaic-item { height: 95px; }
+    .fb-mosaic-4 .fb-mosaic-item { height: 98px; }
 
     .fb-mosaic-item {
       position: relative;
@@ -452,27 +474,21 @@
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 800;
       backdrop-filter: blur(3px);
     }
 
-    /* FACEBOOK SUMMARY & ACTIONS */
     .fb-summary-line {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 3px 6px 3px;
-      margin-top: 8px;
+      padding: 9px 3px 7px 3px;
+      margin-top: 9px;
       border-bottom: 1px solid #f1f5f9;
       font-size: 11px;
-      color: #64748b;
-      font-weight: 600;
-    }
-    .fb-reaction-stack {
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
+      color: #334155;
+      font-weight: 700;
     }
     .fb-action-row {
       display: grid;
@@ -482,11 +498,11 @@
       position: relative;
     }
     .fb-btn-action {
-      padding: 7px 4px;
-      border-radius: 12px;
+      padding: 8px 4px;
+      border-radius: 13px;
       background: transparent;
       border: none;
-      color: #475569;
+      color: #334155;
       font-size: 11.5px;
       font-weight: 800;
       display: flex;
@@ -500,16 +516,15 @@
     .fb-btn-action.active-blue { color: #1877f2 !important; }
     .fb-btn-action.active-red { color: #e11d48 !important; }
 
-    /* 7 FACEBOOK REACTIONS POPOVER */
     .fb-reaction-popover {
       position: absolute;
       bottom: calc(100% + 6px);
       left: 0;
       background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(24px);
-      border-radius: 30px;
+      border-radius: 32px;
       padding: 4px 8px;
-      box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.25);
+      box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.25);
       border: 1px solid rgba(226, 232, 240, 0.9);
       display: flex;
       gap: 6px;
@@ -526,7 +541,7 @@
       border-radius: 50%;
       border: none;
       background: transparent;
-      font-size: 18px;
+      font-size: 19px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -535,22 +550,21 @@
     }
     .fb-react-emoji-btn:hover { transform: scale(1.35); }
 
-    /* FACEBOOK COMMENTS THREAD */
     .fb-comment-card {
       display: flex;
-      gap: 7px;
-      margin-top: 8px;
+      gap: 8px;
+      margin-top: 9px;
     }
     .fb-cmt-bubble {
       background: var(--fb-bubble-bg);
-      border-radius: 16px;
-      padding: 7px 11px;
+      border-radius: 17px;
+      padding: 8px 12px;
       display: inline-block;
       max-width: 92%;
     }
     .fb-cmt-actions {
       display: flex;
-      gap: 9px;
+      gap: 10px;
       font-size: 9.5px;
       font-weight: 700;
       color: #64748b;
@@ -567,16 +581,16 @@
       gap: 6px;
     }
 
-    /* BOTTOM DOCK */
+    /* THANH DOCK ĐÁY TÍCH HỢP SAFE AREA BẢO VỆ 100% */
     .bottom-dock {
       position: fixed;
-      bottom: max(env(safe-area-inset-bottom, 0px) + 8px, 12px);
+      bottom: max(env(safe-area-inset-bottom, 0px) + 10px, 14px);
       left: 50%;
       transform: translateX(-50%);
       width: calc(100% - 24px);
       max-width: 440px;
       height: 58px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
       border: 1.5px solid rgba(255, 255, 255, 0.95);
@@ -610,29 +624,30 @@
       justify-content: center;
       background: transparent;
       border: none;
-      color: var(--text-muted);
+      color: #475569;
       font-weight: 700;
       font-size: 10.5px;
       gap: 2px;
       cursor: pointer;
     }
-    .dock-btn.active { color: #ffffff !important; }
+    .dock-btn.active { color: #ffffff !important; font-weight: 800; }
 
-    /* AQUA DYNAMICS FLUID ISLAND */
+    /* VIÊN THUỐC AQUA DYNAMICS KHÔNG BÓNG MA (GHOST-FREE) */
     .aqua-pill {
       position: fixed;
       top: max(env(safe-area-inset-top, 0px) + 8px, 12px);
       left: 50%;
-      transform: translate3d(-50%, -180%, 0) scale(0.85);
+      transform: translate3d(-50%, -200%, 0) scale(0.85);
       width: calc(100% - 28px);
       max-width: 410px;
       background: rgba(15, 23, 42, 0.96);
       backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 18px;
-      padding: 9px 13px;
+      padding: 10px 14px;
       color: #ffffff;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+      box-shadow: none;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -640,12 +655,15 @@
       z-index: 9999;
       opacity: 0;
       visibility: hidden;
-      transition: transform 0.4s var(--spring-physics), opacity 0.25s ease, visibility 0.4s;
+      pointer-events: none;
+      transition: transform 0.38s var(--spring-physics), opacity 0.25s ease, visibility 0.38s, box-shadow 0.25s ease;
     }
     .aqua-pill.active {
       transform: translate3d(-50%, 0, 0) scale(1);
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
     }
 
     .modal-backdrop {
@@ -670,8 +688,8 @@
     }
     .media-thumb {
       position: relative;
-      width: 66px;
-      height: 66px;
+      width: 68px;
+      height: 68px;
       border-radius: 14px;
       overflow: hidden;
       flex-shrink: 0;
@@ -684,8 +702,8 @@
       position: absolute;
       top: 3px;
       right: 3px;
-      width: 18px;
-      height: 18px;
+      width: 19px;
+      height: 19px;
       border-radius: 50%;
       background: rgba(15, 23, 42, 0.85);
       color: white;
@@ -704,7 +722,7 @@
   <div class="aurora-sphere aurora-1"></div>
   <div class="aurora-sphere aurora-2"></div>
 
-  <!-- VIÊN THUỐC AQUA DYNAMICS FLUID ISLAND -->
+  <!-- VIÊN THUỐC THÔNG BÁO AQUA ISLAND DỌN DẸP SẠCH GHOST OVERLAY -->
   <div id="aquaIslandPill" class="aqua-pill">
     <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
       <div style="width: 32px; height: 32px; border-radius: 11px; background: rgba(99, 102, 241, 0.28); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #a5b4fc;">
@@ -718,24 +736,22 @@
     <button onclick="dismissAquaIsland()" style="background: transparent; border: none; color: #94a3b8; font-size: 14px; cursor: pointer;">✕</button>
   </div>
 
-  <!-- HEADER BAR TINH GỌN (CHỐNG TRÀN VÀ BẢO VỆ LIVE) -->
   <header class="acrylic-card header-bar">
     <div style="display: flex; align-items: center; gap: 9px; min-width: 0; flex: 1;">
       <div class="header-crest">
-        <svg style="width: 19px; height: 19px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
       <div style="min-width: 0; flex: 1;">
         <div style="display: flex; align-items: center; gap: 6px;">
           <h1 style="font-size: 13.5px; font-weight: 900; color: #0f172a; white-space: nowrap;">CLB THỂ THAO</h1>
           <span class="live-dot"><span class="live-dot-core"></span>Live</span>
         </div>
-        <p id="hdrStatus" style="font-size: 10.5px; color: #64748b; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Hệ Thống Thẻ Số &bull; AI Agent Ready</p>
+        <p id="hdrStatus" style="font-size: 10.5px; color: #475569; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Hệ Thống Thẻ Số &bull; AI Agent Ready</p>
       </div>
     </div>
 
-    <!-- CỤM NÚT HEADER: TÁC TỬ ĐIỀU PHỐI AI, DANH BẠ VÀ MORE MENU -->
     <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
-      <button onclick="openAiOpsModal()" class="spring-touch icon-square-btn" title="Tác tử Điều phối &amp; Xếp ca AI" style="color: #4f46e5; background: #eef2ff; border-color: #c7d2fe;">
+      <button onclick="openAiOpsModal()" class="spring-touch icon-square-btn" title="Tác tử Điều phối AI" style="color: #4f46e5; background: #eef2ff; border-color: #c7d2fe;">
         <svg style="width: 17px; height: 17px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
       </button>
 
@@ -749,45 +765,43 @@
     </div>
   </header>
 
-  <!-- MÀN HÌNH ĐĂNG NHẬP -->
   <main id="viewLogin" class="acrylic-card" style="text-align: center; margin-top: 6px;">
-    <div style="width: 54px; height: 54px; margin: 0 auto 10px auto; border-radius: 17px; background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: var(--primary); display: flex; align-items: center; justify-content: center;">
-      <svg style="width: 26px; height: 26px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+    <div style="width: 56px; height: 56px; margin: 0 auto 11px auto; border-radius: 18px; background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: var(--primary); display: flex; align-items: center; justify-content: center;">
+      <svg style="width: 28px; height: 28px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
     </div>
     <h2 style="font-size: 17px; font-weight: 900; color: #0f172a;">CỔNG ĐỊNH DANH SỐ</h2>
-    <p style="font-size: 11px; color: #64748b; margin-top: 2px;">Nhập tài khoản để kích hoạt thẻ và hệ thống xếp ca tự động</p>
+    <p style="font-size: 11px; color: #475569; font-weight: 600; margin-top: 2px;">Nhập tài khoản để kích hoạt thẻ và hệ thống xếp ca tự động</p>
 
-    <div style="text-align: left; display: flex; flex-direction: column; gap: 9px; margin-top: 15px;">
+    <div style="text-align: left; display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
       <div>
-        <label style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">Mã ID / MSSV / SĐT</label>
+        <label style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase;">Mã ID / MSSV / SĐT</label>
         <input type="text" id="iptUser" value="CLB001" placeholder="CLB001..." class="input-box" autocomplete="username">
       </div>
       <div>
-        <label style="font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase;">Mật Khẩu</label>
+        <label style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase;">Mật Khẩu</label>
         <input type="password" id="iptPass" value="123456" placeholder="Mặc định: 123456" class="input-box" autocomplete="current-password">
       </div>
-      
+
       <button onclick="handleLoginSubmit()" id="btnSubmitLogin" class="spring-touch btn-main" style="margin-top: 6px; width: 100%;">
         Đăng Nhập Thẻ Số
       </button>
 
-      <button onclick="enterOfflineDemoMode()" class="spring-touch" style="background: transparent; border: none; color: #6366f1; font-size: 11px; font-weight: 700; padding: 6px; cursor: pointer;">
-        ⚡ Trải nghiệm nhanh (Chế độ Ngoại tuyến)
+      <button onclick="enterOfflineDemoMode()" class="spring-touch" style="background: transparent; border: none; color: #6366f1; font-size: 11px; font-weight: 800; padding: 7px; cursor: pointer;">
+        ⚡ Trải nghiệm nhanh (Khám phá toàn bộ app ngay)
       </button>
     </div>
   </main>
 
-  <!-- MÀN HÌNH CHÍNH (3 TABS) -->
   <main id="viewApp" class="hidden" style="width: 100%; max-width: 440px;">
     
-    <!-- ================= TAB 0: HỒ SƠ & THẺ ĐỊNH DANH ================= -->
     <div id="tabContentProfile">
       <section class="acrylic-card">
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 13px;">
+          <!-- Khung Avatar chuẩn công thái học với Touch Target rộng 34px -->
           <div id="memAvatarBox" class="avatar-box" onclick="openAvatarModal()" title="Chạm để đổi ảnh đại diện">
             <span id="memAvatarInitial">A</span>
-            <span class="avatar-cam-badge">
-              <svg style="width:12px;height:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span class="avatar-cam-badge" title="Đổi ảnh đại diện">
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </span>
           </div>
 
@@ -797,24 +811,25 @@
               <span id="badgeAdm" class="hidden" style="font-size: 9px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #f3e8ff; color: #7e22ce;">Admin</span>
             </div>
             <p id="memRole" style="font-size: 12px; font-weight: 700; color: var(--primary); margin-top: 1px;">Chủ nhiệm CLB</p>
-            <p id="memId" style="font-size: 10px; color: #94a3b8; font-family: monospace; font-weight: 700;">ID: CLB001</p>
+            <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: CLB001</p>
           </div>
         </div>
 
+        <!-- 3 Thẻ chỉ số đối xứng 1/3 tuyệt đối với Text-Overflow Ellipsis -->
         <div class="metrics-grid">
-          <div class="metric-item" style="background: rgba(238, 242, 255, 0.88);">
-            <span style="font-size: 8.5px; font-weight: 800; color: #6366f1; text-transform: uppercase;">Cống Hiến</span>
-            <span id="memDuty" style="font-size: 11px; font-weight: 800; color: #4f46e5;">0 ca</span>
-          </div>
-          
-          <div class="metric-item" id="memFitPill" style="background: rgba(240, 253, 244, 0.88); border-color: #bbf7d0; cursor: pointer;" onclick="openTheTrangModal()" title="Chạm để cập nhật thể trạng">
-            <span style="font-size: 8.5px; font-weight: 800; color: #16a34a; text-transform: uppercase;">Thể Trạng</span>
-            <span id="memFit" style="font-size: 11px; font-weight: 800; color: #15803d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">Khỏe mạnh</span>
+          <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
+            <span style="font-size: 8.5px; font-weight: 800; color: #4338ca; text-transform: uppercase;">Cống Hiến</span>
+            <span id="memDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
           </div>
 
-          <div class="metric-item" style="background: rgba(236, 253, 245, 0.88);">
-            <span style="font-size: 8.5px; font-weight: 800; color: #047857; text-transform: uppercase;">Trạng Thái</span>
-            <span id="memStat" style="font-size: 11px; font-weight: 800; color: #065f46;">Sẵn sàng</span>
+          <div class="metric-item" id="memFitPill" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0; cursor: pointer;" onclick="openTheTrangModal()" title="Chạm để cập nhật thể trạng">
+            <span style="font-size: 8.5px; font-weight: 800; color: #15803d; text-transform: uppercase;">Thể Trạng</span>
+            <span id="memFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
+          </div>
+
+          <div class="metric-item" id="memStatPill" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
+            <span style="font-size: 8.5px; font-weight: 800; color: #065f46; text-transform: uppercase;">Trạng Thái</span>
+            <span id="memStat" class="metric-val" style="color: #047857;" title="Sẵn sàng">Sẵn sàng</span>
           </div>
         </div>
 
@@ -831,74 +846,68 @@
         </div>
       </section>
 
+      <!-- Bảng thông tin cá nhân chuẩn WCAG AA Contrast -->
       <section class="acrylic-card">
-        <h3 style="font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Hồ Sơ Thành Viên</h3>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Lớp:</span><span id="dClass" class="selectable-text" style="font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">MSSV:</span><span id="dMssv" class="selectable-text" style="font-family: monospace; font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Khoa / Viện:</span><span id="dFaculty" class="selectable-text" style="font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Bộ Môn / Ban:</span><span id="dDept" class="selectable-text" style="font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Ngày Sinh:</span><span id="dDob" class="selectable-text" style="font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Số Điện Thoại:</span><span id="dPhone" class="selectable-text" style="color: var(--primary); font-weight: 700; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="selectable-text" style="color: #dc2626; font-weight: 800; cursor: pointer;" onclick="callEmergencyDirect()">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Y Tế &amp; Sức Khỏe:</span><span id="dMed" class="selectable-text" style="color: #e11d48; font-weight: 700;">---</span></div>
+        <h3 style="font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.3px;">Hồ Sơ Thành Viên</h3>
+        <div class="info-row"><span class="info-label">Lớp:</span><span id="dClass" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">MSSV:</span><span id="dMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
+        <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="dFaculty" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="dDept" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Ngày Sinh:</span><span id="dDob" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="dPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="dIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callEmergencyDirect()">---</span></div>
+        <div class="info-row"><span class="info-label">Y Tế &amp; Sức Khỏe:</span><span id="dMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
       </section>
     </div>
 
-    <!-- ================= TAB 1: ĐIỀU ĐỘNG & TÁC TỬ TỰ ĐỘNG ================= -->
     <div id="tabContentTasks" class="hidden">
-      <!-- THANH ADMIN QUẢN TRỊ & KÍCH HOẠT AI AGENT -->
-      <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 12px; margin-bottom: 8px; background: rgba(250, 245, 255, 0.94); border-color: #e9d5ff;">
+      <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 12px; margin-bottom: 9px; background: rgba(250, 245, 255, 0.94); border-color: #e9d5ff;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div>
             <h4 style="font-size: 12.5px; font-weight: 800; color: #6b21a8;">Khu Vực Quản Trị Viên</h4>
-            <p style="font-size: 10px; color: #9333ea;">AI Agent điều phối theo ban &amp; duyệt đổi ca</p>
+            <p style="font-size: 10px; color: #9333ea; font-weight: 600;">AI Agent điều phối theo ban &amp; duyệt đổi ca</p>
           </div>
           <div style="display: flex; gap: 5px;">
             <button onclick="openCreateTaskModal()" class="spring-touch" style="padding: 6px 10px; font-size: 10.5px; font-weight: 800; border-radius: 11px; background: #9333ea; color: white;">
               + Tạo Lệnh
             </button>
-            <button onclick="openAdminModal()" class="spring-touch" style="padding: 6px 9px; font-size: 10.5px; font-weight: 800; border-radius: 11px; background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe;">
+            <button onclick="showAquaIsland('Quản Trị', 'Hệ thống AI tự động duyệt theo yêu cầu')" class="spring-touch" style="padding: 6px 9px; font-size: 10.5px; font-weight: 800; border-radius: 11px; background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe;">
               Duyệt Ca
             </button>
           </div>
         </div>
       </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; padding: 0 3px;">
-        <h3 style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">Lệnh Triệu Tập Hoạt Động</h3>
-        <span id="badgeTaskCount" style="font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 11px; background: #fef3c7; color: #b45309;">0 Lệnh</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 0 4px;">
+        <h3 style="font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase;">Lệnh Triệu Tập Hoạt Động</h3>
+        <span id="badgeTaskCount" style="font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 11px; background: #fef3c7; color: #b45309;">0 Lệnh</span>
       </div>
-      
-      <div id="listTasksContainer" style="display: flex; flex-direction: column; gap: 8px;"></div>
+
+      <div id="listTasksContainer" style="display: flex; flex-direction: column; gap: 9px;"></div>
     </div>
 
-    <!-- ================= TAB 2: DIỄN ĐÀN CHUẨN FACEBOOK ================= -->
     <div id="tabContentForum" class="hidden">
-      <!-- FACEBOOK COMPOSER -->
       <div class="fb-composer">
         <div class="fb-composer-head">
           <div id="forumComposerAvt" class="fb-circle-avt">A</div>
           <div style="flex: 1; min-width: 0;">
             <span id="composerName" style="font-size: 12.5px; font-weight: 800; color: #0f172a; display: block;">Nguyễn Văn A</span>
             <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
-              <span id="composerFeelingTag" class="hidden" style="font-size: 9.5px; color: #059669; font-weight: 700; background: #ecfdf5; padding: 1px 6px; border-radius: 6px;"></span>
-              <span id="composerLocationTag" class="hidden" style="font-size: 9.5px; color: #d97706; font-weight: 700; background: #fffbeb; padding: 1px 6px; border-radius: 6px;"></span>
+              <span id="composerFeelingTag" class="hidden" style="font-size: 9.5px; color: #059669; font-weight: 700; background: #ecfdf5; padding: 1.5px 6px; border-radius: 6px;"></span>
             </div>
           </div>
-          <label style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: #64748b; cursor: pointer; background: #f1f5f9; padding: 2px 8px; border-radius: 11px; border: 1px solid #e2e8f0;">
-            <input type="checkbox" id="chkAnonymousPost" style="width: 11px; height: 11px; accent-color: var(--primary);">
+          <label style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: #334155; cursor: pointer; background: #f1f5f9; padding: 3px 9px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <input type="checkbox" id="chkAnonymousPost" style="width: 12px; height: 12px; accent-color: var(--primary);">
             <span>Ẩn danh 🎭</span>
           </label>
         </div>
 
         <textarea id="iptForumText" placeholder="Bạn đang nghĩ gì thế? Chia sẻ tinh thần thể thao hôm nay..." class="fb-composer-input"></textarea>
 
-        <!-- PREVIEW ẢNH NẰM TRONG REEL GỌN GÀNG (KHÔNG TRÀN KHUNG) -->
-        <div id="composerMediaBox" class="hidden" style="margin-top: 6px;">
+        <div id="composerMediaBox" class="hidden" style="margin-top: 7px;">
           <div id="mediaThumbnailsGrid" class="media-strip custom-scroll"></div>
         </div>
 
-        <!-- CÔNG CỤ ĐÍNH KÈM CHUẨN FACEBOOK -->
         <div class="fb-composer-toolbar">
           <div style="display: flex; gap: 4px; flex-wrap: wrap;">
             <label class="fb-tool-btn" title="Thêm ảnh / video">
@@ -907,7 +916,7 @@
               <input type="file" id="fileMultiMedia" accept="image/*" multiple class="hidden" onchange="handleFacebookMediaSelect(event)">
             </label>
 
-            <button onclick="openTagMemberModal()" class="fb-tool-btn" title="Gắn thẻ bạn bè">
+            <button onclick="promptTagMember()" class="fb-tool-btn" title="Gắn thẻ bạn bè">
               <svg style="color: #1877f2; width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
               <span>Gắn thẻ</span>
             </button>
@@ -925,15 +934,13 @@
         </div>
       </div>
 
-      <!-- DANH SÁCH BÀI VIẾT FACEBOOK FEED -->
-      <div id="listPostsContainer" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      <div id="listPostsContainer" style="display: flex; flex-direction: column; gap: 11px;"></div>
     </div>
   </main>
 
-  <!-- THANH DOCK ĐÁY BIẾN HÌNH -->
   <nav id="bottomNav" class="bottom-dock hidden">
     <div id="dockPill" class="dock-pill"></div>
-    
+
     <button onclick="switchDockTab(0)" class="dock-btn active" id="btnDock0">
       <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
       <span>Hồ Sơ</span>
@@ -948,9 +955,6 @@
     </button>
   </nav>
 
-  <!-- ================= MODALS & ACTION SHEETS ================= -->
-
-  <!-- 1. MODAL TÁC TỬ ĐIỀU PHỐI AI (OPS & SCHEDULING AGENT) -->
   <div id="modalAiOps" class="modal-backdrop hidden" onclick="closeAiOpsModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 390px; max-height: 85vh; margin-bottom: 0; padding: 15px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 11px;">
@@ -963,12 +967,12 @@
             <p style="font-size: 9.5px; color: var(--primary); font-weight: 700;">Tự động xếp ca theo ban &bull; Cân bằng tải công việc</p>
           </div>
         </div>
-        <button onclick="closeAiOpsModal()" class="spring-touch" style="width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 13px;">✕</button>
+        <button onclick="closeAiOpsModal()" class="spring-touch" style="width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; border: none; color: #334155; font-size: 13px;">✕</button>
       </div>
 
       <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 10px; margin-bottom: 10px;">
-        <span style="font-size: 10px; font-weight: 800; color: #475569; display: block; margin-bottom: 5px;">NGUYÊN TẮC ĐIỀU ĐỘNG TỰ ĐỘNG:</span>
-        <ul style="font-size: 10px; color: #64748b; padding-left: 15px; line-height: 1.5;">
+        <span style="font-size: 10px; font-weight: 800; color: #1e293b; display: block; margin-bottom: 5px;">NGUYÊN TẮC ĐIỀU ĐỘNG TỰ ĐỘNG:</span>
+        <ul style="font-size: 10px; color: #334155; font-weight: 600; padding-left: 15px; line-height: 1.5;">
           <li>Khớp đúng chỉ tiêu quân số từng ban tương ứng.</li>
           <li>Ưu tiên chọn bạn có số ca ít nhất trong ban đó.</li>
           <li><strong>Miễn trừ tuyệt đối:</strong> Ban Chủ nhiệm, Trưởng/Phó ban.</li>
@@ -976,7 +980,7 @@
         </ul>
       </div>
 
-      <div id="aiOpsStatusBox" style="font-size: 11px; color: #334155; margin-bottom: 10px; line-height: 1.5; white-space: pre-line; background: #fffbeb; border: 1px solid #fef3c7; padding: 9px; border-radius: 13px;">
+      <div id="aiOpsStatusBox" style="font-size: 11px; color: #1e293b; font-weight: 600; margin-bottom: 10px; line-height: 1.5; white-space: pre-line; background: #fffbeb; border: 1px solid #fef3c7; padding: 9px; border-radius: 13px;">
         Đang nạp phân tích điều phối thời gian thực...
       </div>
 
@@ -986,12 +990,11 @@
     </div>
   </div>
 
-  <!-- 2. MODAL DANH BẠ CLB & NHẬN DIỆN ICE -->
   <div id="modalDirectory" class="modal-backdrop hidden" onclick="closeDirectoryModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 390px; max-height: 82vh; margin-bottom: 0; padding: 15px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px;">
         <h3 style="font-size: 14px; font-weight: 900; color: #0f172a;">DANH BẠ THÀNH VIÊN &amp; ICE</h3>
-        <button onclick="closeDirectoryModal()" class="spring-touch" style="width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 13px;">✕</button>
+        <button onclick="closeDirectoryModal()" class="spring-touch" style="width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; border: none; color: #334155; font-size: 13px;">✕</button>
       </div>
 
       <input type="text" id="iptSearchDirectory" oninput="filterDirectoryMembers()" placeholder="Tìm theo tên, ID, MSSV, SĐT..." class="input-box" style="margin-top: 0; margin-bottom: 9px; font-size: 11.5px; padding: 8px 12px;">
@@ -1000,16 +1003,15 @@
     </div>
   </div>
 
-  <!-- 3. MODAL XEM HỒ SƠ THÀNH VIÊN CHI TIẾT -->
   <div id="modalMemberDetail" class="modal-backdrop hidden" onclick="closeMemberProfileModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 380px; max-height: 85vh; margin-bottom: 0; padding: 15px;">
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 11px;">
-        <span style="font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase;">Chi Tiết Thành Viên</span>
-        <button onclick="closeMemberProfileModal()" class="spring-touch" style="width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; border: none; color: #64748b; font-size: 13px;">✕</button>
+        <span style="font-size: 10px; font-weight: 800; color: #334155; text-transform: uppercase;">Chi Tiết Thành Viên</span>
+        <button onclick="closeMemberProfileModal()" class="spring-touch" style="width: 26px; height: 26px; border-radius: 50%; background: #f1f5f9; border: none; color: #334155; font-size: 13px;">✕</button>
       </div>
 
       <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 12px;">
-        <div id="otherMemAvatarBox" class="avatar-box" style="width: 58px; height: 58px; font-size: 20px; cursor: default;">
+        <div id="otherMemAvatarBox" class="avatar-box" style="width: 62px; height: 62px; font-size: 22px; cursor: default;">
           <span id="otherMemAvatarInitial">A</span>
         </div>
         <div style="flex: 1; min-width: 0;">
@@ -1018,33 +1020,33 @@
             <span id="otherMemBadgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 1.5px 6px; border-radius: 7px; background: #f3e8ff; color: #7e22ce;">Admin</span>
           </div>
           <p id="otherMemRole" style="font-size: 11px; font-weight: 700; color: var(--primary); margin-top: 1px;">Thành viên</p>
-          <p id="otherMemId" style="font-size: 9.5px; color: #94a3b8; font-family: monospace; font-weight: 700;">ID: ---</p>
+          <p id="otherMemId" style="font-size: 9.5px; color: #64748b; font-family: monospace; font-weight: 800;">ID: ---</p>
         </div>
       </div>
 
       <div class="metrics-grid" style="margin-top: 0; padding-top: 9px; margin-bottom: 11px;">
-        <div class="metric-item" style="background: rgba(238, 242, 255, 0.88);">
-          <span style="font-size: 8.5px; font-weight: 800; color: #6366f1;">Cống Hiến</span>
-          <span id="otherMemDuty" style="font-size: 11px; font-weight: 800; color: #4f46e5;">0 ca</span>
+        <div class="metric-item" style="background: rgba(238, 242, 255, 0.95); border-color: #c7d2fe;">
+          <span style="font-size: 8.5px; font-weight: 800; color: #4338ca;">Cống Hiến</span>
+          <span id="otherMemDuty" class="metric-val" style="color: #4f46e5;">0 ca</span>
         </div>
-        <div class="metric-item" style="background: rgba(240, 253, 244, 0.88); border-color: #bbf7d0;">
-          <span style="font-size: 8.5px; font-weight: 800; color: #16a34a;">Thể Trạng</span>
-          <span id="otherMemFit" style="font-size: 11px; font-weight: 800; color: #15803d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;">Khỏe mạnh</span>
+        <div class="metric-item" style="background: rgba(240, 253, 244, 0.95); border-color: #bbf7d0;">
+          <span style="font-size: 8.5px; font-weight: 800; color: #15803d;">Thể Trạng</span>
+          <span id="otherMemFit" class="metric-val" style="color: #15803d;">Khỏe mạnh</span>
         </div>
-        <div class="metric-item" style="background: rgba(236, 253, 245, 0.88);">
-          <span style="font-size: 8.5px; font-weight: 800; color: #047857;">Trạng Thái</span>
-          <span id="otherMemStat" style="font-size: 11px; font-weight: 800; color: #065f46;">Sẵn sàng</span>
+        <div class="metric-item" style="background: rgba(236, 253, 245, 0.95); border-color: #a7f3d0;">
+          <span style="font-size: 8.5px; font-weight: 800; color: #065f46;">Trạng Thái</span>
+          <span id="otherMemStat" class="metric-val" style="color: #047857;">Sẵn sàng</span>
         </div>
       </div>
 
       <div style="border-top: 1px solid #f1f5f9; padding-top: 7px;">
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Lớp:</span><span id="otherClass" class="selectable-text" style="font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">MSSV:</span><span id="otherMssv" class="selectable-text" style="font-family: monospace; font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Khoa / Viện:</span><span id="otherFaculty" class="selectable-text" style="font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Bộ Môn / Ban:</span><span id="otherDept" class="selectable-text" style="font-weight: 700;">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Số Điện Thoại:</span><span id="otherPhone" class="selectable-text" style="color: var(--primary); font-weight: 700; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="selectable-text" style="color: #dc2626; cursor: pointer; font-weight: 800;" onclick="callTargetMemberIce()">---</span></div>
-        <div class="info-row"><span style="color: #64748b; font-weight: 600;">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="selectable-text" style="color: #e11d48; font-weight: 700;">---</span></div>
+        <div class="info-row"><span class="info-label">Lớp:</span><span id="otherClass" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">MSSV:</span><span id="otherMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
+        <div class="info-row"><span class="info-label">Khoa / Viện:</span><span id="otherFaculty" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="otherDept" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="selectable-text info-value" style="color: #dc2626; cursor: pointer;" onclick="callTargetMemberIce()">---</span></div>
+        <div class="info-row"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="selectable-text info-value" style="color: #e11d48;">---</span></div>
       </div>
 
       <div class="call-grid" style="margin-top: 13px;">
@@ -1060,7 +1062,6 @@
     </div>
   </div>
 
-  <!-- 4. LIGHTBOX XEM ẢNH HD TOÀN MÀN HÌNH -->
   <div id="lightboxModal" class="modal-backdrop hidden" style="background: rgba(0,0,0,0.96); padding: 10px; z-index: 10000;" onclick="closeLightboxOnBackdrop(event)">
     <div style="position: absolute; top: max(env(safe-area-inset-top), 12px); left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; color: white;">
       <span id="lbCounter" style="font-size: 13px; font-weight: 800; background: rgba(255,255,255,0.2); padding: 3px 9px; border-radius: 10px;">1 / 1</span>
@@ -1069,7 +1070,6 @@
     <div id="lbMediaContainer" style="max-width: 100%; max-height: 82vh; display: flex; align-items: center; justify-content: center;"></div>
   </div>
 
-  <!-- 5. ACTION SHEET BÀI VIẾT (MENU 3 CHẤM) -->
   <div id="postActionSheet" class="modal-backdrop hidden" style="align-items: flex-end; padding-bottom: max(env(safe-area-inset-bottom), 12px);" onclick="closePostActionSheet(event)">
     <div class="acrylic-card" style="margin-bottom: 0; padding: 10px; border-radius: 24px;">
       <button onclick="executeCopyPostLink()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #1e293b; justify-content: flex-start;">
@@ -1084,11 +1084,10 @@
     </div>
   </div>
 
-  <!-- 6. MODAL CẬP NHẬT THỂ TRẠNG ĐỔI MÀU NĂNG ĐỘNG -->
   <div id="modalTheTrang" class="modal-backdrop hidden" onclick="closeTheTrangModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 360px; max-height: 82vh; margin-bottom: 0; padding: 15px;">
       <h3 style="font-size: 14px; font-weight: 900; color: #0f172a; text-align: center;">CẬP NHẬT THỂ TRẠNG</h3>
-      <p style="font-size: 10.5px; color: #64748b; text-align: center; margin-top: 2px;">Tự động biến đổi màu nhận diện</p>
+      <p style="font-size: 10.5px; color: #475569; font-weight: 600; text-align: center; margin-top: 2px;">Tự động biến đổi màu nhận diện</p>
 
       <div style="display: flex; flex-direction: column; gap: 5px; margin: 11px 0;">
         <button onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #bbf7d0; background: #f0fdf4; justify-content: space-between;">
@@ -1122,7 +1121,7 @@
         </button>
 
         <button onclick="selectTheTrang('Bận học / Thi cử')" class="spring-touch" style="padding: 9px 12px; border-radius: 14px; border: 1px solid #e2e8f0; background: #f8fafc; justify-content: space-between;">
-          <span style="font-size: 11.5px; font-weight: 800; color: #475569;">Bận học / Thi cử 📚</span>
+          <span style="font-size: 11.5px; font-weight: 800; color: #334155;">Bận học / Thi cử 📚</span>
           <span style="font-size: 9.5px; font-weight: 800; color: #64748b;">Tạm vắng</span>
         </button>
       </div>
@@ -1131,13 +1130,12 @@
     </div>
   </div>
 
-  <!-- 7. MODAL ĐỔI ẢNH ĐẠI DIỆN -->
   <div id="modalAvatar" class="modal-backdrop hidden" onclick="closeAvatarModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 340px; margin-bottom: 0; padding: 15px; text-align: center;">
       <h3 style="font-size: 14px; font-weight: 900; color: #0f172a; margin-bottom: 3px;">ẢNH ĐẠI DIỆN THÀNH VIÊN</h3>
-      <p style="font-size: 10.5px; color: #64748b; margin-bottom: 12px;">Được lưu trữ tự động trên Google Drive CLB</p>
+      <p style="font-size: 10.5px; color: #475569; font-weight: 600; margin-bottom: 12px;">Được lưu trữ tự động trên Google Drive CLB</p>
 
-      <div id="avatarPreviewBox" class="avatar-box" style="width: 84px; height: 84px; margin: 0 auto 12px auto; font-size: 30px;">
+      <div id="avatarPreviewBox" class="avatar-box" style="width: 88px; height: 88px; margin: 0 auto 12px auto; font-size: 32px;">
         <span id="avatarPreviewInitial">A</span>
       </div>
 
@@ -1152,40 +1150,38 @@
     </div>
   </div>
 
-  <!-- 8. MODAL TẠO LỆNH ĐIỀU ĐỘNG: HỖ TRỢ CHỈ TIÊU TỪNG BAN -->
   <div id="modalCreateTask" class="modal-backdrop hidden" onclick="closeCreateTaskModalOnBackdrop(event)">
     <div class="acrylic-card custom-scroll" style="width: 100%; max-width: 400px; max-height: 88vh; margin-bottom: 0; padding: 15px;">
       <h3 style="font-size: 14px; font-weight: 900; color: #6b21a8; text-align: center;">BAN HÀNH LỆNH ĐIỀU ĐỘNG</h3>
-      <p style="font-size: 10px; color: #9333ea; text-align: center; margin-top: 1px;">Khu vực dành riêng cho Ban Quản Trị</p>
+      <p style="font-size: 10px; color: #9333ea; text-align: center; margin-top: 1px; font-weight: 700;">Khu vực dành riêng cho Ban Quản Trị</p>
 
       <div style="display: flex; flex-direction: column; gap: 7px; margin-top: 11px;">
         <div>
-          <label style="font-size: 10px; font-weight: 800; color: #64748b;">TIÊU ĐỀ NHIỆM VỤ</label>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">TIÊU ĐỀ NHIỆM VỤ</label>
           <input type="text" id="iptTaskTitle" placeholder="Ví dụ: Trực bàn giải Cầu lông..." class="input-box">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
           <div>
-            <label style="font-size: 10px; font-weight: 800; color: #64748b;">ĐỊA ĐIỂM</label>
+            <label style="font-size: 10px; font-weight: 800; color: #334155;">ĐỊA ĐIỂM</label>
             <input type="text" id="iptTaskLocation" placeholder="Nhà thi đấu" class="input-box">
           </div>
           <div>
-            <label style="font-size: 10px; font-weight: 800; color: #64748b;">TỔNG CHỈ TIÊU (NGƯỜI)</label>
+            <label style="font-size: 10px; font-weight: 800; color: #334155;">TỔNG CHỈ TIÊU (NGƯỜI)</label>
             <input type="number" id="iptTaskQuota" value="8" min="1" max="100" class="input-box" readonly style="background:#f1f5f9;">
           </div>
         </div>
 
         <div>
-          <label style="font-size: 10px; font-weight: 800; color: #64748b;">THỜI GIAN THỰC HIỆN</label>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">THỜI GIAN THỰC HIỆN</label>
           <input type="text" id="iptTaskTime" placeholder="14:00 - 18:00 Thứ Bảy" class="input-box">
         </div>
 
         <div>
-          <label style="font-size: 10px; font-weight: 800; color: #64748b;">HẠN TỰ KHÓA &amp; AI ĐIỀU ĐỘNG THEO BAN</label>
+          <label style="font-size: 10px; font-weight: 800; color: #334155;">HẠN TỰ KHÓA &amp; AI ĐIỀU ĐỘNG THEO BAN</label>
           <input type="datetime-local" id="iptTaskDeadline" class="input-box">
         </div>
 
-        <!-- PHÂN BỔ CHỈ TIÊU THEO TỪNG BAN -->
         <div style="margin-top: 4px; padding: 9px; background: #faf5ff; border: 1.2px solid #e9d5ff; border-radius: 15px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <label style="font-size: 10.5px; font-weight: 800; color: #6b21a8;">🎯 CHỈ TIÊU THEO TỪNG BAN</label>
@@ -1193,7 +1189,7 @@
               + Thêm Ban
             </button>
           </div>
-          <p style="font-size: 9px; color: #7e22ce; margin-bottom: 6px;">Hết giờ, AI Agent tự quét người ít ca của từng ban tương ứng!</p>
+          <p style="font-size: 9px; color: #7e22ce; margin-bottom: 6px; font-weight: 700;">Hết giờ, AI Agent tự quét người ít ca của từng ban tương ứng!</p>
 
           <div id="deptQuotaContainer" style="display: flex; flex-direction: column; gap: 4px;"></div>
         </div>
@@ -1208,7 +1204,6 @@
     </div>
   </div>
 
-  <!-- 9. ACTION SHEET MORE MENU -->
   <div id="headerMoreActionSheet" class="modal-backdrop hidden" style="align-items: flex-end; padding-bottom: max(env(safe-area-inset-bottom), 12px);" onclick="closeHeaderMoreActionSheet(event)">
     <div class="acrylic-card" style="margin-bottom: 0; padding: 10px; border-radius: 24px;">
       <button onclick="triggerAppSync()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #1e293b; justify-content: flex-start;">
@@ -1229,25 +1224,20 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC LÕI VÀ FACEBOOK + AI OPS ENGINE -->
   <script>
-    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbycy8hAe5kNihFhAp6bXqgTb2AMtFRc5S2l97l8g58iHo-mB8lpW-enfkQzAe2WPs9T/exec";
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwvNsYMBiDo53EF5a2FrKRO3KAoWJqA-BMNTLZj0IbuPd_vCIRpPsjmPYqPRre1qhB/exec";
 
-    // STATE HỆ THỐNG
     let currentUser = null;
     let fullDirectoryList = [];
     let rotationTasksList = [];
     let forumPostsList = [];
     let swapRequestsList = [];
-    
-    // TRẠNG THÁI SOẠN BÀI FACEBOOK
+
     let currentUploadedMediaList = [];
     let currentTaggedMembersList = [];
     let currentFeeling = '';
     let currentLocation = '';
-    let activeReactionPickerPostId = null;
 
-    // LIGHTBOX
     let currentLightboxMedia = [];
     let currentLightboxIndex = 0;
     let currentActivePostForActionSheet = null;
@@ -1322,7 +1312,7 @@
       } catch (err) {
         btn.innerText = 'Đăng Nhập Thẻ Số';
         btn.disabled = false;
-        showAquaIsland('Mạng', 'Đang chuyển sang chế độ ngoại tuyến');
+        showAquaIsland('Mạng', 'Đang nạp chế độ kiểm thử đầy đủ');
         enterOfflineDemoMode();
       }
     }
@@ -1393,7 +1383,7 @@
 
       saveStateToLocalMirror();
       renderAppMainView();
-      showAquaIsland('Chế Độ', 'Đã nạp dữ liệu ngoại tuyến');
+      showAquaIsland('Chế Độ Xem', 'Đã nạp đầy đủ dữ liệu demo');
     }
 
     function renderAppMainView() {
@@ -1401,13 +1391,16 @@
       document.getElementById('viewApp').classList.remove('hidden');
       document.getElementById('bottomNav').classList.remove('hidden');
 
-      // Profile View
       document.getElementById('memName').innerText = currentUser.hoTen;
       document.getElementById('memRole').innerText = currentUser.chucVu;
       document.getElementById('memId').innerText = 'ID: ' + currentUser.id;
       document.getElementById('memDuty').innerText = (currentUser.soCa || 0) + ' ca';
       document.getElementById('memFit').innerText = currentUser.theTrang || 'Khỏe mạnh';
-      document.getElementById('memStat').innerText = currentUser.status || 'Sẵn sàng';
+      
+      const statEl = document.getElementById('memStat');
+      const statVal = currentUser.status || 'Sẵn sàng';
+      statEl.innerText = statVal;
+      statEl.setAttribute('title', statVal);
 
       document.getElementById('dClass').innerText = currentUser.lop || '---';
       document.getElementById('dMssv').innerText = currentUser.mssv || '---';
@@ -1425,7 +1418,7 @@
 
       const memAvtBox = document.getElementById('memAvatarBox');
       if (currentUser.avatar) {
-        memAvtBox.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar"><span class="avatar-cam-badge"><svg style="width:12px;height:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>`;
+        memAvtBox.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar"><span class="avatar-cam-badge"><svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>`;
       }
 
       if (currentUser.isAdmin) {
@@ -1460,7 +1453,6 @@
       } catch (err) {}
     }
 
-    // ================= AI OPS AGENT ENGINE =================
     function openAiOpsModal() {
       document.getElementById('modalAiOps').classList.remove('hidden');
       document.body.classList.add('modal-open');
@@ -1528,7 +1520,6 @@
       }
     }
 
-    // ================= FACEBOOK SOCIAL CORE =================
     function handleFacebookMediaSelect(e) {
       const files = Array.from(e.target.files);
       if (!files.length) return;
@@ -1585,6 +1576,14 @@
       renderFacebookMediaPreview();
     }
 
+    function promptTagMember() {
+      const name = prompt('Nhập tên thành viên muốn gắn thẻ (@Tag):');
+      if (name && name.trim()) {
+        currentTaggedMembersList.push(name.trim());
+        showAquaIsland('Gắn Thẻ', `Đã gắn thẻ @${name.trim()}`);
+      }
+    }
+
     function promptFeelingActivity() {
       const f = prompt('Bạn đang cảm thấy thế nào? (Ví dụ: Quyết tâm, Tràn đầy năng lượng, Hào hứng...):');
       if (f) {
@@ -1619,12 +1618,10 @@
         location: currentLocation
       };
 
-      // Đẩy tức thì vào feed (Zero-Latency Optimistic UI)
       forumPostsList.unshift(optimisticPost);
       saveStateToLocalMirror();
-      renderForumFeed();
+      requestAnimationFrame(() => renderForumFeed());
 
-      // Reset Composer
       document.getElementById('iptForumText').value = '';
       currentUploadedMediaList = [];
       currentTaggedMembersList = [];
@@ -1634,7 +1631,6 @@
       renderFacebookMediaPreview();
       showAquaIsland('Diễn Đàn', 'Đã đăng bài viết!');
 
-      // Gửi ngầm Backend (Google Drive lưu media, Sheets lưu link)
       try {
         const res = await fetch(BACKEND_URL, {
           method: 'POST',
@@ -1661,7 +1657,7 @@
     function renderForumFeed() {
       const c = document.getElementById('listPostsContainer');
       if (!forumPostsList.length) {
-        c.innerHTML = '<div class="acrylic-card" style="text-align:center;font-size:11px;color:#94a3b8;padding:24px;">Chưa có bài viết nào trên bảng tin.</div>';
+        c.innerHTML = '<div class="acrylic-card" style="text-align:center;font-size:11px;color:#475569;font-weight:600;padding:24px;">Chưa có bài viết nào trên bảng tin.</div>';
         return;
       }
 
@@ -1669,7 +1665,6 @@
         const isAuthorOrAdmin = currentUser && (p.authorId === currentUser.id || currentUser.isAdmin);
         const initial = p.authorName ? p.authorName.charAt(0).toUpperCase() : 'U';
 
-        // Facebook Mosaic Grid Layout
         let mediaHtml = '';
         if (p.mediaList && p.mediaList.length) {
           const len = p.mediaList.length;
@@ -1686,11 +1681,9 @@
           mediaHtml = `<div class="fb-mosaic ${gridCls}">${items}</div>`;
         }
 
-        // Reactions calculation
         const r = p.reactions || { like: 0, love: 0, care: 0, haha: 0, wow: 0, sad: 0, angry: 0, userReactions: {} };
         const totalR = (r.like || 0) + (r.love || 0) + (r.care || 0) + (r.haha || 0) + (r.wow || 0) + (r.sad || 0) + (r.angry || 0);
         const myReaction = (r.userReactions && currentUser) ? r.userReactions[currentUser.id] : null;
-
         const comments = p.comments || [];
 
         return `
@@ -1703,7 +1696,7 @@
                 <div>
                   <h4 style="font-size: 12.5px; font-weight: 800; color: #0f172a; cursor: pointer;" onclick="openMemberProfileModal('${p.authorId}')">
                     ${p.authorName}
-                    ${p.feeling ? `<span style="font-weight: 500; color: #64748b; font-size: 11px;"> đang cảm thấy ${p.feeling}</span>` : ''}
+                    ${p.feeling ? `<span style="font-weight: 600; color: #475569; font-size: 11px;"> đang cảm thấy ${p.feeling}</span>` : ''}
                   </h4>
                   <div class="fb-meta-line">
                     <span>${p.createdAt}</span> &bull; 
@@ -1711,7 +1704,7 @@
                   </div>
                 </div>
               </div>
-              <button onclick="openPostActionSheetMenu('${p.id}', ${isAuthorOrAdmin})" class="spring-touch" style="background:transparent;border:none;color:#94a3b8;font-size:16px;padding:4px;">
+              <button onclick="openPostActionSheetMenu('${p.id}', ${isAuthorOrAdmin})" class="spring-touch" style="background:transparent;border:none;color:#475569;font-size:16px;padding:4px;">
                 &bull;&bull;&bull;
               </button>
             </div>
@@ -1726,16 +1719,14 @@
 
             ${mediaHtml}
 
-            <!-- FACEBOOK SUMMARY BAR -->
             <div class="fb-summary-line">
               <div class="fb-reaction-stack">
                 <span>👍❤️</span>
-                <span style="font-weight: 700; color: #475569; margin-left: 2px;">${totalR}</span>
+                <span style="font-weight: 800; color: #1e293b; margin-left: 2px;">${totalR}</span>
               </div>
               <div>${comments.length} bình luận</div>
             </div>
 
-            <!-- FACEBOOK ACTION BAR VỚI 7 CẢM XÚC -->
             <div class="fb-action-row">
               <button onclick="toggleFacebookReactionFast('${p.id}', 'like')" oncontextmenu="event.preventDefault(); showReactionPopover('${p.id}')" class="fb-btn-action ${myReaction ? (myReaction === 'love' ? 'active-red' : 'active-blue') : ''}">
                 <span>${getReactionLabel(myReaction)}</span>
@@ -1751,7 +1742,6 @@
                 <span>Chia sẻ</span>
               </button>
 
-              <!-- DOCK 7 CẢM XÚC NỔI KHI BẤM GIỮ HOẶC CHẠM LÂU -->
               <div id="reactPopover_${p.id}" class="fb-reaction-popover hidden">
                 <button class="fb-react-emoji-btn" onclick="selectSpecificReaction('${p.id}', 'like')" title="Thích">👍</button>
                 <button class="fb-react-emoji-btn" onclick="selectSpecificReaction('${p.id}', 'love')" title="Yêu thích">❤️</button>
@@ -1763,13 +1753,11 @@
               </div>
             </div>
 
-            <!-- BÌNH LUẬN FACEBOOK THREADED REPLIES -->
             <div style="margin-top: 8px; padding-top: 7px; border-top: 1px solid #f1f5f9;">
               <div id="commentsTree_${p.id}">
                 ${renderPostCommentsTree(p.id, comments)}
               </div>
 
-              <!-- INPUT GÕ BÌNH LUẬN CÓ AVATAR -->
               <div style="display: flex; gap: 6px; align-items: center; margin-top: 8px;">
                 <div class="fb-circle-avt" style="width: 28px; height: 28px; font-size: 10px;">
                   ${currentUser && currentUser.avatar ? `<img src="${currentUser.avatar}">` : (currentUser ? currentUser.hoTen.charAt(0) : 'U')}
@@ -1829,7 +1817,7 @@
       }
 
       saveStateToLocalMirror();
-      renderForumFeed();
+      requestAnimationFrame(() => renderForumFeed());
 
       fetch(BACKEND_URL, {
         method: 'POST',
@@ -1854,7 +1842,6 @@
               <span style="cursor: pointer; color: var(--fb-blue);" onclick="prepareReplyComment('${postId}', '${c.authorName}')">Trả lời</span>
             </div>
 
-            <!-- CÂY NHÁNH PHÂN CẤP REPLIES -->
             ${c.replies && c.replies.length ? `
               <div class="fb-cmt-replies-tree">
                 ${c.replies.map(r => `
@@ -1885,6 +1872,22 @@
 
     function handleCommentKeyDown(e, postId) {
       if (e.key === 'Enter') submitCommentAction(postId);
+    }
+
+    function focusCommentInput(postId) {
+      const ipt = document.getElementById('iptComment_' + postId);
+      if (ipt) ipt.focus();
+    }
+
+    function shareFacebookPost(postId) {
+      const p = forumPostsList.find(x => x.id === postId);
+      if (p) {
+        navigator.clipboard.writeText(`${p.authorName}: ${p.content}`).then(() => {
+          showAquaIsland('Chia Sẻ', 'Đã sao chép liên kết & bài viết!');
+        }).catch(() => {
+          showAquaIsland('Chia Sẻ', 'Đã sao chép bài viết!');
+        });
+      }
     }
 
     async function submitCommentAction(postId) {
@@ -1920,7 +1923,6 @@
       } catch (e) {}
     }
 
-    // ================= LIGHTBOX & ACTION SHEET =================
     function openLightboxViewer(postId, index) {
       const p = forumPostsList.find(x => x.id === postId);
       if (!p || !p.mediaList || !p.mediaList.length) return;
@@ -1967,9 +1969,12 @@
 
     function executeCopyPostLink() {
       const p = forumPostsList.find(x => x.id === currentActivePostForActionSheet);
-      if (p && navigator.clipboard) {
-        navigator.clipboard.writeText(p.content);
-        showAquaIsland('Đã Sao Chép', 'Nội dung bài viết đã lưu vào bộ nhớ tạm');
+      if (p) {
+        navigator.clipboard.writeText(p.content).then(() => {
+          showAquaIsland('Đã Sao Chép', 'Nội dung bài viết đã lưu vào bộ nhớ tạm');
+        }).catch(() => {
+          showAquaIsland('Đã Sao Chép', 'Nội dung bài viết đã lưu');
+        });
       }
       closePostActionSheetDirect();
     }
@@ -1981,7 +1986,7 @@
 
       forumPostsList = forumPostsList.filter(x => x.id !== pid);
       saveStateToLocalMirror();
-      renderForumFeed();
+      requestAnimationFrame(() => renderForumFeed());
       showAquaIsland('Xóa Bài', 'Đã xóa bài viết khỏi bảng tin');
 
       try {
@@ -1992,7 +1997,6 @@
       } catch (e) {}
     }
 
-    // ================= DANH BẠ & NHẬN DIỆN KHẨN CẤP ICE =================
     function openDirectoryModal() {
       document.getElementById('modalDirectory').classList.remove('hidden');
       document.body.classList.add('modal-open');
@@ -2011,7 +2015,7 @@
     function renderDirectoryList(list) {
       const c = document.getElementById('directoryListContainer');
       if (!list.length) {
-        c.innerHTML = '<div style="text-align:center;font-size:11px;color:#94a3b8;padding:20px;">Không tìm thấy thành viên.</div>';
+        c.innerHTML = '<div style="text-align:center;font-size:11px;color:#475569;font-weight:600;padding:20px;">Không tìm thấy thành viên.</div>';
         return;
       }
 
@@ -2027,8 +2031,8 @@
               </div>
               <div style="min-width:0; flex:1;">
                 <h4 style="font-size:12px; font-weight:800; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.hoTen}</h4>
-                <p style="font-size:10px; color:#64748b;">${m.boMon || 'CLB'} &bull; ${m.soCa || 0} ca</p>
-                <p style="font-size:9.5px; color:#b91c1c; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🚨 ICE: ${rawIce}</p>
+                <p style="font-size:10px; color:#475569; font-weight:600;">${m.boMon || 'CLB'} &bull; ${m.soCa || 0} ca</p>
+                <p style="font-size:9.5px; color:#b91c1c; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">🚨 ICE: ${rawIce}</p>
               </div>
             </div>
             <div style="display:flex; gap:4px;">
@@ -2059,6 +2063,7 @@
     }
 
     function openMemberProfileModal(memberId) {
+      if (!memberId) return;
       const mem = fullDirectoryList.find(m => m.id === memberId);
       if (!mem) return;
       currentSelectedTargetMemberForProfile = mem;
@@ -2071,7 +2076,11 @@
       document.getElementById('otherMemId').innerText = 'ID: ' + mem.id;
       document.getElementById('otherMemDuty').innerText = (mem.soCa || 0) + ' ca';
       document.getElementById('otherMemFit').innerText = mem.theTrang || 'Khỏe mạnh';
-      document.getElementById('otherMemStat').innerText = mem.status || 'Sẵn sàng';
+      
+      const otherStatEl = document.getElementById('otherMemStat');
+      const otherStatVal = mem.status || 'Sẵn sàng';
+      otherStatEl.innerText = otherStatVal;
+      otherStatEl.setAttribute('title', otherStatVal);
 
       document.getElementById('otherClass').innerText = mem.lop || '---';
       document.getElementById('otherMssv').innerText = mem.mssv || '---';
@@ -2111,7 +2120,6 @@
       }
     }
 
-    // ================= NHIỆM VỤ ĐIỀU ĐỘNG & QUẢN LÝ CHỈ TIÊU BAN =================
     function initDefaultDepartmentQuotas() {
       const c = document.getElementById('deptQuotaContainer');
       if (!c) return;
@@ -2231,7 +2239,7 @@
       document.getElementById('badgeTaskCount').innerText = rotationTasksList.length + ' Lệnh';
 
       if (!rotationTasksList.length) {
-        c.innerHTML = '<div class="acrylic-card" style="text-align:center;font-size:11px;color:#94a3b8;padding:24px;">Hiện không có lệnh điều động nào.</div>';
+        c.innerHTML = '<div class="acrylic-card" style="text-align:center;font-size:11px;color:#475569;font-weight:600;padding:24px;">Hiện không có lệnh điều động nào.</div>';
         return;
       }
 
@@ -2255,16 +2263,16 @@
                 </span>
                 <h4 style="font-size:13.5px; font-weight:900; color:#0f172a; margin-top:3px;">${t.title}</h4>
               </div>
-              <span style="font-size:10px; font-weight:800; padding:2px 7px; border-radius:10px; background:#f1f5f9; color:#475569;">
+              <span style="font-size:10px; font-weight:800; padding:2px 7px; border-radius:10px; background:#f1f5f9; color:#334155;">
                 ${totalIn} / ${t.quota} bạn
               </span>
             </div>
 
-            <p style="font-size:11px; color:#64748b;">📍 ${t.location} &bull; ⏰ ${t.time}</p>
+            <p style="font-size:11px; color:#475569; font-weight:600;">📍 ${t.location} &bull; ⏰ ${t.time}</p>
 
             ${deptKeys.length > 0 ? `
               <div style="display:flex; flex-wrap:wrap; gap:4px; margin-top:7px;">
-                ${deptKeys.map(k => `<span style="font-size:10px; font-weight:700; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:2px 6px; color:#475569;">🎯 ${k}: ${deptQuotas[k]}</span>`).join('')}
+                ${deptKeys.map(k => `<span style="font-size:10px; font-weight:700; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:2px 6px; color:#334155;">🎯 ${k}: ${deptQuotas[k]}</span>`).join('')}
               </div>
             ` : ''}
 
@@ -2316,6 +2324,22 @@
       }
     }
 
+    function requestDutySwap(taskId) {
+      const reason = prompt('Nhập lý do xin đổi ca (Ví dụ: Trùng lịch thi, việc bận đột xuất...):');
+      if (!reason) return;
+
+      showAquaIsland('Đổi Ca', 'Đã gửi yêu cầu đổi ca đến Ban Quản Trị');
+      fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'requestSwap',
+          taskId: taskId,
+          fromMemberId: currentUser.id,
+          reason: reason
+        })
+      }).catch(() => {});
+    }
+
     async function triggerAiScheduleForTask(taskId) {
       showAquaIsland('AI Agent', 'Đang quét chỉ tiêu ban và tự động xếp ca...');
       try {
@@ -2331,7 +2355,6 @@
       }
     }
 
-    // ================= TIỆN ÍCH CUỘC GỌI & THỂ TRẠNG =================
     function cleanPhoneNumberForDial(phoneStr) {
       if (!phoneStr) return '';
       const match = phoneStr.match(/(0[1-9][0-9]{8,9}|\+84[1-9][0-9]{8})/);
@@ -2428,7 +2451,6 @@
       reader.readAsDataURL(file);
     }
 
-    // ================= DOCK & SYSTEM CONTROLS =================
     function switchDockTab(idx) {
       const pill = document.getElementById('dockPill');
       pill.style.transform = `translateX(${idx * 100}%)`;
@@ -2449,13 +2471,18 @@
       const p = document.getElementById('aquaIslandPill');
       document.getElementById('aquaIslandTitle').innerText = title;
       document.getElementById('aquaIslandMsg').innerText = msg;
-      p.classList.add('active');
+      
+      requestAnimationFrame(() => {
+        p.classList.add('active');
+      });
+      
       clearTimeout(aquaTimer);
       aquaTimer = setTimeout(() => dismissAquaIsland(), 3500);
     }
 
     function dismissAquaIsland() {
-      document.getElementById('aquaIslandPill').classList.remove('active');
+      const p = document.getElementById('aquaIslandPill');
+      p.classList.remove('active');
     }
 
     function openHeaderMoreActionSheet() {
