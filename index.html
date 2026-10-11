@@ -23,71 +23,30 @@
 
   <style>
     /* ==================== AQUAMORPHIC PASTEL DESIGN SYSTEM ==================== */
-    /* ==================== DARK MODE & EXTENDED TOKENS ==================== */
-    [data-theme="dark"] {
-      --primary: #818cf8;
-      --primary-dark: #6366f1;
-      --primary-light: #1e1b4b;
-      --accent: #a855f7;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --card-bg: rgba(17, 24, 39, 0.86);
-      --card-border: rgba(255, 255, 255, 0.1);
-      color-scheme: dark only;
+    /* ==================== AQUAMORPHIC LUXURY PASTEL TOKENS ==================== */
+    .digital-pass-luxury-card {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    [data-theme="dark"] body {
-      background-color: #0b0f19 !important;
-      color: #f8fafc !important;
+    .digital-pass-luxury-card:hover {
+      box-shadow: 0 16px 38px -4px rgba(99, 102, 241, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.95);
     }
-    [data-theme="dark"] body::before {
-      background-color: #0b0f19 !important;
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(49, 46, 129, 0.45) 0px, transparent 52%),
-        radial-gradient(at 100% 8%, rgba(76, 29, 149, 0.35) 0px, transparent 48%),
-        radial-gradient(at 15% 55%, rgba(6, 78, 59, 0.28) 0px, transparent 55%),
-        radial-gradient(at 85% 95%, rgba(12, 74, 110, 0.35) 0px, transparent 58%) !important;
+    .glow-teal {
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      color: #ffffff;
+      border: 1px solid #14b8a6;
+      box-shadow: 0 6px 18px rgba(13, 148, 136, 0.28);
     }
-    [data-theme="dark"] .acrylic-card {
-      background: rgba(17, 24, 39, 0.86) !important;
-      border-color: rgba(255, 255, 255, 0.1) !important;
-      box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.5), inset 0 1px 1.5px rgba(255, 255, 255, 0.1) !important;
-      color: #f8fafc !important;
-    }
-    [data-theme="dark"] .app-header {
-      background: rgba(11, 15, 25, 0.88) !important;
-      border-bottom-color: rgba(255, 255, 255, 0.1) !important;
-    }
-    [data-theme="dark"] .app-header h1 {
-      color: #f8fafc !important;
-    }
-    [data-theme="dark"] .dock-acrylic-pill {
-      background: rgba(17, 24, 39, 0.9) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6) !important;
-    }
-    [data-theme="dark"] .modal-sheet {
-      background: #111827 !important;
-      color: #f8fafc !important;
-      border-color: rgba(255, 255, 255, 0.14) !important;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.7) !important;
-    }
-    [data-theme="dark"] .input-box {
-      background: #1f2937 !important;
-      color: #f8fafc !important;
-      border-color: #374151 !important;
-    }
-    [data-theme="dark"] .icon-square-btn {
-      background: rgba(31, 41, 55, 0.9) !important;
-      border-color: #374151 !important;
-      color: #c7d2fe !important;
-    }
-    [data-theme="dark"] .modal-sheet h3, [data-theme="dark"] .modal-sheet h4 {
-      color: #f8fafc !important;
-    }
-    [data-theme="dark"] .modal-close-btn {
-      background: #1f2937 !important;
-      border-color: #374151 !important;
-      color: #94a3b8 !important;
+    .badge-checked-in {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 9.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
 
     /* Radar scan beam & reticle HUD */
@@ -141,10 +100,7 @@
       margin-bottom: 12px;
       border: 1px solid #e2e8f0;
     }
-    [data-theme="dark"] .admin-tab-nav {
-      background: #1f2937;
-      border-color: #374151;
-    }
+    
     .admin-tab-btn {
       flex: 1;
       padding: 8px 10px;
@@ -167,11 +123,7 @@
       border-color: #c7d2fe;
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
     }
-    [data-theme="dark"] .admin-tab-btn.active {
-      background: #374151;
-      color: #c7d2fe;
-      border-color: #4f46e5;
-    }
+    
     .audit-trail-row {
       padding: 9px 11px;
       border-radius: 13px;
@@ -182,11 +134,7 @@
       flex-direction: column;
       gap: 3px;
     }
-    [data-theme="dark"] .audit-trail-row {
-      background: #1f2937;
-      border-color: #374151;
-      color: #f1f5f9;
-    }
+    
 
     :root {
       --primary: #4f46e5;
@@ -875,14 +823,9 @@
     </div>
 
     <div id="headerActionButtons" style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
-      <!-- Toggle Dark Mode / Pastel Theme -->
-      <button onclick="toggleTheme()" id="btnThemeToggle" class="spring-touch icon-square-btn" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển chế độ sáng tối">
-        <svg id="iconThemeSun" class="svg-icon" style="width: 17px; height: 17px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      </button>
-
-      <!-- Quét QR Điểm Danh / Soát Vé Nhanh -->
-      <button onclick="openQrScannerModal()" id="btnQuickQrScanner" class="spring-touch icon-square-btn" title="Quét mã QR Điểm danh" aria-label="Quét mã QR" style="color: #4f46e5; background: #eef2ff; border-color: #c7d2fe;">
-        <svg class="svg-icon" style="width: 17px; height: 17px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <!-- Quét QR Điểm Danh Hiện Trường (Chỉ hiển thị cho Admin & Trưởng ca) -->
+      <button onclick="openQrScannerModal()" id="btnQuickQrScanner" class="spring-touch icon-square-btn hidden" title="Quét mã QR Điểm danh Hiện trường" aria-label="Quét mã QR Điểm danh" style="color: #4f46e5; background: #eef2ff; border-color: #c7d2fe;">
+        <svg class="svg-icon" style="width: 17px; height: 17px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </button>
 
       <!-- Chỉ Báo Đồng Bộ Ngoại Tuyến -->
@@ -1000,40 +943,47 @@
           </div>
         </section>
 
-        <!-- THẺ ĐỊNH DANH SỐ & DYNAMIC QR PASS (CHỐNG CHỤP MÀN HÌNH GIẢ MẠO) -->
-        <section class="acrylic-card" style="text-align: center; overflow: hidden; position: relative;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <div style="display: flex; align-items: center; gap: 7px;">
-              <div style="width: 28px; height: 28px; border-radius: 9px; background: #e0e7ff; border: 1px solid #c7d2fe; color: #4338ca; display: flex; align-items: center; justify-content: center;">
-                <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <!-- THẺ ĐỊNH DANH SỐ & DIGITAL SPORTPASS (AQUAMORPHIC LUXURY PASTEL) -->
+        <section class="acrylic-card digital-pass-luxury-card" style="padding: 18px 16px; border-radius: 24px; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(255,255,255,0.94) 0%, rgba(238,242,255,0.88) 100%); border: 1.2px solid rgba(199,210,254,0.85); box-shadow: 0 12px 32px -4px rgba(99,102,241,0.12), inset 0 1px 2px rgba(255,255,255,0.95);">
+          <!-- Decorative Holographic Specular Ribbon -->
+          <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(165,180,252,0.3) 0%, rgba(224,231,255,0) 70%); border-radius: 50%; pointer-events: none;"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 32px; height: 32px; border-radius: 11px; background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border: 1px solid #a5b4fc; color: #3730a3; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(99,102,241,0.15);">
+                <svg class="svg-icon" style="width: 17px; height: 17px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
               </div>
               <div style="text-align: left;">
-                <h3 style="font-size: 12px; font-weight: 900; color: #1e1b4b; text-transform: uppercase;">DYNAMIC DIGITAL PASS</h3>
-                <p style="font-size: 9px; color: #64748b; font-weight: 700;">Mã QR Động &bull; Tự làm mới chống gian lận</p>
+                <h3 style="font-size: 13px; font-weight: 900; color: #1e1b4b; text-transform: uppercase; letter-spacing: -0.2px;">THẺ HỘI VIÊN &bull; DIGITAL SPORTPASS</h3>
+                <p style="font-size: 9.5px; color: #64748b; font-weight: 700;">Hội viên chính thức &bull; CLB Thể Thao HUST</p>
               </div>
             </div>
-            <span id="qrPassTimerBadge" style="font-size: 9.5px; font-weight: 800; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2px 7px; border-radius: 8px;">60s</span>
+            <span style="font-size: 9px; font-weight: 800; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2.5px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+              <span>Trực Tuyến</span>
+            </span>
           </div>
 
-          <!-- Khung hiển thị QR với vạch quét Laser chuyển động -->
-          <div style="position: relative; width: 170px; height: 170px; margin: 8px auto 10px auto; padding: 10px; background: #ffffff; border-radius: 20px; border: 1.5px solid #c7d2fe; box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12); display: flex; align-items: center; justify-content: center; overflow: hidden;">
-            <div id="dynamicQrPassContainer" style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center;"></div>
-            <div class="qr-laser-line"></div>
+          <!-- Chip & Hologram Bar -->
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(241,245,249,0.7); padding: 8px 12px; border-radius: 14px; border: 1px solid #e2e8f0; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 7px;">
+              <div style="width: 22px; height: 16px; border-radius: 4px; background: linear-gradient(135deg, #fde68a, #f59e0b); border: 1px solid #d97706; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(217,119,6,0.2);">
+                <span style="display: block; width: 12px; height: 8px; border: 1px solid rgba(255,255,255,0.7); border-radius: 2px;"></span>
+              </div>
+              <span style="font-size: 10px; font-weight: 800; color: #334155; font-family: monospace;" id="digitalPassTokenSummary">SPORTPASS-VALID</span>
+            </div>
+            <span style="font-size: 9px; font-weight: 800; color: #4338ca; background: #e0e7ff; padding: 2px 7px; border-radius: 6px;">NFC Ready</span>
           </div>
 
-          <div style="display: flex; align-items: center; justify-content: center; gap: 6px; font-family: monospace; font-size: 10px; font-weight: 800; color: #475569;">
-            <span>TOKEN:</span>
-            <span id="qrTokenDisplay" style="color: #4338ca; background: #eef2ff; padding: 1.5px 6px; border-radius: 6px; border: 1px solid #c7d2fe;">PASS-SYNCING</span>
-          </div>
-
-          <div style="display: flex; gap: 7px; margin-top: 11px;">
-            <button onclick="openQrScannerModal()" class="spring-touch glow-indigo" style="flex: 1.3; padding: 8px 12px; border-radius: 13px; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px;">
-              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              <span>Quét QR Điểm Danh</span>
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 8px;">
+            <button onclick="openFieldCheckinQrModal()" class="spring-touch glow-indigo" style="flex: 1.5; padding: 11px 14px; border-radius: 14px; font-weight: 800; font-size: 11.5px; display: flex; align-items: center; justify-content: center; gap: 7px;">
+              <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              <span>Xuất Trình QR Nhận Ca</span>
             </button>
-            <button onclick="refreshDynamicQrPass()" class="spring-touch" style="flex: 1; padding: 8px 10px; border-radius: 13px; font-weight: 800; font-size: 11px; background: #f8fafc; border: 1px solid #cbd5e1; color: #334155; display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
-              <span>Đổi Mã</span>
+            <button id="btnProfileScanCheckin" onclick="openQrScannerModal()" class="spring-touch glow-teal hidden" style="flex: 1; padding: 11px 12px; border-radius: 14px; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+              <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Quét Điểm Danh</span>
             </button>
           </div>
         </section>
@@ -1363,16 +1313,88 @@
   </div>
 
   <!-- MODAL QUÉT QR ĐIỂM DANH THỰC TẾ (CAMERA REAL-TIME & JSQR) -->
-  <div id="modalQrScanner" class="modal-overlay">
-    <div class="modal-sheet" style="max-height: 90vh; display: flex; flex-direction: column;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <!-- MODAL THẺ NHẬN CA & ĐIỂM DANH HIỆN TRƯỜNG (DYNAMIC SECURE QR) -->
+  <div id="modalFieldCheckinQr" class="modal-overlay">
+    <div class="modal-sheet" style="max-height: 92vh; display: flex; flex-direction: column; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="width: 32px; height: 32px; border-radius: 11px; background: #e0e7ff; border: 1px solid #c7d2fe; color: #4338ca; display: flex; align-items: center; justify-content: center;">
-            <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <div style="width: 34px; height: 34px; border-radius: 12px; background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border: 1.2px solid #a5b4fc; color: #3730a3; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(99,102,241,0.15);">
+            <svg class="svg-icon" style="width: 18px; height: 18px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           </div>
           <div>
-            <h3 style="font-size: 14px; font-weight: 900; color: #1e1b4b;">QUÉT QR ĐIỂM DANH</h3>
-            <p style="font-size: 9.5px; color: #64748b;">Đưa mã QR Pass vào giữa khung ngắm để nhận diện</p>
+            <h3 style="font-size: 14px; font-weight: 900; color: #1e1b4b; text-transform: uppercase;">THẺ NHẬN CA &amp; ĐIỂM DANH</h3>
+            <p style="font-size: 9.5px; color: #64748b; font-weight: 700;">Xuất trình cho Trưởng ca hoặc Admin quét tại hiện trường</p>
+          </div>
+        </div>
+        <button onclick="closeFieldCheckinQrModal()" class="spring-touch modal-close-btn" title="Đóng">
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Thẻ ngữ cảnh Ca Trực đang chọn -->
+      <div id="fieldQrShiftContextBox" style="background: rgba(248, 250, 252, 0.95); border: 1.2px solid #e2e8f0; border-radius: 18px; padding: 12px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+          <div>
+            <span style="font-size: 8.5px; font-weight: 800; color: #4338ca; background: #e0e7ff; padding: 2px 7px; border-radius: 6px; text-transform: uppercase;" id="fieldQrShiftBadge">Ca Trực Hiện Trường</span>
+            <h4 id="fieldQrShiftTitle" style="font-size: 13px; font-weight: 900; color: #1e1b4b; margin-top: 4px;">Đang tải thông tin ca...</h4>
+            <p id="fieldQrShiftMeta" style="font-size: 10px; color: #64748b; margin-top: 2px; font-weight: 600;">Thời gian &bull; Địa điểm</p>
+          </div>
+          <span id="fieldQrCheckinStatusBadge" style="font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 8px; background: #fef3c7; color: #92400e; border: 1px solid #fcd34d;">Chờ Quét</span>
+        </div>
+
+        <!-- Bộ chọn ca nếu thành viên có nhiều hơn 1 ca trực -->
+        <div id="fieldQrShiftSelectWrapper" class="hidden" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #cbd5e1;">
+          <label style="font-size: 9px; font-weight: 800; color: #475569; text-transform: uppercase; display: block; margin-bottom: 4px;">Chọn ca cần điểm danh:</label>
+          <select id="selFieldQrShift" onchange="onFieldQrShiftChange(this.value)" class="input-box" style="padding: 6px 10px; font-size: 11px; font-weight: 700; border-radius: 10px;"></select>
+        </div>
+      </div>
+
+      <!-- Khung hiển thị QR Động với Laser Reticle -->
+      <div style="position: relative; width: 190px; height: 190px; margin: 0 auto 12px auto; padding: 12px; background: #ffffff; border-radius: 24px; border: 2px solid #c7d2fe; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+        <div id="fieldQrContainer" style="width: 160px; height: 160px; display: flex; align-items: center; justify-content: center;"></div>
+        <div class="qr-laser-line"></div>
+      </div>
+
+      <!-- Token & Đếm ngược 60s -->
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-family: monospace; font-size: 10px; font-weight: 800; color: #475569; margin-bottom: 12px;">
+        <span style="color: #64748b;">MÃ XÁC THỰC:</span>
+        <span id="fieldQrTokenDisplay" style="color: #4338ca; background: #eef2ff; padding: 2px 7px; border-radius: 6px; border: 1px solid #c7d2fe;">PASS-SYNCING</span>
+        <span id="fieldQrTimerBadge" style="font-size: 9.5px; font-weight: 900; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2px 7px; border-radius: 8px;">60s</span>
+      </div>
+
+      <!-- Nút làm mới mã bảo mật -->
+      <div style="display: flex; gap: 8px;">
+        <button onclick="refreshFieldCheckinQr()" class="spring-touch glow-indigo" style="flex: 1; padding: 10px; border-radius: 14px; font-weight: 800; font-size: 11.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+          <span>Làm Mới Mã (60s)</span>
+        </button>
+        <button onclick="closeFieldCheckinQrModal()" class="spring-touch" style="padding: 10px 18px; border-radius: 14px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; font-weight: 800; font-size: 11.5px;">
+          Đóng
+        </button>
+      </div>
+
+      <!-- Cảnh báo bảo mật điểm danh -->
+      <div style="margin-top: 12px; padding: 9px 12px; border-radius: 12px; background: #eff6ff; border: 1px solid #bfdbfe; font-size: 9.5px; color: #1e40af; line-height: 1.4; display: flex; align-items: flex-start; gap: 6px;">
+        <svg class="svg-icon" style="width: 14px; height: 14px; color: #3b82f6; flex-shrink: 0; margin-top: 1px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>Mã QR mang ngữ cảnh điểm danh ca trực được mã hóa TOTP tự hủy sau 60s. Chỉ Trưởng ca hoặc Admin được cấp quyền mới có thể quét để ghi nhận công ca của bạn.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL QUÉT QR ĐIỂM DANH HIỆN TRƯỜNG (CHỈ DÀNH CHO ADMIN & TRƯỞNG CA) -->
+  <div id="modalQrScanner" class="modal-overlay">
+    <div class="modal-sheet" style="max-height: 92vh; display: flex; flex-direction: column; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 32px; height: 32px; border-radius: 11px; background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%); border: 1px solid #5eead4; color: #0f766e; display: flex; align-items: center; justify-content: center;">
+            <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 5px;">
+              <h3 style="font-size: 13.5px; font-weight: 900; color: #1e1b4b;">QUÉT ĐIỂM DANH HIỆN TRƯỜNG</h3>
+              <span style="font-size: 8.5px; font-weight: 800; background: #e0e7ff; color: #4338ca; padding: 1.5px 6px; border-radius: 6px;">Cấp Quyền</span>
+            </div>
+            <p id="scannerTargetTaskTitle" style="font-size: 9.5px; color: #0d9488; font-weight: 700;">Quét mã QR Thẻ Nhận Ca của thành viên tại hiện trường</p>
           </div>
         </div>
         <button onclick="closeQrScannerModal()" class="spring-touch modal-close-btn" title="Đóng">
@@ -1381,7 +1403,7 @@
       </div>
 
       <!-- Viewport camera quét QR với HUD reticle và laser beam -->
-      <div style="position: relative; width: 100%; max-width: 320px; height: 260px; margin: 0 auto; border-radius: 22px; overflow: hidden; background: #000; border: 2px solid #818cf8; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);">
+      <div style="position: relative; width: 100%; max-width: 320px; height: 250px; margin: 0 auto; border-radius: 22px; overflow: hidden; background: #0f172a; border: 2px solid #818cf8; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);">
         <video id="qrScannerVideo" playsinline autoplay muted style="width: 100%; height: 100%; object-fit: cover;"></video>
         <canvas id="qrScannerCanvas" style="display: none;"></canvas>
         <div class="qr-scan-reticle"></div>
@@ -1390,27 +1412,41 @@
 
       <!-- Nút điều khiển camera -->
       <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;">
-        <button onclick="toggleCameraFacing()" class="spring-touch" style="padding: 6px 12px; border-radius: 12px; background: #f1f5f9; border: 1px solid #cbd5e1; font-size: 10.5px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 5px;">
-          <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          <span>Đổi Camera Trước/Sau</span>
+        <button onclick="toggleCameraFacing()" class="spring-touch" style="padding: 6px 12px; border-radius: 12px; background: #f1f5f9; border: 1px solid #cbd5e1; font-size: 10px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 5px;">
+          <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>Đổi Camera</span>
         </button>
-        <button onclick="toggleTorchFlash()" id="btnTorchFlash" class="spring-touch" style="padding: 6px 12px; border-radius: 12px; background: #f1f5f9; border: 1px solid #cbd5e1; font-size: 10.5px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 5px;">
-          <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <button onclick="toggleTorchFlash()" id="btnTorchFlash" class="spring-touch" style="padding: 6px 12px; border-radius: 12px; background: #f1f5f9; border: 1px solid #cbd5e1; font-size: 10px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 5px;">
+          <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           <span id="lblTorch">Đèn Flash</span>
         </button>
       </div>
 
+      <!-- Công cụ mô phỏng quét / Điểm danh thủ công (Dự phòng hiện trường không có camera) -->
+      <div style="margin-top: 10px; padding: 10px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <span style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 5px;">
+          Điểm danh nhanh / Mô phỏng quét (Dự phòng hiện trường):
+        </span>
+        <div style="display: flex; gap: 6px;">
+          <select id="selSimulateScanMember" class="input-box" style="flex: 2; padding: 6px 9px; font-size: 11px; font-weight: 700; border-radius: 10px;">
+          </select>
+          <button onclick="simulateScanSelectedMember()" class="spring-touch glow-indigo" style="flex: 1; padding: 6px 10px; border-radius: 10px; font-weight: 800; font-size: 11px;">
+            Xác Nhận
+          </button>
+        </div>
+      </div>
+
       <!-- Thẻ kết quả quét thành công -->
-      <div id="qrScanResultContainer" class="hidden" style="margin-top: 10px; padding: 11px; border-radius: 16px; background: #ecfdf5; border: 1.2px solid #6ee7b7;">
+      <div id="qrScanResultContainer" class="hidden" style="margin-top: 10px; padding: 12px; border-radius: 16px; background: #ecfdf5; border: 1.2px solid #6ee7b7;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 32px; height: 32px; border-radius: 50%; background: #047857; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px;" id="qrResultAvatar">A</div>
+            <div style="width: 34px; height: 34px; border-radius: 50%; background: #047857; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px;" id="qrResultAvatar">A</div>
             <div>
-              <h4 id="qrResultName" style="font-size: 12.5px; font-weight: 900; color: #064e3b;">Nguyễn Văn A</h4>
+              <h4 id="qrResultName" style="font-size: 13px; font-weight: 900; color: #064e3b;">Nguyễn Văn A</h4>
               <p id="qrResultMeta" style="font-size: 10px; color: #047857;">ID: CLB001 &bull; Ban Cầu Lông</p>
             </div>
           </div>
-          <span style="font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0;">Hợp lệ</span>
+          <span style="font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #d1fae5; color: #064e3b; border: 1px solid #a7f3d0;">Điểm danh thành công</span>
         </div>
 
         <div id="qrResultTasksList" style="margin-top: 8px; display: flex; flex-direction: column; gap: 5px;"></div>
@@ -1760,18 +1796,18 @@
         <span>Đổi mật khẩu tài khoản</span>
       </button>
 
-      <button onclick="toggleTheme()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #4338ca; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
+      <button onclick="openFieldCheckinQrModal()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #4338ca; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
         <div style="width: 28px; height: 28px; border-radius: 9px; background: #eef2ff; border: 1px solid #c7d2fe; display: flex; align-items: center; justify-content: center;">
-          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/></svg>
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         </div>
-        <span>Chế độ hiển thị (Sáng / Tối)</span>
+        <span>Xuất Trình QR Nhận Ca Hiện Trường</span>
       </button>
 
-      <button onclick="openQrScannerModal()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #0f766e; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
+      <button onclick="openQrScannerModal()" id="btnMenuQrScanner" class="spring-touch hidden" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #0f766e; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
         <div style="width: 28px; height: 28px; border-radius: 9px; background: #f0fdfa; border: 1px solid #99f6e4; display: flex; align-items: center; justify-content: center;">
-          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </div>
-        <span>Quét QR Điểm Danh / Soát Vé</span>
+        <span>Quét QR Điểm Danh (Trưởng ca &amp; Admin)</span>
       </button>
 
       <button onclick="openAuditTrailModal()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #6b21a8; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
@@ -1785,7 +1821,7 @@
         <div style="width: 28px; height: 28px; border-radius: 9px; background: #f3e8ff; border: 1px solid #d8b4fe; display: flex; align-items: center; justify-content: center;">
           <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
         </div>
-        <span id="lblSwitchRole">Chuyển góc nhìn: Thành viên / Admin</span>
+        <span id="lblSwitchRole">Chuyển góc nhìn: Admin / Trưởng ca / Thành viên</span>
       </button>
 
       <button onclick="executeLogoutAction()" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #be123c; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
@@ -1889,7 +1925,8 @@
     let currentLeaves = [];
     let auditLogs = [];
     let offlineMutationQueue = [];
-    let currentTheme = localStorage.getItem('CLB_SPORTPASS_THEME') || 'pastel';
+    try { localStorage.removeItem('CLB_SPORTPASS_THEME'); } catch(e) {}
+    let currentTheme = 'pastel';
     let currentLeaveProofDataUrl = '';
     let qrScannerStream = null;
     let qrScanAnimFrame = null;
@@ -1914,25 +1951,30 @@
       } catch (e) {}
     }
 
-    // Bộ chuyển đổi chủ đề Dark Mode / Pastel Theme
+    // Hệ thống thẩm mỹ sáng Luxury Aquamorphic Pastel (Đã loại bỏ hoàn toàn dark mode)
     function toggleTheme() {
-      triggerHaptic('medium');
-      currentTheme = (currentTheme === 'dark') ? 'pastel' : 'dark';
-      applyAppTheme(currentTheme);
-      localStorage.setItem('CLB_SPORTPASS_THEME', currentTheme);
-      showAquaIsland(currentTheme === 'dark' ? 'Đã kích hoạt Giao diện Obsidian Dark!' : 'Đã chuyển về Giao diện Pastel Aquamorphic!', '🎨');
+      triggerHaptic('light');
+      applyAppTheme();
+      showAquaIsland('Ứng dụng đang ở Giao diện Chuẩn Aquamorphic Pastel Luxury!', '✨');
     }
 
-    function applyAppTheme(theme) {
-      window.currentTheme = theme;
-      currentTheme = theme;
-      if (theme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        document.body.setAttribute('data-theme', 'dark');
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-        document.body.removeAttribute('data-theme');
-      }
+    function applyAppTheme() {
+      window.currentTheme = 'pastel';
+      currentTheme = 'pastel';
+      document.documentElement.removeAttribute('data-theme');
+      document.body.removeAttribute('data-theme');
+      try { localStorage.removeItem('CLB_SPORTPASS_THEME'); } catch (e) {}
+    }
+
+    // Hàm kiểm tra quyền quét điểm danh hiện trường (Chỉ Admin & Trưởng ca trực)
+    function isAuthorizedScanner(user = currentUser) {
+      if (!user) return false;
+      return Boolean(
+        user.isAdmin === true || 
+        user.isShiftLeader === true || 
+        user.role === 'LEADER' || 
+        (user.chucVu && (user.chucVu.includes('Trưởng ca') || user.chucVu.includes('Chủ nhiệm')))
+      );
     }
 
     // Nén ảnh qua Canvas chống tràn bộ nhớ LocalStorage (Avatar, Feed & Minh chứng)
@@ -2415,14 +2457,15 @@
         status: 'Sẵn sàng',
         avatar: '',
         theTrang: 'Sung sức (Đạt đỉnh phong độ)',
-        isAdmin: true
+        isAdmin: true,
+        isShiftLeader: true
       };
 
       membersDirectory = [
         currentUser,
-        { id: 'CLB002', hoTen: 'Trần Hải Yến', lop: 'K65-CNTT', mssv: '20220123', khoa: 'Khoa CNTT', boMon: 'Ban Cầu Lông', chucVu: 'Thành viên', sdt: '0988776655', yTe: 'A+', ice: '0901234567', soCa: 4, soCaHoanThanh: 4, status: 'Sẵn sàng', theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '', isAdmin: false },
-        { id: 'CLB003', hoTen: 'Lê Hoàng Nam', lop: 'K63-Cơ Khí', mssv: '20205566', khoa: 'Trường Cơ Khí', boMon: 'Ban Bóng Chuyền', chucVu: 'Thành viên', sdt: '0977889900', yTe: 'B+', ice: '0912000111', soCa: 2, soCaHoanThanh: 2, status: 'Sẵn sàng', theTrang: 'Căng cơ nhẹ (80% thể lực)', avatar: '', isAdmin: false },
-        { id: 'CLB004', hoTen: 'Phạm Tuấn Kiệt', lop: 'K64-Điện', mssv: '20218899', khoa: 'Trường Điện', boMon: 'Ban Bóng Đá', chucVu: 'Thành viên', sdt: '0909112233', yTe: 'O+', ice: '0933445566', soCa: 8, soCaHoanThanh: 8, status: 'Sẵn sàng', theTrang: 'Sốt / Cảm cúm (Miễn trừ ca)', avatar: '', isAdmin: false }
+        { id: 'CLB002', hoTen: 'Trần Hải Yến', lop: 'K65-CNTT', mssv: '20220123', khoa: 'Khoa CNTT', boMon: 'Ban Cầu Lông', chucVu: 'Thành viên CLB', sdt: '0988776655', yTe: 'A+', ice: '0901234567', soCa: 4, soCaHoanThanh: 4, status: 'Sẵn sàng', theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '', isAdmin: false, isShiftLeader: false },
+        { id: 'CLB003', hoTen: 'Lê Hoàng Nam', lop: 'K63-Cơ Khí', mssv: '20205566', khoa: 'Trường Cơ Khí', boMon: 'Ban Bóng Chuyền', chucVu: 'Trưởng ca trực', sdt: '0977889900', yTe: 'B+', ice: '0912000111', soCa: 2, soCaHoanThanh: 2, status: 'Sẵn sàng', theTrang: 'Căng cơ nhẹ (80% thể lực)', avatar: '', isAdmin: false, isShiftLeader: true },
+        { id: 'CLB004', hoTen: 'Phạm Tuấn Kiệt', lop: 'K64-Điện', mssv: '20218899', khoa: 'Trường Điện', boMon: 'Ban Bóng Đá', chucVu: 'Thành viên CLB', sdt: '0909112233', yTe: 'O+', ice: '0933445566', soCa: 8, soCaHoanThanh: 8, status: 'Sẵn sàng', theTrang: 'Sốt / Cảm cúm (Miễn trừ ca)', avatar: '', isAdmin: false, isShiftLeader: false }
       ];
 
       currentTasks = [
@@ -2435,6 +2478,9 @@
           joinedMembers: ['CLB001', 'CLB002'],
           assignedMembers: [],
           waitlist: ['CLB004'],
+          leaderId: 'CLB003',
+          checkedInMembers: [],
+          checkinLogs: [],
           lockDeadline: new Date(Date.now() + 18 * 3600 * 1000).toISOString().slice(0, 16),
           status: 'active',
           departmentQuotas: { 'Ban Cầu Lông': 2, 'Ban Bóng Chuyền': 2, 'Ban Truyền Thông': 2 }
@@ -2448,6 +2494,9 @@
           joinedMembers: ['CLB003'],
           assignedMembers: [],
           waitlist: [],
+          leaderId: 'CLB001',
+          checkedInMembers: [],
+          checkinLogs: [],
           lockDeadline: new Date(Date.now() + 48 * 3600 * 1000).toISOString().slice(0, 16),
           status: 'active',
           departmentQuotas: { 'Ban Bóng Đá': 1, 'Ban Truyền Thông': 1 }
@@ -2533,22 +2582,37 @@
 
     function toggleDemoRole() {
       if (!currentUser) return;
-      currentUser.isAdmin = !currentUser.isAdmin;
-      currentUser.chucVu = currentUser.isAdmin ? 'Chủ nhiệm CLB' : 'Thành viên CLB';
-      const dirMem = membersDirectory.find(m => m.id === currentUser.id);
-      if (dirMem) {
-        dirMem.isAdmin = currentUser.isAdmin;
-        dirMem.chucVu = currentUser.chucVu;
+      // Chu trình chuyển đổi 3 góc nhìn trải nghiệm: Admin -> Trưởng ca trực -> Thành viên thường
+      let nextId = 'CLB001';
+      if (currentUser.isAdmin) {
+        nextId = 'CLB003'; // Trưởng ca trực (isShiftLeader = true, isAdmin = false)
+      } else if (currentUser.isShiftLeader) {
+        nextId = 'CLB002'; // Thành viên thường (isShiftLeader = false, isAdmin = false)
+      } else {
+        nextId = 'CLB001'; // Admin / Chủ nhiệm CLB (isAdmin = true, isShiftLeader = true)
+      }
+
+      const targetMem = membersDirectory.find(m => m.id === nextId);
+      if (targetMem) {
+        currentUser = targetMem;
       }
       saveLocalState();
       closeHeaderMoreActionSheetDirect();
       renderProfileData();
       renderTasksList();
       renderForumFeed();
-      showAquaIsland(
-        currentUser.isAdmin ? 'Đã chuyển sang quyền Quản trị viên (Admin)!' : 'Đã chuyển sang góc nhìn Thành viên!',
-        '⚡'
-      );
+
+      let roleTitle = 'Thành viên CLB (Không thể quét QR)';
+      let icon = '👤';
+      if (currentUser.isAdmin) {
+        roleTitle = 'Admin / Chủ nhiệm CLB (Toàn quyền)';
+        icon = '👑';
+      } else if (currentUser.isShiftLeader) {
+        roleTitle = 'Trưởng ca trực (Có quyền quét QR điểm danh hiện trường)';
+        icon = '🛡️';
+      }
+
+      showAquaIsland(`Đã chuyển góc nhìn: ${roleTitle}!`, icon);
     }
 
     async function handleLoginSubmit() {
@@ -2707,9 +2771,9 @@
 
       const lblRole = document.getElementById('lblSwitchRole');
       if (lblRole) {
-        lblRole.innerText = currentUser.isAdmin
-          ? 'Chuyển sang góc nhìn Thành viên'
-          : 'Chuyển sang quyền Quản trị viên (Admin)';
+        if (currentUser.isAdmin) lblRole.innerText = 'Góc nhìn: Admin / Chủ nhiệm CLB';
+        else if (currentUser.isShiftLeader) lblRole.innerText = 'Góc nhìn: Trưởng ca trực';
+        else lblRole.innerText = 'Góc nhìn: Thành viên CLB';
       }
 
       applyAvatarElement(
@@ -2739,6 +2803,24 @@
       } else {
         badgeAdm?.classList.add('hidden');
         adminToolbar?.classList.add('hidden');
+      }
+
+      // Phân quyền hiển thị các nút quét QR Điểm danh Hiện trường
+      const canScan = isAuthorizedScanner(currentUser);
+      const btnQuickScan = document.getElementById('btnQuickQrScanner');
+      if (btnQuickScan) {
+        if (canScan) btnQuickScan.classList.remove('hidden');
+        else btnQuickScan.classList.add('hidden');
+      }
+      const btnMenuScan = document.getElementById('btnMenuQrScanner');
+      if (btnMenuScan) {
+        if (canScan) btnMenuScan.classList.remove('hidden');
+        else btnMenuScan.classList.add('hidden');
+      }
+      const btnProfileScan = document.getElementById('btnProfileScanCheckin');
+      if (btnProfileScan) {
+        if (canScan) btnProfileScan.classList.remove('hidden');
+        else btnProfileScan.classList.add('hidden');
       }
 
       safeSetText('dClass', currentUser.lop || '---');
@@ -2920,10 +3002,12 @@
                 ${allOccupied.map(mId => {
                   const memObj = membersDirectory.find(m => m.id === mId) || (currentUser?.id === mId ? currentUser : null);
                   const displayName = memObj ? memObj.hoTen : mId;
+                  const isCheckedInMem = (t.checkedInMembers || []).includes(mId);
                   return `
-                    <button onclick="openOtherMemberInspector('${escapeHtml(mId)}')" class="spring-touch" style="border: 1px solid #c7d2fe; background: #eef2ff; color: #312e81; padding: 2.5px 8px; border-radius: 8px; font-size: 9.5px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
+                    <button onclick="openOtherMemberInspector('${escapeHtml(mId)}')" class="spring-touch" style="border: 1px solid ${isCheckedInMem ? '#6ee7b7' : '#c7d2fe'}; background: ${isCheckedInMem ? '#ecfdf5' : '#eef2ff'}; color: ${isCheckedInMem ? '#065f46' : '#312e81'}; padding: 2.5px 8px; border-radius: 8px; font-size: 9.5px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
                       <svg class="svg-icon" style="width: 10px; height: 10px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                       <span>${escapeHtml(displayName)}</span>
+                      ${isCheckedInMem ? '<span style="color:#047857;font-weight:900;font-size:9px;" title="Đã điểm danh hiện trường">✓</span>' : ''}
                     </button>
                   `;
                 }).join('')}
@@ -2966,8 +3050,10 @@
           </div>
         ` : '';
 
-        // Xây dựng các nút hành động Sprint 1 (Xin Rút Ca, Xin Đổi Ca, Waitlist)
+        // Xây dựng các nút hành động Sprint 1 & Điểm danh hiện trường
         let actionButtonsHtml = '';
+        const isCheckedInSelf = isJoined && (t.checkedInMembers || []).includes(currentUser?.id);
+
         if (isJoined) {
           if (hasPendingLeave) {
             actionButtonsHtml = `
@@ -2985,13 +3071,17 @@
             `;
           } else {
             actionButtonsHtml = `
-              <button onclick="openSwapRequestModal('${t.id}')" class="spring-touch glow-amber" style="flex: 1.2; padding: 9px; border-radius: 14px; font-weight: 800; font-size: 11.5px; display: flex; align-items: center; justify-content: center; gap: 5px;">
-                <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                <span>Xin Đổi Ca</span>
+              <button onclick="openFieldCheckinQrModal('${t.id}')" class="spring-touch ${isCheckedInSelf ? 'glow-teal' : 'glow-indigo'}" style="flex: 1.4; padding: 9px 8px; border-radius: 14px; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>${isCheckedInSelf ? 'Thẻ QR (Đã nhận ca)' : 'Xuất Trình QR Nhận Ca'}</span>
               </button>
-              <button onclick="openLeaveTaskModal('${t.id}')" class="spring-touch glow-red" style="flex: 1.2; padding: 9px; border-radius: 14px; font-weight: 800; font-size: 11.5px; display: flex; align-items: center; justify-content: center; gap: 5px; animation: none;">
-                <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                <span>Xin Rút Ca</span>
+              <button onclick="openSwapRequestModal('${t.id}')" class="spring-touch glow-amber" style="flex: 1; padding: 9px 6px; border-radius: 14px; font-weight: 800; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                <span>Đổi Ca</span>
+              </button>
+              <button onclick="openLeaveTaskModal('${t.id}')" class="spring-touch glow-red" style="flex: 1; padding: 9px 6px; border-radius: 14px; font-weight: 800; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 4px; animation: none;">
+                <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <span>Rút Ca</span>
               </button>
             `;
           }
@@ -3014,6 +3104,16 @@
             <button onclick="handleClaimTask('${t.id}')" class="spring-touch glow-indigo" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               <span>Nhận Ca Trực</span>
+            </button>
+          `;
+        }
+
+        // Nếu người dùng hiện tại là Admin hoặc Trưởng ca trực: bổ sung nút Quét Điểm Danh Ca Này
+        if (isAuthorizedScanner(currentUser)) {
+          actionButtonsHtml += `
+            <button onclick="openQrScannerModal('${t.id}')" class="spring-touch glow-teal" style="flex: 1.2; padding: 9px 8px; border-radius: 14px; font-weight: 800; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Quét Ca Này</span>
             </button>
           `;
         }
@@ -3065,6 +3165,15 @@
             ` : ''}
 
             ${deptChipsHtml}
+            ${isCheckedInSelf ? `
+              <div style="margin-top: 8px; padding: 6px 10px; border-radius: 12px; background: #ecfdf5; border: 1.2px solid #6ee7b7; color: #064e3b; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: space-between;">
+                <span style="display: flex; align-items: center; gap: 5px;">
+                  <svg class="svg-icon" style="width: 13px; height: 13px; color: #047857;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Bạn đã được Điểm danh Nhận ca Hiện trường</span>
+                </span>
+                <span style="font-size: 9px; background: #fff; padding: 2px 7px; border-radius: 6px; border: 1px solid #a7f3d0; color: #047857;">Hợp Lệ ✓</span>
+              </div>
+            ` : ''}
             ${rosterHtml}
             ${waitlistHtml}
 
@@ -4806,36 +4915,134 @@
       setBodyScrollLock(false);
     }
 
-    // ==================== DYNAMIC DIGITAL PASS & FALLBACK SVG GENERATOR ====================
-    function generateDynamicQrPass() {
-      const container = document.getElementById('dynamicQrPassContainer');
-      const tokenDisplay = document.getElementById('qrTokenDisplay');
-      const timerBadge = document.getElementById('qrPassTimerBadge');
+    // ==================== THẺ NHẬN CA & ĐIỂM DANH HIỆN TRƯỜNG (DYNAMIC QR PASS) ====================
+    let currentFieldQrTaskId = null;
+    let fieldQrCountdownInterval = null;
+    let fieldQrCountdownSeconds = 60;
+    let activeScanTargetTaskId = null;
+
+    function openFieldCheckinQrModal(taskId = null) {
+      triggerHaptic('light');
+      if (!currentUser) return;
+      const modal = document.getElementById('modalFieldCheckinQr');
+      if (!modal) return;
+
+      // Tìm danh sách các ca mà thành viên đã tham gia
+      const myTasks = (currentTasks || []).filter(t => 
+        (t.joinedMembers || []).includes(currentUser.id) || 
+        (t.assignedMembers || []).includes(currentUser.id)
+      );
+
+      if (taskId && currentTasks.some(t => t.id === taskId)) {
+        currentFieldQrTaskId = taskId;
+      } else if (myTasks.length > 0) {
+        currentFieldQrTaskId = myTasks[0].id;
+      } else {
+        currentFieldQrTaskId = null;
+      }
+
+      // Khởi tạo bộ chọn ca nếu có nhiều hơn 1 ca
+      const selWrapper = document.getElementById('fieldQrShiftSelectWrapper');
+      const selShift = document.getElementById('selFieldQrShift');
+      if (selWrapper && selShift) {
+        if (myTasks.length > 1) {
+          selWrapper.classList.remove('hidden');
+          selShift.innerHTML = myTasks.map(t => `
+            <option value="${t.id}" ${t.id === currentFieldQrTaskId ? 'selected' : ''}>
+              ${escapeHtml(t.title)} (${escapeHtml(t.time)})
+            </option>
+          `).join('');
+        } else {
+          selWrapper.classList.add('hidden');
+        }
+      }
+
+      updateFieldQrShiftDisplay(currentFieldQrTaskId);
+      generateFieldCheckinQr(currentFieldQrTaskId);
+      modal.classList.add('open');
+      setBodyScrollLock(true);
+    }
+
+    function onFieldQrShiftChange(newTaskId) {
+      currentFieldQrTaskId = newTaskId;
+      updateFieldQrShiftDisplay(currentFieldQrTaskId);
+      generateFieldCheckinQr(currentFieldQrTaskId);
+    }
+
+    function updateFieldQrShiftDisplay(taskId) {
+      const task = currentTasks.find(t => t.id === taskId);
+      const titleEl = document.getElementById('fieldQrShiftTitle');
+      const metaEl = document.getElementById('fieldQrShiftMeta');
+      const statusBadge = document.getElementById('fieldQrCheckinStatusBadge');
+
+      if (task) {
+        if (titleEl) titleEl.innerText = task.title;
+        if (metaEl) metaEl.innerText = `Thời gian: ${task.time} • Địa điểm: ${task.location}`;
+        const isChecked = (task.checkedInMembers || []).includes(currentUser.id);
+        if (statusBadge) {
+          if (isChecked) {
+            statusBadge.innerText = 'ĐÃ ĐIỂM DANH ✓';
+            statusBadge.style.background = '#d1fae5';
+            statusBadge.style.color = '#065f46';
+            statusBadge.style.borderColor = '#6ee7b7';
+          } else {
+            statusBadge.innerText = 'CHỜ QUÉT';
+            statusBadge.style.background = '#fef3c7';
+            statusBadge.style.color = '#92400e';
+            statusBadge.style.borderColor = '#fcd34d';
+          }
+        }
+      } else {
+        if (titleEl) titleEl.innerText = 'Thẻ Định Danh Hội Viên SportPass';
+        if (metaEl) metaEl.innerText = 'Chưa có ca trực hôm nay • Nhận ca tại mục Lệnh Điều Động';
+        if (statusBadge) {
+          statusBadge.innerText = 'CHƯA CÓ CA';
+          statusBadge.style.background = '#f1f5f9';
+          statusBadge.style.color = '#64748b';
+          statusBadge.style.borderColor = '#cbd5e1';
+        }
+      }
+    }
+
+    function generateFieldCheckinQr(taskId = null) {
+      const container = document.getElementById('fieldQrContainer');
+      const tokenDisplay = document.getElementById('fieldQrTokenDisplay');
+      const timerBadge = document.getElementById('fieldQrTimerBadge');
       if (!container || !currentUser) return;
 
       const salt = Math.random().toString(36).substring(2, 7).toUpperCase();
+      const task = currentTasks.find(t => t.id === taskId);
+      const tokenStr = `CHK-${currentUser.id}-${taskId || 'PASS'}-${salt}`;
+
       const payloadObj = {
         app: 'SPORTPASS',
-        id: currentUser.id,
-        name: currentUser.hoTen,
-        dept: currentUser.boMon || 'CLB',
-        role: currentUser.chucVu || 'Member',
+        type: taskId ? 'FIELD_CHECKIN' : 'MEMBER_PASS',
+        taskId: taskId || '',
+        taskTitle: task ? task.title : 'SportPass Member Pass (Chưa có ca)',
+        memberId: currentUser.id,
+        memberName: currentUser.hoTen,
+        memberDept: currentUser.boMon || 'CLB',
+        role: currentUser.chucVu || 'Thành viên',
+        token: tokenStr,
         salt: salt,
+        ts: Date.now(),
         exp: Date.now() + 60000
       };
       const payloadStr = JSON.stringify(payloadObj);
-      if (tokenDisplay) tokenDisplay.innerText = `PASS-${currentUser.id}-${salt}`;
 
-      // Thử dùng QRCodeJS nếu khả dụng, nếu không vẽ SVG QR vector động độc lập
+      if (tokenDisplay) tokenDisplay.innerText = tokenStr;
+      const summaryToken = document.getElementById('digitalPassTokenSummary');
+      if (summaryToken) summaryToken.innerText = tokenStr;
+
       container.innerHTML = '';
       let rendered = false;
       try {
         if (typeof QRCode !== 'undefined') {
           new QRCode(container, {
             text: payloadStr,
-            width: 140,
-            height: 140,
-            colorDark: currentTheme === 'dark' ? '#312e81' : '#1e1b4b',
+            width: 156,
+            height: 156,
+            colorDark: '#1e1b4b',
             colorLight: '#ffffff',
             correctLevel: QRCode.CorrectLevel.M
           });
@@ -4844,34 +5051,51 @@
       } catch (e) {}
 
       if (!rendered) {
-        // Fallback: Tạo mã QR SVG chuẩn vector offline 100% không phụ thuộc internet
         container.innerHTML = generateOfflineSvgQr(payloadStr);
       }
 
-      // Khởi tạo bộ đếm ngược 60s
-      startQrCountdownTimer();
+      startFieldQrCountdownTimer();
+    }
+
+    function refreshFieldCheckinQr() {
+      triggerHaptic('medium');
+      generateFieldCheckinQr(currentFieldQrTaskId);
+      showAquaIsland('Đã làm mới mã QR Điểm Danh bảo mật!', '🔄');
+    }
+
+    function startFieldQrCountdownTimer() {
+      if (fieldQrCountdownInterval) clearInterval(fieldQrCountdownInterval);
+      fieldQrCountdownSeconds = 60;
+      const timerBadge = document.getElementById('fieldQrTimerBadge');
+      if (timerBadge) timerBadge.innerText = '60s';
+
+      fieldQrCountdownInterval = setInterval(() => {
+        fieldQrCountdownSeconds--;
+        if (timerBadge) timerBadge.innerText = `${fieldQrCountdownSeconds}s`;
+        if (fieldQrCountdownSeconds <= 0) {
+          generateFieldCheckinQr(currentFieldQrTaskId);
+        }
+      }, 1000);
+    }
+
+    function closeFieldCheckinQrModal() {
+      if (fieldQrCountdownInterval) clearInterval(fieldQrCountdownInterval);
+      document.getElementById('modalFieldCheckinQr')?.classList.remove('open');
+      setBodyScrollLock(false);
+    }
+
+    // Tương thích ngược: Khi mở profile hoặc làm mới pass
+    function generateDynamicQrPass() {
+      if (!currentUser) return;
+      const salt = Math.random().toString(36).substring(2, 7).toUpperCase();
+      const summaryToken = document.getElementById('digitalPassTokenSummary');
+      if (summaryToken) {
+        summaryToken.innerText = `PASS-${currentUser.id}-${salt}`;
+      }
     }
 
     function refreshDynamicQrPass() {
-      triggerHaptic('medium');
-      qrCountdownSeconds = 60;
-      generateDynamicQrPass();
-      showAquaIsland('Đã làm mới mã QR Pass bảo mật!', '🔄');
-    }
-
-    function startQrCountdownTimer() {
-      if (qrCountdownInterval) clearInterval(qrCountdownInterval);
-      qrCountdownSeconds = 60;
-      const timerBadge = document.getElementById('qrPassTimerBadge');
-      if (timerBadge) timerBadge.innerText = '60s';
-
-      qrCountdownInterval = setInterval(() => {
-        qrCountdownSeconds--;
-        if (timerBadge) timerBadge.innerText = `${qrCountdownSeconds}s`;
-        if (qrCountdownSeconds <= 0) {
-          generateDynamicQrPass();
-        }
-      }, 1000);
+      openFieldCheckinQrModal();
     }
 
     // Bộ sinh QR SVG thuần JS offline (Zero-failure fallback)
@@ -4895,16 +5119,35 @@
             fill = (((hash ^ (r * 31 + c * 17)) + (r * c)) % 3) === 0;
           }
           if (fill) {
-            svgRects += `<rect x="${c * 6.5}" y="${r * 6.5}" width="6.5" height="6.5" fill="#312e81"/>`;
+            svgRects += `<rect x="${c * 7}" y="${r * 7}" width="7" height="7" fill="#1e1b4b"/>`;
           }
         }
       }
-      return `<svg viewBox="0 0 ${size * 6.5} ${size * 6.5}" width="140" height="140" xmlns="http://www.w3.org/2000/svg" style="border-radius:10px;">${svgRects}</svg>`;
+      return `<svg viewBox="0 0 ${size * 7} ${size * 7}" width="156" height="156" xmlns="http://www.w3.org/2000/svg" style="border-radius:12px;">${svgRects}</svg>`;
     }
 
-    // ==================== CAMERA QR SCANNER & JSQR REAL-TIME ====================
-    async function openQrScannerModal() {
+    // ==================== CAMERA QR SCANNER & JSQR REAL-TIME (PHÂN QUYỀN NGHIÊM NGẶT) ====================
+    async function openQrScannerModal(targetTaskId = null) {
       triggerHaptic('light');
+
+      // BẢO VỆ PHÂN QUYỀN TUYỆT ĐỐI: Chỉ Admin hoặc Trưởng ca trực mới được quét
+      if (!isAuthorizedScanner(currentUser)) {
+        triggerHaptic('error');
+        showAquaIsland('Chỉ Admin CLB hoặc Trưởng ca trực mới có quyền quét điểm danh hiện trường!', '⛔');
+        return;
+      }
+
+      activeScanTargetTaskId = targetTaskId;
+      const targetTask = currentTasks.find(t => t.id === targetTaskId);
+      const targetTitleEl = document.getElementById('scannerTargetTaskTitle');
+      if (targetTitleEl) {
+        targetTitleEl.innerText = targetTask 
+          ? `Mục tiêu: ${targetTask.title} (${targetTask.time})`
+          : 'Quét mã QR Thẻ Nhận Ca của thành viên tại hiện trường';
+      }
+
+      populateSimulationMembersList(targetTaskId);
+
       const modal = document.getElementById('modalQrScanner');
       const resultCard = document.getElementById('qrScanResultContainer');
       if (resultCard) resultCard.classList.add('hidden');
@@ -4917,6 +5160,49 @@
       stopQrCameraStream();
       document.getElementById('modalQrScanner')?.classList.remove('open');
       setBodyScrollLock(false);
+    }
+
+    function populateSimulationMembersList(targetTaskId = null) {
+      const sel = document.getElementById('selSimulateScanMember');
+      if (!sel) return;
+      const targetTask = currentTasks.find(t => t.id === targetTaskId);
+      
+      let candidates = [];
+      if (targetTask) {
+        const joined = targetTask.joinedMembers || [];
+        const assigned = targetTask.assignedMembers || [];
+        const allIds = [...new Set([...joined, ...assigned])];
+        candidates = membersDirectory.filter(m => allIds.includes(m.id));
+      }
+      if (candidates.length === 0) {
+        candidates = membersDirectory;
+      }
+
+      sel.innerHTML = candidates.map(m => `
+        <option value="${m.id}">${escapeHtml(m.hoTen)} (${m.id} - ${m.chucVu || 'Thành viên'})</option>
+      `).join('');
+    }
+
+    function simulateScanSelectedMember() {
+      const sel = document.getElementById('selSimulateScanMember');
+      if (!sel || !sel.value) return;
+      const memberId = sel.value;
+      const member = membersDirectory.find(m => m.id === memberId);
+      if (!member) return;
+
+      let taskId = activeScanTargetTaskId;
+      if (!taskId) {
+        const memberTasks = currentTasks.filter(t => (t.joinedMembers || []).includes(memberId) || (t.assignedMembers || []).includes(memberId));
+        if (memberTasks.length > 0) {
+          taskId = memberTasks[0].id;
+        } else {
+          triggerHaptic('warning');
+          showAquaIsland(`Thành viên ${member.hoTen} chưa đăng ký ca trực nào hôm nay!`, '⚠️');
+          return;
+        }
+      }
+
+      performFieldCheckin(taskId, memberId);
     }
 
     async function initQrCameraStream() {
@@ -4936,7 +5222,8 @@
         video.play();
         requestAnimationFrame(scanQrVideoFrame);
       } catch (err) {
-        showAquaIsland('Không thể truy cập camera. Vui lòng cấp quyền quét QR!', '⚠️');
+        // Camera không khả dụng (máy tính bàn / từ chối quyền) - Hệ thống vẫn hỗ trợ mô phỏng điểm danh
+        showAquaIsland('Không thể truy cập camera. Bạn có thể dùng bộ chọn Điểm danh nhanh bên dưới!', 'ℹ️');
       }
     }
 
@@ -4946,9 +5233,21 @@
         qrScannerStream.getTracks().forEach(t => t.stop());
         qrScannerStream = null;
       }
+      const video = document.getElementById('qrScannerVideo');
+      if (video) video.srcObject = null;
       isTorchOn = false;
       const lbl = document.getElementById('lblTorch');
       if (lbl) lbl.innerText = 'Đèn Flash';
+    }
+
+    function resumeQrScanning() {
+      triggerHaptic('light');
+      const resultCard = document.getElementById('qrScanResultContainer');
+      if (resultCard) resultCard.classList.add('hidden');
+      const video = document.getElementById('qrScannerVideo');
+      if (video && video.srcObject) {
+        qrScanAnimFrame = requestAnimationFrame(scanQrVideoFrame);
+      }
     }
 
     function toggleCameraFacing() {
@@ -5003,15 +5302,160 @@
 
     function handleQrScanSuccess(rawCode) {
       triggerHaptic('success');
+      let parsedPayload = null;
       let memberId = '';
+      let taskId = activeScanTargetTaskId;
+
       try {
-        const parsed = JSON.parse(rawCode);
-        memberId = parsed.id || '';
+        parsedPayload = JSON.parse(rawCode);
+        if (parsedPayload.memberId) memberId = parsedPayload.memberId;
+        else if (parsedPayload.id) memberId = parsedPayload.id;
+        if (parsedPayload.taskId) taskId = parsedPayload.taskId;
       } catch (e) {
         memberId = rawCode.replace('CLB-PASS|', '').split('|')[0].trim();
       }
 
+      // Kiểm tra hạn sử dụng của mã QR bảo mật động (chống chụp màn hình gian lận)
+      if (parsedPayload && parsedPayload.exp) {
+        if (Date.now() > parsedPayload.exp + 120000) {
+          triggerHaptic('warning');
+          showAquaIsland('Mã QR đã hết hạn! Vui lòng yêu cầu thành viên làm mới mã.', '⚠️');
+          return;
+        }
+      }
+
+      if (parsedPayload && parsedPayload.type === 'FIELD_CHECKIN' && taskId && memberId) {
+        performFieldCheckin(taskId, memberId);
+        return;
+      }
+
+      // Nếu là mã hội viên tổng quát hoặc chưa gắn taskId
       const member = membersDirectory.find(m => m.id === memberId || m.mssv === memberId);
+      if (member) {
+        if (taskId) {
+          performFieldCheckin(taskId, member.id);
+        } else {
+          // Cho phép chọn ca của thành viên để check-in
+          const resultCard = document.getElementById('qrScanResultContainer');
+          const resName = document.getElementById('qrResultName');
+          const resMeta = document.getElementById('qrResultMeta');
+          const resAvatar = document.getElementById('qrResultAvatar');
+          const resTasks = document.getElementById('qrResultTasksList');
+
+          if (resultCard && resName) {
+            resultCard.classList.remove('hidden');
+            resName.innerText = member.hoTen;
+            if (resMeta) resMeta.innerText = `ID: ${member.id} • MSSV: ${member.mssv || '---'} • ${member.boMon || ''}`;
+            if (resAvatar) resAvatar.innerText = member.hoTen.charAt(0);
+            const memberTasks = currentTasks.filter(t => (t.joinedMembers || []).includes(member.id) || (t.assignedMembers || []).includes(member.id));
+            if (resTasks) {
+              if (memberTasks.length === 0) {
+                resTasks.innerHTML = `
+                  <p style="font-size:10.5px;color:#991b1b;background:#fee2e2;padding:6px 10px;border-radius:10px;border:1px solid #fca5a5;">
+                    ⚠️ Thành viên chưa đăng ký hoặc chưa được phân công vào ca trực nào hôm nay.
+                  </p>
+                  <button onclick="resumeQrScanning()" class="spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
+                    <svg class="svg-icon" style="width:13px;height:13px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span>Quét Tiếp Mã Khác</span>
+                  </button>
+                `;
+              } else {
+                resTasks.innerHTML = memberTasks.map(mt => {
+                  const isChecked = (mt.checkedInMembers || []).includes(member.id);
+                  return `
+                    <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;padding:6px 9px;border-radius:10px;border:1px solid #a7f3d0;">
+                      <span style="font-size:10px;font-weight:800;color:#064e3b;">${escapeHtml(mt.title)}</span>
+                      ${isChecked ? `
+                        <span style="font-size:9.5px;font-weight:800;color:#047857;background:#d1fae5;padding:3px 7px;border-radius:6px;">Đã điểm danh ✓</span>
+                      ` : `
+                        <button onclick="performFieldCheckin('${mt.id}', '${member.id}')" class="spring-touch glow-green" style="padding:4px 9px;border-radius:8px;font-size:9.5px;font-weight:900;">
+                          Điểm Danh
+                        </button>
+                      `}
+                    </div>
+                  `;
+                }).join('') + `
+                  <button onclick="resumeQrScanning()" class="spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
+                    <svg class="svg-icon" style="width:13px;height:13px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span>Quét Tiếp Thành Viên Khác</span>
+                  </button>
+                `;
+              }
+            }
+          }
+        }
+      } else {
+        triggerHaptic('warning');
+        showAquaIsland('Không tìm thấy thông tin thành viên từ mã QR!', '⚠️');
+      }
+    }
+
+    // ĐIỂM DANH HIỆN TRƯỜNG: Phân quyền nghiêm ngặt, tích lũy soCaHoanThanh, lưu dấu vết kiểm toán, cập nhật UI tức thì
+    function performFieldCheckin(taskId, memberId) {
+      // 1. BẢO VỆ PHÂN QUYỀN TUYỆT ĐỐI: Chỉ Admin hoặc Trưởng ca trực mới có quyền điểm danh
+      if (!isAuthorizedScanner(currentUser)) {
+        triggerHaptic('error');
+        showAquaIsland('Chỉ Admin CLB hoặc Trưởng ca trực mới có quyền điểm danh hiện trường!', '⛔');
+        return false;
+      }
+
+      // 2. Kiểm tra thông tin thành viên
+      const member = membersDirectory.find(m => m.id === memberId);
+      if (!member) {
+        triggerHaptic('warning');
+        showAquaIsland('Không tìm thấy thông tin thành viên!', '⚠️');
+        return false;
+      }
+
+      // 3. Kiểm tra thông tin ca trực bắt buộc
+      if (!taskId) {
+        triggerHaptic('warning');
+        showAquaIsland('Vui lòng chọn ca trực hợp lệ để điểm danh!', '⚠️');
+        return false;
+      }
+
+      const task = currentTasks.find(t => t.id === taskId);
+      if (!task) {
+        triggerHaptic('warning');
+        showAquaIsland('Không tìm thấy thông tin ca trực trong hệ thống!', '⚠️');
+        return false;
+      }
+
+      // 4. Kiểm tra thành viên có trong danh sách nhận ca không (chống điểm danh sai ca)
+      const isRegistered = (task.joinedMembers || []).includes(memberId) || (task.assignedMembers || []).includes(memberId);
+      if (!isRegistered) {
+        triggerHaptic('warning');
+        showAquaIsland(`Thành viên ${member.hoTen} chưa đăng ký vào ca trực này!`, '⚠️');
+        return false;
+      }
+
+      // 5. Kiểm tra chống điểm danh trùng lặp
+      task.checkedInMembers = task.checkedInMembers || [];
+      if (task.checkedInMembers.includes(memberId)) {
+        triggerHaptic('warning');
+        showAquaIsland(`Thành viên ${member.hoTen} đã được điểm danh vào ca này rồi!`, 'ℹ️');
+        return false;
+      }
+
+      // 6. Ghi nhận điểm danh thành công
+      triggerHaptic('success');
+      task.checkedInMembers.push(memberId);
+      task.checkinLogs = task.checkinLogs || [];
+      task.checkinLogs.push({
+        memberId: member.id,
+        memberName: member.hoTen,
+        scannedBy: currentUser.id,
+        scannerName: currentUser.hoTen,
+        timestamp: new Date().toISOString()
+      });
+
+      // 7. Tích lũy số ca cống hiến lịch sử của thành viên
+      member.soCaHoanThanh = (member.soCaHoanThanh != null ? member.soCaHoanThanh : (member.soCa || 0)) + 1;
+      if (currentUser && currentUser.id === member.id) {
+        currentUser.soCaHoanThanh = member.soCaHoanThanh;
+      }
+
+      // 8. Cập nhật kết quả hiển thị trong scanner
       const resultCard = document.getElementById('qrScanResultContainer');
       const resName = document.getElementById('qrResultName');
       const resMeta = document.getElementById('qrResultMeta');
@@ -5020,53 +5464,34 @@
 
       if (resultCard && resName) {
         resultCard.classList.remove('hidden');
-        if (member) {
-          resName.innerText = member.hoTen;
-          if (resMeta) resMeta.innerText = `ID: ${member.id} • MSSV: ${member.mssv || '---'} • ${member.boMon || ''}`;
-          if (resAvatar) resAvatar.innerText = member.hoTen.charAt(0);
-
-          // Lấy danh sách ca trực của bạn này
-          const memberTasks = currentTasks.filter(t => (t.joinedMembers || []).includes(member.id) || (t.assignedMembers || []).includes(member.id));
-          if (resTasks) {
-            if (memberTasks.length === 0) {
-              resTasks.innerHTML = '<p style="font-size:10.5px;color:#065f46;font-style:italic;">Thành viên hiện chưa có ca trực nào hôm nay.</p>';
-            } else {
-              resTasks.innerHTML = memberTasks.map(mt => `
-                <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;padding:6px 9px;border-radius:10px;border:1px solid #a7f3d0;">
-                  <span style="font-size:10px;font-weight:800;color:#064e3b;">${escapeHtml(mt.title)}</span>
-                  <button onclick="handleQrCheckinAction('${mt.id}', '${member.id}')" class="spring-touch glow-green" style="padding:4px 9px;border-radius:8px;font-size:9.5px;font-weight:900;">
-                    Điểm Danh
-                  </button>
-                </div>
-              `).join('');
-            }
-          }
-          logAuditEvent(currentUser, 'QR_SCAN', member.id, `Quét QR thành công: ${member.hoTen}`);
-          showAquaIsland(`Quét thành công thẻ của ${member.hoTen}!`, '🎯');
-        } else {
-          resName.innerText = 'Mã QR Không Hợp Lệ';
-          if (resMeta) resMeta.innerText = `Nội dung quét: ${rawCode.substring(0, 30)}...`;
-          if (resTasks) resTasks.innerHTML = '';
-          showAquaIsland('Không tìm thấy thông tin thành viên!', '⚠️');
+        resName.innerText = member.hoTen;
+        if (resMeta) resMeta.innerText = `ID: ${member.id} • MSSV: ${member.mssv || '---'} • ${member.boMon || ''}`;
+        if (resAvatar) resAvatar.innerText = member.hoTen.charAt(0);
+        if (resTasks) {
+          resTasks.innerHTML = `
+            <div style="background:#fff;padding:8px 10px;border-radius:12px;border:1px solid #6ee7b7;font-size:11px;color:#064e3b;">
+              <b>✓ Đã điểm danh vào ca:</b> ${escapeHtml(task.title)}<br>
+              <span style="font-size:9.5px;color:#047857;">Tổng số ca cống hiến: <b>${member.soCaHoanThanh} ca</b> &bull; Quét bởi: <b>${currentUser.hoTen}</b></span>
+            </div>
+            <button onclick="resumeQrScanning()" class="spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
+              <svg class="svg-icon" style="width:13px;height:13px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Quét Tiếp Thành Viên Khác</span>
+            </button>
+          `;
         }
       }
+
+      logAuditEvent(currentUser, 'QR_CHECKIN', taskId, `Điểm danh hiện trường thành công cho ${member.hoTen} (${task.title}) bởi ${currentUser.hoTen}`);
+      enqueueOfflineMutation('QR_CHECKIN', { taskId, memberId, scannerId: currentUser.id });
+      saveLocalState();
+      renderProfileData();
+      renderTasksList();
+      showAquaIsland(`Điểm danh thành công: ${member.hoTen} (+1 ca cống hiến)!`, '🎯');
+      return true;
     }
 
     function handleQrCheckinAction(taskId, memberId) {
-      triggerHaptic('success');
-      const task = currentTasks.find(t => t.id === taskId);
-      const member = membersDirectory.find(m => m.id === memberId);
-      if (member) {
-        member.soCaHoanThanh = (member.soCaHoanThanh != null ? member.soCaHoanThanh : (member.soCa || 0)) + 1;
-        if (currentUser && currentUser.id === member.id) {
-          currentUser.soCaHoanThanh = member.soCaHoanThanh;
-          renderProfileData();
-        }
-      }
-      logAuditEvent(currentUser, 'QR_CHECKIN', taskId, `Điểm danh ca trực cho ${member?.hoTen || memberId}`);
-      enqueueOfflineMutation('QR_CHECKIN', { taskId, memberId });
-      saveLocalState();
-      showAquaIsland(`Đã điểm danh cho ${member?.hoTen || memberId} vào ca!`, '✅');
+      performFieldCheckin(taskId, memberId);
     }
 
     // ==================== CẤP CỨU ICE & ĐỊNH VỊ GPS THỜI GIAN THỰC ====================

@@ -1,9 +1,9 @@
 /**
- * CLB Thể Thao PWA Service Worker (v4.0.0-sprint1)
+ * CLB Thể Thao PWA Service Worker (v4.2.0-aquamorphic-field-checkin)
  * Chiến lược: Network-First cho HTML & API, Cache-First cho Assets, Tự hủy cache khi có phiên bản mới
  */
 
-const CACHE_VERSION = 'clb-sportpass-v4.0.0-sprint1';
+const CACHE_VERSION = 'clb-sportpass-v4.2.0-aquamorphic-field-checkin';
 const STATIC_ASSETS = [
   './',
   './index.html',

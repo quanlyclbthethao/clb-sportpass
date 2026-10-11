@@ -6,14 +6,14 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#f1f4fb",
+  "background_color": "#f3f6fc",
   "theme_color": "#4f46e5",
   "categories": ["sports", "productivity", "utilities"],
   "shortcuts": [
     {
       "name": "Thẻ Định Danh Số",
       "short_name": "Digital Pass",
-      "description": "Mở thẻ định danh số cá nhân và mã QR Pass",
+      "description": "Mở thẻ định danh số cá nhân và xuất trình QR nhận ca",
       "url": "./index.html#pass",
       "icons": [{ "src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%234f46e5&width=96&height=96", "sizes": "96x96" }]
     },
@@ -25,9 +25,9 @@
       "icons": [{ "src": "https://api.iconify.design/solar:clipboard-check-bold-duotone.svg?color=%234f46e5&width=96&height=96", "sizes": "96x96" }]
     },
     {
-      "name": "Quét QR Điểm Danh",
+      "name": "Quét QR Điểm Danh Hiện Trường",
       "short_name": "Điểm Danh QR",
-      "description": "Quét mã QR thẻ thành viên để điểm danh",
+      "description": "Quét mã QR thẻ nhận ca của thành viên (Chỉ Trưởng ca & Admin)",
       "url": "./index.html#scan",
       "icons": [{ "src": "https://api.iconify.design/solar:qr-code-bold-duotone.svg?color=%234f46e5&width=96&height=96", "sizes": "96x96" }]
     },
