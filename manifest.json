@@ -1,25 +1,56 @@
 {
-"name": "CLB Thể Thao - Digital Pass",
-"short_name": "SportPass",
-"description": "Thẻ Định Danh Số, Cứu Hộ Y Tế & Điều Phối Xoay Tua CLB Thể Thao",
-"start_url": "./index.html",
-"scope": "./",
-"display": "standalone",
-"orientation": "portrait-primary",
-"background_color": "#f1f4fb",
-"theme_color": "#818cf8",
-"icons": [
-{
-"src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%23818cf8&width=192&height=192",
-"sizes": "192x192",
-"type": "image/svg+xml",
-"purpose": "any maskable"
-},
-{
-"src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%23818cf8&width=512&height=512",
-"sizes": "512x512",
-"type": "image/svg+xml",
-"purpose": "any maskable"
-}
-]
+  "name": "CLB Thể Thao - Digital Pass & AI Ops",
+  "short_name": "SportPass",
+  "description": "Thẻ Định Danh Số, Cứu Hộ Y Tế ICE, Quét Điểm Danh QR & Điều Phối Xoay Tua CLB Thể Thao",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f1f4fb",
+  "theme_color": "#4f46e5",
+  "categories": ["sports", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Thẻ Định Danh Số",
+      "short_name": "Digital Pass",
+      "description": "Mở thẻ định danh số cá nhân và mã QR Pass",
+      "url": "./index.html#pass",
+      "icons": [{ "src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%234f46e5&width=96&height=96", "sizes": "96x96" }]
+    },
+    {
+      "name": "Lệnh Điều Động",
+      "short_name": "Điều Phối",
+      "description": "Xem ca trực, nhận ca và xin đổi / rút ca",
+      "url": "./index.html#tasks",
+      "icons": [{ "src": "https://api.iconify.design/solar:clipboard-check-bold-duotone.svg?color=%234f46e5&width=96&height=96", "sizes": "96x96" }]
+    },
+    {
+      "name": "Quét QR Điểm Danh",
+      "short_name": "Điểm Danh QR",
+      "description": "Quét mã QR thẻ thành viên để điểm danh",
+      "url": "./index.html#scan",
+      "icons": [{ "src": "https://api.iconify.design/solar:qr-code-bold-duotone.svg?color=%234f46e5&width=96&height=96", "sizes": "96x96" }]
+    },
+    {
+      "name": "Cấp Cứu Khẩn Cấp ICE",
+      "short_name": "Cấp Cứu ICE",
+      "description": "Kích hoạt cứu hộ y tế và chia sẻ tọa độ GPS",
+      "url": "./index.html#ice",
+      "icons": [{ "src": "https://api.iconify.design/solar:danger-bold-duotone.svg?color=%23be123c&width=96&height=96", "sizes": "96x96" }]
+    }
+  ],
+  "icons": [
+    {
+      "src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%23818cf8&width=192&height=192",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%23818cf8&width=512&height=512",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

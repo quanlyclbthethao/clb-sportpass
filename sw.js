@@ -1,15 +1,16 @@
 /**
- * CLB Thể Thao PWA Service Worker
+ * CLB Thể Thao PWA Service Worker (v4.0.0-sprint1)
  * Chiến lược: Network-First cho HTML & API, Cache-First cho Assets, Tự hủy cache khi có phiên bản mới
  */
 
-const CACHE_VERSION = 'clb-sportpass-v3.2.0';
+const CACHE_VERSION = 'clb-sportpass-v4.0.0-sprint1';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap',
-  'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js'
+  'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js',
+  'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js'
 ];
 
 self.addEventListener('install', (event) => {
@@ -67,7 +68,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-First cho font và thư viện jsQR tĩnh
+  // Cache-First cho font và thư viện jsQR / qrcodejs tĩnh
   event.respondWith(
     caches.match(req).then((cachedRes) => {
       return cachedRes || fetch(req).then((networkRes) => {
