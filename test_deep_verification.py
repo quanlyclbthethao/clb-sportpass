@@ -39,10 +39,13 @@ class TestDeepVerification(unittest.TestCase):
         self.assertIsNotNone(match, "DOMContentLoaded listener must be cleanly closed with });")
 
     def test_no_stray_syntax_parentheses(self):
-        """Kiem tra khong con ky tu ); lac long giua cac ham o top-level"""
+        """Kiem tra khong con ky tu ); hoac stray backticks lac long giua cac ham o top-level"""
         # Truoc day co ); lac long ngay truoc checkStoredLoginSession
         self.assertNotIn("}\n);\n\n    function checkStoredLoginSession", self.html)
         self.assertNotIn("}\n    );\n\n    function checkStoredLoginSession", self.html)
+        # Khong duoc co stray backtick / showAquaIsland residue dung rieng le
+        self.assertNotIn("\n    `, '✨');\n", self.html)
+        self.assertNotIn("\n    `, '⚡');\n", self.html)
 
     def test_all_functions_exposed_on_window(self):
         """Kiem tra exposeGlobalState gan day du cac ham RBAC va Auth vao window"""
