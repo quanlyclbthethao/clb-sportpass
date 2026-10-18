@@ -1484,10 +1484,30 @@ function handleRequest(e) {
       var adminId = params.adminId;
       responseData = handleCheckinMember(ss, taskId, memberId, adminId);
     }
-    // 6. TẠO CA TRỰC MỚI (createTask)
+    // 6. TẠO CA TRỰC MỚI (createTask) HOẶC ĐỒNG BỘ CA TRỰC (syncTasks)
     else if (action === 'createTask') {
       var taskObj = params.task ? parseJsonSafe(params.task, null) : params;
       responseData = handleCreateTask(ss, taskObj);
+    }
+    else if (action === 'syncTasks') {
+      if (params.tasks) {
+        var tasksArr = parseJsonSafe(params.tasks, []);
+        if (Array.isArray(tasksArr)) {
+          var syncCount = 0;
+          for (var tIdx = 0; tIdx < tasksArr.length; tIdx++) {
+            if (tasksArr[tIdx]) {
+              handleCreateTask(ss, tasksArr[tIdx]);
+              syncCount++;
+            }
+          }
+          responseData = { success: true, message: 'Đã đồng bộ ' + syncCount + ' ca trực thành công!', count: syncCount };
+        } else {
+          responseData = handleCreateTask(ss, tasksArr);
+        }
+      } else {
+        var singleTask = params.task ? parseJsonSafe(params.task, null) : params;
+        responseData = handleCreateTask(ss, singleTask);
+      }
     }
     // 7. ĐĂNG BÀI DIỄN ĐÀN (createPost)
     else if (action === 'createPost') {
@@ -1860,27 +1880,32 @@ function handleWithdrawTask(ss, taskId, memberId, reason) {
   var sheet = ss.getSheetByName('Tasks');
   if (!sheet) return { success: false, message: 'Chưa có sheet Tasks' };
   var rows = sheet.getDataRange().getValues();
+  if (rows.length <= 1) return { success: false, message: 'Không có dữ liệu ca trực' };
   var headers = rows[0];
   var idCol = headers.indexOf('id');
   var joinedCol = headers.indexOf('joinedMembers');
+  var assignedCol = headers.indexOf('assignedMembers');
   var waitlistCol = headers.indexOf('waitlist');
   var checkCol = headers.indexOf('checkedInMembers');
 
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][idCol]) === String(taskId)) {
-      var joined = parseJsonSafe(rows[i][joinedCol], []);
-      var wait = parseJsonSafe(rows[i][waitlistCol], []);
+      var joined = joinedCol !== -1 ? parseJsonSafe(rows[i][joinedCol], []) : [];
+      var assigned = assignedCol !== -1 ? parseJsonSafe(rows[i][assignedCol], []) : [];
+      var wait = waitlistCol !== -1 ? parseJsonSafe(rows[i][waitlistCol], []) : [];
       var checked = checkCol !== -1 ? parseJsonSafe(rows[i][checkCol], []) : [];
 
       var jIdx = joined.indexOf(memberId);
+      var aIdx = assigned.indexOf(memberId);
       var wIdx = wait.indexOf(memberId);
       var cIdx = checked.indexOf(memberId);
 
-      if (jIdx === -1 && wIdx === -1 && cIdx === -1) {
+      if (jIdx === -1 && aIdx === -1 && wIdx === -1 && cIdx === -1) {
         return { success: false, message: 'Bạn chưa tham gia ca trực này' };
       }
 
       if (jIdx !== -1) joined.splice(jIdx, 1);
+      if (aIdx !== -1) assigned.splice(aIdx, 1);
       if (wIdx !== -1) wait.splice(wIdx, 1);
 
       // Nếu đã được điểm danh trước đó, tự động hoàn tác/trừ lại 1 ca đã tích lũy
@@ -1893,13 +1918,15 @@ function handleWithdrawTask(ss, taskId, memberId, reason) {
       }
 
       // Nếu có người trong hàng chờ, đôn lên vị trí chính thức
-      if (wait.length > 0 && joined.length < (Number(rows[i][headers.indexOf('quota')]) || 6)) {
+      var quota = Number(rows[i][headers.indexOf('quota')]) || 6;
+      if (wait.length > 0 && (joined.length + assigned.length) < quota) {
         var promoted = wait.shift();
         joined.push(promoted);
       }
 
-      sheet.getRange(i + 1, joinedCol + 1).setValue(JSON.stringify(joined));
-      sheet.getRange(i + 1, waitlistCol + 1).setValue(JSON.stringify(wait));
+      if (joinedCol !== -1) sheet.getRange(i + 1, joinedCol + 1).setValue(JSON.stringify(joined));
+      if (assignedCol !== -1) sheet.getRange(i + 1, assignedCol + 1).setValue(JSON.stringify(assigned));
+      if (waitlistCol !== -1) sheet.getRange(i + 1, waitlistCol + 1).setValue(JSON.stringify(wait));
 
       // Ghi nhận vào Swaps sheet
       var swapsSheet = ss.getSheetByName('Swaps');
@@ -1916,6 +1943,7 @@ function handleWithdrawTask(ss, taskId, memberId, reason) {
         ]);
       }
 
+      SpreadsheetApp.flush();
       return { success: true, message: 'Đã rút ca trực thành công' + (cIdx !== -1 ? ' (Đã hoàn tác 1 ca hoàn thành)' : '') };
     }
   }
@@ -2059,10 +2087,20 @@ function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId) {
  */
 function handleCreateTask(ss, taskObj) {
   var sheet = ss.getSheetByName('Tasks');
-  if (!sheet) return { success: false, message: 'Chưa có sheet Tasks' };
+  if (!sheet) {
+    sheet = ss.insertSheet('Tasks');
+  }
 
-  var id = taskObj.id || ('TASK_' + Date.now());
+  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas', 'notes'];
   var rows = sheet.getDataRange().getValues();
+  if (rows.length === 0 || rows[0].length === 0 || !rows[0][0]) {
+    sheet.appendRow(taskHeaders);
+    sheet.getRange(1, 1, 1, taskHeaders.length).setBackground('#3b0764').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.setFrozenRows(1);
+    rows = [taskHeaders];
+  }
+
+  var id = (taskObj && taskObj.id) ? taskObj.id : ('TASK_' + Date.now());
   var headers = rows[0];
   var idCol = headers.indexOf('id');
   if (idCol === -1) idCol = 0;
@@ -2095,9 +2133,11 @@ function handleCreateTask(ss, taskObj) {
 
   if (rowIndex !== -1) {
     sheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
+    SpreadsheetApp.flush();
     return { success: true, message: 'Cập nhật lệnh điều động thành công!', taskId: id };
   } else {
     sheet.appendRow(rowData);
+    SpreadsheetApp.flush();
     return { success: true, message: 'Ban hành lệnh điều động mới thành công!', taskId: id };
   }
 }
