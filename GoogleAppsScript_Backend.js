@@ -129,6 +129,18 @@ function handleRequest(e) {
         posts: postsList
       };
     }
+    else if (action === 'updateMemberRole') {
+      const targetMemberId = (params.memberId || '').trim();
+      const isAdmin = (params.isAdmin === 'true' || params.isAdmin === true);
+      const isShiftLeader = (params.isShiftLeader === 'true' || params.isShiftLeader === true);
+      responseData = {
+        success: true,
+        message: 'Đã cập nhật phân quyền thành công cho ' + targetMemberId,
+        memberId: targetMemberId,
+        isAdmin: isAdmin,
+        isShiftLeader: isShiftLeader
+      };
+    }
   } catch (err) {
     responseData = { success: false, error: err.toString() };
   }

@@ -8,18 +8,29 @@
  * 3. Ban Bóng Chuyền (56 thành viên)
  * 4. Ban Bóng Đá Nam (21 thành viên)
  * 5. Ban Bóng Đá Nữ (23 thành viên)
- * 6. Ban Cầu Lông (1 thành viên)
+ * 6. Ban Cầu Lông (2 thành viên)
  * 7. Ban Truyền Thông (11 thành viên)
  * + Tasks (Ca trực)
  * + Swaps (Đổi/Rút ca)
- * + Posts (Diễn đàn)
+ * + Posts (Diễn đàn & Thông báo)
+ *
+ * CẤU TRÚC 8 CỘT CHUẨN XÁC TRONG TỪNG SHEET BAN:
+ * Cột 1 (A): Mã ID           ([Initials][DDMM], ví dụ: DMC0806, LDH0912, DDH1011)
+ * Cột 2 (B): Họ và Tên       (Nguyễn Văn A)
+ * Cột 3 (C): Lớp             (K13.GDTC, K15A.SPTOAN...)
+ * Cột 4 (D): Ban chuyên môn  (Ban Chủ Nhiệm, Ban Nhân Sự, Ban Cầu Lông...)
+ * Cột 5 (E): Chức vụ         (Chủ nhiệm, Trưởng ban, Phó ban, Thành viên...)
+ * Cột 6 (F): Y tế            (Mặc định 'Bình thường' hoặc tiền sử dị ứng, tim mạch)
+ * Cột 7 (G): Số điện thoại   (Bảo toàn số 0 ở đầu bằng Text '0xxxxxxxxx)
+ * Cột 8 (H): Liên hệ khẩn cấp(SĐT người thân / ICE, bảo toàn số 0 ở đầu)
  *
  * TÍNH NĂNG ĐẶC BIỆT:
- * - Giữ nguyên các Sheet từng Ban để dễ dàng quản lý, xem danh sách và thống kê.
- * - Thêm thành viên mới: Chỉ cần nhập dòng mới vào Sheet của Ban tương ứng,
- *   ứng dụng di động tự động nhận diện ngay lập tức mà không cần sửa code!
- * - Hàm `setupMultiSheetDatabase()`: Tự động dọn dẹp, tạo chuẩn 7 ban và điền sẵn
- *   toàn bộ 124 thành viên chuẩn 100%, bảo toàn số 0 ở đầu SĐT ('0xxxxxxxxx).
+ * - Tương thích 100% với file Google Sheet mới do người dùng tạo.
+ * - Người dùng có thể tự copy-paste danh sách từng ban vào từng tab tương ứng.
+ * - Hoặc chạy hàm `setupMultiSheetDatabase()` để tự động dọn dẹp, tạo 7 ban và nạp
+ *   toàn bộ 125 thành viên chuẩn 100% với 1 click duy nhất!
+ * - Tự động bảo toàn quyền cán sự (isAdmin, isShiftLeader) và hợp nhất đa nhiệm
+ *   khi thành viên kiêm nhiệm nhiều ban khác nhau.
  * ==============================================================================
  */
 
@@ -38,1256 +49,1266 @@ var APP_SHEETS = ['Tasks', 'Swaps', 'Posts'];
 var SEED_DATA = {
   "Ban Chủ Nhiệm": [
     {
-      "stt": 1,
-      "id": "BCN01",
+      "id": "NTD2108",
       "hoTen": "Nguyễn Tiến Duy",
-      "ngaySinh": "21/08/2004",
-      "chucVu": "Phó chủ nhiệm",
       "lop": "K13A.SPTOAN",
-      "sdt": "0399757027",
-      "khoa": "Toán và KHTN"
-    },
-    {
-      "stt": 2,
-      "id": "BCN02",
-      "hoTen": "Lương Đình Hiếu",
-      "ngaySinh": "09/12/2004",
-      "chucVu": "Trưởng ban cầu lông",
-      "lop": "K13.GDTC",
-      "sdt": "0787246014",
-      "khoa": "N-H-TD"
-    },
-    {
-      "stt": 3,
-      "id": "BCN03",
-      "hoTen": "Nguyễn Lê Hoàng",
-      "ngaySinh": "13/12/2005",
+      "boMon": "Ban Chủ Nhiệm",
       "chucVu": "Phó chủ nhiệm",
+      "yTe": "Bình thường",
+      "sdt": "0399757027",
+      "ice": "0399757027"
+    },
+    {
+      "id": "LDH0912",
+      "hoTen": "Lương Đình Hiếu",
+      "lop": "K13.GDTC",
+      "boMon": "Ban Chủ Nhiệm",
+      "chucVu": "Trưởng ban cầu lông",
+      "yTe": "Bình thường",
+      "sdt": "0787246014",
+      "ice": "0787246014"
+    },
+    {
+      "id": "NLH1312",
+      "hoTen": "Nguyễn Lê Hoàng",
       "lop": "K13-GDTC",
+      "boMon": "Ban Chủ Nhiệm",
+      "chucVu": "Phó chủ nhiệm",
+      "yTe": "Bình thường",
       "sdt": "0827055999",
-      "khoa": "N-H-TD"
+      "ice": "0827055999"
     },
     {
-      "stt": 4,
-      "id": "BCN04",
+      "id": "TTTL1805",
       "hoTen": "Tào Thị Tuyết Linh",
-      "ngaySinh": "18/05/2007",
-      "chucVu": "Trưởng ban truyền thông",
       "lop": "K15D.GDTH",
+      "boMon": "Ban Chủ Nhiệm",
+      "chucVu": "Trưởng ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0394828197",
-      "khoa": "GDTH"
+      "ice": "0394828197"
     },
     {
-      "stt": 5,
-      "id": "BCN05",
+      "id": "HDP2106",
       "hoTen": "Hoàng Duy Phong",
-      "ngaySinh": "21/06/2005",
-      "chucVu": "Tổng thư ký",
       "lop": "K13B.SPTOAN",
+      "boMon": "Ban Chủ Nhiệm",
+      "chucVu": "Tổng thư ký",
+      "yTe": "Bình thường",
       "sdt": "0971466280",
-      "khoa": "Toán & KHTN"
+      "ice": "0971466280"
     },
     {
-      "stt": 6,
-      "id": "BCN06",
+      "id": "TCT0803",
       "hoTen": "Triệu Chiến Thái",
-      "ngaySinh": "08/03/2004",
-      "chucVu": "Trưởng ban Bóng Chuyền",
       "lop": "K13.SPLS",
+      "boMon": "Ban Chủ Nhiệm",
+      "chucVu": "Trưởng ban Bóng Chuyền",
+      "yTe": "Bình thường",
       "sdt": "0354269904",
-      "khoa": "Ngữ Văn-KHXH"
+      "ice": "0354269904"
     },
     {
-      "stt": 7,
-      "id": "BCN07",
+      "id": "TVT3006",
       "hoTen": "Trần Văn Tiệp",
-      "ngaySinh": "30/06/2002",
+      "lop": "K13-GDTC",
+      "boMon": "Ban Chủ Nhiệm",
       "chucVu": "Chủ nhiệm clb",
-      "lop": "K13-GDTC",
+      "yTe": "Bình thường",
       "sdt": "082214976",
-      "khoa": "N-H-TD"
+      "ice": "082214976"
     },
     {
-      "stt": 8,
-      "id": "BCN08",
+      "id": "LNT1805",
       "hoTen": "Lương Nhật Tân",
-      "ngaySinh": "18/05/2005",
-      "chucVu": "Thủ quỹ",
       "lop": "K13-GDTC",
+      "boMon": "Ban Chủ Nhiệm",
+      "chucVu": "Thủ quỹ",
+      "yTe": "Bình thường",
       "sdt": "0822131805",
-      "khoa": "N-H-TD"
+      "ice": "0822131805"
     },
     {
-      "stt": 9,
-      "id": "BCN09",
+      "id": "NQD1509",
       "hoTen": "Ngô Quang Đoàn",
-      "ngaySinh": "15/09/2001",
-      "chucVu": "Trưởng ban bóng đá nam",
       "lop": "K15C.GDTC",
+      "boMon": "Ban Chủ Nhiệm",
+      "chucVu": "Trưởng ban bóng đá nam",
+      "yTe": "Bình thường",
       "sdt": "0867322795",
-      "khoa": "N-H-TD"
+      "ice": "0867322795"
     }
   ],
   "Ban Nhân Sự": [
     {
-      "stt": 1,
-      "id": "NS01",
+      "id": "DMC0806",
       "hoTen": "Đỗ Mạnh Cường",
-      "ngaySinh": "10/06/2003",
-      "chucVu": "Trưởng ban nhân sự",
       "lop": "K13.GDTC",
-      "sdt": "0963230064",
-      "khoa": "N-H-TD"
+      "boMon": "Ban Nhân Sự",
+      "chucVu": "Trưởng ban nhân sự",
+      "yTe": "Bình thường",
+      "sdt": "",
+      "ice": ""
     },
     {
-      "stt": 2,
-      "id": "NS02",
+      "id": "NHN1502",
       "hoTen": "Nguyễn Hoài Nam",
-      "ngaySinh": "15/02/2005",
-      "chucVu": "Phó ban nhân sự",
       "lop": "K13B.SPToan",
-      "sdt": "0385202407",
-      "khoa": "Toán & KHTN"
+      "boMon": "Ban Nhân Sự",
+      "chucVu": "Phó ban nhân sự",
+      "yTe": "Bình thường",
+      "sdt": "",
+      "ice": ""
     },
     {
-      "stt": 3,
-      "id": "NS03",
+      "id": "NTDL0303",
       "hoTen": "Nguyễn Thị Diệu Linh",
-      "ngaySinh": "03/03/2007",
-      "chucVu": "Phó ban nhân sự",
       "lop": "K15A.GDTH",
+      "boMon": "Ban Nhân Sự",
+      "chucVu": "Phó ban nhân sự",
+      "yTe": "Bình thường",
       "sdt": "0967182101",
-      "khoa": "GDTH"
+      "ice": "0967182101"
     }
   ],
   "Ban Bóng Chuyền": [
     {
-      "stt": 1,
-      "id": "BC01",
+      "id": "NLA0611",
       "hoTen": "Nguyễn Long An",
-      "ngaySinh": "06/11/2004",
-      "chucVu": "Thành viên",
       "lop": "K12NNA",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
       "sdt": "",
-      "khoa": "ĐH Tây Bắc"
+      "ice": ""
     },
     {
-      "stt": 2,
-      "id": "BC02",
+      "id": "NDA0407",
       "hoTen": "Nguyễn Đức Anh",
-      "ngaySinh": "04/07/2008",
-      "chucVu": "Thành viên",
       "lop": "K16-KHTN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
       "sdt": "0862020080",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0862020080"
     },
     {
-      "stt": 3,
-      "id": "BC03",
+      "id": "TMA1812",
       "hoTen": "Trần Minh Anh",
-      "ngaySinh": "18/12/2007",
-      "chucVu": "Thành viên",
       "lop": "K15B.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
       "sdt": "0862231812",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0862231812"
     },
     {
-      "stt": 4,
-      "id": "BC04",
+      "id": "LTTB2810",
       "hoTen": "Lò Thị Thảo Biên",
-      "ngaySinh": "28/10/2007",
-      "chucVu": "Thành viên",
       "lop": "K15C.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
       "sdt": "0333014010",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0333014010"
     },
     {
-      "stt": 5,
-      "id": "BC05",
+      "id": "VHB0201",
       "hoTen": "Vương Hoàng Bắc",
-      "ngaySinh": "02/01/2008",
-      "chucVu": "Thành Viên",
       "lop": "K16B.GDTC",
-      "sdt": "0356749335",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 6,
-      "id": "BC06",
-      "hoTen": "Bùi Thu Cúc",
-      "ngaySinh": "29/07/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.SPDIA",
-      "sdt": "0362105729",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 7,
-      "id": "BC07",
-      "hoTen": "Tòng Phương Duy",
-      "ngaySinh": "28/09/2006",
-      "chucVu": "Phó ban chuyên môn",
-      "lop": "K15C-GDTH",
-      "sdt": "0829782899",
-      "khoa": "GDTH"
-    },
-    {
-      "stt": 8,
-      "id": "BC08",
-      "hoTen": "Hà Đức Dũng",
-      "ngaySinh": "23/02/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.GDTC",
-      "sdt": "0338578667",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 9,
-      "id": "BC09",
-      "hoTen": "Trần Tiến Dũng",
-      "ngaySinh": "03/02/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16.GDTC",
-      "sdt": "0342344521",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 10,
-      "id": "BC10",
-      "hoTen": "Bùi Trịnh Dương",
-      "ngaySinh": "24/11/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16. QTDVDL",
-      "sdt": "0374136827",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 11,
-      "id": "BC11",
-      "hoTen": "Hoàng Châu Thái Dương",
-      "ngaySinh": "12/07/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15C.GDTH",
-      "sdt": "0366289127",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 12,
-      "id": "BC12",
-      "hoTen": "Đinh Thị Bình Dương",
-      "ngaySinh": "30/08/2006",
-      "chucVu": "Thành viên",
-      "lop": "K48C-GDMN",
-      "sdt": "0382247405",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 13,
-      "id": "BC13",
-      "hoTen": "Trương Thị Hà Giang",
-      "ngaySinh": "18/03/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16.Sp Toán",
-      "sdt": "0862394839",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 14,
-      "id": "BC14",
-      "hoTen": "Phạm Minh Hiếu",
-      "ngaySinh": "22/11/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.GDTC",
-      "sdt": "0865789135",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 15,
-      "id": "BC15",
-      "hoTen": "Nguyễn Thị Thanh Hoa",
-      "ngaySinh": "04/03/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15B.GDTH",
-      "sdt": "0353992007",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 16,
-      "id": "BC16",
-      "hoTen": "Ma Công Hoàng",
-      "ngaySinh": "03/12/2006",
-      "chucVu": "Thành viên",
-      "lop": "K14.GDTC",
-      "sdt": "0325481411",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 17,
-      "id": "BC17",
-      "hoTen": "Lê Minh Hùng",
-      "ngaySinh": "02/08/2002",
-      "chucVu": "Thành viên",
-      "lop": "K16A.GDTC",
-      "sdt": "0837430777",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 18,
-      "id": "BC18",
-      "hoTen": "Phạm Thị Hạnh",
-      "ngaySinh": "24/09/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16.GDTC",
-      "sdt": "0392736086",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 19,
-      "id": "BC19",
-      "hoTen": "Đinh Minh Hằng",
-      "ngaySinh": "25/10/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16B.VAN",
-      "sdt": "0985983840",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 20,
-      "id": "BC20",
-      "hoTen": "Trần Công Kiên",
-      "ngaySinh": "06/03/2006",
-      "chucVu": "Thành viên",
-      "lop": "K14- GDTC",
-      "sdt": "0357397824",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 21,
-      "id": "BC21",
-      "hoTen": "Trịnh Thị Lan",
-      "ngaySinh": "31/08/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.GDTH",
-      "sdt": "0369375145",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 22,
-      "id": "BC22",
-      "hoTen": "Hà Khánh Linh",
-      "ngaySinh": "21/04/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16D.GDTH",
-      "sdt": "0982471505",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 23,
-      "id": "BC23",
-      "hoTen": "Vũ Thị Thuỳ Linh",
-      "ngaySinh": "10/12/2008",
-      "chucVu": "Thành viên",
-      "lop": "K49.GDMN",
-      "sdt": "0347515236",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 24,
-      "id": "BC24",
-      "hoTen": "Đỗ Hiền Linh",
-      "ngaySinh": "30/05/2005",
-      "chucVu": "Thành viên",
-      "lop": "K13A-SPAnh",
-      "sdt": "0386159238",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 25,
-      "id": "BC25",
-      "hoTen": "Giàng Văn Long",
-      "ngaySinh": "19/11/2007",
-      "chucVu": "Thành viên",
-      "lop": "K16.SP Địa",
-      "sdt": "0372084594",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 26,
-      "id": "BC26",
-      "hoTen": "Lê Thị Hồng Minh",
-      "ngaySinh": "08/03/2005",
-      "chucVu": "Phó ban truyền thông",
-      "lop": "K13E.GDTH",
-      "sdt": "0829488725",
-      "khoa": "GDTH"
-    },
-    {
-      "stt": 27,
-      "id": "BC27",
-      "hoTen": "Lê Thảo Nhi",
-      "ngaySinh": "12/07/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16.SP Hoá",
-      "sdt": "0917775464",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 28,
-      "id": "BC28",
-      "hoTen": "Trần Thị Yến Nhi",
-      "ngaySinh": "21/11/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15A. SP Toán",
-      "sdt": "0988473222",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 29,
-      "id": "BC29",
-      "hoTen": "Nguyễn Phương Như",
-      "ngaySinh": "23/09/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.GDTC",
-      "sdt": "0936536859",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 30,
-      "id": "BC30",
-      "hoTen": "Nguyễn Thị Kim Oanh",
-      "ngaySinh": "19/01/2008",
-      "chucVu": "Thành viên",
-      "lop": "k16B. spvăn",
-      "sdt": "0334337410",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 31,
-      "id": "BC31",
-      "hoTen": "Hoàng Duy Phong",
-      "ngaySinh": "21/06/2005",
-      "chucVu": "Thành viên",
-      "lop": "K13B.SPTOAN",
-      "sdt": "0971466280",
-      "khoa": "Toán & KHTN"
-    },
-    {
-      "stt": 32,
-      "id": "BC32",
-      "hoTen": "Lê Minh Phong",
-      "ngaySinh": "03/08/2007",
-      "chucVu": "Thành viên",
-      "lop": "k15A-SPVL",
-      "sdt": "0971154906",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 33,
-      "id": "BC33",
-      "hoTen": "Đặng Thanh Phong",
-      "ngaySinh": "22/03/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15A.CNTT",
-      "sdt": "0564067036",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 34,
-      "id": "BC34",
-      "hoTen": "Đặng Hữu Quốc Pháp",
-      "ngaySinh": "20/04/2007",
-      "chucVu": "Thành viên",
-      "lop": "K16A.SPDIA",
-      "sdt": "0356869620",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 35,
-      "id": "BC35",
-      "hoTen": "Hồ Tấn Phát",
-      "ngaySinh": "16/08/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15.SPKHTN",
-      "sdt": "0369724633",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 36,
-      "id": "BC36",
-      "hoTen": "Đinh Hồng Phú",
-      "ngaySinh": "25/10/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16.SP Tin",
-      "sdt": "0962107151",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 37,
-      "id": "BC37",
-      "hoTen": "Trần Cao Sơn",
-      "ngaySinh": "12/06/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.GDTC",
-      "sdt": "0862384582",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 38,
-      "id": "BC38",
-      "hoTen": "Lê Thị Tâm Thanh",
-      "ngaySinh": "02/10/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.GDTH",
-      "sdt": "0334741502",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 39,
-      "id": "BC39",
-      "hoTen": "Ma Thị Thuyết",
-      "ngaySinh": "25/08/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15A.GDMN",
-      "sdt": "0833226289",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 40,
-      "id": "BC40",
-      "hoTen": "Triệu Chiến Thái",
-      "ngaySinh": "03/08/2004",
-      "chucVu": "Trưởng ban Bóng chuyền",
-      "lop": "K13.SPLSU",
-      "sdt": "0354269904",
-      "khoa": "Ngữ Văn-KHXH"
-    },
-    {
-      "stt": 41,
-      "id": "BC41",
-      "hoTen": "Bùi Anh Thương",
-      "ngaySinh": "10/03/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15C.GDTH",
-      "sdt": "0349403164",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 42,
-      "id": "BC42",
-      "hoTen": "Hà Thị Phương Thảo",
-      "ngaySinh": "17/09/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15C.GDTH",
-      "sdt": "0988852507",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 43,
-      "id": "BC43",
-      "hoTen": "Kiều Vũ Hồng Thảo",
-      "ngaySinh": "22/07/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15A.SP Toán",
-      "sdt": "0867733592",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 44,
-      "id": "BC44",
-      "hoTen": "Phùng Minh Thảo",
-      "ngaySinh": "19/08/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15C.SPVAN",
-      "sdt": "0386616269",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 45,
-      "id": "BC45",
-      "hoTen": "Lò Ngọc Thế",
-      "ngaySinh": "21/08/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15A.KTD",
-      "sdt": "0914270871",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 46,
-      "id": "BC46",
-      "hoTen": "Mai Thị Trang",
-      "ngaySinh": "12/09/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15B.GDTH",
-      "sdt": "0397056215",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 47,
-      "id": "BC47",
-      "hoTen": "Sầm Thị Quỳnh Trang",
-      "ngaySinh": "20/11/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15A. SP DIA LI",
-      "sdt": "0795110756",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 48,
-      "id": "BC48",
-      "hoTen": "Hoàng Ngọc Trâm",
-      "ngaySinh": "17/06/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16A.SPANH",
-      "sdt": "0962425044",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 49,
-      "id": "BC49",
-      "hoTen": "Hờ Bá Trưởng",
-      "ngaySinh": "25/10/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15B-SPTOAN",
-      "sdt": "0347598476",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 50,
-      "id": "BC50",
-      "hoTen": "Trần Mạnh Tuấn",
-      "ngaySinh": "14/04/2004",
-      "chucVu": "Thành viên",
-      "lop": "K15B-GDTC",
-      "sdt": "0877661191",
-      "khoa": "N-H-TD"
-    },
-    {
-      "stt": 51,
-      "id": "BC51",
-      "hoTen": "Nguyễn Như Tài",
-      "ngaySinh": "30/09/2008",
-      "chucVu": "Thành viên",
-      "lop": "K16.GDTC",
-      "sdt": "0968580853",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 52,
-      "id": "BC52",
-      "hoTen": "Trần Văn Tài",
-      "ngaySinh": "09/12/2007",
-      "chucVu": "Thành viên",
-      "lop": "K15D.GDTH",
-      "sdt": "0965554923",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 53,
-      "id": "BC53",
-      "hoTen": "Vì Quang Tạo",
-      "ngaySinh": "12/04/2005",
+      "boMon": "Ban Bóng Chuyền",
       "chucVu": "Thành Viên",
-      "lop": "K14 CNTT",
-      "sdt": "0393224983",
-      "khoa": "ĐH Tây Bắc"
+      "yTe": "Bình thường",
+      "sdt": "0356749335",
+      "ice": "0356749335"
     },
     {
-      "stt": 54,
-      "id": "BC54",
-      "hoTen": "Nguyễn Thị Thảo Vân",
-      "ngaySinh": "23/08/2007",
+      "id": "BTC2907",
+      "hoTen": "Bùi Thu Cúc",
+      "lop": "K16A.SPDIA",
+      "boMon": "Ban Bóng Chuyền",
       "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0362105729",
+      "ice": "0362105729"
+    },
+    {
+      "id": "TPD2809",
+      "hoTen": "Tòng Phương Duy",
+      "lop": "K15C-GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Phó ban chuyên môn",
+      "yTe": "Bình thường",
+      "sdt": "0829782899",
+      "ice": "0829782899"
+    },
+    {
+      "id": "HDD2302",
+      "hoTen": "Hà Đức Dũng",
+      "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0338578667",
+      "ice": "0338578667"
+    },
+    {
+      "id": "TTD0302",
+      "hoTen": "Trần Tiến Dũng",
+      "lop": "K16.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0342344521",
+      "ice": "0342344521"
+    },
+    {
+      "id": "BTD2411",
+      "hoTen": "Bùi Trịnh Dương",
+      "lop": "K16. QTDVDL",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0374136827",
+      "ice": "0374136827"
+    },
+    {
+      "id": "HCTD1207",
+      "hoTen": "Hoàng Châu Thái Dương",
+      "lop": "K15C.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0366289127",
+      "ice": "0366289127"
+    },
+    {
+      "id": "DTBD3008",
+      "hoTen": "Đinh Thị Bình Dương",
+      "lop": "K48C-GDMN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0382247405",
+      "ice": "0382247405"
+    },
+    {
+      "id": "TTHG1803",
+      "hoTen": "Trương Thị Hà Giang",
+      "lop": "K16.Sp Toán",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0862394839",
+      "ice": "0862394839"
+    },
+    {
+      "id": "PMH2211",
+      "hoTen": "Phạm Minh Hiếu",
+      "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0865789135",
+      "ice": "0865789135"
+    },
+    {
+      "id": "NTTH0403",
+      "hoTen": "Nguyễn Thị Thanh Hoa",
       "lop": "K15B.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0353992007",
+      "ice": "0353992007"
+    },
+    {
+      "id": "MCH0312",
+      "hoTen": "Ma Công Hoàng",
+      "lop": "K14.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0325481411",
+      "ice": "0325481411"
+    },
+    {
+      "id": "LMH0208",
+      "hoTen": "Lê Minh Hùng",
+      "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0837430777",
+      "ice": "0837430777"
+    },
+    {
+      "id": "PTH2409",
+      "hoTen": "Phạm Thị Hạnh",
+      "lop": "K16.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0392736086",
+      "ice": "0392736086"
+    },
+    {
+      "id": "DMH2510",
+      "hoTen": "Đinh Minh Hằng",
+      "lop": "K16B.VAN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0985983840",
+      "ice": "0985983840"
+    },
+    {
+      "id": "TCK0603",
+      "hoTen": "Trần Công Kiên",
+      "lop": "K14- GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0357397824",
+      "ice": "0357397824"
+    },
+    {
+      "id": "TTL3108",
+      "hoTen": "Trịnh Thị Lan",
+      "lop": "K16A.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0369375145",
+      "ice": "0369375145"
+    },
+    {
+      "id": "HKL2104",
+      "hoTen": "Hà Khánh Linh",
+      "lop": "K16D.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0982471505",
+      "ice": "0982471505"
+    },
+    {
+      "id": "VTTL1012",
+      "hoTen": "Vũ Thị Thuỳ Linh",
+      "lop": "K49.GDMN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0347515236",
+      "ice": "0347515236"
+    },
+    {
+      "id": "DHL3005",
+      "hoTen": "Đỗ Hiền Linh",
+      "lop": "K13A-SPAnh",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0386159238",
+      "ice": "0386159238"
+    },
+    {
+      "id": "GVL1911",
+      "hoTen": "Giàng Văn Long",
+      "lop": "K16.SP Địa",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0372084594",
+      "ice": "0372084594"
+    },
+    {
+      "id": "LTHM0803",
+      "hoTen": "Lê Thị Hồng Minh",
+      "lop": "K13E.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Phó ban truyền thông",
+      "yTe": "Bình thường",
+      "sdt": "0829488725",
+      "ice": "0829488725"
+    },
+    {
+      "id": "LTN1207",
+      "hoTen": "Lê Thảo Nhi",
+      "lop": "K16.SP Hoá",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0917775464",
+      "ice": "0917775464"
+    },
+    {
+      "id": "TTYN2111",
+      "hoTen": "Trần Thị Yến Nhi",
+      "lop": "K15A. SP Toán",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0988473222",
+      "ice": "0988473222"
+    },
+    {
+      "id": "NPN2309",
+      "hoTen": "Nguyễn Phương Như",
+      "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0936536859",
+      "ice": "0936536859"
+    },
+    {
+      "id": "NTKO1901",
+      "hoTen": "Nguyễn Thị Kim Oanh",
+      "lop": "k16B. spvăn",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0334337410",
+      "ice": "0334337410"
+    },
+    {
+      "id": "HDP2106",
+      "hoTen": "Hoàng Duy Phong",
+      "lop": "K13B.SPTOAN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0971466280",
+      "ice": "0971466280"
+    },
+    {
+      "id": "LMP0308",
+      "hoTen": "Lê Minh Phong",
+      "lop": "k15A-SPVL",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0971154906",
+      "ice": "0971154906"
+    },
+    {
+      "id": "DTP2203",
+      "hoTen": "Đặng Thanh Phong",
+      "lop": "K15A.CNTT",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0564067036",
+      "ice": "0564067036"
+    },
+    {
+      "id": "DHQP2004",
+      "hoTen": "Đặng Hữu Quốc Pháp",
+      "lop": "K16A.SPDIA",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0356869620",
+      "ice": "0356869620"
+    },
+    {
+      "id": "HTP1608",
+      "hoTen": "Hồ Tấn Phát",
+      "lop": "K15.SPKHTN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0369724633",
+      "ice": "0369724633"
+    },
+    {
+      "id": "DHP2510",
+      "hoTen": "Đinh Hồng Phú",
+      "lop": "K16.SP Tin",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0962107151",
+      "ice": "0962107151"
+    },
+    {
+      "id": "TCS1206",
+      "hoTen": "Trần Cao Sơn",
+      "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0862384582",
+      "ice": "0862384582"
+    },
+    {
+      "id": "LTTT0210",
+      "hoTen": "Lê Thị Tâm Thanh",
+      "lop": "K16A.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0334741502",
+      "ice": "0334741502"
+    },
+    {
+      "id": "MTT2508",
+      "hoTen": "Ma Thị Thuyết",
+      "lop": "K15A.GDMN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0833226289",
+      "ice": "0833226289"
+    },
+    {
+      "id": "TCT0308",
+      "hoTen": "Triệu Chiến Thái",
+      "lop": "K13.SPLSU",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Trưởng ban Bóng chuyền",
+      "yTe": "Bình thường",
+      "sdt": "0354269904",
+      "ice": "0354269904"
+    },
+    {
+      "id": "BAT1003",
+      "hoTen": "Bùi Anh Thương",
+      "lop": "K15C.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0349403164",
+      "ice": "0349403164"
+    },
+    {
+      "id": "HTPT1709",
+      "hoTen": "Hà Thị Phương Thảo",
+      "lop": "K15C.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0988852507",
+      "ice": "0988852507"
+    },
+    {
+      "id": "KVHT2207",
+      "hoTen": "Kiều Vũ Hồng Thảo",
+      "lop": "K15A.SP Toán",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0867733592",
+      "ice": "0867733592"
+    },
+    {
+      "id": "PMT1908",
+      "hoTen": "Phùng Minh Thảo",
+      "lop": "K15C.SPVAN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0386616269",
+      "ice": "0386616269"
+    },
+    {
+      "id": "LNT2108",
+      "hoTen": "Lò Ngọc Thế",
+      "lop": "K15A.KTD",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0914270871",
+      "ice": "0914270871"
+    },
+    {
+      "id": "MTT1209",
+      "hoTen": "Mai Thị Trang",
+      "lop": "K15B.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0397056215",
+      "ice": "0397056215"
+    },
+    {
+      "id": "STQT2011",
+      "hoTen": "Sầm Thị Quỳnh Trang",
+      "lop": "K15A. SP DIA LI",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0795110756",
+      "ice": "0795110756"
+    },
+    {
+      "id": "HNT1706",
+      "hoTen": "Hoàng Ngọc Trâm",
+      "lop": "K16A.SPANH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0962425044",
+      "ice": "0962425044"
+    },
+    {
+      "id": "HBT2510",
+      "hoTen": "Hờ Bá Trưởng",
+      "lop": "K15B-SPTOAN",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0347598476",
+      "ice": "0347598476"
+    },
+    {
+      "id": "TMT1404",
+      "hoTen": "Trần Mạnh Tuấn",
+      "lop": "K15B-GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0877661191",
+      "ice": "0877661191"
+    },
+    {
+      "id": "NNT3009",
+      "hoTen": "Nguyễn Như Tài",
+      "lop": "K16.GDTC",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0968580853",
+      "ice": "0968580853"
+    },
+    {
+      "id": "TVT0912",
+      "hoTen": "Trần Văn Tài",
+      "lop": "K15D.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
+      "sdt": "0965554923",
+      "ice": "0965554923"
+    },
+    {
+      "id": "VQT1204",
+      "hoTen": "Vì Quang Tạo",
+      "lop": "K14 CNTT",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành Viên",
+      "yTe": "Bình thường",
+      "sdt": "0393224983",
+      "ice": "0393224983"
+    },
+    {
+      "id": "NTTV2308",
+      "hoTen": "Nguyễn Thị Thảo Vân",
+      "lop": "K15B.GDTH",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
       "sdt": "0856076668",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0856076668"
     },
     {
-      "stt": 55,
-      "id": "BC55",
+      "id": "MTD0212",
       "hoTen": "Mai Thế Đăng",
-      "ngaySinh": "02/12/2007",
-      "chucVu": "Thành viên",
       "lop": "K15A-SPVL",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
       "sdt": "0399732007",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0399732007"
     },
     {
-      "stt": 56,
-      "id": "BC56",
+      "id": "LTD1409",
       "hoTen": "Lường Thành Đạt",
-      "ngaySinh": "14/09/2003",
-      "chucVu": "Thành viên",
       "lop": "K14.GDMN.VHVL",
+      "boMon": "Ban Bóng Chuyền",
+      "chucVu": "Thành viên",
+      "yTe": "Bình thường",
       "sdt": "0339416044",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0339416044"
     }
   ],
   "Ban Bóng Đá Nam": [
     {
-      "stt": 1,
-      "id": "BDN01",
+      "id": "NQA1302",
       "hoTen": "Ngô Quốc An",
-      "ngaySinh": "13/02/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "k15A-GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0789377952",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0789377952"
     },
     {
-      "stt": 2,
-      "id": "BDN02",
+      "id": "PTA0808",
       "hoTen": "Phạm Tuấn Anh",
-      "ngaySinh": "08/08/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0385202407",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0385202407"
     },
     {
-      "stt": 3,
-      "id": "BDN03",
+      "id": "DPA1711",
       "hoTen": "Đoàn Phan Anh",
-      "ngaySinh": "17/11/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A.CĐT",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0835122299",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0835122299"
     },
     {
-      "stt": 4,
-      "id": "BDN04",
+      "id": "LMC0801",
       "hoTen": "Lê Minh Chiến",
-      "ngaySinh": "08/01/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A.GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0963230064",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0963230064"
     },
     {
-      "stt": 5,
-      "id": "BDN05",
+      "id": "DDC3007",
       "hoTen": "Đặng Duy Cương",
-      "ngaySinh": "30/07/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A QTKD",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0931762637",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0931762637"
     },
     {
-      "stt": 6,
-      "id": "BDN06",
+      "id": "TMH0103",
       "hoTen": "Trần Mạnh Hà",
-      "ngaySinh": "01/03/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A.Kinh tế",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0912491307",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0912491307"
     },
     {
-      "stt": 7,
-      "id": "BDN07",
+      "id": "DVH1303",
       "hoTen": "Đặng Văn Hùng",
-      "ngaySinh": "13/03/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16B-GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0364917959",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0364917959"
     },
     {
-      "stt": 8,
-      "id": "BDN08",
+      "id": "NGH0108",
       "hoTen": "Nguyễn Gia Hưng",
-      "ngaySinh": "01/08/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A-CDT",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0972789358",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0972789358"
     },
     {
-      "stt": 9,
-      "id": "BDN09",
+      "id": "LVH1810",
       "hoTen": "Lê Văn Hướng",
-      "ngaySinh": "18/10/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16B-CDT",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0912296068",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0912296068"
     },
     {
-      "stt": 10,
-      "id": "BDN10",
+      "id": "CSH1102",
       "hoTen": "Cao Sơn Hải",
-      "ngaySinh": "11/02/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15C.GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0981482364",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0981482364"
     },
     {
-      "stt": 11,
-      "id": "BDN11",
+      "id": "VNH0902",
       "hoTen": "Vũ Ngọc Hải",
-      "ngaySinh": "09/02/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0982091671",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0982091671"
     },
     {
-      "stt": 12,
-      "id": "BDN12",
+      "id": "TVL1408",
       "hoTen": "Trần Văn Long",
-      "ngaySinh": "14/08/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A-GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0936864936",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0936864936"
     },
     {
-      "stt": 13,
-      "id": "BDN13",
+      "id": "LHTN2902",
       "hoTen": "Lưu Hữu Thiện Nhân",
-      "ngaySinh": "29/02/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "k16A.GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0916173056",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0916173056"
     },
     {
-      "stt": 14,
-      "id": "BDN14",
+      "id": "VKP0310",
       "hoTen": "Vũ Kim Phúc",
-      "ngaySinh": "03/10/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A-KTĐ",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0977323116",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0977323116"
     },
     {
-      "stt": 15,
-      "id": "BDN15",
+      "id": "BVQ3009",
       "hoTen": "Bùi Việt Quang",
-      "ngaySinh": "30/09/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16B-GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0364036198",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0364036198"
     },
     {
-      "stt": 16,
-      "id": "BDN16",
+      "id": "VVMQ1809",
       "hoTen": "Vũ Văn Minh Quân",
-      "ngaySinh": "18/09/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A.GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0393902677",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0393902677"
     },
     {
-      "stt": 17,
-      "id": "BDN17",
+      "id": "NQT1112",
       "hoTen": "Nguyễn Quang Thắng",
-      "ngaySinh": "11/12/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A.GDTC",
-      "sdt": "0395662248",
-      "khoa": "ĐH Tây Bắc"
-    },
-    {
-      "stt": 18,
-      "id": "BDN18",
-      "hoTen": "Nguyễn Anh Tuấn",
-      "ngaySinh": "04/08/2007",
+      "boMon": "Ban Bóng Đá Nam",
       "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
+      "sdt": "0395662248",
+      "ice": "0395662248"
+    },
+    {
+      "id": "NAT0408",
+      "hoTen": "Nguyễn Anh Tuấn",
       "lop": "K16A.SPDIA",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0329055362",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0329055362"
     },
     {
-      "stt": 19,
-      "id": "BDN19",
+      "id": "TMT1404",
       "hoTen": "Trần Mạnh Tuấn",
-      "ngaySinh": "14/04/2004",
-      "chucVu": "Phó Ban",
       "lop": "K15B.GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Phó Ban",
+      "yTe": "Bình thường",
       "sdt": "0877661191",
-      "khoa": "N-H-TD"
+      "ice": "0877661191"
     },
     {
-      "stt": 20,
-      "id": "BDN20",
+      "id": "NQD1509",
       "hoTen": "Ngô Quang Đoàn",
-      "ngaySinh": "15/09/2001",
-      "chucVu": "Trưởng ban bóng đá nam",
       "lop": "K15C.GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "Trưởng ban bóng đá nam",
+      "yTe": "Bình thường",
       "sdt": "0867322795",
-      "khoa": "N-H-TD"
+      "ice": "0867322795"
     },
     {
-      "stt": 21,
-      "id": "BDN21",
+      "id": "CMD0402",
       "hoTen": "Chu Minh Đức",
-      "ngaySinh": "04/02/2007",
-      "chucVu": "thành viên ban bóng đá",
       "lop": "k15A-GDTC",
+      "boMon": "Ban Bóng Đá Nam",
+      "chucVu": "thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0394594078",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0394594078"
     }
   ],
   "Ban Bóng Đá Nữ": [
     {
-      "stt": 1,
-      "id": "BDNU01",
+      "id": "TPC1107",
       "hoTen": "Trần Phương Cúc",
-      "ngaySinh": "11/07/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15ASPSU",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0868208922",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0868208922"
     },
     {
-      "stt": 2,
-      "id": "BDNU02",
+      "id": "DTH0111",
       "hoTen": "Đồng Thanh Hiền",
-      "ngaySinh": "01/11/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15C SPTOAN",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0398509120",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0398509120"
     },
     {
-      "stt": 3,
-      "id": "BDNU03",
+      "id": "NTNH1912",
       "hoTen": "Nguyễn Thị Ngọc Huyền",
-      "ngaySinh": "19/12/2006",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K14B.NNA",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0982636974",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0982636974"
     },
     {
-      "stt": 4,
-      "id": "BDNU04",
+      "id": "NTHH1401",
       "hoTen": "Nguyễn Trần Huyền Hạnh",
-      "ngaySinh": "14/01/2006",
-      "chucVu": "Thành viên bóng đá nữ",
       "lop": "K14C.GDTH",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên bóng đá nữ",
+      "yTe": "Bình thường",
       "sdt": "0915748614",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0915748614"
     },
     {
-      "stt": 5,
-      "id": "BDNU05",
+      "id": "PTH2409",
       "hoTen": "Phạm Thị Hạnh",
-      "ngaySinh": "24/09/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0392736086",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0392736086"
     },
     {
-      "stt": 6,
-      "id": "BDNU06",
+      "id": "NTLH1203",
       "hoTen": "Nguyễn Thị Lâm Hằng",
-      "ngaySinh": "12/03/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15B.KT",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0373256635",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0373256635"
     },
     {
-      "stt": 7,
-      "id": "BDNU07",
+      "id": "LTKK2504",
       "hoTen": "Lê Thị Kim Khánh",
-      "ngaySinh": "25/04/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16B-GDTC",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0348135923",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0348135923"
     },
     {
-      "stt": 8,
-      "id": "BDNU08",
+      "id": "LTL0902",
       "hoTen": "Lương Thanh Lam",
-      "ngaySinh": "09/02/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "k16. SP Hoá",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0829262712",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0829262712"
     },
     {
-      "stt": 9,
-      "id": "BDNU09",
+      "id": "NTL0912",
       "hoTen": "Nguyễn Thị Linh",
-      "ngaySinh": "09/12/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16B-NNA",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0335402186",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0335402186"
     },
     {
-      "stt": 10,
-      "id": "BDNU10",
+      "id": "TTTL1805",
       "hoTen": "Tào Thị Tuyết Linh",
-      "ngaySinh": "18/05/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15D.GDTH",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0394828197",
-      "khoa": "GDTH"
+      "ice": "0394828197"
     },
     {
-      "stt": 11,
-      "id": "BDNU11",
+      "id": "NTKL1305",
       "hoTen": "Nguyễn Thị Khánh Ly",
-      "ngaySinh": "13/05/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15G.GDTH",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0336821586",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0336821586"
     },
     {
-      "stt": 12,
-      "id": "BDNU12",
+      "id": "VQM1712",
       "hoTen": "Vũ Quỳnh Mai",
-      "ngaySinh": "17/12/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A-GDTC",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0865563238",
-      "khoa": "N-H-TD"
+      "ice": "0865563238"
     },
     {
-      "stt": 13,
-      "id": "BDNU13",
+      "id": "TTTN1610",
       "hoTen": "Trần Thị Tuyết Nhung",
-      "ngaySinh": "16/10/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16D.GDTH",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0962118003",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0962118003"
     },
     {
-      "stt": 14,
-      "id": "BDNU14",
+      "id": "MTMT1305",
       "hoTen": "Ma Thị Mai Thoa",
-      "ngaySinh": "13/05/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A.SPTOAN",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0962729061",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0962729061"
     },
     {
-      "stt": 15,
-      "id": "BDNU15",
+      "id": "LTT1001",
       "hoTen": "La Thị Thuý",
-      "ngaySinh": "10/01/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15A.SP SU",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0347685459",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0347685459"
     },
     {
-      "stt": 16,
-      "id": "BDNU16",
+      "id": "NTT2407",
       "hoTen": "Nguyễn Thị Thuận",
-      "ngaySinh": "24/07/2006",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K14G-GDTH",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0967683506",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0967683506"
     },
     {
-      "stt": 17,
-      "id": "BDNU17",
+      "id": "PAT2011",
       "hoTen": "Phạm Anh Thư",
-      "ngaySinh": "20/11/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A.GDTC",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0344821428",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0344821428"
     },
     {
-      "stt": 18,
-      "id": "BDNU18",
+      "id": "HTTT2211",
       "hoTen": "Hoàng Thị Thanh Thảo",
-      "ngaySinh": "22/11/2006",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K14G-GDTH",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0354100952",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0354100952"
     },
     {
-      "stt": 19,
-      "id": "BDNU19",
+      "id": "NTPT2604",
       "hoTen": "Nguyễn Thị Phương Thảo",
-      "ngaySinh": "26/04/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16A- GDTC",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0385256670",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0385256670"
     },
     {
-      "stt": 20,
-      "id": "BDNU20",
+      "id": "NBT0605",
       "hoTen": "Nguyễn Bảo Trâm",
-      "ngaySinh": "06/05/2008",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K16B-GDTC",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0962857725",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0962857725"
     },
     {
-      "stt": 21,
-      "id": "BDNU21",
+      "id": "LTNT2912",
       "hoTen": "Lường Thị Ngọc Tuyến",
-      "ngaySinh": "29/12/2006",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K14-GDCT",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0343797536",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0343797536"
     },
     {
-      "stt": 22,
-      "id": "BDNU22",
+      "id": "HHTV0511",
       "hoTen": "Hoàng Hà Thanh Vân",
-      "ngaySinh": "05/11/2007",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15B.GDTC",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0868057090",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0868057090"
     },
     {
-      "stt": 23,
-      "id": "BDNU23",
+      "id": "TTHY0308",
       "hoTen": "Trần Thị Hoa Yên",
-      "ngaySinh": "03/08/2004",
-      "chucVu": "Thành viên ban bóng đá",
       "lop": "K15D.GDTH",
+      "boMon": "Ban Bóng Đá Nữ",
+      "chucVu": "Thành viên ban bóng đá",
+      "yTe": "Bình thường",
       "sdt": "0345826551",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0345826551"
     }
   ],
   "Ban Cầu Lông": [
     {
-      "stt": 1,
-      "id": "CL01",
+      "id": "LDH0912",
       "hoTen": "Lương Đình Hiếu",
-      "ngaySinh": "09/12/2004",
-      "chucVu": "Trưởng ban cầu lông",
       "lop": "K13.GDTC",
+      "boMon": "Ban Cầu Lông",
+      "chucVu": "Trưởng ban cầu lông",
+      "yTe": "Bình thường",
       "sdt": "0787246014",
-      "khoa": "N-H-TD"
+      "ice": "0787246014"
+    },
+    {
+      "id": "DDH1011",
+      "hoTen": "Đinh Đức Huy",
+      "lop": "K15A.GDTC",
+      "boMon": "Ban Cầu Lông",
+      "chucVu": "Phó ban cầu lông",
+      "yTe": "Bình thường",
+      "sdt": "0362936958",
+      "ice": "0362936958"
     }
   ],
   "Ban Truyền Thông": [
     {
-      "stt": 1,
-      "id": "TT01",
+      "id": "TTNA0809",
       "hoTen": "Trương Thị Ngọc Anh",
-      "ngaySinh": "08/09/2007",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K15.SP Vật lí",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0944212679",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0944212679"
     },
     {
-      "stt": 2,
-      "id": "TT02",
+      "id": "PTND2909",
       "hoTen": "Phạm Thị Ngọc Duyên",
-      "ngaySinh": "29/09/2007",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K15E.GDTH",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0379230662",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0379230662"
     },
     {
-      "stt": 3,
-      "id": "TT03",
+      "id": "DNHH2205",
       "hoTen": "Đỗ Nguyệt Hải Hà",
-      "ngaySinh": "22/05/2007",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K15A SP Toán",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0335897056",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0335897056"
     },
     {
-      "stt": 4,
-      "id": "TT04",
+      "id": "TTTL1805",
       "hoTen": "Tào Thị Tuyết Linh",
-      "ngaySinh": "18/05/2007",
-      "chucVu": "Trưởng ban truyền thông",
       "lop": "K15D.GDTH",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Trưởng ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0394828197",
-      "khoa": "GDTH"
+      "ice": "0394828197"
     },
     {
-      "stt": 5,
-      "id": "TT05",
+      "id": "LKN1707",
       "hoTen": "Lê Kim Ngân",
-      "ngaySinh": "17/07/2007",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K15E.GDTH",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0376009544",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0376009544"
     },
     {
-      "stt": 6,
-      "id": "TT06",
+      "id": "BTP2006",
       "hoTen": "Bùi Thị Phương",
-      "ngaySinh": "20/06/2007",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K48C GDMN",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0338540588",
-      "khoa": "GDMN"
+      "ice": "0338540588"
     },
     {
-      "stt": 7,
-      "id": "TT07",
+      "id": "LTTP1710",
       "hoTen": "Lê Thị Thu Phương",
-      "ngaySinh": "17/10/2007",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K15E.GDTH",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0362495007",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0362495007"
     },
     {
-      "stt": 8,
-      "id": "TT08",
+      "id": "VMQ2311",
       "hoTen": "Vũ Minh Quang",
-      "ngaySinh": "23/11/2007",
-      "chucVu": "Phó ban truyền thông",
       "lop": "K15.GDTC",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Phó ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0866189811",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0866189811"
     },
     {
-      "stt": 9,
-      "id": "TT09",
+      "id": "LTTT2112",
       "hoTen": "Lê Thị Thu Thương",
-      "ngaySinh": "21/12/2005",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K13G.GDTH",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0704128206",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0704128206"
     },
     {
-      "stt": 10,
-      "id": "TT10",
+      "id": "NNT2202",
       "hoTen": "Nguyễn Nhật Tân",
-      "ngaySinh": "22/02/2008",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K16 SP Vật Lý",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0396291862",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0396291862"
     },
     {
-      "stt": 11,
-      "id": "TT11",
+      "id": "PTD2507",
       "hoTen": "Phạm Tiến Đạt",
-      "ngaySinh": "25/07/2007",
-      "chucVu": "Thành viên ban truyền thông",
       "lop": "K16.GDTC",
+      "boMon": "Ban Truyền Thông",
+      "chucVu": "Thành viên ban truyền thông",
+      "yTe": "Bình thường",
       "sdt": "0967395691",
-      "khoa": "ĐH Tây Bắc"
+      "ice": "0967395691"
     }
   ]
 };
@@ -1330,9 +1351,9 @@ function handleRequest(e) {
     // 0. CHẠY THIẾT LẬP TỰ ĐỘNG TỪ XA
     if (action === 'setup') {
       setupMultiSheetDatabase();
-      responseData = { success: true, message: 'Đã hoàn tất dọn dẹp và khởi tạo 7 ban cùng dữ liệu 124 thành viên!' };
+      responseData = { success: true, message: 'Đã hoàn tất dọn dẹp và khởi tạo 7 ban cùng dữ liệu 125 thành viên chuẩn 8 cột!' };
     }
-    // 1. ĐĂNG NHẬP (Tìm kiếm thông minh trên tất cả 7 Ban)
+    // 1. ĐĂNG NHẬP (Tìm kiếm thông minh trên tất cả 7 Ban - Hợp nhất quyền kiêm nhiệm)
     else if (action === 'login') {
       var identifier = (params.identifier || '').trim().toLowerCase();
       if (!identifier) {
@@ -1340,27 +1361,56 @@ function handleRequest(e) {
       } else {
         var allMembers = getAllMembersFromDepartments(ss);
         var foundMember = null;
+        var cleanIdentNum = identifier.replace(/[^0-9]/g, '');
+
         for (var i = 0; i < allMembers.length; i++) {
           var m = allMembers[i];
           var mId = String(m.id || '').trim().toLowerCase();
           var mSdt = String(m.sdt || '').replace(/[^0-9]/g, '');
-          var cleanIdentNum = identifier.replace(/[^0-9]/g, '');
           var mName = String(m.hoTen || '').trim().toLowerCase();
           var mMssv = String(m.mssv || '').trim().toLowerCase();
 
-          if (mId === identifier || 
-              (cleanIdentNum && mSdt === cleanIdentNum) ||
-              mName === identifier || 
-              mMssv === identifier) {
-            foundMember = m;
-            break;
+          // Khớp theo ID, SĐT (từ 9 số trở lên), Họ Tên hoặc Mã dự phòng
+          var isMatch = (mId === identifier) ||
+                        (cleanIdentNum.length >= 9 && mSdt && mSdt === cleanIdentNum) ||
+                        (mName === identifier) ||
+                        (mMssv === identifier);
+
+          if (isMatch) {
+            if (!foundMember) {
+              foundMember = JSON.parse(JSON.stringify(m));
+            } else {
+              // Hợp nhất quyền hạn cán sự từ các ban kiêm nhiệm
+              // Ưu tiên chức vụ và ban có thẩm quyền cao hơn
+              if (m.isAdmin && !foundMember.isAdmin) {
+                foundMember.isAdmin = true;
+                foundMember.isShiftLeader = true;
+                foundMember.chucVu = m.chucVu;
+                foundMember.boMon = m.boMon;
+              } else if (m.isShiftLeader && !foundMember.isShiftLeader) {
+                foundMember.isShiftLeader = true;
+                foundMember.chucVu = m.chucVu;
+                foundMember.boMon = m.boMon;
+              } else {
+                foundMember.isAdmin = foundMember.isAdmin || m.isAdmin;
+                foundMember.isShiftLeader = foundMember.isShiftLeader || m.isShiftLeader;
+              }
+              // Điền bổ sung SĐT và ICE nếu bản ghi trước đó để trống
+              if (!foundMember.sdt && m.sdt) {
+                foundMember.sdt = m.sdt;
+                foundMember.ice = m.sdt;
+              }
+              if (!foundMember.ice && m.ice) {
+                foundMember.ice = m.ice;
+              }
+            }
           }
         }
 
         if (foundMember) {
           responseData = { success: true, member: foundMember };
         } else {
-          responseData = { success: false, message: 'Không tìm thấy thành viên: ' + identifier + '. Vui lòng kiểm tra Mã ID (VD: BC01, BCN01, NS01...) hoặc SĐT.' };
+          responseData = { success: false, message: 'Không tìm thấy thành viên: ' + identifier + '. Vui lòng kiểm tra Mã ID (VD: DMC0806, LDH0912, DDH1011...) hoặc SĐT.' };
         }
       }
     }
@@ -1372,8 +1422,30 @@ function handleRequest(e) {
       if (memberId) {
         for (var k = 0; k < membersList.length; k++) {
           if (membersList[k].id === memberId) {
-            currentMember = membersList[k];
-            break;
+            if (!currentMember) {
+              currentMember = JSON.parse(JSON.stringify(membersList[k]));
+            } else {
+              if (membersList[k].isAdmin && !currentMember.isAdmin) {
+                currentMember.isAdmin = true;
+                currentMember.isShiftLeader = true;
+                currentMember.chucVu = membersList[k].chucVu;
+                currentMember.boMon = membersList[k].boMon;
+              } else if (membersList[k].isShiftLeader && !currentMember.isShiftLeader) {
+                currentMember.isShiftLeader = true;
+                currentMember.chucVu = membersList[k].chucVu;
+                currentMember.boMon = membersList[k].boMon;
+              } else {
+                currentMember.isAdmin = currentMember.isAdmin || membersList[k].isAdmin;
+                currentMember.isShiftLeader = currentMember.isShiftLeader || membersList[k].isShiftLeader;
+              }
+              if (!currentMember.sdt && membersList[k].sdt) {
+                currentMember.sdt = membersList[k].sdt;
+                currentMember.ice = membersList[k].sdt;
+              }
+              if (!currentMember.ice && membersList[k].ice) {
+                currentMember.ice = membersList[k].ice;
+              }
+            }
           }
         }
       }
@@ -1422,6 +1494,14 @@ function handleRequest(e) {
       var postObj = params.post ? parseJsonSafe(params.post, null) : params;
       responseData = handleCreatePost(ss, postObj);
     }
+    // 8. CẬP NHẬT PHÂN QUYỀN BAN QUẢN TRỊ & TRƯỞNG CA (updateMemberRole)
+    else if (action === 'updateMemberRole') {
+      var targetMemberId = (params.memberId || '').trim();
+      var isAdmin = params.isAdmin === 'true' || params.isAdmin === true;
+      var isShiftLeader = params.isShiftLeader === 'true' || params.isShiftLeader === true;
+      var adminActorId = params.adminActorId || '';
+      responseData = handleUpdateMemberRole(ss, targetMemberId, isAdmin, isShiftLeader, adminActorId);
+    }
 
   } catch(error) {
     responseData = { success: false, message: 'Lỗi máy chủ: ' + error.toString() };
@@ -1431,11 +1511,41 @@ function handleRequest(e) {
 }
 
 /**
- * Đọc tất cả thành viên từ 7 Sheet Ban
+ * Đọc tất cả thành viên từ 7 Sheet Ban chuyên môn (Khớp 100% cấu trúc 8 cột mới)
+ * Cột 1: Mã ID
+ * Cột 2: Họ và Tên
+ * Cột 3: Lớp
+ * Cột 4: Ban chuyên môn
+ * Cột 5: Chức vụ
+ * Cột 6: Y tế
+ * Cột 7: Số điện thoại
+ * Cột 8: Liên hệ khẩn cấp
  */
 function getAllMembersFromDepartments(ss) {
-  var allMembers = [];
-  
+  var membersMap = {};
+  var order = [];
+
+  // Đọc danh sách ca trực để tính số ca hoàn thành thực tế từ Tasks sheet
+  var taskSheet = ss.getSheetByName('Tasks');
+  var taskCheckins = {};
+  if (taskSheet) {
+    try {
+      var tRows = taskSheet.getDataRange().getValues();
+      if (tRows.length > 1) {
+        var checkColIdx = tRows[0].indexOf('checkedInMembers');
+        if (checkColIdx !== -1) {
+          for (var tr = 1; tr < tRows.length; tr++) {
+            var cList = parseJsonSafe(tRows[tr][checkColIdx], []);
+            for (var ci = 0; ci < cList.length; ci++) {
+              var cId = String(cList[ci]).trim();
+              taskCheckins[cId] = (taskCheckins[cId] || 0) + 1;
+            }
+          }
+        }
+      }
+    } catch(tErr) {}
+  }
+
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
     var deptName = DEPARTMENT_SHEETS[d];
     var sheet = ss.getSheetByName(deptName);
@@ -1444,68 +1554,98 @@ function getAllMembersFromDepartments(ss) {
     var rows = sheet.getDataRange().getValues();
     if (rows.length <= 1) continue;
 
-    // Header ở dòng 1: ['STT', 'Mã ID', 'Họ và Tên', 'Ngày Sinh', 'Chức Vụ', 'Lớp', 'SĐT', 'Khoa', 'Số Ca Đã Làm']
+    // Header ở dòng 1: ['Mã ID', 'Họ và Tên', 'Lớp', 'Ban chuyên môn', 'Chức vụ', 'Y tế', 'Số điện thoại', 'Liên hệ khẩn cấp']
     for (var i = 1; i < rows.length; i++) {
       var r = rows[i];
-      var stt = r[0];
-      var id = String(r[1] || '').trim();
-      var hoTen = String(r[2] || '').trim();
-      if (!hoTen) continue;
+      var id = String(r[0] || '').trim();
+      var hoTen = String(r[1] || '').trim();
+      if (!hoTen && !id) continue;
 
-      var ngaySinh = formatDateCell(r[3]);
+      var lop = String(r[2] || '').trim();
+      var boMon = String(r[3] || deptName).trim();
       var chucVu = String(r[4] || 'Thành viên').trim();
-      var lop = String(r[5] || '').trim();
+      var yTe = String(r[5] || 'Bình thường').trim();
       var sdt = cleanPhone(r[6]);
-      var khoa = String(r[7] || 'ĐH Tây Bắc').trim();
-      var soCa = Number(r[8]) || 0;
+      var ice = cleanPhone(r[7]) || sdt;
+      var soCa = (r.length > 8 && !isNaN(Number(r[8]))) ? Number(r[8]) : 0;
 
-      // Xác định quyền hạn thông minh theo Ban và Chức vụ
+      var effectiveId = id || generateMemberIdFromInfo(hoTen, '');
       var cvLower = chucVu.toLowerCase();
-      var isAdmin = (deptName === 'Ban Chủ Nhiệm') || 
+      var bmLower = boMon.toLowerCase();
+
+      // Quyền Admin: Ban Chủ Nhiệm, Ban Nhân Sự cán sự, hoặc chức danh lãnh đạo
+      var isAdmin = (deptName === 'Ban Chủ Nhiệm' || bmLower.indexOf('chủ nhiệm') !== -1) || 
+                    (deptName === 'Ban Nhân Sự' && (cvLower.indexOf('trưởng ban') !== -1 || cvLower.indexOf('phó ban') !== -1)) ||
                     cvLower.indexOf('chủ nhiệm') !== -1 || 
                     cvLower.indexOf('phó chủ nhiệm') !== -1 ||
                     cvLower.indexOf('tổng thư ký') !== -1 ||
-                    cvLower.indexOf('thủ quỹ') !== -1;
+                    cvLower.indexOf('thủ quỹ') !== -1 ||
+                    effectiveId === 'DMC0806';
 
       var isShiftLeader = isAdmin || 
                           cvLower.indexOf('trưởng ban') !== -1 || 
                           cvLower.indexOf('phó ban') !== -1;
 
-      allMembers.push({
-        stt: stt,
-        id: id || (deptName + '_' + i),
-        hoTen: hoTen,
-        lop: lop,
-        mssv: ngaySinh || id,
-        khoa: khoa,
-        boMon: deptName,
-        chucVu: chucVu,
-        sdt: sdt,
-        yTe: 'Bình thường',
-        ice: sdt,
-        soCa: soCa,
-        soCaHoanThanh: soCa,
-        status: 'Sẵn sàng',
-        theTrang: 'Khỏe mạnh (100% Sẵn sàng)',
-        avatar: '',
-        isAdmin: isAdmin,
-        isShiftLeader: isShiftLeader
-      });
+      if (!membersMap[effectiveId]) {
+        var initialDone = soCa + (taskCheckins[effectiveId] || 0);
+        membersMap[effectiveId] = {
+          id: effectiveId,
+          hoTen: hoTen,
+          lop: lop,
+          boMon: boMon || deptName,
+          chucVu: chucVu,
+          yTe: yTe || 'Bình thường',
+          sdt: sdt,
+          ice: ice,
+          mssv: effectiveId,
+          khoa: 'Trường Đại học Tây Bắc',
+          soCa: initialDone,
+          soCaHoanThanh: initialDone,
+          status: 'Sẵn sàng',
+          theTrang: 'Khỏe mạnh (100% Sẵn sàng)',
+          avatar: '',
+          isAdmin: isAdmin,
+          isShiftLeader: isShiftLeader,
+          cacBan: [deptName]
+        };
+        order.push(effectiveId);
+      } else {
+        var existing = membersMap[effectiveId];
+        if (existing.cacBan.indexOf(deptName) === -1) {
+          existing.cacBan.push(deptName);
+        }
+        // Hợp nhất quyền hạn cán sự đa ban: luôn nâng cấp lên quyền cao nhất
+        if (isAdmin && !existing.isAdmin) {
+          existing.isAdmin = true;
+          existing.isShiftLeader = true;
+          existing.chucVu = chucVu;
+          existing.boMon = boMon || deptName;
+        } else if (isShiftLeader && !existing.isShiftLeader) {
+          existing.isShiftLeader = true;
+          existing.chucVu = chucVu;
+          existing.boMon = boMon || deptName;
+        } else if (existing.chucVu.toLowerCase() === 'thành viên' && cvLower !== 'thành viên') {
+          existing.chucVu = chucVu;
+          existing.boMon = boMon || deptName;
+        }
+
+        // Cập nhật SĐT và ICE nếu bản ghi trước đó để trống
+        if (!existing.sdt && sdt) existing.sdt = sdt;
+        if ((!existing.ice || existing.ice === existing.sdt) && ice) existing.ice = ice;
+        if ((!existing.yTe || existing.yTe === 'Bình thường') && yTe && yTe !== 'Bình thường') existing.yTe = yTe;
+        if (soCa > 0) {
+          existing.soCa = (existing.soCa || 0) + soCa;
+          existing.soCaHoanThanh = existing.soCa;
+        }
+      }
     }
   }
 
-  return allMembers;
-}
-
-/**
- * Xử lý định dạng ngày tháng từ ô bảng tính
- */
-function formatDateCell(val) {
-  if (!val) return '';
-  if (val instanceof Date) {
-    return Utilities.formatDate(val, 'Asia/Ho_Chi_Minh', 'dd/MM/yyyy');
+  var mergedList = [];
+  for (var k = 0; k < order.length; k++) {
+    mergedList.push(membersMap[order[k]]);
   }
-  return String(val).trim();
+  return mergedList;
 }
 
 /**
@@ -1530,6 +1670,36 @@ function parseJsonSafe(str, defaultVal) {
   } catch(e) {
     return defaultVal;
   }
+}
+
+/**
+ * Tự động tạo Mã ID chuẩn [Initials][DDMM] từ Họ tên và Ngày sinh nếu cần
+ */
+function generateMemberIdFromInfo(name, dob) {
+  if (!name) return '';
+  var s = String(name).trim();
+  s = s.replace(/Đ/g, 'D').replace(/đ/g, 'd');
+  try {
+    s = s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  } catch(e) {}
+  var words = s.split(/\s+/);
+  var initials = '';
+  for (var i = 0; i < words.length; i++) {
+    if (words[i]) initials += words[i].charAt(0).toUpperCase();
+  }
+  
+  var ddmm = '0101';
+  if (dob instanceof Date) {
+    ddmm = Utilities.formatDate(dob, 'Asia/Ho_Chi_Minh', 'ddMM');
+  } else if (dob) {
+    var m = String(dob).match(/(\d{1,2})[\/\-](\d{1,2})/);
+    if (m) {
+      var day = parseInt(m[1], 10);
+      var month = parseInt(m[2], 10);
+      ddmm = (day < 10 ? '0' + day : day) + '' + (month < 10 ? '0' + month : month);
+    }
+  }
+  return initials + ddmm;
 }
 
 /**
@@ -1613,24 +1783,26 @@ function handleClaimTask(ss, taskId, memberId, waitlist) {
   var idCol = headers.indexOf('id');
   var joinedCol = headers.indexOf('joinedMembers');
   var waitlistCol = headers.indexOf('waitlist');
+  var quotaCol = headers.indexOf('quota');
 
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][idCol]) === String(taskId)) {
       var joined = parseJsonSafe(rows[i][joinedCol], []);
       var wait = parseJsonSafe(rows[i][waitlistCol], []);
+      var quota = Number(rows[i][quotaCol]) || 6;
 
-      if (waitlist) {
-        if (wait.indexOf(memberId) === -1) wait.push(memberId);
+      if (joined.indexOf(memberId) !== -1 || wait.indexOf(memberId) !== -1) {
+        return { success: false, message: 'Bạn đã đăng ký trong ca này rồi!' };
+      }
+
+      if (waitlist || joined.length >= quota) {
+        wait.push(memberId);
         sheet.getRange(i + 1, waitlistCol + 1).setValue(JSON.stringify(wait));
-        return { success: true, message: 'Đã thêm bạn vào hàng đợi dự bị' };
+        return { success: true, message: 'Đã vào hàng chờ dự bị!', waitlist: true };
       } else {
-        if (joined.indexOf(memberId) === -1) joined.push(memberId);
-        // Xóa khỏi waitlist nếu đã được duyệt
-        var wIdx = wait.indexOf(memberId);
-        if (wIdx !== -1) wait.splice(wIdx, 1);
+        joined.push(memberId);
         sheet.getRange(i + 1, joinedCol + 1).setValue(JSON.stringify(joined));
-        sheet.getRange(i + 1, waitlistCol + 1).setValue(JSON.stringify(wait));
-        return { success: true, message: 'Đăng ký ca trực thành công!' };
+        return { success: true, message: 'Đăng ký ca trực thành công!', waitlist: false };
       }
     }
   }
@@ -1647,39 +1819,55 @@ function handleWithdrawTask(ss, taskId, memberId, reason) {
   var headers = rows[0];
   var idCol = headers.indexOf('id');
   var joinedCol = headers.indexOf('joinedMembers');
-  var titleCol = headers.indexOf('title');
+  var waitlistCol = headers.indexOf('waitlist');
 
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][idCol]) === String(taskId)) {
       var joined = parseJsonSafe(rows[i][joinedCol], []);
-      var idx = joined.indexOf(memberId);
-      if (idx !== -1) {
-        joined.splice(idx, 1);
-        sheet.getRange(i + 1, joinedCol + 1).setValue(JSON.stringify(joined));
+      var wait = parseJsonSafe(rows[i][waitlistCol], []);
+
+      var jIdx = joined.indexOf(memberId);
+      var wIdx = wait.indexOf(memberId);
+
+      if (jIdx === -1 && wIdx === -1) {
+        return { success: false, message: 'Bạn chưa tham gia ca trực này' };
       }
-      
-      // Ghi log vào Swaps
+
+      if (jIdx !== -1) joined.splice(jIdx, 1);
+      if (wIdx !== -1) wait.splice(wIdx, 1);
+
+      // Nếu có người trong hàng chờ, đôn lên vị trí chính thức
+      if (wait.length > 0 && joined.length < (Number(rows[i][headers.indexOf('quota')]) || 6)) {
+        var promoted = wait.shift();
+        joined.push(promoted);
+      }
+
+      sheet.getRange(i + 1, joinedCol + 1).setValue(JSON.stringify(joined));
+      sheet.getRange(i + 1, waitlistCol + 1).setValue(JSON.stringify(wait));
+
+      // Ghi nhận vào Swaps sheet
       var swapsSheet = ss.getSheetByName('Swaps');
       if (swapsSheet) {
         swapsSheet.appendRow([
-          'withdraw_' + new Date().getTime(),
+          'SWAP_' + Date.now(),
           taskId,
-          rows[i][titleCol] || 'Ca trực',
+          rows[i][headers.indexOf('title')],
           memberId,
-          reason || 'Xin rút ca',
-          'ADMIN',
+          '',
+          '',
           new Date().toISOString(),
-          'Đã Rút Ca'
+          'Đã rút ca: ' + reason
         ]);
       }
+
       return { success: true, message: 'Đã rút ca trực thành công' };
     }
   }
-  return { success: false, message: 'Không tìm thấy ca trực' };
+  return { success: false, message: 'Không tìm thấy ca trực: ' + taskId };
 }
 
 /**
- * Xử lý điểm danh bằng QR Code hiện trường
+ * Xử lý điểm danh hiện trường bằng QR
  */
 function handleCheckinMember(ss, taskId, memberId, adminId) {
   var sheet = ss.getSheetByName('Tasks');
@@ -1687,47 +1875,52 @@ function handleCheckinMember(ss, taskId, memberId, adminId) {
   var rows = sheet.getDataRange().getValues();
   var headers = rows[0];
   var idCol = headers.indexOf('id');
-  var checkinCol = headers.indexOf('checkedInMembers');
+  var checkCol = headers.indexOf('checkedInMembers');
   var logsCol = headers.indexOf('checkinLogs');
 
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][idCol]) === String(taskId)) {
-      var checkedIn = parseJsonSafe(rows[i][checkinCol], []);
+      var checked = parseJsonSafe(rows[i][checkCol], []);
       var logs = parseJsonSafe(rows[i][logsCol], []);
 
-      if (checkedIn.indexOf(memberId) === -1) {
-        checkedIn.push(memberId);
+      if (checked.indexOf(memberId) === -1) {
+        checked.push(memberId);
+        logs.push({
+          memberId: memberId,
+          adminId: adminId,
+          time: new Date().toISOString()
+        });
+        sheet.getRange(i + 1, checkCol + 1).setValue(JSON.stringify(checked));
+        sheet.getRange(i + 1, logsCol + 1).setValue(JSON.stringify(logs));
+        
+        // Tăng số ca đã làm cho thành viên trong Sheet của Ban tương ứng
+        incrementMemberCompletedShifts(ss, memberId);
+
+        return { success: true, message: 'Điểm danh thành công cho: ' + memberId };
+      } else {
+        return { success: true, message: 'Thành viên ' + memberId + ' đã được điểm danh trước đó!' };
       }
-      logs.push({
-        memberId: memberId,
-        scannedBy: adminId || 'Admin',
-        time: new Date().toISOString()
-      });
-
-      sheet.getRange(i + 1, checkinCol + 1).setValue(JSON.stringify(checkedIn));
-      sheet.getRange(i + 1, logsCol + 1).setValue(JSON.stringify(logs));
-
-      // Tăng số ca cống hiến cho thành viên trong Sheet của họ
-      incrementMemberShiftCount(ss, memberId);
-
-      return { success: true, message: 'Điểm danh hiện trường thành công cho thành viên: ' + memberId };
     }
   }
-  return { success: false, message: 'Không tìm thấy ca trực' };
+  return { success: false, message: 'Không tìm thấy ca trực: ' + taskId };
 }
 
 /**
- * Cộng thêm 1 ca hoàn thành vào Sheet của thành viên
+ * Tăng số ca trực hoàn thành trong sheet tương ứng (Cột 1 là Mã ID)
  */
-function incrementMemberShiftCount(ss, memberId) {
+function incrementMemberCompletedShifts(ss, memberId) {
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
     var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
     if (!sheet) continue;
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
-      if (String(rows[i][1]).trim().toLowerCase() === String(memberId).trim().toLowerCase()) {
-        var currentCount = Number(rows[i][8]) || 0;
-        sheet.getRange(i + 1, 9).setValue(currentCount + 1);
+      if (String(rows[i][0]).trim() === memberId) {
+        // Nếu có cột 9 (Số Ca Đã Làm) thì tăng lên 1, nếu chưa có thì có thể ghi vào cột 9
+        var cur = (rows[i].length >= 9 && !isNaN(Number(rows[i][8]))) ? Number(rows[i][8]) : 0;
+        sheet.getRange(i + 1, 9).setValue(cur + 1);
+        if (rows[0].length < 9) {
+          sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+        }
         return;
       }
     }
@@ -1735,73 +1928,71 @@ function incrementMemberShiftCount(ss, memberId) {
 }
 
 /**
- * Tạo mới ca trực
+ * Xử lý tạo ca trực mới
  */
-function handleCreateTask(ss, task) {
+function handleCreateTask(ss, taskObj) {
   var sheet = ss.getSheetByName('Tasks');
   if (!sheet) return { success: false, message: 'Chưa có sheet Tasks' };
-  var taskId = task.id || ('TASK_' + new Date().getTime());
+
+  var id = taskObj.id || ('TASK_' + Date.now());
   sheet.appendRow([
-    taskId,
-    task.title || 'Ca trực mới',
-    task.location || 'Sân thể thao',
-    task.time || '07:30 - 11:30',
-    Number(task.quota) || 6,
-    JSON.stringify(task.joinedMembers || []),
-    JSON.stringify(task.assignedMembers || []),
-    JSON.stringify(task.waitlist || []),
-    task.leaderId || '',
-    JSON.stringify(task.checkedInMembers || []),
-    JSON.stringify(task.checkinLogs || []),
-    task.lockDeadline || '',
-    task.status || 'Mở Đăng Ký',
-    JSON.stringify(task.departmentQuotas || {})
+    id,
+    taskObj.title || 'Ca trực mới',
+    taskObj.location || 'Sân trường',
+    taskObj.time || '',
+    Number(taskObj.quota) || 6,
+    JSON.stringify(taskObj.joinedMembers || []),
+    JSON.stringify(taskObj.assignedMembers || []),
+    JSON.stringify(taskObj.waitlist || []),
+    taskObj.leaderId || '',
+    JSON.stringify(taskObj.checkedInMembers || []),
+    JSON.stringify(taskObj.checkinLogs || []),
+    taskObj.lockDeadline || '',
+    taskObj.status || 'Mở Đăng Ký',
+    JSON.stringify(taskObj.departmentQuotas || {})
   ]);
-  return { success: true, message: 'Tạo ca trực mới thành công!', taskId: taskId };
+
+  return { success: true, message: 'Tạo ca trực mới thành công!', taskId: id };
 }
 
 /**
- * Tạo mới bài viết diễn đàn
+ * Xử lý tạo bài viết diễn đàn mới
  */
-function handleCreatePost(ss, post) {
+function handleCreatePost(ss, postObj) {
   var sheet = ss.getSheetByName('Posts');
   if (!sheet) return { success: false, message: 'Chưa có sheet Posts' };
-  var postId = post.id || ('POST_' + new Date().getTime());
+
+  var id = postObj.id || ('POST_' + Date.now());
   sheet.appendRow([
-    postId,
-    post.authorId || '',
-    post.authorName || 'Thành viên',
-    post.authorRole || 'CLB Thể Thao',
-    post.authorAvatar || '',
-    post.content || '',
-    post.image || '',
-    post.createdAt || new Date().toISOString(),
-    Number(post.likes) || 0,
-    JSON.stringify(post.likedBy || []),
-    JSON.stringify(post.comments || []),
-    post.isAnonymous ? 'TRUE' : 'FALSE'
+    id,
+    postObj.authorId || '',
+    postObj.authorName || 'Thành viên',
+    postObj.authorRole || '',
+    postObj.authorAvatar || '',
+    postObj.content || '',
+    postObj.image || '',
+    new Date().toISOString(),
+    0,
+    '[]',
+    '[]',
+    postObj.isAnonymous ? 'TRUE' : 'FALSE'
   ]);
-  return { success: true, message: 'Đăng bài viết thành công!', postId: postId };
+
+  return { success: true, message: 'Đăng bài viết thành công!', postId: id };
 }
 
 /**
  * ==============================================================================
- * HÀM THIẾT LẬP VÀ LÀM SẠCH BẢNG TÍNH TỰ ĐỘNG (SETUP & CLEANUP)
- * ==============================================================================
- * Chức năng:
- * 1. Tạo mới / chuẩn hóa đúng 7 Sheet tương ứng 7 Ban chuyên môn.
- * 2. Điền đầy đủ 124 thành viên chuẩn xác 100%, có Mã ID theo từng Ban.
- * 3. Bảo toàn số 0 ở đầu SĐT (đặt định dạng ô Text '@').
- * 4. Tạo các Sheet nghiệp vụ: Tasks, Swaps, Posts.
- * 5. Tự động XÓA tất cả các sheet thừa/rác không liên quan.
+ * HÀM KHỞI TẠO VÀ DỌN DẸP TOÀN BỘ CƠ SỞ DỮ LIỆU MULTI-SHEET CHUẨN 8 CỘT
+ * Chạy hàm này một lần duy nhất từ menu Trình chỉnh sửa Apps Script
  * ==============================================================================
  */
 function setupMultiSheetDatabase() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var header = ['STT', 'Mã ID', 'Họ và Tên', 'Ngày Sinh', 'Chức Vụ', 'Lớp', 'SĐT', 'Khoa', 'Số Ca Đã Làm'];
+  var header = ['Mã ID', 'Họ và Tên', 'Lớp', 'Ban chuyên môn', 'Chức vụ', 'Y tế', 'Số điện thoại', 'Liên hệ khẩn cấp'];
   var totalSeeded = 0;
 
-  // 1. Khởi tạo 7 Sheet Ban
+  // 1. Khởi tạo 7 Sheet Ban chuyên môn chuẩn 8 cột
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
     var deptName = DEPARTMENT_SHEETS[d];
     var sheet = ss.getSheetByName(deptName);
@@ -1810,13 +2001,15 @@ function setupMultiSheetDatabase() {
     }
     sheet.clear();
 
-    // Thiết lập Header thẩm mỹ
+    // Thiết lập Header thẩm mỹ Navy sang trọng
     sheet.appendRow(header);
     var headerRange = sheet.getRange(1, 1, 1, header.length);
     headerRange.setBackground('#0f172a'); // Navy đậm sang trọng
     headerRange.setFontColor('#ffffff');
     headerRange.setFontWeight('bold');
     headerRange.setHorizontalAlignment('center');
+    headerRange.setFontSize(11);
+    sheet.setRowHeight(1, 30);
     sheet.setFrozenRows(1);
 
     // Lấy dữ liệu thành viên của Ban
@@ -1826,141 +2019,179 @@ function setupMultiSheetDatabase() {
       for (var m = 0; m < members.length; m++) {
         var mem = members[m];
         var sdtStr = mem.sdt ? ("'" + mem.sdt) : "";
+        var iceStr = mem.ice ? ("'" + mem.ice) : (mem.sdt ? ("'" + mem.sdt) : "");
         rows.push([
-          mem.stt,
           mem.id,
           mem.hoTen,
-          mem.ngaySinh,
-          mem.chucVu,
           mem.lop,
+          deptName,
+          mem.chucVu,
+          mem.yTe || 'Bình thường',
           sdtStr,
-          mem.khoa,
-          0
+          iceStr
         ]);
       }
       sheet.getRange(2, 1, rows.length, rows[0].length).setValues(rows);
 
-      // Định dạng Text cho cột Mã ID, Ngày Sinh, SĐT để bảo toàn số 0
-      sheet.getRange(2, 2, rows.length, 1).setNumberFormat('@');
-      sheet.getRange(2, 4, rows.length, 1).setNumberFormat('@');
-      sheet.getRange(2, 7, rows.length, 1).setNumberFormat('@');
-
-      // Căn giữa STT, Mã ID, Ngày Sinh, Lớp, SĐT
-      sheet.getRange(2, 1, rows.length, 2).setHorizontalAlignment('center');
-      sheet.getRange(2, 4, rows.length, 1).setHorizontalAlignment('center');
-      sheet.getRange(2, 6, rows.length, 2).setHorizontalAlignment('center');
-      sheet.getRange(2, 9, rows.length, 1).setHorizontalAlignment('center');
+      // Căn chỉnh giao diện đẹp mắt
+      sheet.getRange(2, 1, rows.length, 1).setHorizontalAlignment('center').setFontColor('#0369a1').setFontWeight('bold');
+      sheet.getRange(2, 2, rows.length, 1).setHorizontalAlignment('left').setFontWeight('bold');
+      sheet.getRange(2, 3, rows.length, 1).setHorizontalAlignment('center');
+      sheet.getRange(2, 4, rows.length, 2).setHorizontalAlignment('left');
+      sheet.getRange(2, 6, rows.length, 1).setHorizontalAlignment('center');
+      sheet.getRange(2, 7, rows.length, 1).setHorizontalAlignment('center').setFontColor('#047857').setFontWeight('bold');
+      sheet.getRange(2, 8, rows.length, 1).setHorizontalAlignment('center').setFontColor('#be123c').setFontWeight('bold');
 
       totalSeeded += rows.length;
     }
 
-    // Tự động căn chỉnh độ rộng cột
-    for (var c = 1; c <= header.length; c++) {
-      try { sheet.autoResizeColumn(c); } catch(e) {}
-    }
+    // Định dạng Text @ cho toàn bộ các cột để người dùng thêm dòng sau không bị mất số 0
+    sheet.getRange('A:A').setNumberFormat('@');
+    sheet.getRange('B:B').setNumberFormat('@');
+    sheet.getRange('C:C').setNumberFormat('@');
+    sheet.getRange('D:D').setNumberFormat('@');
+    sheet.getRange('E:E').setNumberFormat('@');
+    sheet.getRange('F:F').setNumberFormat('@');
+    sheet.getRange('G:G').setNumberFormat('@');
+    sheet.getRange('H:H').setNumberFormat('@');
+
+    // Đặt độ rộng cột tiêu chuẩn cho máy tính và điện thoại
+    sheet.setColumnWidth(1, 110); // Mã ID
+    sheet.setColumnWidth(2, 190); // Họ và Tên
+    sheet.setColumnWidth(3, 130); // Lớp
+    sheet.setColumnWidth(4, 160); // Ban chuyên môn
+    sheet.setColumnWidth(5, 170); // Chức vụ
+    sheet.setColumnWidth(6, 130); // Y tế
+    sheet.setColumnWidth(7, 140); // SĐT
+    sheet.setColumnWidth(8, 150); // Liên hệ khẩn cấp
   }
 
-  // 2. Khởi tạo Sheet Tasks (Ca trực)
-  var tasksSheet = ss.getSheetByName('Tasks');
-  if (!tasksSheet) {
-    tasksSheet = ss.insertSheet('Tasks');
-  }
-  if (tasksSheet.getLastRow() === 0) {
-    tasksSheet.appendRow(['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas']);
-    var tHRange = tasksSheet.getRange(1, 1, 1, 14);
-    tHRange.setBackground('#047857'); // Emerald xanh
-    tHRange.setFontColor('#ffffff');
-    tHRange.setFontWeight('bold');
-    tasksSheet.setFrozenRows(1);
+  // 2. Khởi tạo 3 Sheet Nghiệp vụ App (Tasks, Swaps, Posts)
+  var taskSheet = ss.getSheetByName('Tasks');
+  if (!taskSheet) taskSheet = ss.insertSheet('Tasks');
+  taskSheet.clear();
+  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas'];
+  taskSheet.appendRow(taskHeaders);
+  taskSheet.getRange(1, 1, 1, taskHeaders.length).setBackground('#3b0764').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+  taskSheet.setFrozenRows(1);
+  taskSheet.appendRow([
+    'TASK_01',
+    'Trực bàn giải Cầu lông - Tân Sinh Viên K16',
+    'Nhà Thi Đấu ĐH Tây Bắc',
+    '14:00 - 18:00 Thứ Bảy',
+    6,
+    JSON.stringify(['DMC0806', 'DDH1011']),
+    '[]',
+    JSON.stringify(['TCT0803']),
+    'LDH0912',
+    '[]',
+    '[]',
+    '2026-10-25T14:00',
+    'active',
+    JSON.stringify({ 'Ban Cầu Lông': 2, 'Ban Bóng Chuyền': 2, 'Ban Truyền Thông': 2 })
+  ]);
+  taskSheet.appendRow([
+    'TASK_02',
+    'Hậu cần & Điều phối Giải Bóng Đá Nam Vòng Bảng',
+    'Sân Bóng Cỏ Nhân Tạo ĐH Tây Bắc',
+    '08:00 - 11:30 Chủ Nhật',
+    4,
+    JSON.stringify(['LDH0912']),
+    '[]',
+    '[]',
+    'DMC0806',
+    '[]',
+    '[]',
+    '2026-10-26T08:00',
+    'active',
+    JSON.stringify({ 'Ban Bóng Đá Nam': 2, 'Ban Truyền Thông': 2 })
+  ]);
 
-    // Nạp sẵn 3 ca trực mẫu chuẩn thực tế
-    tasksSheet.appendRow([
-      'TASK_001',
-      'Trực sân Bóng Chuyền - Giải Giao Hữu Tân Sinh Viên K16',
-      'Nhà Thi Đấu ĐH Tây Bắc',
-      '07:30 - 11:30 | Thứ Bảy',
-      6,
-      '[]', '[]', '[]', 'BCN01', '[]', '[]', '2026-10-18T22:00:00Z', 'Mở Đăng Ký',
-      '{\"Ban Bóng Chuyền\": 3, \"Ban Chủ Nhiệm\": 1, \"Ban Nhân Sự\": 1, \"Ban Truyền Thông\": 1}'
-    ]);
-    tasksSheet.appendRow([
-      'TASK_002',
-      'Điều phối Giải Bóng Đá Nam Vòng Bảng Khoa GDTC',
-      'Sân Bóng Cỏ Nhân Tạo',
-      '14:00 - 17:30 | Chủ Nhật',
-      8,
-      '[]', '[]', '[]', 'BCN02', '[]', '[]', '2026-10-19T10:00:00Z', 'Mở Đăng Ký',
-      '{\"Ban Bóng Đá Nam\": 5, \"Ban Y Tế\": 1, \"Ban Truyền Thông\": 2}'
-    ]);
-    tasksSheet.appendRow([
-      'TASK_003',
-      'Hỗ trợ Truyền Thông & Livestream Khai Mạc Giải Thể Thao',
-      'Hội Trường Trung Tâm',
-      '18:30 - 21:30 | Thứ Hai',
-      4,
-      '[]', '[]', '[]', 'TT04', '[]', '[]', '2026-10-20T12:00:00Z', 'Mở Đăng Ký',
-      '{\"Ban Truyền Thông\": 3, \"Ban Chủ Nhiệm\": 1}'
-    ]);
-  }
+  var swapSheet = ss.getSheetByName('Swaps');
+  if (!swapSheet) swapSheet = ss.insertSheet('Swaps');
+  swapSheet.clear();
+  var swapHeaders = ['id', 'taskId', 'taskTitle', 'fromMemberId', 'fromMemberName', 'toMemberId', 'createdAt', 'status'];
+  swapSheet.appendRow(swapHeaders);
+  swapSheet.getRange(1, 1, 1, swapHeaders.length).setBackground('#78350f').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+  swapSheet.setFrozenRows(1);
 
-  // 3. Khởi tạo Sheet Swaps (Đổi ca / Rút ca)
-  var swapsSheet = ss.getSheetByName('Swaps');
-  if (!swapsSheet) {
-    swapsSheet = ss.insertSheet('Swaps');
-  }
-  if (swapsSheet.getLastRow() === 0) {
-    swapsSheet.appendRow(['id', 'taskId', 'taskTitle', 'fromMemberId', 'fromMemberName', 'toMemberId', 'createdAt', 'status']);
-    var sHRange = swapsSheet.getRange(1, 1, 1, 8);
-    sHRange.setBackground('#b45309'); // Amber cam đậm
-    sHRange.setFontColor('#ffffff');
-    sHRange.setFontWeight('bold');
-    swapsSheet.setFrozenRows(1);
-  }
+  var postSheet = ss.getSheetByName('Posts');
+  if (!postSheet) postSheet = ss.insertSheet('Posts');
+  postSheet.clear();
+  var postHeaders = ['id', 'authorId', 'authorName', 'authorRole', 'authorAvatar', 'content', 'image', 'createdAt', 'likes', 'likedBy', 'comments', 'isAnonymous'];
+  postSheet.appendRow(postHeaders);
+  postSheet.getRange(1, 1, 1, postHeaders.length).setBackground('#064e3b').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+  postSheet.setFrozenRows(1);
+  postSheet.appendRow([
+    'POST_01',
+    'DMC0806',
+    'Đỗ Mạnh Cường',
+    'Trưởng ban nhân sự',
+    '',
+    'Chào mừng các bạn đến với hệ thống điều phối thẻ số CLB Thể Thao ĐH Tây Bắc! Toàn bộ Mã ID đã được đồng bộ chuẩn hóa theo tên và ngày sinh DDMM.',
+    '',
+    new Date().toISOString(),
+    12,
+    JSON.stringify(['LDH0912', 'DDH1011', 'TCT0803']),
+    JSON.stringify([{ id: 'CMT_01', authorId: 'LDH0912', authorName: 'Lương Đình Hiếu', text: 'Ban Cầu Lông đã sẵn sàng cho giải đấu sắp tới rồi anh Cường ơi!', time: '10:15', replies: [] }]),
+    'FALSE'
+  ]);
 
-  // 4. Khởi tạo Sheet Posts (Diễn đàn & Thông báo)
-  var postsSheet = ss.getSheetByName('Posts');
-  if (!postsSheet) {
-    postsSheet = ss.insertSheet('Posts');
-  }
-  if (postsSheet.getLastRow() === 0) {
-    postsSheet.appendRow(['id', 'authorId', 'authorName', 'authorRole', 'authorAvatar', 'content', 'image', 'createdAt', 'likes', 'likedBy', 'comments', 'isAnonymous']);
-    var pHRange = postsSheet.getRange(1, 1, 1, 12);
-    pHRange.setBackground('#1d4ed8'); // Cobalt xanh dương
-    pHRange.setFontColor('#ffffff');
-    pHRange.setFontWeight('bold');
-    postsSheet.setFrozenRows(1);
-
-    // Bài viết chào mừng mẫu
-    postsSheet.appendRow([
-      'POST_WELCOME',
-      'BCN01',
-      'Ban Chủ Nhiệm CLB Thể Thao',
-      'Quản Trị Viên',
-      '',
-      '🎉 Chào mừng toàn thể thành viên đến với SportPass PWA! Hãy kiểm tra ca trực mới và đăng ký nhận ca đúng giờ nhé.',
-      '',
-      new Date().toISOString(),
-      12,
-      '[\"BCN01\", \"BC01\", \"BDN01\"]',
-      '[]',
-      'FALSE'
-    ]);
-  }
-
-  // 5. LÀM SẠCH BẢNG TÍNH: Xóa mọi Sheet rác/thừa không thuộc 7 Ban và 3 Tab nghiệp vụ
-  var validSheetNames = DEPARTMENT_SHEETS.concat(APP_SHEETS);
+  // 3. Xóa bỏ sheet mặc định 'Trang tính1' hoặc 'Sheet1' nếu còn tồn tại
   var allSheets = ss.getSheets();
-  for (var j = 0; j < allSheets.length; j++) {
-    var curName = allSheets[j].getName();
-    if (validSheetNames.indexOf(curName) === -1 && allSheets.length > 1) {
+  var keepSheets = DEPARTMENT_SHEETS.concat(APP_SHEETS);
+  for (var k = 0; k < allSheets.length; k++) {
+    var sName = allSheets[k].getName();
+    if (keepSheets.indexOf(sName) === -1 && allSheets.length > keepSheets.length) {
       try {
-        ss.deleteSheet(allSheets[j]);
-      } catch(e) {}
+        ss.deleteSheet(allSheets[k]);
+      } catch(err) {}
     }
   }
 
-  Logger.log('=== HOÀN TẤT THIẾT LẬP THÀNH CÔNG ===');
-  Logger.log('Đã tạo chuẩn ' + DEPARTMENT_SHEETS.length + ' ban chuyên môn và điền ' + totalSeeded + ' thành viên.');
-  Logger.log('Đã tạo 3 sheet nghiệp vụ: Tasks, Swaps, Posts.');
-  Logger.log('Đã xóa sạch các sheet thừa.');
+  SpreadsheetApp.flush();
+  Logger.log('Đã hoàn tất dọn dẹp và khởi tạo thành công ' + totalSeeded + ' thành viên chuẩn 8 cột vào 7 sheet ban!');
+}
+
+
+/**
+ * Xử lý cập nhật quyền Admin / Trưởng ca từ xa và lưu vào Sheet AdminRoles
+ */
+function handleUpdateMemberRole(ss, memberId, isAdmin, isShiftLeader, adminActorId) {
+  if (!memberId) {
+    return { success: false, message: 'Thiếu Mã ID thành viên cần cấp quyền' };
+  }
+
+  var rolesSheet = ss.getSheetByName('AdminRoles');
+  if (!rolesSheet) {
+    rolesSheet = ss.insertSheet('AdminRoles');
+    rolesSheet.appendRow(['memberId', 'isAdmin', 'isShiftLeader', 'updatedBy', 'updatedAt']);
+    rolesSheet.getRange(1, 1, 1, 5).setBackground('#4c1d95').setFontColor('#ffffff').setFontWeight('bold');
+    rolesSheet.setFrozenRows(1);
+  }
+
+  var rRows = rolesSheet.getDataRange().getValues();
+  var foundRowIdx = -1;
+  for (var i = 1; i < rRows.length; i++) {
+    if (String(rRows[i][0] || '').trim() === memberId) {
+      foundRowIdx = i + 1;
+      break;
+    }
+  }
+
+  var now = new Date().toISOString();
+  if (foundRowIdx !== -1) {
+    rolesSheet.getRange(foundRowIdx, 2, 1, 4).setValues([[isAdmin, isShiftLeader, adminActorId, now]]);
+  } else {
+    rolesSheet.appendRow([memberId, isAdmin, isShiftLeader, adminActorId, now]);
+  }
+
+  SpreadsheetApp.flush();
+  return {
+    success: true,
+    message: 'Đã cập nhật phân quyền thành công cho ' + memberId,
+    memberId: memberId,
+    isAdmin: isAdmin,
+    isShiftLeader: isShiftLeader
+  };
 }
