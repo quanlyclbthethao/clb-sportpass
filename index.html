@@ -2320,6 +2320,22 @@
       window.currentPosts = currentPosts;
       window.auditLogs = auditLogs;
       window.offlineMutationQueue = offlineMutationQueue;
+
+      // Expose RBAC & Auth functions globally
+      if (typeof togglePasswordVisibility === 'function') window.togglePasswordVisibility = togglePasswordVisibility;
+      if (typeof quickFillLogin === 'function') window.quickFillLogin = quickFillLogin;
+      if (typeof openAdminRoleManagementModal === 'function') window.openAdminRoleManagementModal = openAdminRoleManagementModal;
+      if (typeof closeAdminRoleManagementModal === 'function') window.closeAdminRoleManagementModal = closeAdminRoleManagementModal;
+      if (typeof setRoleDeptFilter === 'function') window.setRoleDeptFilter = setRoleDeptFilter;
+      if (typeof updateRoleDeptFilterButtons === 'function') window.updateRoleDeptFilterButtons = updateRoleDeptFilterButtons;
+      if (typeof filterRoleMemberList === 'function') window.filterRoleMemberList = filterRoleMemberList;
+      if (typeof clearRoleMemberSearch === 'function') window.clearRoleMemberSearch = clearRoleMemberSearch;
+      if (typeof renderRoleMemberList === 'function') window.renderRoleMemberList = renderRoleMemberList;
+      if (typeof toggleMemberRole === 'function') window.toggleMemberRole = toggleMemberRole;
+      if (typeof applyRoleChange === 'function') window.applyRoleChange = applyRoleChange;
+      if (typeof getCustomAdminRoles === 'function') window.getCustomAdminRoles = getCustomAdminRoles;
+      if (typeof saveCustomAdminRoles === 'function') window.saveCustomAdminRoles = saveCustomAdminRoles;
+      if (typeof applyCustomAdminRoles === 'function') window.applyCustomAdminRoles = applyCustomAdminRoles;
     }
 
     function saveLocalState() {
@@ -2557,7 +2573,7 @@
       initTouchSwipeNavigation();
       checkStoredLoginSession();
       exposeGlobalState();
-    }
+    });
 
     // ==================== TÍNH NĂNG MẬT KHẨU & GHI NHỚ ĐĂNG NHẬP ====================
     function togglePasswordVisibility() {
@@ -2807,6 +2823,17 @@
     }
 
     function applyRoleChange(member, roleType, newVal) {
+      // Cập nhật toàn bộ các bản ghi của thành viên có cùng ID (kể cả kiêm nhiệm đa ban)
+      if (Array.isArray(membersDirectory)) {
+        membersDirectory.forEach(m => {
+          if (m && m.id === member.id) {
+            m[roleType] = newVal;
+            if (roleType === 'isAdmin' && newVal === true) {
+              m.isShiftLeader = true;
+            }
+          }
+        });
+      }
       member[roleType] = newVal;
       // Nếu cấp quyền Admin thì tự động cấp kèm quyền Trưởng Ca
       if (roleType === 'isAdmin' && newVal === true) {
@@ -2828,13 +2855,16 @@
         currentUser.isShiftLeader = member.isShiftLeader;
         renderProfileData();
         renderTasksList();
+        if (!currentUser.isAdmin) {
+          closeAdminRoleManagementModal();
+        }
       }
 
       saveLocalState();
       renderRoleMemberList();
 
       const actionText = newVal ? 'Đã cấp' : 'Đã thu hồi';
-      const roleName = roleType === 'isAdmin' ? 'Quyền Quản Trị Viên' : 'Quyền Trưởng Ca';
+      const roleName = roleType === 'isAdmin' ? 'quyền Quản Trị Viên' : 'quyền Trưởng Ca';
       const logMsg = `${actionText} ${roleName} cho ${member.hoTen} (${member.id})`;
       logAuditEvent(currentUser, 'ROLE_UPDATE', member.id, logMsg, 'SUCCESS');
 
@@ -2846,7 +2876,6 @@
           .catch(() => console.log('Chế độ phân quyền offline/local saved.'));
       } catch(e) {}
     }
-);
 
     function checkStoredLoginSession() {
       const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');

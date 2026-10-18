@@ -1641,6 +1641,27 @@ function getAllMembersFromDepartments(ss) {
     }
   }
 
+  // Hợp nhất quyền ghi đè từ Sheet AdminRoles
+  var rolesSheet = ss.getSheetByName('AdminRoles');
+  if (rolesSheet) {
+    try {
+      var rRows = rolesSheet.getDataRange().getValues();
+      for (var ri = 1; ri < rRows.length; ri++) {
+        var rId = String(rRows[ri][0] || '').trim();
+        if (membersMap[rId]) {
+          var rIsAdmin = rRows[ri][1];
+          var rIsLeader = rRows[ri][2];
+          if (rIsAdmin !== '' && rIsAdmin !== null && rIsAdmin !== undefined) {
+            membersMap[rId].isAdmin = (rIsAdmin === true || String(rIsAdmin).toLowerCase() === 'true');
+          }
+          if (rIsLeader !== '' && rIsLeader !== null && rIsLeader !== undefined) {
+            membersMap[rId].isShiftLeader = (rIsLeader === true || String(rIsLeader).toLowerCase() === 'true');
+          }
+        }
+      }
+    } catch(rErr) {}
+  }
+
   var mergedList = [];
   for (var k = 0; k < order.length; k++) {
     mergedList.push(membersMap[order[k]]);

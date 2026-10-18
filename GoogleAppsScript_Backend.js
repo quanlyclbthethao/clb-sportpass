@@ -133,6 +133,31 @@ function handleRequest(e) {
       const targetMemberId = (params.memberId || '').trim();
       const isAdmin = (params.isAdmin === 'true' || params.isAdmin === true);
       const isShiftLeader = (params.isShiftLeader === 'true' || params.isShiftLeader === true);
+      const adminActorId = params.adminActorId || '';
+
+      // Lưu trữ bền vững vào Sheet AdminRoles
+      try {
+        let rSheet = ss.getSheetByName('AdminRoles');
+        if (!rSheet) {
+          rSheet = ss.insertSheet('AdminRoles');
+          rSheet.appendRow(['memberId', 'isAdmin', 'isShiftLeader', 'updatedBy', 'updatedAt']);
+        }
+        const rRows = rSheet.getDataRange().getValues();
+        let foundIdx = -1;
+        for (let i = 1; i < rRows.length; i++) {
+          if (String(rRows[i][0] || '').trim() === targetMemberId) {
+            foundIdx = i + 1;
+            break;
+          }
+        }
+        const now = new Date().toISOString();
+        if (foundIdx !== -1) {
+          rSheet.getRange(foundIdx, 2, 1, 4).setValues([[isAdmin, isShiftLeader, adminActorId, now]]);
+        } else {
+          rSheet.appendRow([targetMemberId, isAdmin, isShiftLeader, adminActorId, now]);
+        }
+      } catch(e) {}
+
       responseData = {
         success: true,
         message: 'Đã cập nhật phân quyền thành công cho ' + targetMemberId,
