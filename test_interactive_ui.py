@@ -85,26 +85,37 @@ async def test_ui_interactions():
             print("Login State:", json.dumps(login_res, indent=2, ensure_ascii=False))
             assert login_res["loginHidden"] == True
             assert login_res["appVisible"] == True
+            assert login_res["currentUser"] == "Đỗ Mạnh Cường"
+            assert login_res["isAdmin"] == True
 
-            print("\n--- 3. Testing Dock Tab Navigation & Transitions ---")
+            print("\n--- 3. Testing Dock Tab Navigation, Transitions & DOM Button Clicks ---")
             for tab_idx in [0, 1, 2]:
                 tab_res = await evaluate(f"""
                     (() => {{
-                        switchDockTab({tab_idx});
-                        const panels = ['tabPanelTasks', 'tabPanelCommunity', 'tabPanelProfile'];
+                        const btn = document.getElementById('btnDock{tab_idx}');
+                        if (btn) btn.click();
+                        else switchDockTab({tab_idx});
+                        const panels = ['tabContentProfile', 'tabContentTasks', 'tabContentForum'];
                         const activePanel = panels[{tab_idx}];
                         const el = document.getElementById(activePanel);
-                        const isVisible = el && !el.classList.contains('hidden') && el.style.display !== 'none';
+                        const isVisible = Boolean(el && !el.classList.contains('hidden') && el.style.display !== 'none');
+                        const otherPanelsHidden = panels.filter((_, i) => i !== {tab_idx}).every(p => {{
+                            const otherEl = document.getElementById(p);
+                            return otherEl && otherEl.classList.contains('hidden');
+                        }});
                         return {{
                             tabIdx: {tab_idx},
                             panel: activePanel,
                             activeTabVar: typeof currentActiveTabIdx !== 'undefined' ? currentActiveTabIdx : -1,
-                            isVisible: isVisible
+                            isVisible: isVisible,
+                            otherPanelsHidden: otherPanelsHidden
                         }};
                     }})()
                 """)
                 print(f"Tab {tab_idx}:", json.dumps(tab_res))
                 assert tab_res["activeTabVar"] == tab_idx
+                assert tab_res["isVisible"] == True
+                assert tab_res["otherPanelsHidden"] == True
 
             print("\n--- 4. Testing Modals Open & Close ---")
             modal_tests = [
@@ -155,6 +166,40 @@ async def test_ui_interactions():
             print("Swipe & Debounce State:", json.dumps(swipe_res, indent=2))
             assert swipe_res["hasTouchListeners"] == True
             assert swipe_res["hasDebounce"] == True
+
+            print("\n--- 7. Testing Password Toggle & Backdrop Dismissal ---")
+            toggle_res = await evaluate("""
+                (() => {
+                    const passInput = document.getElementById('iptPass');
+                    const btn = document.getElementById('btnTogglePass');
+                    const initialType = passInput.type;
+                    btn.click();
+                    const toggledType = passInput.type;
+                    btn.click();
+                    const revertedType = passInput.type;
+
+                    // Test modal backdrop click dismiss
+                    openCreateTaskModal();
+                    const m = document.getElementById('modalCreateTask');
+                    const opened = m.classList.contains('open');
+                    m.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+                    const dismissed = !m.classList.contains('open');
+
+                    return {
+                        initialType: initialType,
+                        toggledType: toggledType,
+                        revertedType: revertedType,
+                        modalOpened: opened,
+                        modalDismissedOnBackdropClick: dismissed
+                    };
+                })()
+            """)
+            print("Toggle & Dismiss State:", json.dumps(toggle_res, indent=2))
+            assert toggle_res["initialType"] == "password"
+            assert toggle_res["toggledType"] == "text"
+            assert toggle_res["revertedType"] == "password"
+            assert toggle_res["modalOpened"] == True
+            assert toggle_res["modalDismissedOnBackdropClick"] == True
 
             print("\n>>> ALL INTERACTIVE UI TESTS PASSED WITH 100% FLYING COLORS! <<<")
 

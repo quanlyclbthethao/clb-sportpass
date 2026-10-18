@@ -829,9 +829,9 @@
 
   </style>
 
-  <!-- Thư viện Quét QR jsQR và Tạo mã QR động -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+  <!-- Thư viện Quét QR jsQR và Tạo mã QR động (defer đảm bảo không chặn phân tích DOM và logic khởi động) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" onerror="console.warn('QRCode CDN unavailable, fallback to internal SVG QR');"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" onerror="console.warn('jsQR CDN unavailable, fallback to manual QR simulation');"></script>
 
 </head>
 
@@ -3030,6 +3030,7 @@
       document.getElementById('viewMainAppContainer')?.classList.add('hidden');
       document.querySelector('.dock-container')?.classList.add('hidden');
       document.getElementById('headerActionButtons')?.classList.add('hidden');
+      exposeGlobalState();
     }
 
     function showMainAppView() {
@@ -3041,6 +3042,7 @@
       renderProfileData();
       generateDynamicQrPass();
       updateOfflineQueueBadge();
+      exposeGlobalState();
     }
 
     // Demo and role switching removed for production integrity
