@@ -1,0 +1,57 @@
+Mã ID	Họ và Tên	Lớp	Ban chuyên môn	Chức vụ	Y tế	Số điện thoại	Liên hệ khẩn cấp
+NLA0611	Nguyễn Long An	K12NNA	Ban Bóng Chuyền	Thành viên	Bình thường		
+NDA0407	Nguyễn Đức Anh	K16-KHTN	Ban Bóng Chuyền	Thành viên	Bình thường	'0862020080	'0862020080
+TMA1812	Trần Minh Anh	K15B.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0862231812	'0862231812
+LTTB2810	Lò Thị Thảo Biên	K15C.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0333014010	'0333014010
+VHB0201	Vương Hoàng Bắc	K16B.GDTC	Ban Bóng Chuyền	Thành Viên	Bình thường	'0356749335	'0356749335
+BTC2907	Bùi Thu Cúc	K16A.SPDIA	Ban Bóng Chuyền	Thành viên	Bình thường	'0362105729	'0362105729
+TPD2809	Tòng Phương Duy	K15C-GDTH	Ban Bóng Chuyền	Phó ban chuyên môn	Bình thường	'0829782899	'0829782899
+HDD2302	Hà Đức Dũng	K16A.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0338578667	'0338578667
+TTD0302	Trần Tiến Dũng	K16.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0342344521	'0342344521
+BTD2411	Bùi Trịnh Dương	K16. QTDVDL	Ban Bóng Chuyền	Thành viên	Bình thường	'0374136827	'0374136827
+HCTD1207	Hoàng Châu Thái Dương	K15C.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0366289127	'0366289127
+DTBD3008	Đinh Thị Bình Dương	K48C-GDMN	Ban Bóng Chuyền	Thành viên	Bình thường	'0382247405	'0382247405
+TTHG1803	Trương Thị Hà Giang	K16.Sp Toán	Ban Bóng Chuyền	Thành viên	Bình thường	'0862394839	'0862394839
+PMH2211	Phạm Minh Hiếu	K16A.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0865789135	'0865789135
+NTTH0403	Nguyễn Thị Thanh Hoa	K15B.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0353992007	'0353992007
+MCH0312	Ma Công Hoàng	K14.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0325481411	'0325481411
+LMH0208	Lê Minh Hùng	K16A.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0837430777	'0837430777
+PTH2409	Phạm Thị Hạnh	K16.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0392736086	'0392736086
+DMH2510	Đinh Minh Hằng	K16B.VAN	Ban Bóng Chuyền	Thành viên	Bình thường	'0985983840	'0985983840
+TCK0603	Trần Công Kiên	K14- GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0357397824	'0357397824
+TTL3108	Trịnh Thị Lan	K16A.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0369375145	'0369375145
+HKL2104	Hà Khánh Linh	K16D.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0982471505	'0982471505
+VTTL1012	Vũ Thị Thuỳ Linh	K49.GDMN	Ban Bóng Chuyền	Thành viên	Bình thường	'0347515236	'0347515236
+DHL3005	Đỗ Hiền Linh	K13A-SPAnh	Ban Bóng Chuyền	Thành viên	Bình thường	'0386159238	'0386159238
+GVL1911	Giàng Văn Long	K16.SP Địa	Ban Bóng Chuyền	Thành viên	Bình thường	'0372084594	'0372084594
+LTHM0803	Lê Thị Hồng Minh	K13E.GDTH	Ban Bóng Chuyền	Phó ban truyền thông	Bình thường	'0829488725	'0829488725
+LTN1207	Lê Thảo Nhi	K16.SP Hoá	Ban Bóng Chuyền	Thành viên	Bình thường	'0917775464	'0917775464
+TTYN2111	Trần Thị Yến Nhi	K15A. SP Toán	Ban Bóng Chuyền	Thành viên	Bình thường	'0988473222	'0988473222
+NPN2309	Nguyễn Phương Như	K16A.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0936536859	'0936536859
+NTKO1901	Nguyễn Thị Kim Oanh	k16B. spvăn	Ban Bóng Chuyền	Thành viên	Bình thường	'0334337410	'0334337410
+HDP2106	Hoàng Duy Phong	K13B.SPTOAN	Ban Bóng Chuyền	Thành viên	Bình thường	'0971466280	'0971466280
+LMP0308	Lê Minh Phong	k15A-SPVL	Ban Bóng Chuyền	Thành viên	Bình thường	'0971154906	'0971154906
+DTP2203	Đặng Thanh Phong	K15A.CNTT	Ban Bóng Chuyền	Thành viên	Bình thường	'0564067036	'0564067036
+DHQP2004	Đặng Hữu Quốc Pháp	K16A.SPDIA	Ban Bóng Chuyền	Thành viên	Bình thường	'0356869620	'0356869620
+HTP1608	Hồ Tấn Phát	K15.SPKHTN	Ban Bóng Chuyền	Thành viên	Bình thường	'0369724633	'0369724633
+DHP2510	Đinh Hồng Phú	K16.SP Tin	Ban Bóng Chuyền	Thành viên	Bình thường	'0962107151	'0962107151
+TCS1206	Trần Cao Sơn	K16A.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0862384582	'0862384582
+LTTT0210	Lê Thị Tâm Thanh	K16A.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0334741502	'0334741502
+MTT2508	Ma Thị Thuyết	K15A.GDMN	Ban Bóng Chuyền	Thành viên	Bình thường	'0833226289	'0833226289
+TCT0308	Triệu Chiến Thái	K13.SPLSU	Ban Bóng Chuyền	Trưởng ban Bóng chuyền	Bình thường	'0354269904	'0354269904
+BAT1003	Bùi Anh Thương	K15C.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0349403164	'0349403164
+HTPT1709	Hà Thị Phương Thảo	K15C.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0988852507	'0988852507
+KVHT2207	Kiều Vũ Hồng Thảo	K15A.SP Toán	Ban Bóng Chuyền	Thành viên	Bình thường	'0867733592	'0867733592
+PMT1908	Phùng Minh Thảo	K15C.SPVAN	Ban Bóng Chuyền	Thành viên	Bình thường	'0386616269	'0386616269
+LNT2108	Lò Ngọc Thế	K15A.KTD	Ban Bóng Chuyền	Thành viên	Bình thường	'0914270871	'0914270871
+MTT1209	Mai Thị Trang	K15B.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0397056215	'0397056215
+STQT2011	Sầm Thị Quỳnh Trang	K15A. SP DIA LI	Ban Bóng Chuyền	Thành viên	Bình thường	'0795110756	'0795110756
+HNT1706	Hoàng Ngọc Trâm	K16A.SPANH	Ban Bóng Chuyền	Thành viên	Bình thường	'0962425044	'0962425044
+HBT2510	Hờ Bá Trưởng	K15B-SPTOAN	Ban Bóng Chuyền	Thành viên	Bình thường	'0347598476	'0347598476
+TMT1404	Trần Mạnh Tuấn	K15B-GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0877661191	'0877661191
+NNT3009	Nguyễn Như Tài	K16.GDTC	Ban Bóng Chuyền	Thành viên	Bình thường	'0968580853	'0968580853
+TVT0912	Trần Văn Tài	K15D.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0965554923	'0965554923
+VQT1204	Vì Quang Tạo	K14 CNTT	Ban Bóng Chuyền	Thành Viên	Bình thường	'0393224983	'0393224983
+NTTV2308	Nguyễn Thị Thảo Vân	K15B.GDTH	Ban Bóng Chuyền	Thành viên	Bình thường	'0856076668	'0856076668
+MTD0212	Mai Thế Đăng	K15A-SPVL	Ban Bóng Chuyền	Thành viên	Bình thường	'0399732007	'0399732007
+LTD1409	Lường Thành Đạt	K14.GDMN.VHVL	Ban Bóng Chuyền	Thành viên	Bình thường	'0339416044	'0339416044

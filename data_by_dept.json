@@ -1,0 +1,1266 @@
+{
+  "Ban Chủ Nhiệm": [
+    {
+      "stt": 1,
+      "id": "NTD2108",
+      "hoTen": "Nguyễn Tiến Duy",
+      "ngaySinh": "21/08/2004",
+      "chucVu": "Phó chủ nhiệm",
+      "lop": "K13A.SPTOAN",
+      "sdt": "0399757027",
+      "khoa": "Toán và KHTN"
+    },
+    {
+      "stt": 2,
+      "id": "LDH0912",
+      "hoTen": "Lương Đình Hiếu",
+      "ngaySinh": "09/12/2004",
+      "chucVu": "Trưởng ban cầu lông",
+      "lop": "K13.GDTC",
+      "sdt": "0787246014",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 3,
+      "id": "NLH1312",
+      "hoTen": "Nguyễn Lê Hoàng",
+      "ngaySinh": "13/12/2005",
+      "chucVu": "Phó chủ nhiệm",
+      "lop": "K13-GDTC",
+      "sdt": "0827055999",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 4,
+      "id": "TTTL1805",
+      "hoTen": "Tào Thị Tuyết Linh",
+      "ngaySinh": "18/05/2007",
+      "chucVu": "Trưởng ban truyền thông",
+      "lop": "K15D.GDTH",
+      "sdt": "0394828197",
+      "khoa": "GDTH"
+    },
+    {
+      "stt": 5,
+      "id": "HDP2106",
+      "hoTen": "Hoàng Duy Phong",
+      "ngaySinh": "21/06/2005",
+      "chucVu": "Tổng thư ký",
+      "lop": "K13B.SPTOAN",
+      "sdt": "0971466280",
+      "khoa": "Toán & KHTN"
+    },
+    {
+      "stt": 6,
+      "id": "TCT0803",
+      "hoTen": "Triệu Chiến Thái",
+      "ngaySinh": "08/03/2004",
+      "chucVu": "Trưởng ban Bóng Chuyền",
+      "lop": "K13.SPLS",
+      "sdt": "0354269904",
+      "khoa": "Ngữ Văn-KHXH"
+    },
+    {
+      "stt": 7,
+      "id": "TVT3006",
+      "hoTen": "Trần Văn Tiệp",
+      "ngaySinh": "30/06/2002",
+      "chucVu": "Chủ nhiệm clb",
+      "lop": "K13-GDTC",
+      "sdt": "082214976",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 8,
+      "id": "LNT1805",
+      "hoTen": "Lương Nhật Tân",
+      "ngaySinh": "18/05/2005",
+      "chucVu": "Thủ quỹ",
+      "lop": "K13-GDTC",
+      "sdt": "0822131805",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 9,
+      "id": "NQD1509",
+      "hoTen": "Ngô Quang Đoàn",
+      "ngaySinh": "15/09/2001",
+      "chucVu": "Trưởng ban bóng đá nam",
+      "lop": "K15C.GDTC",
+      "sdt": "0867322795",
+      "khoa": "N-H-TD"
+    }
+  ],
+  "Ban Nhân Sự": [
+    {
+      "stt": 1,
+      "id": "DMC0806",
+      "hoTen": "Đỗ Mạnh Cường",
+      "ngaySinh": "08/06/2003",
+      "chucVu": "Trưởng ban nhân sự",
+      "lop": "K13.GDTC",
+      "sdt": "",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 2,
+      "id": "NHN1502",
+      "hoTen": "Nguyễn Hoài Nam",
+      "ngaySinh": "15/02/2005",
+      "chucVu": "Phó ban nhân sự",
+      "lop": "K13B.SPToan",
+      "sdt": "",
+      "khoa": "Toán & KHTN"
+    },
+    {
+      "stt": 3,
+      "id": "NTDL0303",
+      "hoTen": "Nguyễn Thị Diệu Linh",
+      "ngaySinh": "03/03/2007",
+      "chucVu": "Phó ban nhân sự",
+      "lop": "K15A.GDTH",
+      "sdt": "0967182101",
+      "khoa": "GDTH"
+    }
+  ],
+  "Ban Bóng Chuyền": [
+    {
+      "stt": 1,
+      "id": "NLA0611",
+      "hoTen": "Nguyễn Long An",
+      "ngaySinh": "06/11/2004",
+      "chucVu": "Thành viên",
+      "lop": "K12NNA",
+      "sdt": "",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 2,
+      "id": "NDA0407",
+      "hoTen": "Nguyễn Đức Anh",
+      "ngaySinh": "04/07/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16-KHTN",
+      "sdt": "0862020080",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 3,
+      "id": "TMA1812",
+      "hoTen": "Trần Minh Anh",
+      "ngaySinh": "18/12/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15B.GDTH",
+      "sdt": "0862231812",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 4,
+      "id": "LTTB2810",
+      "hoTen": "Lò Thị Thảo Biên",
+      "ngaySinh": "28/10/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15C.GDTH",
+      "sdt": "0333014010",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 5,
+      "id": "VHB0201",
+      "hoTen": "Vương Hoàng Bắc",
+      "ngaySinh": "02/01/2008",
+      "chucVu": "Thành Viên",
+      "lop": "K16B.GDTC",
+      "sdt": "0356749335",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 6,
+      "id": "BTC2907",
+      "hoTen": "Bùi Thu Cúc",
+      "ngaySinh": "29/07/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.SPDIA",
+      "sdt": "0362105729",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 7,
+      "id": "TPD2809",
+      "hoTen": "Tòng Phương Duy",
+      "ngaySinh": "28/09/2006",
+      "chucVu": "Phó ban chuyên môn",
+      "lop": "K15C-GDTH",
+      "sdt": "0829782899",
+      "khoa": "GDTH"
+    },
+    {
+      "stt": 8,
+      "id": "HDD2302",
+      "hoTen": "Hà Đức Dũng",
+      "ngaySinh": "23/02/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.GDTC",
+      "sdt": "0338578667",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 9,
+      "id": "TTD0302",
+      "hoTen": "Trần Tiến Dũng",
+      "ngaySinh": "03/02/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16.GDTC",
+      "sdt": "0342344521",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 10,
+      "id": "BTD2411",
+      "hoTen": "Bùi Trịnh Dương",
+      "ngaySinh": "24/11/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16. QTDVDL",
+      "sdt": "0374136827",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 11,
+      "id": "HCTD1207",
+      "hoTen": "Hoàng Châu Thái Dương",
+      "ngaySinh": "12/07/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15C.GDTH",
+      "sdt": "0366289127",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 12,
+      "id": "DTBD3008",
+      "hoTen": "Đinh Thị Bình Dương",
+      "ngaySinh": "30/08/2006",
+      "chucVu": "Thành viên",
+      "lop": "K48C-GDMN",
+      "sdt": "0382247405",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 13,
+      "id": "TTHG1803",
+      "hoTen": "Trương Thị Hà Giang",
+      "ngaySinh": "18/03/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16.Sp Toán",
+      "sdt": "0862394839",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 14,
+      "id": "PMH2211",
+      "hoTen": "Phạm Minh Hiếu",
+      "ngaySinh": "22/11/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.GDTC",
+      "sdt": "0865789135",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 15,
+      "id": "NTTH0403",
+      "hoTen": "Nguyễn Thị Thanh Hoa",
+      "ngaySinh": "04/03/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15B.GDTH",
+      "sdt": "0353992007",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 16,
+      "id": "MCH0312",
+      "hoTen": "Ma Công Hoàng",
+      "ngaySinh": "03/12/2006",
+      "chucVu": "Thành viên",
+      "lop": "K14.GDTC",
+      "sdt": "0325481411",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 17,
+      "id": "LMH0208",
+      "hoTen": "Lê Minh Hùng",
+      "ngaySinh": "02/08/2002",
+      "chucVu": "Thành viên",
+      "lop": "K16A.GDTC",
+      "sdt": "0837430777",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 18,
+      "id": "PTH2409",
+      "hoTen": "Phạm Thị Hạnh",
+      "ngaySinh": "24/09/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16.GDTC",
+      "sdt": "0392736086",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 19,
+      "id": "DMH2510",
+      "hoTen": "Đinh Minh Hằng",
+      "ngaySinh": "25/10/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16B.VAN",
+      "sdt": "0985983840",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 20,
+      "id": "TCK0603",
+      "hoTen": "Trần Công Kiên",
+      "ngaySinh": "06/03/2006",
+      "chucVu": "Thành viên",
+      "lop": "K14- GDTC",
+      "sdt": "0357397824",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 21,
+      "id": "TTL3108",
+      "hoTen": "Trịnh Thị Lan",
+      "ngaySinh": "31/08/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.GDTH",
+      "sdt": "0369375145",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 22,
+      "id": "HKL2104",
+      "hoTen": "Hà Khánh Linh",
+      "ngaySinh": "21/04/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16D.GDTH",
+      "sdt": "0982471505",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 23,
+      "id": "VTTL1012",
+      "hoTen": "Vũ Thị Thuỳ Linh",
+      "ngaySinh": "10/12/2008",
+      "chucVu": "Thành viên",
+      "lop": "K49.GDMN",
+      "sdt": "0347515236",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 24,
+      "id": "DHL3005",
+      "hoTen": "Đỗ Hiền Linh",
+      "ngaySinh": "30/05/2005",
+      "chucVu": "Thành viên",
+      "lop": "K13A-SPAnh",
+      "sdt": "0386159238",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 25,
+      "id": "GVL1911",
+      "hoTen": "Giàng Văn Long",
+      "ngaySinh": "19/11/2007",
+      "chucVu": "Thành viên",
+      "lop": "K16.SP Địa",
+      "sdt": "0372084594",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 26,
+      "id": "LTHM0803",
+      "hoTen": "Lê Thị Hồng Minh",
+      "ngaySinh": "08/03/2005",
+      "chucVu": "Phó ban truyền thông",
+      "lop": "K13E.GDTH",
+      "sdt": "0829488725",
+      "khoa": "GDTH"
+    },
+    {
+      "stt": 27,
+      "id": "LTN1207",
+      "hoTen": "Lê Thảo Nhi",
+      "ngaySinh": "12/07/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16.SP Hoá",
+      "sdt": "0917775464",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 28,
+      "id": "TTYN2111",
+      "hoTen": "Trần Thị Yến Nhi",
+      "ngaySinh": "21/11/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15A. SP Toán",
+      "sdt": "0988473222",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 29,
+      "id": "NPN2309",
+      "hoTen": "Nguyễn Phương Như",
+      "ngaySinh": "23/09/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.GDTC",
+      "sdt": "0936536859",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 30,
+      "id": "NTKO1901",
+      "hoTen": "Nguyễn Thị Kim Oanh",
+      "ngaySinh": "19/01/2008",
+      "chucVu": "Thành viên",
+      "lop": "k16B. spvăn",
+      "sdt": "0334337410",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 31,
+      "id": "HDP2106",
+      "hoTen": "Hoàng Duy Phong",
+      "ngaySinh": "21/06/2005",
+      "chucVu": "Thành viên",
+      "lop": "K13B.SPTOAN",
+      "sdt": "0971466280",
+      "khoa": "Toán & KHTN"
+    },
+    {
+      "stt": 32,
+      "id": "LMP0308",
+      "hoTen": "Lê Minh Phong",
+      "ngaySinh": "03/08/2007",
+      "chucVu": "Thành viên",
+      "lop": "k15A-SPVL",
+      "sdt": "0971154906",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 33,
+      "id": "DTP2203",
+      "hoTen": "Đặng Thanh Phong",
+      "ngaySinh": "22/03/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15A.CNTT",
+      "sdt": "0564067036",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 34,
+      "id": "DHQP2004",
+      "hoTen": "Đặng Hữu Quốc Pháp",
+      "ngaySinh": "20/04/2007",
+      "chucVu": "Thành viên",
+      "lop": "K16A.SPDIA",
+      "sdt": "0356869620",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 35,
+      "id": "HTP1608",
+      "hoTen": "Hồ Tấn Phát",
+      "ngaySinh": "16/08/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15.SPKHTN",
+      "sdt": "0369724633",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 36,
+      "id": "DHP2510",
+      "hoTen": "Đinh Hồng Phú",
+      "ngaySinh": "25/10/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16.SP Tin",
+      "sdt": "0962107151",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 37,
+      "id": "TCS1206",
+      "hoTen": "Trần Cao Sơn",
+      "ngaySinh": "12/06/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.GDTC",
+      "sdt": "0862384582",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 38,
+      "id": "LTTT0210",
+      "hoTen": "Lê Thị Tâm Thanh",
+      "ngaySinh": "02/10/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.GDTH",
+      "sdt": "0334741502",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 39,
+      "id": "MTT2508",
+      "hoTen": "Ma Thị Thuyết",
+      "ngaySinh": "25/08/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15A.GDMN",
+      "sdt": "0833226289",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 40,
+      "id": "TCT0308",
+      "hoTen": "Triệu Chiến Thái",
+      "ngaySinh": "03/08/2004",
+      "chucVu": "Trưởng ban Bóng chuyền",
+      "lop": "K13.SPLSU",
+      "sdt": "0354269904",
+      "khoa": "Ngữ Văn-KHXH"
+    },
+    {
+      "stt": 41,
+      "id": "BAT1003",
+      "hoTen": "Bùi Anh Thương",
+      "ngaySinh": "10/03/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15C.GDTH",
+      "sdt": "0349403164",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 42,
+      "id": "HTPT1709",
+      "hoTen": "Hà Thị Phương Thảo",
+      "ngaySinh": "17/09/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15C.GDTH",
+      "sdt": "0988852507",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 43,
+      "id": "KVHT2207",
+      "hoTen": "Kiều Vũ Hồng Thảo",
+      "ngaySinh": "22/07/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15A.SP Toán",
+      "sdt": "0867733592",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 44,
+      "id": "PMT1908",
+      "hoTen": "Phùng Minh Thảo",
+      "ngaySinh": "19/08/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15C.SPVAN",
+      "sdt": "0386616269",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 45,
+      "id": "LNT2108",
+      "hoTen": "Lò Ngọc Thế",
+      "ngaySinh": "21/08/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15A.KTD",
+      "sdt": "0914270871",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 46,
+      "id": "MTT1209",
+      "hoTen": "Mai Thị Trang",
+      "ngaySinh": "12/09/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15B.GDTH",
+      "sdt": "0397056215",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 47,
+      "id": "STQT2011",
+      "hoTen": "Sầm Thị Quỳnh Trang",
+      "ngaySinh": "20/11/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15A. SP DIA LI",
+      "sdt": "0795110756",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 48,
+      "id": "HNT1706",
+      "hoTen": "Hoàng Ngọc Trâm",
+      "ngaySinh": "17/06/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16A.SPANH",
+      "sdt": "0962425044",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 49,
+      "id": "HBT2510",
+      "hoTen": "Hờ Bá Trưởng",
+      "ngaySinh": "25/10/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15B-SPTOAN",
+      "sdt": "0347598476",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 50,
+      "id": "TMT1404",
+      "hoTen": "Trần Mạnh Tuấn",
+      "ngaySinh": "14/04/2004",
+      "chucVu": "Thành viên",
+      "lop": "K15B-GDTC",
+      "sdt": "0877661191",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 51,
+      "id": "NNT3009",
+      "hoTen": "Nguyễn Như Tài",
+      "ngaySinh": "30/09/2008",
+      "chucVu": "Thành viên",
+      "lop": "K16.GDTC",
+      "sdt": "0968580853",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 52,
+      "id": "TVT0912",
+      "hoTen": "Trần Văn Tài",
+      "ngaySinh": "09/12/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15D.GDTH",
+      "sdt": "0965554923",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 53,
+      "id": "VQT1204",
+      "hoTen": "Vì Quang Tạo",
+      "ngaySinh": "12/04/2005",
+      "chucVu": "Thành Viên",
+      "lop": "K14 CNTT",
+      "sdt": "0393224983",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 54,
+      "id": "NTTV2308",
+      "hoTen": "Nguyễn Thị Thảo Vân",
+      "ngaySinh": "23/08/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15B.GDTH",
+      "sdt": "0856076668",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 55,
+      "id": "MTD0212",
+      "hoTen": "Mai Thế Đăng",
+      "ngaySinh": "02/12/2007",
+      "chucVu": "Thành viên",
+      "lop": "K15A-SPVL",
+      "sdt": "0399732007",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 56,
+      "id": "LTD1409",
+      "hoTen": "Lường Thành Đạt",
+      "ngaySinh": "14/09/2003",
+      "chucVu": "Thành viên",
+      "lop": "K14.GDMN.VHVL",
+      "sdt": "0339416044",
+      "khoa": "ĐH Tây Bắc"
+    }
+  ],
+  "Ban Bóng Đá Nam": [
+    {
+      "stt": 1,
+      "id": "NQA1302",
+      "hoTen": "Ngô Quốc An",
+      "ngaySinh": "13/02/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "k15A-GDTC",
+      "sdt": "0789377952",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 2,
+      "id": "PTA0808",
+      "hoTen": "Phạm Tuấn Anh",
+      "ngaySinh": "08/08/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A GDTC",
+      "sdt": "0385202407",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 3,
+      "id": "DPA1711",
+      "hoTen": "Đoàn Phan Anh",
+      "ngaySinh": "17/11/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A.CĐT",
+      "sdt": "0835122299",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 4,
+      "id": "LMC0801",
+      "hoTen": "Lê Minh Chiến",
+      "ngaySinh": "08/01/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A.GDTC",
+      "sdt": "0963230064",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 5,
+      "id": "DDC3007",
+      "hoTen": "Đặng Duy Cương",
+      "ngaySinh": "30/07/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A QTKD",
+      "sdt": "0931762637",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 6,
+      "id": "TMH0103",
+      "hoTen": "Trần Mạnh Hà",
+      "ngaySinh": "01/03/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A.Kinh tế",
+      "sdt": "0912491307",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 7,
+      "id": "DVH1303",
+      "hoTen": "Đặng Văn Hùng",
+      "ngaySinh": "13/03/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16B-GDTC",
+      "sdt": "0364917959",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 8,
+      "id": "NGH0108",
+      "hoTen": "Nguyễn Gia Hưng",
+      "ngaySinh": "01/08/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A-CDT",
+      "sdt": "0972789358",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 9,
+      "id": "LVH1810",
+      "hoTen": "Lê Văn Hướng",
+      "ngaySinh": "18/10/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16B-CDT",
+      "sdt": "0912296068",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 10,
+      "id": "CSH1102",
+      "hoTen": "Cao Sơn Hải",
+      "ngaySinh": "11/02/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15C.GDTC",
+      "sdt": "0981482364",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 11,
+      "id": "VNH0902",
+      "hoTen": "Vũ Ngọc Hải",
+      "ngaySinh": "09/02/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A.GDTC",
+      "sdt": "0982091671",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 12,
+      "id": "TVL1408",
+      "hoTen": "Trần Văn Long",
+      "ngaySinh": "14/08/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A-GDTC",
+      "sdt": "0936864936",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 13,
+      "id": "LHTN2902",
+      "hoTen": "Lưu Hữu Thiện Nhân",
+      "ngaySinh": "29/02/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "k16A.GDTC",
+      "sdt": "0916173056",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 14,
+      "id": "VKP0310",
+      "hoTen": "Vũ Kim Phúc",
+      "ngaySinh": "03/10/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A-KTĐ",
+      "sdt": "0977323116",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 15,
+      "id": "BVQ3009",
+      "hoTen": "Bùi Việt Quang",
+      "ngaySinh": "30/09/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16B-GDTC",
+      "sdt": "0364036198",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 16,
+      "id": "VVMQ1809",
+      "hoTen": "Vũ Văn Minh Quân",
+      "ngaySinh": "18/09/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A.GDTC",
+      "sdt": "0393902677",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 17,
+      "id": "NQT1112",
+      "hoTen": "Nguyễn Quang Thắng",
+      "ngaySinh": "11/12/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A.GDTC",
+      "sdt": "0395662248",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 18,
+      "id": "NAT0408",
+      "hoTen": "Nguyễn Anh Tuấn",
+      "ngaySinh": "04/08/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A.SPDIA",
+      "sdt": "0329055362",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 19,
+      "id": "TMT1404",
+      "hoTen": "Trần Mạnh Tuấn",
+      "ngaySinh": "14/04/2004",
+      "chucVu": "Phó Ban",
+      "lop": "K15B.GDTC",
+      "sdt": "0877661191",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 20,
+      "id": "NQD1509",
+      "hoTen": "Ngô Quang Đoàn",
+      "ngaySinh": "15/09/2001",
+      "chucVu": "Trưởng ban bóng đá nam",
+      "lop": "K15C.GDTC",
+      "sdt": "0867322795",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 21,
+      "id": "CMD0402",
+      "hoTen": "Chu Minh Đức",
+      "ngaySinh": "04/02/2007",
+      "chucVu": "thành viên ban bóng đá",
+      "lop": "k15A-GDTC",
+      "sdt": "0394594078",
+      "khoa": "ĐH Tây Bắc"
+    }
+  ],
+  "Ban Bóng Đá Nữ": [
+    {
+      "stt": 1,
+      "id": "TPC1107",
+      "hoTen": "Trần Phương Cúc",
+      "ngaySinh": "11/07/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15ASPSU",
+      "sdt": "0868208922",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 2,
+      "id": "DTH0111",
+      "hoTen": "Đồng Thanh Hiền",
+      "ngaySinh": "01/11/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15C SPTOAN",
+      "sdt": "0398509120",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 3,
+      "id": "NTNH1912",
+      "hoTen": "Nguyễn Thị Ngọc Huyền",
+      "ngaySinh": "19/12/2006",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K14B.NNA",
+      "sdt": "0982636974",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 4,
+      "id": "NTHH1401",
+      "hoTen": "Nguyễn Trần Huyền Hạnh",
+      "ngaySinh": "14/01/2006",
+      "chucVu": "Thành viên bóng đá nữ",
+      "lop": "K14C.GDTH",
+      "sdt": "0915748614",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 5,
+      "id": "PTH2409",
+      "hoTen": "Phạm Thị Hạnh",
+      "ngaySinh": "24/09/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A.GDTC",
+      "sdt": "0392736086",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 6,
+      "id": "NTLH1203",
+      "hoTen": "Nguyễn Thị Lâm Hằng",
+      "ngaySinh": "12/03/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15B.KT",
+      "sdt": "0373256635",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 7,
+      "id": "LTKK2504",
+      "hoTen": "Lê Thị Kim Khánh",
+      "ngaySinh": "25/04/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16B-GDTC",
+      "sdt": "0348135923",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 8,
+      "id": "LTL0902",
+      "hoTen": "Lương Thanh Lam",
+      "ngaySinh": "09/02/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "k16. SP Hoá",
+      "sdt": "0829262712",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 9,
+      "id": "NTL0912",
+      "hoTen": "Nguyễn Thị Linh",
+      "ngaySinh": "09/12/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16B-NNA",
+      "sdt": "0335402186",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 10,
+      "id": "TTTL1805",
+      "hoTen": "Tào Thị Tuyết Linh",
+      "ngaySinh": "18/05/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15D.GDTH",
+      "sdt": "0394828197",
+      "khoa": "GDTH"
+    },
+    {
+      "stt": 11,
+      "id": "NTKL1305",
+      "hoTen": "Nguyễn Thị Khánh Ly",
+      "ngaySinh": "13/05/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15G.GDTH",
+      "sdt": "0336821586",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 12,
+      "id": "VQM1712",
+      "hoTen": "Vũ Quỳnh Mai",
+      "ngaySinh": "17/12/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A-GDTC",
+      "sdt": "0865563238",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 13,
+      "id": "TTTN1610",
+      "hoTen": "Trần Thị Tuyết Nhung",
+      "ngaySinh": "16/10/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16D.GDTH",
+      "sdt": "0962118003",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 14,
+      "id": "MTMT1305",
+      "hoTen": "Ma Thị Mai Thoa",
+      "ngaySinh": "13/05/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A.SPTOAN",
+      "sdt": "0962729061",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 15,
+      "id": "LTT1001",
+      "hoTen": "La Thị Thuý",
+      "ngaySinh": "10/01/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15A.SP SU",
+      "sdt": "0347685459",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 16,
+      "id": "NTT2407",
+      "hoTen": "Nguyễn Thị Thuận",
+      "ngaySinh": "24/07/2006",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K14G-GDTH",
+      "sdt": "0967683506",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 17,
+      "id": "PAT2011",
+      "hoTen": "Phạm Anh Thư",
+      "ngaySinh": "20/11/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A.GDTC",
+      "sdt": "0344821428",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 18,
+      "id": "HTTT2211",
+      "hoTen": "Hoàng Thị Thanh Thảo",
+      "ngaySinh": "22/11/2006",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K14G-GDTH",
+      "sdt": "0354100952",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 19,
+      "id": "NTPT2604",
+      "hoTen": "Nguyễn Thị Phương Thảo",
+      "ngaySinh": "26/04/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16A- GDTC",
+      "sdt": "0385256670",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 20,
+      "id": "NBT0605",
+      "hoTen": "Nguyễn Bảo Trâm",
+      "ngaySinh": "06/05/2008",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K16B-GDTC",
+      "sdt": "0962857725",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 21,
+      "id": "LTNT2912",
+      "hoTen": "Lường Thị Ngọc Tuyến",
+      "ngaySinh": "29/12/2006",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K14-GDCT",
+      "sdt": "0343797536",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 22,
+      "id": "HHTV0511",
+      "hoTen": "Hoàng Hà Thanh Vân",
+      "ngaySinh": "05/11/2007",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15B.GDTC",
+      "sdt": "0868057090",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 23,
+      "id": "TTHY0308",
+      "hoTen": "Trần Thị Hoa Yên",
+      "ngaySinh": "03/08/2004",
+      "chucVu": "Thành viên ban bóng đá",
+      "lop": "K15D.GDTH",
+      "sdt": "0345826551",
+      "khoa": "ĐH Tây Bắc"
+    }
+  ],
+  "Ban Cầu Lông": [
+    {
+      "stt": 1,
+      "id": "LDH0912",
+      "hoTen": "Lương Đình Hiếu",
+      "ngaySinh": "09/12/2004",
+      "chucVu": "Trưởng ban cầu lông",
+      "lop": "K13.GDTC",
+      "sdt": "0787246014",
+      "khoa": "N-H-TD"
+    },
+    {
+      "stt": 2,
+      "id": "DDH1011",
+      "hoTen": "Đinh Đức Huy",
+      "ngaySinh": "10/11/2007",
+      "chucVu": "Phó ban cầu lông",
+      "lop": "K15A.GDTC",
+      "sdt": "0362936958",
+      "khoa": "N-H-TD"
+    }
+  ],
+  "Ban Truyền Thông": [
+    {
+      "stt": 1,
+      "id": "TTNA0809",
+      "hoTen": "Trương Thị Ngọc Anh",
+      "ngaySinh": "08/09/2007",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K15.SP Vật lí",
+      "sdt": "0944212679",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 2,
+      "id": "PTND2909",
+      "hoTen": "Phạm Thị Ngọc Duyên",
+      "ngaySinh": "29/09/2007",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K15E.GDTH",
+      "sdt": "0379230662",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 3,
+      "id": "DNHH2205",
+      "hoTen": "Đỗ Nguyệt Hải Hà",
+      "ngaySinh": "22/05/2007",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K15A SP Toán",
+      "sdt": "0335897056",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 4,
+      "id": "TTTL1805",
+      "hoTen": "Tào Thị Tuyết Linh",
+      "ngaySinh": "18/05/2007",
+      "chucVu": "Trưởng ban truyền thông",
+      "lop": "K15D.GDTH",
+      "sdt": "0394828197",
+      "khoa": "GDTH"
+    },
+    {
+      "stt": 5,
+      "id": "LKN1707",
+      "hoTen": "Lê Kim Ngân",
+      "ngaySinh": "17/07/2007",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K15E.GDTH",
+      "sdt": "0376009544",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 6,
+      "id": "BTP2006",
+      "hoTen": "Bùi Thị Phương",
+      "ngaySinh": "20/06/2007",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K48C GDMN",
+      "sdt": "0338540588",
+      "khoa": "GDMN"
+    },
+    {
+      "stt": 7,
+      "id": "LTTP1710",
+      "hoTen": "Lê Thị Thu Phương",
+      "ngaySinh": "17/10/2007",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K15E.GDTH",
+      "sdt": "0362495007",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 8,
+      "id": "VMQ2311",
+      "hoTen": "Vũ Minh Quang",
+      "ngaySinh": "23/11/2007",
+      "chucVu": "Phó ban truyền thông",
+      "lop": "K15.GDTC",
+      "sdt": "0866189811",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 9,
+      "id": "LTTT2112",
+      "hoTen": "Lê Thị Thu Thương",
+      "ngaySinh": "21/12/2005",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K13G.GDTH",
+      "sdt": "0704128206",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 10,
+      "id": "NNT2202",
+      "hoTen": "Nguyễn Nhật Tân",
+      "ngaySinh": "22/02/2008",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K16 SP Vật Lý",
+      "sdt": "0396291862",
+      "khoa": "ĐH Tây Bắc"
+    },
+    {
+      "stt": 11,
+      "id": "PTD2507",
+      "hoTen": "Phạm Tiến Đạt",
+      "ngaySinh": "25/07/2007",
+      "chucVu": "Thành viên ban truyền thông",
+      "lop": "K16.GDTC",
+      "sdt": "0967395691",
+      "khoa": "ĐH Tây Bắc"
+    }
+  ]
+}

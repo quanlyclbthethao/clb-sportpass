@@ -1,0 +1,22 @@
+Mã ID	Họ và Tên	Lớp	Ban chuyên môn	Chức vụ	Y tế	Số điện thoại	Liên hệ khẩn cấp
+NQA1302	Ngô Quốc An	k15A-GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0789377952	'0789377952
+PTA0808	Phạm Tuấn Anh	K15A GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0385202407	'0385202407
+DPA1711	Đoàn Phan Anh	K16A.CĐT	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0835122299	'0835122299
+LMC0801	Lê Minh Chiến	K15A.GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0963230064	'0963230064
+DDC3007	Đặng Duy Cương	K16A QTKD	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0931762637	'0931762637
+TMH0103	Trần Mạnh Hà	K15A.Kinh tế	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0912491307	'0912491307
+DVH1303	Đặng Văn Hùng	K16B-GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0364917959	'0364917959
+NGH0108	Nguyễn Gia Hưng	K16A-CDT	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0972789358	'0972789358
+LVH1810	Lê Văn Hướng	K16B-CDT	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0912296068	'0912296068
+CSH1102	Cao Sơn Hải	K15C.GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0981482364	'0981482364
+VNH0902	Vũ Ngọc Hải	K16A.GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0982091671	'0982091671
+TVL1408	Trần Văn Long	K15A-GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0936864936	'0936864936
+LHTN2902	Lưu Hữu Thiện Nhân	k16A.GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0916173056	'0916173056
+VKP0310	Vũ Kim Phúc	K15A-KTĐ	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0977323116	'0977323116
+BVQ3009	Bùi Việt Quang	K16B-GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0364036198	'0364036198
+VVMQ1809	Vũ Văn Minh Quân	K15A.GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0393902677	'0393902677
+NQT1112	Nguyễn Quang Thắng	K16A.GDTC	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0395662248	'0395662248
+NAT0408	Nguyễn Anh Tuấn	K16A.SPDIA	Ban Bóng Đá Nam	Thành viên ban bóng đá	Bình thường	'0329055362	'0329055362
+TMT1404	Trần Mạnh Tuấn	K15B.GDTC	Ban Bóng Đá Nam	Phó Ban	Bình thường	'0877661191	'0877661191
+NQD1509	Ngô Quang Đoàn	K15C.GDTC	Ban Bóng Đá Nam	Trưởng ban bóng đá nam	Bình thường	'0867322795	'0867322795
+CMD0402	Chu Minh Đức	k15A-GDTC	Ban Bóng Đá Nam	thành viên ban bóng đá	Bình thường	'0394594078	'0394594078

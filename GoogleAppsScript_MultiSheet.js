@@ -1494,13 +1494,24 @@ function handleRequest(e) {
       var postObj = params.post ? parseJsonSafe(params.post, null) : params;
       responseData = handleCreatePost(ss, postObj);
     }
-    // 8. CẬP NHẬT PHÂN QUYỀN BAN QUẢN TRỊ & TRƯỞNG CA (updateMemberRole)
-    else if (action === 'updateMemberRole') {
-      var targetMemberId = (params.memberId || '').trim();
-      var isAdmin = params.isAdmin === 'true' || params.isAdmin === true;
-      var isShiftLeader = params.isShiftLeader === 'true' || params.isShiftLeader === true;
-      var adminActorId = params.adminActorId || '';
-      responseData = handleUpdateMemberRole(ss, targetMemberId, isAdmin, isShiftLeader, adminActorId);
+    // 8. XÓA LỆNH ĐIỀU ĐỘNG (deleteTask)
+    else if (action === 'deleteTask') {
+      var taskId = params.taskId;
+      responseData = handleDeleteTask(ss, taskId);
+    }
+    // 9. XÓA BÀI VIẾT DIỄN ĐÀN (deletePost)
+    else if (action === 'deletePost') {
+      var postId = params.postId;
+      responseData = handleDeletePost(ss, postId);
+    }
+    // 10. CẬP NHẬT HỒ SƠ THÀNH VIÊN VÀ ĐỒNG BỘ GOOGLE SHEET (updateProfile)
+    else if (action === 'updateProfile') {
+      var memberId = params.memberId;
+      var lop = params.lop;
+      var sdt = params.sdt;
+      var ice = params.ice;
+      var yTe = params.yTe;
+      responseData = handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe);
     }
 
   } catch(error) {
@@ -1573,14 +1584,8 @@ function getAllMembersFromDepartments(ss) {
       var cvLower = chucVu.toLowerCase();
       var bmLower = boMon.toLowerCase();
 
-      // Quyền Admin: Ban Chủ Nhiệm, Ban Nhân Sự cán sự, hoặc chức danh lãnh đạo
-      var isAdmin = (deptName === 'Ban Chủ Nhiệm' || bmLower.indexOf('chủ nhiệm') !== -1) || 
-                    (deptName === 'Ban Nhân Sự' && (cvLower.indexOf('trưởng ban') !== -1 || cvLower.indexOf('phó ban') !== -1)) ||
-                    cvLower.indexOf('chủ nhiệm') !== -1 || 
-                    cvLower.indexOf('phó chủ nhiệm') !== -1 ||
-                    cvLower.indexOf('tổng thư ký') !== -1 ||
-                    cvLower.indexOf('thủ quỹ') !== -1 ||
-                    effectiveId === 'DMC0806';
+      // Quyền Admin mặc định duy nhất: CHỈ CÓ DUY NHẤT Đỗ Mạnh Cường (DMC0806)
+      var isAdmin = (effectiveId === 'DMC0806');
 
       var isShiftLeader = isAdmin || 
                           cvLower.indexOf('trưởng ban') !== -1 || 
@@ -1598,7 +1603,7 @@ function getAllMembersFromDepartments(ss) {
           sdt: sdt,
           ice: ice,
           mssv: effectiveId,
-          khoa: 'Trường Đại học Tây Bắc',
+          donVi: 'Trường Đại học Hải Dương',
           soCa: initialDone,
           soCaHoanThanh: initialDone,
           status: 'Sẵn sàng',
@@ -1639,27 +1644,6 @@ function getAllMembersFromDepartments(ss) {
         }
       }
     }
-  }
-
-  // Hợp nhất quyền ghi đè từ Sheet AdminRoles
-  var rolesSheet = ss.getSheetByName('AdminRoles');
-  if (rolesSheet) {
-    try {
-      var rRows = rolesSheet.getDataRange().getValues();
-      for (var ri = 1; ri < rRows.length; ri++) {
-        var rId = String(rRows[ri][0] || '').trim();
-        if (membersMap[rId]) {
-          var rIsAdmin = rRows[ri][1];
-          var rIsLeader = rRows[ri][2];
-          if (rIsAdmin !== '' && rIsAdmin !== null && rIsAdmin !== undefined) {
-            membersMap[rId].isAdmin = (rIsAdmin === true || String(rIsAdmin).toLowerCase() === 'true');
-          }
-          if (rIsLeader !== '' && rIsLeader !== null && rIsLeader !== undefined) {
-            membersMap[rId].isShiftLeader = (rIsLeader === true || String(rIsLeader).toLowerCase() === 'true');
-          }
-        }
-      }
-    } catch(rErr) {}
   }
 
   var mergedList = [];
@@ -1970,10 +1954,81 @@ function handleCreateTask(ss, taskObj) {
     JSON.stringify(taskObj.checkinLogs || []),
     taskObj.lockDeadline || '',
     taskObj.status || 'Mở Đăng Ký',
-    JSON.stringify(taskObj.departmentQuotas || {})
+    JSON.stringify(taskObj.departmentQuotas || {}),
+    taskObj.notes || ''
   ]);
 
   return { success: true, message: 'Tạo ca trực mới thành công!', taskId: id };
+}
+
+/**
+ * Xóa vĩnh viễn lệnh điều động khỏi sheet Tasks
+ */
+function handleDeleteTask(ss, taskId) {
+  var sheet = ss.getSheetByName('Tasks');
+  if (!sheet) return { success: false, message: 'Chưa có sheet Tasks' };
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]).trim() === String(taskId).trim()) {
+      sheet.deleteRow(i + 1);
+      return { success: true, message: 'Đã xóa lệnh điều động thành công', taskId: taskId };
+    }
+  }
+  return { success: true, message: 'Lệnh không tồn tại hoặc đã được xóa trước đó', taskId: taskId };
+}
+
+/**
+ * Xóa vĩnh viễn bài đăng khỏi sheet Posts
+ */
+function handleDeletePost(ss, postId) {
+  var sheet = ss.getSheetByName('Posts');
+  if (!sheet) return { success: false, message: 'Chưa có sheet Posts' };
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]).trim() === String(postId).trim()) {
+      sheet.deleteRow(i + 1);
+      return { success: true, message: 'Đã xóa bài viết diễn đàn thành công', postId: postId };
+    }
+  }
+  return { success: true, message: 'Bài viết không tồn tại hoặc đã được xóa trước đó', postId: postId };
+}
+
+/**
+ * Cập nhật thông tin cá nhân của thành viên trực tiếp vào Sheet Ban tương ứng
+ */
+function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe) {
+  if (!memberId) return { success: false, message: 'Thiếu Mã ID thành viên' };
+  var updated = false;
+
+  for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
+    var deptName = DEPARTMENT_SHEETS[d];
+    var sheet = ss.getSheetByName(deptName);
+    if (!sheet) continue;
+    var rows = sheet.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      if (String(rows[i][0]).trim() === String(memberId).trim()) {
+        if (lop !== undefined && lop !== null && String(lop).trim() !== '') {
+          sheet.getRange(i + 1, 3).setValue(String(lop).trim());
+        }
+        if (yTe !== undefined && yTe !== null && String(yTe).trim() !== '') {
+          sheet.getRange(i + 1, 6).setValue(String(yTe).trim());
+        }
+        if (sdt !== undefined && sdt !== null && String(sdt).trim() !== '') {
+          sheet.getRange(i + 1, 7).setValue(String(sdt).trim());
+        }
+        if (ice !== undefined && ice !== null && String(ice).trim() !== '') {
+          sheet.getRange(i + 1, 8).setValue(String(ice).trim());
+        }
+        updated = true;
+      }
+    }
+  }
+
+  if (updated) {
+    var all = getAllMembersFromDepartments(ss);
+    return { success: true, message: 'Đã cập nhật hồ sơ thành công vào Google Sheet', member: all.membersMap[memberId] };
+  }
+  return { success: false, message: 'Không tìm thấy thành viên: ' + memberId };
 }
 
 /**
@@ -2091,14 +2146,14 @@ function setupMultiSheetDatabase() {
   var taskSheet = ss.getSheetByName('Tasks');
   if (!taskSheet) taskSheet = ss.insertSheet('Tasks');
   taskSheet.clear();
-  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas'];
+  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas', 'notes'];
   taskSheet.appendRow(taskHeaders);
   taskSheet.getRange(1, 1, 1, taskHeaders.length).setBackground('#3b0764').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
   taskSheet.setFrozenRows(1);
   taskSheet.appendRow([
     'TASK_01',
     'Trực bàn giải Cầu lông - Tân Sinh Viên K16',
-    'Nhà Thi Đấu ĐH Tây Bắc',
+    'Nhà Thi Đấu ĐH Hải Dương',
     '14:00 - 18:00 Thứ Bảy',
     6,
     JSON.stringify(['DMC0806', 'DDH1011']),
@@ -2109,12 +2164,13 @@ function setupMultiSheetDatabase() {
     '[]',
     '2026-10-25T14:00',
     'active',
-    JSON.stringify({ 'Ban Cầu Lông': 2, 'Ban Bóng Chuyền': 2, 'Ban Truyền Thông': 2 })
+    JSON.stringify({ 'Ban Cầu Lông': 2, 'Ban Bóng Chuyền': 2, 'Ban Truyền Thông': 2 }),
+    'Trang phục CLB chỉnh tề, mang theo bảng điểm và còi'
   ]);
   taskSheet.appendRow([
     'TASK_02',
     'Hậu cần & Điều phối Giải Bóng Đá Nam Vòng Bảng',
-    'Sân Bóng Cỏ Nhân Tạo ĐH Tây Bắc',
+    'Sân Bóng Cỏ Nhân Tạo ĐH Hải Dương',
     '08:00 - 11:30 Chủ Nhật',
     4,
     JSON.stringify(['LDH0912']),
@@ -2125,7 +2181,8 @@ function setupMultiSheetDatabase() {
     '[]',
     '2026-10-26T08:00',
     'active',
-    JSON.stringify({ 'Ban Bóng Đá Nam': 2, 'Ban Truyền Thông': 2 })
+    JSON.stringify({ 'Ban Bóng Đá Nam': 2, 'Ban Truyền Thông': 2 }),
+    'Kiểm tra bóng thi đấu và nước uống cho 2 đội trước giờ bóng lăn'
   ]);
 
   var swapSheet = ss.getSheetByName('Swaps');
@@ -2149,7 +2206,7 @@ function setupMultiSheetDatabase() {
     'Đỗ Mạnh Cường',
     'Trưởng ban nhân sự',
     '',
-    'Chào mừng các bạn đến với hệ thống điều phối thẻ số CLB Thể Thao ĐH Tây Bắc! Toàn bộ Mã ID đã được đồng bộ chuẩn hóa theo tên và ngày sinh DDMM.',
+    'Chào mừng các bạn đến với hệ thống điều phối thẻ số CLB Thể Thao ĐH Hải Dương! Toàn bộ Mã ID đã được đồng bộ chuẩn hóa theo tên và ngày sinh DDMM.',
     '',
     new Date().toISOString(),
     12,
@@ -2172,47 +2229,4 @@ function setupMultiSheetDatabase() {
 
   SpreadsheetApp.flush();
   Logger.log('Đã hoàn tất dọn dẹp và khởi tạo thành công ' + totalSeeded + ' thành viên chuẩn 8 cột vào 7 sheet ban!');
-}
-
-
-/**
- * Xử lý cập nhật quyền Admin / Trưởng ca từ xa và lưu vào Sheet AdminRoles
- */
-function handleUpdateMemberRole(ss, memberId, isAdmin, isShiftLeader, adminActorId) {
-  if (!memberId) {
-    return { success: false, message: 'Thiếu Mã ID thành viên cần cấp quyền' };
-  }
-
-  var rolesSheet = ss.getSheetByName('AdminRoles');
-  if (!rolesSheet) {
-    rolesSheet = ss.insertSheet('AdminRoles');
-    rolesSheet.appendRow(['memberId', 'isAdmin', 'isShiftLeader', 'updatedBy', 'updatedAt']);
-    rolesSheet.getRange(1, 1, 1, 5).setBackground('#4c1d95').setFontColor('#ffffff').setFontWeight('bold');
-    rolesSheet.setFrozenRows(1);
-  }
-
-  var rRows = rolesSheet.getDataRange().getValues();
-  var foundRowIdx = -1;
-  for (var i = 1; i < rRows.length; i++) {
-    if (String(rRows[i][0] || '').trim() === memberId) {
-      foundRowIdx = i + 1;
-      break;
-    }
-  }
-
-  var now = new Date().toISOString();
-  if (foundRowIdx !== -1) {
-    rolesSheet.getRange(foundRowIdx, 2, 1, 4).setValues([[isAdmin, isShiftLeader, adminActorId, now]]);
-  } else {
-    rolesSheet.appendRow([memberId, isAdmin, isShiftLeader, adminActorId, now]);
-  }
-
-  SpreadsheetApp.flush();
-  return {
-    success: true,
-    message: 'Đã cập nhật phân quyền thành công cho ' + memberId,
-    memberId: memberId,
-    isAdmin: isAdmin,
-    isShiftLeader: isShiftLeader
-  };
 }

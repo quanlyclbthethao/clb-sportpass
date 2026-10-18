@@ -1,0 +1,24 @@
+Mã ID	Họ và Tên	Lớp	Ban chuyên môn	Chức vụ	Y tế	Số điện thoại	Liên hệ khẩn cấp
+TPC1107	Trần Phương Cúc	K15ASPSU	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0868208922	'0868208922
+DTH0111	Đồng Thanh Hiền	K15C SPTOAN	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0398509120	'0398509120
+NTNH1912	Nguyễn Thị Ngọc Huyền	K14B.NNA	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0982636974	'0982636974
+NTHH1401	Nguyễn Trần Huyền Hạnh	K14C.GDTH	Ban Bóng Đá Nữ	Thành viên bóng đá nữ	Bình thường	'0915748614	'0915748614
+PTH2409	Phạm Thị Hạnh	K16A.GDTC	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0392736086	'0392736086
+NTLH1203	Nguyễn Thị Lâm Hằng	K15B.KT	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0373256635	'0373256635
+LTKK2504	Lê Thị Kim Khánh	K16B-GDTC	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0348135923	'0348135923
+LTL0902	Lương Thanh Lam	k16. SP Hoá	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0829262712	'0829262712
+NTL0912	Nguyễn Thị Linh	K16B-NNA	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0335402186	'0335402186
+TTTL1805	Tào Thị Tuyết Linh	K15D.GDTH	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0394828197	'0394828197
+NTKL1305	Nguyễn Thị Khánh Ly	K15G.GDTH	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0336821586	'0336821586
+VQM1712	Vũ Quỳnh Mai	K15A-GDTC	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0865563238	'0865563238
+TTTN1610	Trần Thị Tuyết Nhung	K16D.GDTH	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0962118003	'0962118003
+MTMT1305	Ma Thị Mai Thoa	K16A.SPTOAN	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0962729061	'0962729061
+LTT1001	La Thị Thuý	K15A.SP SU	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0347685459	'0347685459
+NTT2407	Nguyễn Thị Thuận	K14G-GDTH	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0967683506	'0967683506
+PAT2011	Phạm Anh Thư	K16A.GDTC	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0344821428	'0344821428
+HTTT2211	Hoàng Thị Thanh Thảo	K14G-GDTH	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0354100952	'0354100952
+NTPT2604	Nguyễn Thị Phương Thảo	K16A- GDTC	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0385256670	'0385256670
+NBT0605	Nguyễn Bảo Trâm	K16B-GDTC	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0962857725	'0962857725
+LTNT2912	Lường Thị Ngọc Tuyến	K14-GDCT	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0343797536	'0343797536
+HHTV0511	Hoàng Hà Thanh Vân	K15B.GDTC	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0868057090	'0868057090
+TTHY0308	Trần Thị Hoa Yên	K15D.GDTH	Ban Bóng Đá Nữ	Thành viên ban bóng đá	Bình thường	'0345826551	'0345826551

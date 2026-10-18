@@ -1,0 +1,22 @@
+================================================================================
+HƯỚNG DẪN COPY - PASTE VÀO FILE GOOGLE SHEET MỚI (CHUẨN 8 CỘT)
+================================================================================
+Cấu trúc 8 cột chuẩn xác trong mỗi trang tính (Sheet):
+Cột A: Mã ID | Cột B: Họ và Tên | Cột C: Lớp | Cột D: Ban chuyên môn
+Cột E: Chức vụ | Cột F: Y tế | Cột G: Số điện thoại | Cột H: Liên hệ khẩn cấp
+
+CÁCH SỬ DỤNG SIÊU TIỆN LỢI:
+1. Tạo 7 trang tính (Sheet) với đúng tên từng Ban bên dưới.
+2. Mở file .txt hoặc .tsv của ban tương ứng (bằng Notepad hoặc Google Drive).
+3. Bấm Ctrl+A rồi Ctrl+C để copy toàn bộ nội dung.
+4. Chọn ô A1 trong Google Sheet của ban đó rồi bấm Ctrl+V.
+-> Dữ liệu sẽ tự động tách thành 8 cột hoàn hảo, bảo toàn số 0 ở đầu SĐT!
+--------------------------------------------------------------------------------
+
+- Sheet 'Ban Chủ Nhiệm': 9 thành viên -> file `1_Ban_Chu_Nhiem.txt`
+- Sheet 'Ban Nhân Sự': 3 thành viên -> file `2_Ban_Nhan_Su.txt`
+- Sheet 'Ban Bóng Chuyền': 56 thành viên -> file `3_Ban_Bong_Chuyen.txt`
+- Sheet 'Ban Bóng Đá Nam': 21 thành viên -> file `4_Ban_Bong_Da_Nam.txt`
+- Sheet 'Ban Bóng Đá Nữ': 23 thành viên -> file `5_Ban_Bong_Da_Nu.txt`
+- Sheet 'Ban Cầu Lông': 2 thành viên -> file `6_Ban_Cau_Long.txt`
+- Sheet 'Ban Truyền Thông': 11 thành viên -> file `7_Ban_Truyen_Thong.txt`
