@@ -98,5 +98,32 @@ class TestTaskReconciliationAndQr(unittest.TestCase):
         self.assertIn("transform: translateY(", self.html)
         self.assertIn(".qr-scan-reticle", self.html)
 
+    # --- ITEM 7: TRƯỞNG BAN QR SCANNER AUTHORIZATION & FIELD CHECKIN ---
+    def test_truong_ban_scanner_authorization(self):
+        """Trưởng Ban, Phó Ban, Ban Chủ Nhiệm must be authorized scanners in isAuthorizedScanner"""
+        self.assertIn("cv.includes('trưởng ban')", self.html)
+        self.assertIn("cv.includes('phó ban')", self.html)
+        self.assertIn("cv.includes('chủ nhiệm')", self.html)
+        self.assertIn("cv.includes('ban chủ nhiệm')", self.html)
+
+    def test_deletion_enqueued_in_offline_mutations(self):
+        """confirmDeleteTask and confirmDeletePost must enqueue offline mutations to prevent resurrecting deleted items"""
+        self.assertIn("enqueueOfflineMutation('DELETE_TASK', { taskId });", self.html)
+        self.assertIn("enqueueOfflineMutation('DELETE_POST', { postId });", self.html)
+        self.assertIn("mut.type === 'DELETE_TASK'", self.html)
+        self.assertIn("mut.type === 'DELETE_POST'", self.html)
+
+    def test_extended_token_qr_formats_and_file_upload(self):
+        """QR decoder must handle CHK- and PASS- formats and include image file upload fallback"""
+        self.assertIn("trimmed.startsWith('CHK-')", self.html)
+        self.assertIn("trimmed.startsWith('PASS-')", self.html)
+        self.assertIn("function handleQrFileSelected", self.html)
+        self.assertIn("id=\"iptQrImageFile\"", self.html)
+
+    def test_immediate_dispatch_notification_for_member(self):
+        """Member newly assigned to shift must receive immediate dispatch alert and notification"""
+        self.assertIn("newlyAssigned", self.html)
+        self.assertIn("Bạn có lệnh điều động mới:", self.html)
+
 if __name__ == "__main__":
     unittest.main()

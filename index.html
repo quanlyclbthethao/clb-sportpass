@@ -1510,7 +1510,8 @@
       </div>
 
       <!-- Nút điều khiển camera -->
-      <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;">
+      <input type="file" id="iptQrImageFile" accept="image/*" style="display: none;" onchange="handleQrFileSelected(event)">
+      <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
         <button onclick="toggleCameraFacing()" class="spring-touch" style="padding: 6px 12px; border-radius: 12px; background: #f1f5f9; border: 1px solid #cbd5e1; font-size: 10px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 5px;">
           <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           <span>Đổi Camera</span>
@@ -1519,6 +1520,10 @@
           <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           <span id="lblTorch">Đèn Flash</span>
         </button>
+        <button onclick="document.getElementById('iptQrImageFile').click()" class="spring-touch" style="padding: 6px 12px; border-radius: 12px; background: #f1f5f9; border: 1px solid #cbd5e1; font-size: 10px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 5px;">
+          <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Tải Ảnh QR</span>
+        </button>
       </div>
 
       <!-- Thông báo khi camera chưa cấp quyền -->
@@ -1526,6 +1531,7 @@
         <p style="font-weight: 800; margin-bottom: 3px;">⚠️ Chưa kết nối được Camera</p>
         <p style="font-size: 10px; color: #b45309; margin: 0;">Vui lòng cấp quyền Camera trên trình duyệt để kích hoạt ống kính quét mã trực tiếp.</p>
         <button onclick="initQrCameraStream()" class="spring-touch" style="margin-top: 8px; padding: 5px 14px; border-radius: 9px; background: #d97706; color: #ffffff; border: none; font-weight: 800; font-size: 10.5px;">Thử lại</button>
+        <button onclick="document.getElementById('iptQrImageFile').click()" class="spring-touch" style="margin-top: 8px; margin-left: 6px; padding: 5px 14px; border-radius: 9px; background: #0f766e; color: #ffffff; border: none; font-weight: 800; font-size: 10.5px;">Tải Ảnh QR</button>
       </div>
 
       <!-- Thẻ kết quả quét thành công -->
@@ -2302,10 +2308,10 @@
         location: 'Nhà Thi Đấu ĐH Hải Dương',
         time: '14:00 - 18:00 Thứ Bảy',
         quota: 6,
-        joinedMembers: ['DMC0806', 'DDH1011'],
+        joinedMembers: [],
         assignedMembers: [],
-        waitlist: ['TCT0803'],
-        leaderId: 'LDH0912',
+        waitlist: [],
+        leaderId: '',
         checkedInMembers: [],
         checkinLogs: [],
         lockDeadline: '2026-10-25T14:00',
@@ -2319,10 +2325,10 @@
         location: 'Sân Bóng Cỏ Nhân Tạo ĐH Hải Dương',
         time: '08:00 - 11:30 Chủ Nhật',
         quota: 4,
-        joinedMembers: ['LDH0912'],
+        joinedMembers: [],
         assignedMembers: [],
         waitlist: [],
-        leaderId: 'DMC0806',
+        leaderId: '',
         checkedInMembers: [],
         checkinLogs: [],
         lockDeadline: '2026-10-26T08:00',
@@ -2393,14 +2399,23 @@
       try { localStorage.removeItem('CLB_SPORTPASS_THEME'); } catch (e) {}
     }
 
-    // Hàm kiểm tra quyền quét điểm danh hiện trường (Chỉ Admin & Trưởng ca trực)
+    // Hàm kiểm tra quyền quét điểm danh hiện trường (Admin, Trưởng ban, Phó ban, Trưởng ca trực, Ban Chủ Nhiệm)
     function isAuthorizedScanner(user = currentUser) {
       if (!user) return false;
+      const cv = (user.chucVu || '').toLowerCase();
+      const role = (user.role || '').toLowerCase();
       return Boolean(
         user.isAdmin === true || 
         user.isShiftLeader === true || 
-        user.role === 'LEADER' || 
-        (user.chucVu && (user.chucVu.includes('Trưởng ca') || user.chucVu.includes('Chủ nhiệm')))
+        role === 'leader' || 
+        role === 'admin' ||
+        cv.includes('trưởng ban') ||
+        cv.includes('phó ban') ||
+        cv.includes('trưởng ca') ||
+        cv.includes('chủ nhiệm') ||
+        cv.includes('phó chủ nhiệm') ||
+        cv.includes('ban chủ nhiệm') ||
+        cv.includes('điều hành')
       );
     }
 
@@ -2523,6 +2538,10 @@
             fetch(`${BACKEND_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(mut.payload.memberId)}&delta=${encodeURIComponent(mut.payload.delta)}&reason=${encodeURIComponent(mut.payload.reason || '')}&adminActorId=${encodeURIComponent(mut.payload.adminActorId || '')}`).catch(() => {});
           } else if (mut.type === 'RESOLVE_LEAVE') {
             fetch(`${BACKEND_URL}?action=withdrawTask&taskId=${encodeURIComponent(mut.payload.taskId || '')}&memberId=${encodeURIComponent(mut.payload.memberId || '')}`).catch(() => {});
+          } else if (mut.type === 'DELETE_TASK') {
+            fetch(`${BACKEND_URL}?action=deleteTask&taskId=${encodeURIComponent(mut.payload.taskId)}&actorId=${encodeURIComponent(currentUser?.id || '')}`).catch(() => {});
+          } else if (mut.type === 'DELETE_POST') {
+            fetch(`${BACKEND_URL}?action=deletePost&postId=${encodeURIComponent(mut.payload.postId)}&actorId=${encodeURIComponent(currentUser?.id || '')}`).catch(() => {});
           }
         } catch(e) {}
       });
@@ -2799,7 +2818,7 @@
       });
     }
 
-    function runWithDebounce(actionFn, delay = 450) {
+    function runWithDebounce(actionFn, delay = 220) {
       if (isActionDebouncing) return;
       isActionDebouncing = true;
       if (debounceTimer) {
@@ -2819,14 +2838,15 @@
     function resolveFluidIcon(iconHint) {
       if (!iconHint) return VECTOR_ICONS.sparkle;
       if (iconHint.includes('🗑️')) return VECTOR_ICONS.trash;
-      if (iconHint.includes('⚠') || iconHint.includes('🚨')) return VECTOR_ICONS.alert;
+      if (iconHint.includes('⚠') || iconHint.includes('🚨') || iconHint.includes('⛔') || iconHint.includes('ℹ')) return VECTOR_ICONS.alert;
       if (iconHint.includes('⚡') || iconHint.includes('🎯')) return VECTOR_ICONS.bolt;
       if (iconHint.includes('🚪')) return VECTOR_ICONS.logout;
       if (iconHint.includes('💬')) return VECTOR_ICONS.chat;
       if (iconHint.includes('🔑')) return VECTOR_ICONS.key;
       if (iconHint.includes('📷')) return VECTOR_ICONS.camera;
       if (iconHint.includes('💪')) return VECTOR_ICONS.activity;
-      if (iconHint.includes('⚖') || iconHint.includes('📨')) return VECTOR_ICONS.swap;
+      if (iconHint.includes('⚖') || iconHint.includes('📨') || iconHint.includes('🔄') || iconHint.includes('🔁')) return VECTOR_ICONS.swap;
+      if (iconHint.includes('✨') || iconHint.includes('🎉')) return VECTOR_ICONS.sparkle;
       return VECTOR_ICONS.check;
     }
 
@@ -2963,6 +2983,8 @@
       if (!members || !members.length) return members;
       members.forEach(m => {
         if (!m || !m.id) return;
+        const cv = (m.chucVu || '').toLowerCase();
+        const isLeadership = cv.includes('trưởng ban') || cv.includes('phó ban') || cv.includes('trưởng ca') || cv.includes('chủ nhiệm') || cv.includes('điều hành');
         if (m.id === 'DMC0806' || m.hoTen === 'Đỗ Mạnh Cường') {
           m.isAdmin = true;
           m.isShiftLeader = true;
@@ -2974,10 +2996,14 @@
           }
           if (customRoles[m.id] && typeof customRoles[m.id].isShiftLeader === 'boolean') {
             m.isShiftLeader = customRoles[m.id].isShiftLeader;
+          } else if (isLeadership) {
+            m.isShiftLeader = true;
           }
         }
       });
       if (currentUser && currentUser.id) {
+        const curCv = (currentUser.chucVu || '').toLowerCase();
+        const isCurLeadership = curCv.includes('trưởng ban') || curCv.includes('phó ban') || curCv.includes('trưởng ca') || curCv.includes('chủ nhiệm') || curCv.includes('điều hành');
         if (currentUser.id === 'DMC0806' || currentUser.hoTen === 'Đỗ Mạnh Cường') {
           currentUser.isAdmin = true;
           currentUser.isShiftLeader = true;
@@ -2987,9 +3013,14 @@
           }
           if (typeof customRoles[currentUser.id].isShiftLeader === 'boolean') {
             currentUser.isShiftLeader = customRoles[currentUser.id].isShiftLeader;
+          } else if (isCurLeadership) {
+            currentUser.isShiftLeader = true;
           }
         } else {
           currentUser.isAdmin = false;
+          if (isCurLeadership) {
+            currentUser.isShiftLeader = true;
+          }
         }
       }
       return members;
@@ -3444,15 +3475,16 @@
         if (idx === normalized) {
           p.classList.remove('hidden');
           p.classList.remove('tab-panel-anim');
-          void p.offsetWidth;
-          p.classList.add('tab-panel-anim');
+          requestAnimationFrame(() => {
+            p.classList.add('tab-panel-anim');
+          });
         } else {
           p.classList.add('hidden');
           p.classList.remove('tab-panel-anim');
         }
       });
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo(0, 0);
 
       // Khi chuyển sang tab Nhiệm vụ (Tab 1), lập tức đồng bộ thời gian thực không chờ đợi
       if (normalized === 1 && currentUser && navigator.onLine) {
@@ -4329,6 +4361,7 @@
           renderTasksList();
           showAquaIsland('Đã xóa lệnh điều động khỏi hệ thống!', '🗑️');
 
+          enqueueOfflineMutation('DELETE_TASK', { taskId });
           try {
             fetch(`${BACKEND_URL}?action=deleteTask&taskId=${encodeURIComponent(taskId)}&actorId=${encodeURIComponent(currentUser?.id || '')}`)
               .catch(() => console.log('Đã ghi nhận xóa lệnh offline'));
@@ -5144,6 +5177,7 @@
           renderForumFeed();
           showAquaIsland('Đã xóa bài đăng khỏi Diễn đàn!', '🗑️');
 
+          enqueueOfflineMutation('DELETE_POST', { postId });
           try {
             fetch(`${BACKEND_URL}?action=deletePost&postId=${encodeURIComponent(postId)}&actorId=${encodeURIComponent(currentUser?.id || '')}`)
               .catch(() => console.log('Đã ghi nhận xóa bài đăng offline'));
@@ -6152,10 +6186,10 @@
     async function openQrScannerModal(targetTaskId = null) {
       triggerHaptic('light');
 
-      // BẢO VỆ PHÂN QUYỀN TUYỆT ĐỐI: Chỉ Admin hoặc Trưởng ca trực mới được quét
+      // BẢO VỆ PHÂN QUYỀN TUYỆT ĐỐI: Chỉ Admin, Trưởng ban hoặc Trưởng ca trực mới được quét
       if (!isAuthorizedScanner(currentUser)) {
         triggerHaptic('error');
-        showAquaIsland('Chỉ Admin CLB hoặc Trưởng ca trực mới có quyền quét điểm danh hiện trường!', '⛔');
+        showAquaIsland('Chỉ Admin CLB, Trưởng ban hoặc Trưởng ca trực mới có quyền quét điểm danh hiện trường!', '⛔');
         return;
       }
 
@@ -6184,12 +6218,31 @@
       setBodyScrollLock(false);
     }
 
-    function populateSimulationMembersList(targetTaskId = null) {
-      // Giữ cho tính tương thích nội bộ
-    }
-
-    function simulateScanSelectedMember(targetTaskId = null, memberId = null) {
-      if (memberId) performFieldCheckin(targetTaskId || activeScanTargetTaskId, memberId);
+    function handleQrFileSelected(event) {
+      const file = event?.target?.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          if (typeof jsQR !== 'undefined') {
+            const code = jsQR(imgData.data, canvas.width, canvas.height, { inversionAttempts: 'attemptBoth' });
+            if (code && code.data) {
+              handleScanQrPayload(code.data);
+              return;
+            }
+          }
+          showAquaIsland('Không tìm thấy mã QR hợp lệ trong ảnh đã chọn!', '⚠️');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
 
     async function initQrCameraStream() {
@@ -6314,6 +6367,22 @@
         return;
       }
 
+      // 1. Quét tốc độ cao qua BarcodeDetector API nếu trình duyệt hỗ trợ
+      if (typeof BarcodeDetector !== 'undefined') {
+        try {
+          if (!window._nativeBarcodeDetector) {
+            window._nativeBarcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+          }
+          window._nativeBarcodeDetector.detect(video).then(barcodes => {
+            if (barcodes && barcodes.length > 0 && barcodes[0].rawValue) {
+              handleScanQrPayload(barcodes[0].rawValue);
+              return;
+            }
+          }).catch(() => {});
+        } catch (e) {}
+      }
+
+      // 2. Quét qua jsQR canvas fallback với khả năng nhận diện cả ảnh nghịch đảo (attemptBoth)
       try {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
@@ -6324,7 +6393,7 @@
         let decodedCode = null;
         if (typeof jsQR !== 'undefined') {
           decodedCode = jsQR(imgData.data, imgData.width, imgData.height, {
-            inversionAttempts: 'dontInvert'
+            inversionAttempts: 'attemptBoth'
           });
         }
 
@@ -6361,6 +6430,13 @@
         } else if (trimmed.startsWith('SPORTPASS:MEMBER:')) {
           const parts = trimmed.split(':');
           if (parts[2]) memberId = parts[2];
+        } else if (trimmed.startsWith('CHK-')) {
+          const parts = trimmed.split('-');
+          if (parts[1]) memberId = parts[1];
+          if (parts[2] && parts[2] !== 'PASS') taskId = parts[2];
+        } else if (trimmed.startsWith('PASS-')) {
+          const parts = trimmed.split('-');
+          if (parts[1]) memberId = parts[1];
         } else {
           memberId = trimmed.replace('CLB-PASS|', '').replace('SPORTPASS|', '').split('|')[0].trim();
         }
@@ -6375,12 +6451,21 @@
         }
       }
 
+      // Chuẩn hóa định danh thành viên từ membersDirectory
+      const member = membersDirectory.find(m => 
+        m.id === memberId || 
+        (m.mssv && m.mssv === memberId) || 
+        (m.sdt && m.sdt === memberId)
+      );
+      if (member) {
+        memberId = member.id;
+      }
+
       if ((parsedPayload?.type === 'FIELD_CHECKIN' || !parsedPayload) && taskId && memberId) {
         performFieldCheckin(taskId, memberId);
         return;
       }
 
-      const member = membersDirectory.find(m => m.id === memberId || m.mssv === memberId);
       if (member) {
         if (taskId) {
           performFieldCheckin(taskId, member.id);
@@ -6442,21 +6527,26 @@
     const handleQrScanSuccess = handleScanQrPayload;
 
     // ĐIỂM DANH HIỆN TRƯỜNG: Phân quyền nghiêm ngặt, tích lũy soCaHoanThanh, lưu dấu vết kiểm toán, cập nhật UI tức thì
-    function performFieldCheckin(taskId, memberId) {
-      // 1. BẢO VỆ PHÂN QUYỀN TUYỆT ĐỐI: Chỉ Admin hoặc Trưởng ca trực mới có quyền điểm danh
+    function performFieldCheckin(taskId, rawMemberId) {
+      // 1. BẢO VỆ PHÂN QUYỀN TUYỆT ĐỐI: Chỉ Admin, Trưởng ban hoặc Trưởng ca trực mới có quyền điểm danh
       if (!isAuthorizedScanner(currentUser)) {
         triggerHaptic('error');
-        showAquaIsland('Chỉ Admin CLB hoặc Trưởng ca trực mới có quyền điểm danh hiện trường!', '⛔');
+        showAquaIsland('Chỉ Admin CLB, Trưởng ban hoặc Trưởng ca trực mới có quyền điểm danh hiện trường!', '⛔');
         return false;
       }
 
-      // 2. Kiểm tra thông tin thành viên
-      const member = membersDirectory.find(m => m.id === memberId);
+      // 2. Kiểm tra và chuẩn hóa thông tin thành viên
+      const member = membersDirectory.find(m => 
+        m.id === rawMemberId || 
+        (m.mssv && m.mssv === rawMemberId) || 
+        (m.sdt && m.sdt === rawMemberId)
+      );
       if (!member) {
         triggerHaptic('warning');
         showAquaIsland('Không tìm thấy thông tin thành viên!', '⚠️');
         return false;
       }
+      const memberId = member.id;
 
       // 3. Kiểm tra thông tin ca trực bắt buộc
       if (!taskId) {
@@ -6472,12 +6562,11 @@
         return false;
       }
 
-      // 4. Kiểm tra thành viên có trong danh sách nhận ca không (chống điểm danh sai ca)
+      // 4. Kiểm tra thành viên có trong danh sách nhận ca không. Nếu chưa, Trưởng ban/Admin có quyền bổ sung tiếp nhận trực tiếp tại hiện trường
       const isRegistered = (task.joinedMembers || []).includes(memberId) || (task.assignedMembers || []).includes(memberId);
       if (!isRegistered) {
-        triggerHaptic('warning');
-        showAquaIsland(`Thành viên ${member.hoTen} chưa đăng ký vào ca trực này!`, '⚠️');
-        return false;
+        task.joinedMembers = task.joinedMembers || [];
+        task.joinedMembers.push(memberId);
       }
 
       // 5. Kiểm tra chống điểm danh trùng lặp
@@ -6685,6 +6774,36 @@
               }
             }
 
+            // Tự động đẩy xóa lên server nếu server vẫn trả về task nằm trong tombstone cục bộ
+            const localDeletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
+            (data.tasks || []).forEach(t => {
+              if (t && t.id && localDeletedTasks.includes(t.id)) {
+                fetch(`${BACKEND_URL}?action=deleteTask&taskId=${encodeURIComponent(t.id)}&actorId=${encodeURIComponent(currentUser?.id || '')}`).catch(() => {});
+              }
+            });
+
+            // Thông báo lệnh điều động mới xuất hiện bên nick thành viên tức thì
+            if (currentUser && Array.isArray(currentTasks)) {
+              const prevMyTaskIds = new Set(
+                currentTasks
+                  .filter(t => (t.joinedMembers || []).includes(currentUser.id) || (t.assignedMembers || []).includes(currentUser.id))
+                  .map(t => t.id)
+              );
+              const newlyAssigned = backendTasks.filter(t => 
+                ((t.joinedMembers || []).includes(currentUser.id) || (t.assignedMembers || []).includes(currentUser.id)) &&
+                !prevMyTaskIds.has(t.id)
+              );
+              if (newlyAssigned.length > 0) {
+                const latest = newlyAssigned[0];
+                triggerHaptic('success');
+                showAquaIsland(`Bạn có lệnh điều động mới: ${latest.title}!`, '🎯');
+                triggerTaskNotification(
+                  `Lệnh điều động: ${latest.title}`,
+                  `Thời gian: ${latest.time || 'Chưa cập nhật'} • Địa điểm: ${latest.location || 'Tại trường'}`
+                );
+              }
+            }
+
             const previousTaskIds = (currentTasks || []).map(t => t.id);
             if (previousTaskIds.length > 0) {
               const brandNewTasks = backendTasks.filter(t => !previousTaskIds.includes(t.id));
@@ -6700,6 +6819,14 @@
           }
           if (data.swaps) currentSwaps = data.swaps;
           if (data.posts) {
+            // Tự động đẩy xóa bài viết lên server nếu server vẫn trả về post nằm trong tombstone cục bộ
+            const localDeletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
+            (data.posts || []).forEach(p => {
+              if (p && p.id && localDeletedPosts.includes(p.id)) {
+                fetch(`${BACKEND_URL}?action=deletePost&postId=${encodeURIComponent(p.id)}&actorId=${encodeURIComponent(currentUser?.id || '')}`).catch(() => {});
+              }
+            });
+
             const backendPosts = (data.posts || []).filter(p => p && !deletedPosts.includes(p.id));
             const backendPostMap = new Map(backendPosts.map(p => [p.id, p]));
             const mergedPosts = [...backendPosts];
