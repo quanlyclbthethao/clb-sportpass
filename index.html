@@ -860,7 +860,7 @@
         <div style="text-align: left; display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
           <div>
             <label style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Mã ID / MSSV / SĐT</label>
-            <input type="text" id="iptUser" value="CLB001" placeholder="CLB001..." onkeydown="if(event.key==='Enter') handleLoginSubmit()" class="input-box" autocomplete="username">
+            <input type="text" id="iptUser" value="DMC0806" placeholder="DMC0806 hoặc SĐT..." onkeydown="if(event.key==='Enter') handleLoginSubmit()" class="input-box" autocomplete="username">
           </div>
           <div>
             <label style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Mật Khẩu</label>
@@ -898,11 +898,11 @@
 
             <div style="flex: 1; min-width: 0;">
               <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #1e1b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nguyễn Văn A</h2>
+                <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #1e1b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Đỗ Mạnh Cường</h2>
                 <span id="badgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe;">Admin</span>
               </div>
-              <p id="memRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Chủ nhiệm CLB</p>
-              <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: CLB001</p>
+              <p id="memRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Trưởng ban nhân sự</p>
+              <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: DMC0806</p>
             </div>
           </div>
 
@@ -1062,7 +1062,7 @@
               <span id="composerAvatarInitial">A</span>
             </div>
             <div style="flex: 1; min-width: 0;">
-              <p id="composerAuthorName" style="font-size: 12.5px; font-weight: 800; color: #1e1b4b;">Nguyễn Văn A</p>
+              <p id="composerAuthorName" style="font-size: 12.5px; font-weight: 800; color: #1e1b4b;">Đỗ Mạnh Cường</p>
               <label style="display: inline-flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 700; color: #475569; cursor: pointer; margin-top: 1px;">
                 <input type="checkbox" id="chkAnonymous" style="accent-color: #6366f1;">
                 <svg class="svg-icon" style="width: 12px; height: 12px; color: #6366f1;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="3"/></svg>
@@ -1440,10 +1440,10 @@
       <div id="qrScanResultContainer" class="hidden" style="margin-top: 10px; padding: 12px; border-radius: 16px; background: #ecfdf5; border: 1.2px solid #6ee7b7;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 34px; height: 34px; border-radius: 50%; background: #047857; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px;" id="qrResultAvatar">A</div>
+            <div style="width: 34px; height: 34px; border-radius: 50%; background: #047857; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px;" id="qrResultAvatar">H</div>
             <div>
-              <h4 id="qrResultName" style="font-size: 13px; font-weight: 900; color: #064e3b;">Nguyễn Văn A</h4>
-              <p id="qrResultMeta" style="font-size: 10px; color: #047857;">ID: CLB001 &bull; Ban Cầu Lông</p>
+              <h4 id="qrResultName" style="font-size: 13px; font-weight: 900; color: #064e3b;">Lương Đình Hiếu</h4>
+              <p id="qrResultMeta" style="font-size: 10px; color: #047857;">ID: LDH0912 &bull; Ban Cầu Lông</p>
             </div>
           </div>
           <span style="font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #d1fae5; color: #064e3b; border: 1px solid #a7f3d0;">Điểm danh thành công</span>
@@ -1903,7 +1903,7 @@
   </div>
 
   <script>
-    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzT6e3yMBkLeSeLpXVlrKyPTyBEueJdAMaTgG-hob8yfHbrNBUq9P5OrmV8DoLYmbOAyg/exec";
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxAD9-2mrhinr9P7_bJc7pNaH49Sxi3PL9zjDNAkcajHWS5MbE03CRwwTjGUDmFASkf/exec";
 
     let currentUser = null;
     let membersDirectory = [];
@@ -2440,18 +2440,17 @@
     }
 
     function enterOfflineDemoMode(showToast = true) {
-      currentUser = {
-        id: 'CLB001',
-        hoTen: 'Nguyễn Văn A',
-        ngaySinh: '15/08/2004',
-        lop: 'K64-QLTT',
-        mssv: '20210001',
-        khoa: 'Viện Kinh tế & QTKD',
-        boMon: 'Ban Cầu Lông',
-        chucVu: 'Chủ nhiệm CLB',
-        sdt: '0912345678',
-        yTe: 'Nhóm O+ (Bình thường)',
-        ice: '0987654321 (Mẹ)',
+      const defaultUser = {
+        id: 'DMC0806',
+        hoTen: 'Đỗ Mạnh Cường',
+        lop: 'K13.GDTC',
+        boMon: 'Ban Nhân Sự',
+        chucVu: 'Trưởng ban nhân sự',
+        yTe: 'Bình thường',
+        sdt: '',
+        ice: '',
+        mssv: 'DMC0806',
+        khoa: 'Trường Đại học Tây Bắc',
         soCa: 12,
         soCaHoanThanh: 12,
         status: 'Sẵn sàng',
@@ -2462,23 +2461,29 @@
       };
 
       membersDirectory = [
-        currentUser,
-        { id: 'CLB002', hoTen: 'Trần Hải Yến', lop: 'K65-CNTT', mssv: '20220123', khoa: 'Khoa CNTT', boMon: 'Ban Cầu Lông', chucVu: 'Thành viên CLB', sdt: '0988776655', yTe: 'A+', ice: '0901234567', soCa: 4, soCaHoanThanh: 4, status: 'Sẵn sàng', theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '', isAdmin: false, isShiftLeader: false },
-        { id: 'CLB003', hoTen: 'Lê Hoàng Nam', lop: 'K63-Cơ Khí', mssv: '20205566', khoa: 'Trường Cơ Khí', boMon: 'Ban Bóng Chuyền', chucVu: 'Trưởng ca trực', sdt: '0977889900', yTe: 'B+', ice: '0912000111', soCa: 2, soCaHoanThanh: 2, status: 'Sẵn sàng', theTrang: 'Căng cơ nhẹ (80% thể lực)', avatar: '', isAdmin: false, isShiftLeader: true },
-        { id: 'CLB004', hoTen: 'Phạm Tuấn Kiệt', lop: 'K64-Điện', mssv: '20218899', khoa: 'Trường Điện', boMon: 'Ban Bóng Đá', chucVu: 'Thành viên CLB', sdt: '0909112233', yTe: 'O+', ice: '0933445566', soCa: 8, soCaHoanThanh: 8, status: 'Sẵn sàng', theTrang: 'Sốt / Cảm cúm (Miễn trừ ca)', avatar: '', isAdmin: false, isShiftLeader: false }
+        defaultUser,
+        { id: 'LDH0912', hoTen: 'Lương Đình Hiếu', lop: 'K13.GDTC', mssv: 'LDH0912', khoa: 'Trường Đại học Tây Bắc', boMon: 'Ban Cầu Lông', chucVu: 'Trưởng ban cầu lông', sdt: '0787246014', yTe: 'Bình thường', ice: '0787246014', soCa: 6, soCaHoanThanh: 6, status: 'Sẵn sàng', theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '', isAdmin: false, isShiftLeader: true },
+        { id: 'DDH1011', hoTen: 'Đinh Đức Huy', lop: 'K15A.GDTC', mssv: 'DDH1011', khoa: 'Trường Đại học Tây Bắc', boMon: 'Ban Cầu Lông', chucVu: 'Phó ban cầu lông', sdt: '0362936958', yTe: 'Bình thường', ice: '0362936958', soCa: 4, soCaHoanThanh: 4, status: 'Sẵn sàng', theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '', isAdmin: false, isShiftLeader: false },
+        { id: 'TCT0803', hoTen: 'Triệu Chiến Thái', lop: 'K13.SPLS', mssv: 'TCT0803', khoa: 'Trường Đại học Tây Bắc', boMon: 'Ban Bóng Chuyền', chucVu: 'Trưởng ban bóng chuyền', sdt: '0354269904', yTe: 'Bình thường', ice: '0354269904', soCa: 8, soCaHoanThanh: 8, status: 'Sẵn sàng', theTrang: 'Sung sức (Đạt đỉnh phong độ)', avatar: '', isAdmin: false, isShiftLeader: true },
+        { id: 'TTTL1805', hoTen: 'Tào Thị Tuyết Linh', lop: 'K15D.GDTH', mssv: 'TTTL1805', khoa: 'Trường Đại học Tây Bắc', boMon: 'Ban Truyền Thông', chucVu: 'Trưởng ban truyền thông', sdt: '0394828197', yTe: 'Bình thường', ice: '0394828197', soCa: 5, soCaHoanThanh: 5, status: 'Sẵn sàng', theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '', isAdmin: true, isShiftLeader: true }
       ];
+
+      // Tự động nhận diện thành viên nếu người dùng đã nhập mã ID cụ thể
+      const enteredId = (document.getElementById('iptUser')?.value || '').trim().toLowerCase();
+      const matchedMem = membersDirectory.find(m => m.id.toLowerCase() === enteredId || (m.sdt && m.sdt === enteredId.replace(/[^0-9]/g, '')));
+      currentUser = matchedMem || defaultUser;
 
       currentTasks = [
         {
           id: 'TASK_01',
-          title: 'Trực bàn giải Cầu lông HUST 2026',
-          location: 'NTĐ Bách Khoa',
+          title: 'Trực bàn giải Cầu lông - Tân Sinh Viên K16',
+          location: 'Nhà Thi Đấu ĐH Tây Bắc',
           time: '14:00 - 18:00 Thứ Bảy',
           quota: 6,
-          joinedMembers: ['CLB001', 'CLB002'],
+          joinedMembers: ['DMC0806', 'DDH1011'],
           assignedMembers: [],
-          waitlist: ['CLB004'],
-          leaderId: 'CLB003',
+          waitlist: ['TCT0803'],
+          leaderId: 'LDH0912',
           checkedInMembers: [],
           checkinLogs: [],
           lockDeadline: new Date(Date.now() + 18 * 3600 * 1000).toISOString().slice(0, 16),
@@ -2487,19 +2492,19 @@
         },
         {
           id: 'TASK_02',
-          title: 'Hậu cần & Trọng tài biên Giải Bóng Đá Sinh Viên',
-          location: 'SVĐ Bách Khoa',
+          title: 'Hậu cần & Điều phối Giải Bóng Đá Nam Vòng Bảng',
+          location: 'Sân Bóng Cỏ Nhân Tạo ĐH Tây Bắc',
           time: '08:00 - 11:30 Chủ Nhật',
-          quota: 2,
-          joinedMembers: ['CLB003'],
+          quota: 4,
+          joinedMembers: ['LDH0912'],
           assignedMembers: [],
           waitlist: [],
-          leaderId: 'CLB001',
+          leaderId: 'DMC0806',
           checkedInMembers: [],
           checkinLogs: [],
           lockDeadline: new Date(Date.now() + 48 * 3600 * 1000).toISOString().slice(0, 16),
           status: 'active',
-          departmentQuotas: { 'Ban Bóng Đá': 1, 'Ban Truyền Thông': 1 }
+          departmentQuotas: { 'Ban Bóng Đá Nam': 2, 'Ban Truyền Thông': 2 }
         }
       ];
 
@@ -2507,13 +2512,13 @@
         {
           id: 'LEAVE_01',
           taskId: 'TASK_01',
-          taskTitle: 'Trực bàn giải Cầu lông HUST 2026',
+          taskTitle: 'Trực bàn giải Cầu lông - Tân Sinh Viên K16',
           taskTime: '14:00 - 18:00 Thứ Bảy',
-          memberId: 'CLB002',
-          memberName: 'Trần Hải Yến',
+          memberId: 'DDH1011',
+          memberName: 'Đinh Đức Huy',
           memberDept: 'Ban Cầu Lông',
           category: 'Sốt / Cảm cúm (Miễn trừ ca)',
-          reason: 'Bị sốt xuất huyết đang truyền dịch tại trạm xá, có gửi kèm đơn thuốc minh chứng.',
+          reason: 'Bị cảm sốt đang theo dõi tại trạm y tế, gửi kèm đơn minh chứng.',
           proofImage: '',
           isUnder24h: true,
           hoursRemaining: 18,
@@ -2526,8 +2531,8 @@
         {
           id: 'AUD_01',
           timestamp: 'Hôm nay 08:35',
-          actorId: 'CLB002',
-          actorName: 'Trần Hải Yến',
+          actorId: 'DDH1011',
+          actorName: 'Đinh Đức Huy',
           action: 'LEAVE_REQUEST',
           target: 'TASK_01',
           detail: 'Gửi đơn xin rút ca trực sát giờ (< 24h) kèm minh chứng',
@@ -2538,14 +2543,14 @@
       currentPosts = [
         {
           id: 'POST_01',
-          authorId: 'CLB001',
-          authorName: 'Nguyễn Văn A',
+          authorId: 'DMC0806',
+          authorName: 'Đỗ Mạnh Cường',
           authorAvatar: '',
           isAnonymous: false,
-          content: 'Chào mừng các bạn đến với hệ thống điều phối thẻ số CLB Thể Thao! Hôm nay chúng ta áp dụng cơ chế tự động chỉ định quân số theo từng ban và hỗ trợ phản hồi bình luận đa tầng nhé!',
+          content: 'Chào mừng các bạn đến với hệ thống điều phối thẻ số CLB Thể Thao ĐH Tây Bắc! Toàn bộ Mã ID đã được đồng bộ chuẩn hóa theo tên và ngày sinh DDMM.',
           mediaList: [
             {
-              url: "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 450%22%3E%3Cdefs%3E%3ClinearGradient id=%22bg%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22%3E%3Cstop offset=%220%25%22 stop-color=%22%23e0e7ff%22/%3E%3Cstop offset=%2250%25%22 stop-color=%22%23f3e8ff%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23d1fae5%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22800%22 height=%22450%22 fill=%22url(%23bg)%22/%3E%3Ccircle cx=%22700%22 cy=%2280%22 r=%22160%22 fill=%22%23ffffff%22 fill-opacity=%220.45%22/%3E%3Ccircle cx=%22120%22 cy=%22380%22 r=%22190%22 fill=%22%23ffffff%22 fill-opacity=%220.45%22/%3E%3Crect x=%2260%22 y=%2260%22 width=%22680%22 height=%22330%22 rx=%2232%22 fill=%22%23ffffff%22 fill-opacity=%220.68%22 stroke=%22%23ffffff%22 stroke-width=%223%22/%3E%3Ctext x=%22400%22 y=%22185%22 font-size=%2236%22 font-weight=%22900%22 text-anchor=%22middle%22 fill=%22%23312e81%22 font-family=%22sans-serif%22%3ECLB TH%E1%BB%82 THAO HUST 2026%3C/text%3E%3Ctext x=%22400%22 y=%22245%22 font-size=%2224%22 font-weight=%22800%22 text-anchor=%22middle%22 fill=%22%234f46e5%22 font-family=%22sans-serif%22%3EGI%E1%BA%A2I C%E1%BA%A6U L%C3%94NG M%E1%BB%9E R%E1%BB%98NG %E2%80%A2 NT%C4%90 B%C3%81CH KHOA%3C/text%3E%3Ctext x=%22400%22 y=%22305%22 font-size=%2218%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22%23047857%22 font-family=%22sans-serif%22%3ECh%E1%BA%A1m v%C3%A0o %E1%BA%A3nh %C4%91%E1%BB%83 xem ch%E1%BA%BF %C4%91%E1%BB%99 HD Lightbox Fullscreen%3C/text%3E%3C/svg%3E",
+              url: "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 450%22%3E%3Cdefs%3E%3ClinearGradient id=%22bg%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22%3E%3Cstop offset=%220%25%22 stop-color=%22%23e0e7ff%22/%3E%3Cstop offset=%2250%25%22 stop-color=%22%23f3e8ff%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23d1fae5%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22800%22 height=%22450%22 fill=%22url(%23bg)%22/%3E%3Ccircle cx=%22700%22 cy=%2280%22 r=%22160%22 fill=%22%23ffffff%22 fill-opacity=%220.45%22/%3E%3Ccircle cx=%22120%22 cy=%22380%22 r=%22190%22 fill=%22%23ffffff%22 fill-opacity=%220.45%22/%3E%3Crect x=%2260%22 y=%2260%22 width=%22680%22 height=%22330%22 rx=%2232%22 fill=%22%23ffffff%22 fill-opacity=%220.68%22 stroke=%22%23ffffff%22 stroke-width=%223%22/%3E%3Ctext x=%22400%22 y=%22185%22 font-size=%2236%22 font-weight=%22900%22 text-anchor=%22middle%22 fill=%22%23312e81%22 font-family=%22sans-serif%22%3ECLB TH%E1%BB%82 THAO ĐH TÂY BẮC%3C/text%3E%3Ctext x=%22400%22 y=%22245%22 font-size=%2224%22 font-weight=%22800%22 text-anchor=%22middle%22 fill=%22%234f46e5%22 font-family=%22sans-serif%22%3EGI%E1%BA%A2I C%E1%BA%A6U L%C3%94NG M%E1%BB%9E R%E1%BB%98NG %E2%80%A2 NT%C4%90 ĐH TÂY BẮC%3C/text%3E%3Ctext x=%22400%22 y=%22305%22 font-size=%2218%22 font-weight=%22700%22 text-anchor=%22middle%22 fill=%22%23047857%22 font-family=%22sans-serif%22%3ECh%E1%BA%A1m v%C3%A0o %E1%BA%A3nh %C4%91%E1%BB%83 xem ch%E1%BA%BF %C4%91%E1%BB%99 HD Lightbox Fullscreen%3C/text%3E%3C/svg%3E",
               type: 'image'
             }
           ],
@@ -2553,12 +2558,12 @@
           comments: [
             { 
               id: 'CMT_01', 
-              authorId: 'CLB002', 
-              authorName: 'Trần Hải Yến', 
-              text: 'Giao diện Pastel mới cực mượt, nút ICE bấm phát gọi ngay anh ơi!', 
+              authorId: 'LDH0912', 
+              authorName: 'Lương Đình Hiếu', 
+              text: 'Ban Cầu Lông đã sẵn sàng cho giải đấu sắp tới rồi anh Cường ơi!', 
               time: '10:15',
               replies: [
-                { id: 'REP_01', authorId: 'CLB001', authorName: 'Nguyễn Văn A', replyToName: 'Trần Hải Yến', text: 'Đúng rồi em, hệ thống bảo vệ an toàn tối đa cho các vận động viên!', time: '10:18' }
+                { id: 'REP_01', authorId: 'DMC0806', authorName: 'Đỗ Mạnh Cường', replyToName: 'Lương Đình Hiếu', text: 'Tuyệt vời Hiếu ơi, chúc Ban Cầu Lông và anh em thi đấu hết mình!', time: '10:18' }
               ]
             }
           ],
@@ -2583,13 +2588,13 @@
     function toggleDemoRole() {
       if (!currentUser) return;
       // Chu trình chuyển đổi 3 góc nhìn trải nghiệm: Admin -> Trưởng ca trực -> Thành viên thường
-      let nextId = 'CLB001';
-      if (currentUser.isAdmin) {
-        nextId = 'CLB003'; // Trưởng ca trực (isShiftLeader = true, isAdmin = false)
-      } else if (currentUser.isShiftLeader) {
-        nextId = 'CLB002'; // Thành viên thường (isShiftLeader = false, isAdmin = false)
+      let nextId = 'DMC0806';
+      if (currentUser.id === 'DMC0806') {
+        nextId = 'LDH0912'; // Trưởng ca trực (isShiftLeader = true, isAdmin = false)
+      } else if (currentUser.id === 'LDH0912') {
+        nextId = 'DDH1011'; // Thành viên thường (isShiftLeader = false, isAdmin = false)
       } else {
-        nextId = 'CLB001'; // Admin / Chủ nhiệm CLB (isAdmin = true, isShiftLeader = true)
+        nextId = 'DMC0806'; // Admin / Chủ nhiệm CLB (isAdmin = true, isShiftLeader = true)
       }
 
       const targetMem = membersDirectory.find(m => m.id === nextId);
@@ -2824,12 +2829,18 @@
       }
 
       safeSetText('dClass', currentUser.lop || '---');
-      safeSetText('dMssv', currentUser.mssv || '---');
-      safeSetText('dFaculty', currentUser.khoa || '---');
-      safeSetText('dDept', currentUser.boMon || '---');
-      safeSetText('dDob', currentUser.ngaySinh || '---');
+      safeSetText('dMssv', currentUser.mssv || currentUser.id || '---');
+      safeSetText('dFaculty', currentUser.khoa || 'Trường Đại học Tây Bắc');
+      const curDeptDisplay = (currentUser.cacBan && currentUser.cacBan.length > 1) ? currentUser.cacBan.join(', ') : (currentUser.boMon || '---');
+      safeSetText('dDept', curDeptDisplay);
+      let curDob = currentUser.ngaySinh || '';
+      if (!curDob && currentUser.id && /\d{4}$/.test(currentUser.id)) {
+        const dDigits = currentUser.id.slice(-4);
+        curDob = `${dDigits.slice(0, 2)}/${dDigits.slice(2)}`;
+      }
+      safeSetText('dDob', curDob || '---');
       safeSetText('dPhone', currentUser.sdt || '---');
-      safeSetText('dIce', currentUser.ice || '---');
+      safeSetText('dIce', currentUser.ice || currentUser.sdt || '---');
       safeSetText('dMed', currentUser.yTe || 'Bình thường');
 
       applyTheTrangBadgeStyle(currentUser.theTrang || 'Khỏe mạnh (100% Sẵn sàng)');
@@ -4459,7 +4470,15 @@
       const container = document.getElementById('directoryListContainer');
       if (!container) return;
 
-      const filtered = membersDirectory.filter(m => 
+      const seenIds = new Set();
+      const uniqueMems = membersDirectory.filter(m => {
+        if (!m || !m.id) return false;
+        if (seenIds.has(m.id)) return false;
+        seenIds.add(m.id);
+        return true;
+      });
+
+      const filtered = uniqueMems.filter(m => 
         (m.hoTen || '').toLowerCase().includes(q) ||
         (m.id || '').toLowerCase().includes(q) ||
         (m.mssv || '').toLowerCase().includes(q) ||
@@ -4542,11 +4561,12 @@
       }
 
       safeSetText('otherClass', m.lop || '---');
-      safeSetText('otherMssv', m.mssv || '---');
-      safeSetText('otherFaculty', m.khoa || '---');
-      safeSetText('otherDept', m.boMon || '---');
+      safeSetText('otherMssv', m.mssv || m.id || '---');
+      safeSetText('otherFaculty', m.khoa || 'Trường Đại học Tây Bắc');
+      const otherDeptDisplay = (m.cacBan && m.cacBan.length > 1) ? m.cacBan.join(', ') : (m.boMon || '---');
+      safeSetText('otherDept', otherDeptDisplay);
       safeSetText('otherPhone', m.sdt || '---');
-      safeSetText('otherIce', m.ice || '---');
+      safeSetText('otherIce', m.ice || m.sdt || '---');
       safeSetText('otherMed', m.yTe || 'Bình thường');
 
       applyAvatarElement(
