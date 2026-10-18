@@ -89,7 +89,7 @@ with zipfile.ZipFile(r'C:\Users\Admin\Desktop\Danh_sách_Thành_viên_Các_ban_C
                 if sdt.startswith('84'): sdt = '0' + sdt[2:]
                 elif sdt and not sdt.startswith('0') and len(sdt) in [9, 10]: sdt = '0' + sdt
                 
-                khoa = bcn_dict.get(hoten.lower(), 'ĐH Tây Bắc')
+                khoa = bcn_dict.get(hoten.lower(), 'Trường Đại học Hải Dương')
                 
                 cv_low = chuc_vu.lower()
                 is_admin = False

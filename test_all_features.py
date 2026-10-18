@@ -45,14 +45,11 @@ class TestSportPassFeatures(unittest.TestCase):
         self.assertIn("localStorage.setItem('CLB_REMEMBER_LOGIN', 'true')", self.html)
 
     def test_transparent_guidance_panel(self):
-        """Kiem tra bang huong dan dang nhap minh bach Glassmorphic va tai khoan mau"""
+        """Kiem tra bang huong dan dang nhap minh bach Glassmorphic va xoa bo nut mock quickFillLogin"""
         self.assertIn('Hướng Dẫn Đăng Nhập Minh Bạch', self.html)
         self.assertIn('DMC0806', self.html)
         self.assertIn('123456', self.html)
-        self.assertIn('quickFillLogin', self.html)
-        self.assertIn("quickFillLogin('DMC0806', '123456')", self.html)
-        self.assertIn("quickFillLogin('LDH0912', '123456')", self.html)
-        self.assertIn("quickFillLogin('DDH1011', '123456')", self.html)
+        self.assertNotIn('quickFillLogin', self.html, "Mock one-click quickFillLogin buttons must be removed for production")
 
     # ==================== TEST 2: SESSION & STORAGE LIFECYCLE ====================
     def test_storage_lifecycle_logic(self):

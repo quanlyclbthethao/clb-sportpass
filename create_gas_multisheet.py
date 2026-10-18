@@ -256,7 +256,7 @@ function getAllMembersFromDepartments(ss) {{
       var chucVu = String(r[4] || 'Thành viên').trim();
       var lop = String(r[5] || '').trim();
       var sdt = cleanPhone(r[6]);
-      var khoa = String(r[7] || 'ĐH Tây Bắc').trim();
+      var khoa = String(r[7] || 'Trường Đại học Hải Dương').trim();
       var soCa = Number(r[8]) || 0;
 
       // Xác định quyền hạn thông minh theo Ban và Chức vụ
@@ -725,7 +725,7 @@ function setupMultiSheetDatabase() {{
     tasksSheet.appendRow([
       'TASK_001',
       'Trực sân Bóng Chuyền - Giải Giao Hữu Tân Sinh Viên K16',
-      'Nhà Thi Đấu ĐH Tây Bắc',
+      'Nhà Thi Đấu Trường Đại học Hải Dương',
       '07:30 - 11:30 | Thứ Bảy',
       6,
       '[]', '[]', '[]', 'TCT0803', '[]', '[]', '2026-10-18T22:00:00Z', 'Mở Đăng Ký',

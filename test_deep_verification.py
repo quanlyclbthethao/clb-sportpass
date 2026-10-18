@@ -48,7 +48,6 @@ class TestDeepVerification(unittest.TestCase):
         """Kiem tra exposeGlobalState gan day du cac ham RBAC va Auth vao window"""
         required_window_funcs = [
             'togglePasswordVisibility',
-            'quickFillLogin',
             'openAdminRoleManagementModal',
             'closeAdminRoleManagementModal',
             'setRoleDeptFilter',
@@ -60,7 +59,10 @@ class TestDeepVerification(unittest.TestCase):
             'applyRoleChange',
             'getCustomAdminRoles',
             'saveCustomAdminRoles',
-            'applyCustomAdminRoles'
+            'applyCustomAdminRoles',
+            'openEditProfileModal',
+            'saveMemberProfileEdit',
+            'saveDeletedTaskId'
         ]
         for fn in required_window_funcs:
             self.assertIn(f"window.{fn} = {fn};", self.html, f"Missing window.{fn} assignment in exposeGlobalState")

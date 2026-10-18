@@ -94,7 +94,7 @@ def create_workbook(file_path):
                 sdt = '0' + str(sdt)
             ws.write(row_idx, 6, sdt, phone_fmt)
             
-            ws.write(row_idx, 7, m.get('khoa', 'ĐH Tây Bắc'), text_fmt)
+            ws.write(row_idx, 7, m.get('khoa', 'Trường Đại học Hải Dương'), text_fmt)
             ws.write(row_idx, 8, 0, num_fmt)
 
         # Column widths
@@ -118,7 +118,7 @@ def create_workbook(file_path):
         ws_tasks.write(0, c_idx, th, t_header_fmt)
     
     sample_tasks = [
-        ['TASK_001', 'Trực sân Bóng Chuyền - Giải Giao Hữu Tân Sinh Viên K16', 'Nhà Thi Đấu ĐH Tây Bắc', '07:30 - 11:30 | Thứ Bảy', 6, '[]', '[]', '[]', 'TCT0803', '[]', '[]', '2026-10-18T22:00:00Z', 'Mở Đăng Ký', '{"Ban Bóng Chuyền": 3, "Ban Chủ Nhiệm": 1, "Ban Nhân Sự": 1, "Ban Truyền Thông": 1}'],
+        ['TASK_001', 'Trực sân Bóng Chuyền - Giải Giao Hữu Tân Sinh Viên K16', 'Nhà Thi Đấu Trường Đại học Hải Dương', '07:30 - 11:30 | Thứ Bảy', 6, '[]', '[]', '[]', 'TCT0803', '[]', '[]', '2026-10-18T22:00:00Z', 'Mở Đăng Ký', '{"Ban Bóng Chuyền": 3, "Ban Chủ Nhiệm": 1, "Ban Nhân Sự": 1, "Ban Truyền Thông": 1}'],
         ['TASK_002', 'Điều phối Giải Bóng Đá Nam Vòng Bảng Khoa GDTC', 'Sân Bóng Cỏ Nhân Tạo', '14:00 - 17:30 | Chủ Nhật', 8, '[]', '[]', '[]', 'NQD1509', '[]', '[]', '2026-10-19T10:00:00Z', 'Mở Đăng Ký', '{"Ban Bóng Đá Nam": 5, "Ban Cầu Lông": 1, "Ban Truyền Thông": 2}'],
         ['TASK_003', 'Hỗ trợ Truyền Thông & Livestream Khai Mạc Giải Thể Thao', 'Hội Trường Trung Tâm', '18:30 - 21:30 | Thứ Hai', 4, '[]', '[]', '[]', 'TTTL1805', '[]', '[]', '2026-10-20T12:00:00Z', 'Mở Đăng Ký', '{"Ban Truyền Thông": 3, "Ban Chủ Nhiệm": 1}']
     ]

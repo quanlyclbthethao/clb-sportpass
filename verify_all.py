@@ -134,27 +134,22 @@ print('[PASS] 4. GoogleAppsScript_MultiSheet.js: Dual-role merge & multi-sheet s
 
 # --- 6. index.html ---
 html = open(os.path.join(DIR, 'index.html'), encoding='utf-8').read()
-assert 'placeholder="DMC0806 hoặc SĐT..."' in html
-assert 'value="DMC0806"' in html
+assert 'DMC0806' in html
 assert 'CLB001' not in html
 assert 'CLB002' not in html
 assert 'CLB003' not in html
 assert 'CLB004' not in html
-assert 'DMC0806' in html
-assert 'LDH0912' in html
-assert 'DDH1011' in html
+assert 'quickFillLogin' not in html
+assert 'toggleDemoRole' not in html
 
-# Verify no phone leak for DMC0806 in index.html
-demo_match = re.search(r"id:\s*'DMC0806'[\s\S]*?ice:\s*'([^']*)'", html)
-assert demo_match, 'Could not find DMC0806 demo block'
-assert demo_match.group(1) == '', f'Leaked ICE for DMC0806 in index.html: {demo_match.group(1)}'
+# Verify sole admin in default directory
+m = re.search(r'const DEFAULT_MEMBERS_DIRECTORY = (\[.*?\]);', html)
+assert m, 'DEFAULT_MEMBERS_DIRECTORY not found'
+members = json.loads(m.group(1))
+admins = [x for x in members if x.get('isAdmin')]
+assert len(admins) == 1 and admins[0]['id'] == 'DMC0806', 'Only DMC0806 must be default admin'
 
-# Verify toggleDemoRole cycling
-assert "if (currentUser.id === 'DMC0806')" in html
-assert "nextId = 'LDH0912'" in html
-assert "else if (currentUser.id === 'LDH0912')" in html
-assert "nextId = 'DDH1011'" in html
-print('[PASS] 5. index.html: Clean mock data, no ICE leak, and bulletproof demo role cycling!')
+print('[PASS] 5. index.html: Production ready, sole admin DMC0806, and no demo artifacts!')
 
 # --- 7. Windows Clipboard Verification ---
 p = subprocess.Popen(['powershell', '-Command', 'Get-Clipboard'], stdout=subprocess.PIPE)

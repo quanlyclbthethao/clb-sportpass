@@ -134,3 +134,34 @@ self.addEventListener('notificationclick', (event) => {
     })
   );
 });
+
+// ==================== BACKGROUND SYNC & PERIODIC SYNC KHI TẮT APP ====================
+async function checkNewTasksBackground() {
+  try {
+    const res = await fetch('https://script.google.com/macros/s/AKfycbxAD9-2mrhinr9P7_bJc7pNaH49Sxi3PL9zjDNAkcajHWS5MbE03CRwwTjGUDmFASkf/exec?action=syncAll');
+    const data = await res.json();
+    if (data && data.success && Array.isArray(data.tasks) && data.tasks.length > 0) {
+      const latest = data.tasks[0];
+      await self.registration.showNotification('Nhiệm vụ mới: ' + (latest.title || 'CLB Thể Thao UHD'), {
+        body: `Thời gian: ${latest.time || 'Xem chi tiết'} • Địa điểm: ${latest.location || 'Tại trường'}${latest.notes ? ' • Ghi chú: ' + latest.notes : ''}`,
+        icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"%3E%3Crect width="512" height="512" rx="128" fill="%234338ca"/%3E%3Cpath d="M256 120 L360 160 L360 260 C360 330 256 390 256 390 C256 390 152 330 152 260 L152 160 Z" fill="%23ffffff"/%3E%3C/svg%3E',
+        badge: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"%3E%3Ccircle cx="48" cy="48" r="48" fill="%234338ca"/%3E%3C/svg%3E',
+        vibrate: [150, 80, 150],
+        data: { url: './' }
+      });
+    }
+  } catch(e) {}
+}
+
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'check-tasks') {
+    event.waitUntil(checkNewTasksBackground());
+  }
+});
+
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'check-tasks-periodic') {
+    event.waitUntil(checkNewTasksBackground());
+  }
+});
+

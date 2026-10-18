@@ -2369,11 +2369,28 @@
       if (typeof getCustomAdminRoles === 'function') window.getCustomAdminRoles = getCustomAdminRoles;
       if (typeof saveCustomAdminRoles === 'function') window.saveCustomAdminRoles = saveCustomAdminRoles;
       if (typeof applyCustomAdminRoles === 'function') window.applyCustomAdminRoles = applyCustomAdminRoles;
+      if (typeof getDeletedTaskIds === 'function') window.getDeletedTaskIds = getDeletedTaskIds;
+      if (typeof saveDeletedTaskId === 'function') window.saveDeletedTaskId = saveDeletedTaskId;
+      if (typeof getDeletedPostIds === 'function') window.getDeletedPostIds = getDeletedPostIds;
+      if (typeof saveDeletedPostId === 'function') window.saveDeletedPostId = saveDeletedPostId;
+      if (typeof openEditProfileModal === 'function') window.openEditProfileModal = openEditProfileModal;
+      if (typeof closeEditProfileModal === 'function') window.closeEditProfileModal = closeEditProfileModal;
+      if (typeof saveMemberProfileEdit === 'function') window.saveMemberProfileEdit = saveMemberProfileEdit;
+      if (typeof requestNotificationPermission === 'function') window.requestNotificationPermission = requestNotificationPermission;
+      if (typeof triggerTaskNotification === 'function') window.triggerTaskNotification = triggerTaskNotification;
     }
 
     function saveLocalState() {
       exposeGlobalState();
       try {
+        const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
+        const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
+        if (Array.isArray(currentTasks)) {
+          currentTasks = currentTasks.filter(t => t && !deletedTasks.includes(t.id));
+        }
+        if (Array.isArray(currentPosts)) {
+          currentPosts = currentPosts.filter(p => p && !deletedPosts.includes(p.id));
+        }
         const isRemembered = localStorage.getItem('CLB_REMEMBER_LOGIN') === 'true';
         if (currentUser) {
           const userStr = JSON.stringify(currentUser);
@@ -2978,9 +2995,11 @@
           currentUser = JSON.parse(activeSessionJson);
           if (dataCache) {
             const parsed = JSON.parse(dataCache);
+            const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
+            const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
             membersDirectory = (parsed.membersDirectory && parsed.membersDirectory.length) ? parsed.membersDirectory : (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY.slice() : []);
-            currentTasks = parsed.currentTasks || [];
-            currentPosts = parsed.currentPosts || [];
+            currentTasks = (parsed.currentTasks || []).filter(t => t && !deletedTasks.includes(t.id));
+            currentPosts = (parsed.currentPosts || []).filter(p => p && !deletedPosts.includes(p.id));
             currentSwaps = parsed.currentSwaps || [];
             currentLeaves = parsed.currentLeaves || [];
             auditLogs = parsed.auditLogs || [];
@@ -3060,6 +3079,8 @@
           applyCustomAdminRoles([currentUser]);
           saveLocalState();
           showMainAppView();
+          renderTasksList();
+          renderForumFeed();
           syncRealtimeData();
           showAquaIsland(`Xin chào, ${currentUser.hoTen}!`, '✨');
         } else {
@@ -3094,8 +3115,14 @@
       if (matched) {
         currentUser = JSON.parse(JSON.stringify(matched));
         applyCustomAdminRoles([currentUser]);
+        const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
+        const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
+        currentTasks = (currentTasks || []).filter(t => t && !deletedTasks.includes(t.id));
+        currentPosts = (currentPosts || []).filter(p => p && !deletedPosts.includes(p.id));
         saveLocalState();
         showMainAppView();
+        renderTasksList();
+        renderForumFeed();
         showAquaIsland(`Đăng nhập thành công: ${currentUser.hoTen}!`, '✨');
       } else {
         showAquaIsland(serverMsg || `Không tìm thấy thành viên: ${user}. Vui lòng kiểm tra lại Mã ID hoặc SĐT!`, '⚠️');
@@ -6083,8 +6110,8 @@
         const res = await fetch(`${BACKEND_URL}?action=syncAll&memberId=${currentUser.id}`);
         const data = await res.json();
         if (data.success) {
-          const deletedTasks = getDeletedTaskIds();
-          const deletedPosts = getDeletedPostIds();
+          const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
+          const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
 
           if (data.member) {
             currentUser = data.member;
@@ -6095,11 +6122,23 @@
             applyCustomAdminRoles(membersDirectory);
           }
           if (data.tasks) {
-            currentTasks = (data.tasks || []).filter(t => !deletedTasks.includes(t.id));
+            const previousTaskIds = (currentTasks || []).map(t => t.id);
+            const filteredTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id));
+            if (previousTaskIds.length > 0) {
+              const newTasks = filteredTasks.filter(t => !previousTaskIds.includes(t.id));
+              if (newTasks.length > 0) {
+                const latest = newTasks[0];
+                triggerTaskNotification(
+                  'Lệnh điều động mới: ' + (latest.title || 'Nhiệm vụ CLB'),
+                  `Thời gian: ${latest.time || 'Chưa cập nhật'} • Địa điểm: ${latest.location || 'Tại trường'}`
+                );
+              }
+            }
+            currentTasks = filteredTasks;
           }
           if (data.swaps) currentSwaps = data.swaps;
           if (data.posts) {
-            currentPosts = (data.posts || []).filter(p => !deletedPosts.includes(p.id));
+            currentPosts = (data.posts || []).filter(p => p && !deletedPosts.includes(p.id));
           }
 
           saveLocalState();
@@ -6112,6 +6151,27 @@
       } catch (err) {
         console.log('Chế độ hoạt động offline/local cache.');
       }
+    }
+
+    function triggerTaskNotification(title, body) {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      try {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.ready.then(reg => {
+            reg.showNotification(title, {
+              body: body,
+              icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"%3E%3Crect width="512" height="512" rx="128" fill="%234338ca"/%3E%3Cpath d="M256 120 L360 160 L360 260 C360 330 256 390 256 390 C256 390 152 330 152 260 L152 160 Z" fill="%23ffffff"/%3E%3C/svg%3E',
+              badge: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"%3E%3Ccircle cx="48" cy="48" r="48" fill="%234338ca"/%3E%3C/svg%3E',
+              vibrate: [150, 80, 150],
+              data: { url: './' }
+            });
+          }).catch(() => {
+            new Notification(title, { body: body });
+          });
+        } else {
+          new Notification(title, { body: body });
+        }
+      } catch(e) {}
     }
 
     // ==================== CHỈNH SỬA HỒ SƠ & ĐỒNG BỘ GOOGLE SHEET ====================
@@ -6201,6 +6261,18 @@
           showAquaIsland('Đã bật thông báo nhiệm vụ khi tắt app!', '🔔');
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.ready.then(reg => {
+              if ('periodicSync' in reg) {
+                try {
+                  reg.periodicSync.register('check-tasks-periodic', {
+                    minInterval: 15 * 60 * 1000
+                  }).catch(() => {});
+                } catch(e) {}
+              }
+              if ('sync' in reg) {
+                try {
+                  reg.sync.register('check-tasks').catch(() => {});
+                } catch(e) {}
+              }
               reg.showNotification('CLB Thể Thao • Trường Đại học Hải Dương', {
                 body: 'Hệ thống thông báo đẩy đã sẵn sàng! Bạn sẽ nhận được thông báo nhiệm vụ ngay cả khi tắt app.',
                 icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"%3E%3Crect width="512" height="512" rx="128" fill="%234338ca"/%3E%3Cpath d="M256 120 L360 160 L360 260 C360 330 256 390 256 390 C256 390 152 330 152 260 L152 160 Z" fill="%23ffffff"/%3E%3C/svg%3E',

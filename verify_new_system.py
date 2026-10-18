@@ -145,17 +145,15 @@ assert 'DDH1011' in html
 assert 'TCT0803' in html
 assert 'TTTL1805' in html
 
-# Verify fallback logic in renderProfileData and openOtherMemberInspector
-assert 'currentUser.mssv || currentUser.id' in html
-assert 'm.mssv || m.id' in html
-assert 'currentUser.ice || currentUser.sdt' in html
-assert 'm.ice || m.sdt' in html
+# Verify profile attributes
+assert 'id="dMemberId"' in html
+assert 'id="dFullName"' in html
+assert 'id="dPhone"' in html
+assert 'id="dIce"' in html
+assert 'Trường Đại học Hải Dương' in html
+assert 'toggleDemoRole' not in html
 
-# Verify toggleDemoRole
-assert "if (currentUser.id === 'DMC0806')" in html
-assert "nextId = 'LDH0912'" in html
-
-print("[PASS] 5. index.html: Mock demo data and safe fallbacks for 8-column schema verified!")
+print("[PASS] 5. index.html: Production 8-column schema, sole admin, and UHD entity verified!")
 
 # --- 6. WINDOWS CLIPBOARD VERIFICATION ---
 p = subprocess.Popen(['powershell', '-Command', '[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-Clipboard'], stdout=subprocess.PIPE)

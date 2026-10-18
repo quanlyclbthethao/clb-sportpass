@@ -655,6 +655,14 @@ function handleRequest(e) {{
       var yTe = params.yTe;
       responseData = handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe);
     }}
+    // 11. CẬP NHẬT PHÂN QUYỀN ADMIN / TRƯỞNG CA (updateMemberRole)
+    else if (action === 'updateMemberRole') {{
+      var memberId = params.memberId;
+      var isAdmin = params.isAdmin === 'true' || params.isAdmin === true;
+      var isShiftLeader = params.isShiftLeader === 'true' || params.isShiftLeader === true;
+      var adminActorId = params.adminActorId || '';
+      responseData = handleUpdateMemberRole(ss, memberId, isAdmin, isShiftLeader, adminActorId);
+    }}
 
   }} catch(error) {{
     responseData = {{ success: false, message: 'Lỗi máy chủ: ' + error.toString() }};
@@ -786,6 +794,29 @@ function getAllMembersFromDepartments(ss) {{
         }}
       }}
     }}
+  }}
+
+  // Hợp nhất quyền hạn quản trị tùy chỉnh từ Sheet AdminRoles (nếu có)
+  var adminRolesSheet = ss.getSheetByName('AdminRoles');
+  if (adminRolesSheet) {{
+    try {{
+      var rRows = adminRolesSheet.getDataRange().getValues();
+      for (var ri = 1; ri < rRows.length; ri++) {{
+        var rId = String(rRows[ri][0] || '').trim();
+        var rIsAdmin = rRows[ri][1];
+        var rIsLeader = rRows[ri][2];
+        if (rId && membersMap[rId]) {{
+          // Bảo vệ bất biến: DMC0806 luôn luôn là Admin mặc định
+          if (rId === 'DMC0806') {{
+            membersMap[rId].isAdmin = true;
+            membersMap[rId].isShiftLeader = true;
+          }} else {{
+            membersMap[rId].isAdmin = (rIsAdmin === true || String(rIsAdmin).toLowerCase() === 'true');
+            membersMap[rId].isShiftLeader = (rIsLeader === true || String(rIsLeader).toLowerCase() === 'true');
+          }}
+        }}
+      }}
+    }} catch(rErr) {{}}
   }}
 
   var mergedList = [];
@@ -1171,6 +1202,48 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe) {{
     return {{ success: true, message: 'Đã cập nhật hồ sơ thành công vào Google Sheet', member: all.membersMap[memberId] }};
   }}
   return {{ success: false, message: 'Không tìm thấy thành viên: ' + memberId }};
+}}
+
+/**
+ * Xử lý cập nhật quyền Admin / Trưởng ca từ xa và lưu vào Sheet AdminRoles
+ */
+function handleUpdateMemberRole(ss, memberId, isAdmin, isShiftLeader, adminActorId) {{
+  if (!memberId) {{
+    return {{ success: false, message: 'Thiếu Mã ID thành viên cần cấp quyền' }};
+  }}
+
+  var rolesSheet = ss.getSheetByName('AdminRoles');
+  if (!rolesSheet) {{
+    rolesSheet = ss.insertSheet('AdminRoles');
+    rolesSheet.appendRow(['memberId', 'isAdmin', 'isShiftLeader', 'updatedBy', 'updatedAt']);
+    rolesSheet.getRange(1, 1, 1, 5).setBackground('#4c1d95').setFontColor('#ffffff').setFontWeight('bold');
+    rolesSheet.setFrozenRows(1);
+  }}
+
+  var rRows = rolesSheet.getDataRange().getValues();
+  var foundRowIdx = -1;
+  for (var i = 1; i < rRows.length; i++) {{
+    if (String(rRows[i][0] || '').trim() === memberId) {{
+      foundRowIdx = i + 1;
+      break;
+    }}
+  }}
+
+  var now = new Date().toISOString();
+  if (foundRowIdx !== -1) {{
+    rolesSheet.getRange(foundRowIdx, 2, 1, 4).setValues([[isAdmin, isShiftLeader, adminActorId, now]]);
+  }} else {{
+    rolesSheet.appendRow([memberId, isAdmin, isShiftLeader, adminActorId, now]);
+  }}
+
+  SpreadsheetApp.flush();
+  return {{
+    success: true,
+    message: 'Đã cập nhật phân quyền thành công cho ' + memberId,
+    memberId: memberId,
+    isAdmin: isAdmin,
+    isShiftLeader: isShiftLeader
+  }};
 }}
 
 /**
