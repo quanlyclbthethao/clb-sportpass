@@ -1453,6 +1453,7 @@ function handleRequest(e) {
       var tasksList = getTasksList(ss);
       var swapsList = getSwapsList(ss);
       var postsList = getPostsList(ss);
+      var tombstones = getDeletedTombstones(ss);
 
       responseData = {
         success: true,
@@ -1460,7 +1461,9 @@ function handleRequest(e) {
         membersList: membersList,
         tasks: tasksList,
         swaps: swapsList,
-        posts: postsList
+        posts: postsList,
+        deletedTaskIds: tombstones.taskIds,
+        deletedPostIds: tombstones.postIds
       };
     }
     // 3. ĐĂNG KÝ CA TRỰC (claimTask)
@@ -2143,11 +2146,59 @@ function handleCreateTask(ss, taskObj) {
 }
 
 /**
- * Xóa vĩnh viễn lệnh điều động khỏi sheet Tasks
+ * Ghi nhận ID đã xóa vào sheet DeletedTombstones để đồng bộ hai chiều triệt để
+ */
+function recordDeletedTombstone(ss, id, type) {
+  if (!id) return;
+  try {
+    var sheet = ss.getSheetByName('DeletedTombstones');
+    if (!sheet) {
+      sheet = ss.insertSheet('DeletedTombstones');
+      sheet.appendRow(['ID', 'Type', 'DeletedAt']);
+      sheet.setFrozenRows(1);
+    }
+    sheet.appendRow([String(id).trim(), String(type).trim(), new Date().toISOString()]);
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 501) {
+      sheet.deleteRows(2, lastRow - 501);
+    }
+  } catch (e) {
+    Logger.log('Error recording tombstone: ' + e);
+  }
+}
+
+/**
+ * Lấy danh sách ID các ca trực và bài đăng đã bị xóa khỏi hệ thống
+ */
+function getDeletedTombstones(ss) {
+  var result = { taskIds: [], postIds: [] };
+  try {
+    var sheet = ss.getSheetByName('DeletedTombstones');
+    if (!sheet) return result;
+    var rows = sheet.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      var id = String(rows[i][0]).trim();
+      var type = String(rows[i][1]).trim().toLowerCase();
+      if (!id) continue;
+      if (type === 'task') {
+        if (result.taskIds.indexOf(id) === -1) result.taskIds.push(id);
+      } else if (type === 'post') {
+        if (result.postIds.indexOf(id) === -1) result.postIds.push(id);
+      }
+    }
+  } catch (e) {
+    Logger.log('Error reading tombstones: ' + e);
+  }
+  return result;
+}
+
+/**
+ * Xóa vĩnh viễn lệnh điều động khỏi sheet Tasks và ghi nhận tombstone
  */
 function handleDeleteTask(ss, taskId) {
   var sheet = ss.getSheetByName('Tasks');
   if (!sheet) return { success: false, message: 'Chưa có sheet Tasks' };
+  recordDeletedTombstone(ss, taskId, 'task');
   var rows = sheet.getDataRange().getValues();
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim() === String(taskId).trim()) {
@@ -2159,11 +2210,12 @@ function handleDeleteTask(ss, taskId) {
 }
 
 /**
- * Xóa vĩnh viễn bài đăng khỏi sheet Posts
+ * Xóa vĩnh viễn bài đăng khỏi sheet Posts và ghi nhận tombstone
  */
 function handleDeletePost(ss, postId) {
   var sheet = ss.getSheetByName('Posts');
   if (!sheet) return { success: false, message: 'Chưa có sheet Posts' };
+  recordDeletedTombstone(ss, postId, 'post');
   var rows = sheet.getDataRange().getValues();
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim() === String(postId).trim()) {

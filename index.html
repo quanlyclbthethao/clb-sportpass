@@ -50,21 +50,52 @@
     }
 
     /* Radar scan beam & reticle HUD */
+    .qr-scan-reticle {
+      position: absolute;
+      inset: 22px;
+      border-radius: 20px;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 2px rgba(99, 102, 241, 0.45), 0 0 16px rgba(56, 189, 248, 0.2);
+    }
+    .qr-scan-reticle::before,
+    .qr-scan-reticle::after {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: #38bdf8;
+      border-style: solid;
+      pointer-events: none;
+    }
+    .qr-scan-reticle::before {
+      top: -2px;
+      left: -2px;
+      border-width: 3.5px 0 0 3.5px;
+      border-top-left-radius: 18px;
+    }
+    .qr-scan-reticle::after {
+      bottom: -2px;
+      right: -2px;
+      border-width: 0 3.5px 3.5px 0;
+      border-bottom-right-radius: 18px;
+    }
     .qr-laser-line {
       position: absolute;
-      left: 8px;
-      right: 8px;
+      left: 14px;
+      right: 14px;
+      top: 22px;
       height: 3px;
       background: linear-gradient(90deg, transparent, #38bdf8, #818cf8, #38bdf8, transparent);
-      box-shadow: 0 0 10px #38bdf8, 0 0 18px #818cf8;
+      box-shadow: 0 0 10px #38bdf8, 0 0 20px #818cf8;
       border-radius: 3px;
       pointer-events: none;
+      will-change: transform, opacity;
       animation: qrLaserSweep 2.2s infinite ease-in-out;
     }
     @keyframes qrLaserSweep {
-      0% { top: 8px; opacity: 0.2; }
+      0% { transform: translateY(0); opacity: 0.25; }
       50% { opacity: 1; }
-      100% { top: calc(100% - 11px); opacity: 0.2; }
+      100% { transform: translateY(202px); opacity: 0.25; }
     }
     .badge-urgent-24h {
       background: #fff1f2;
@@ -831,7 +862,7 @@
 
   <!-- Thư viện Quét QR jsQR và Tạo mã QR động (defer đảm bảo không chặn phân tích DOM và logic khởi động) -->
   <script defer src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" onerror="console.warn('QRCode CDN unavailable, fallback to internal SVG QR');"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" onerror="console.warn('jsQR CDN unavailable, fallback to manual QR simulation');"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" onerror="console.warn('jsQR CDN unavailable');"></script>
 
 </head>
 
@@ -893,7 +924,7 @@
         <div style="text-align: left; display: flex; flex-direction: column; gap: 11px; margin-top: 16px;">
           <div>
             <label style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Mã ID / MSSV / SĐT</label>
-            <input type="text" id="iptUser" value="" placeholder="Ví dụ: DMC0806, LDH0912 hoặc SĐT..." onkeydown="if(event.key==='Enter') handleLoginSubmit()" class="input-box" autocomplete="username">
+            <input type="text" id="iptUser" value="" placeholder="Ví dụ: NVA1508 hoặc SĐT..." onkeydown="if(event.key==='Enter') handleLoginSubmit()" class="input-box" autocomplete="username">
           </div>
 
           <div>
@@ -930,7 +961,7 @@
           </div>
 
           <ul style="margin: 0; padding-left: 16px; font-size: 11px; color: #475569; line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
-            <li><strong style="color: #1e1b4b;">Tài khoản:</strong> Nhập <strong>Mã ID cá nhân</strong> (ví dụ: <code style="background: #eef2ff; color: #4338ca; padding: 1px 5px; border-radius: 5px; font-weight: 800; font-family: monospace;">DMC0806</code>, <code style="background: #eef2ff; color: #4338ca; padding: 1px 5px; border-radius: 5px; font-weight: 800; font-family: monospace;">LDH0912</code>, <code style="background: #eef2ff; color: #4338ca; padding: 1px 5px; border-radius: 5px; font-weight: 800; font-family: monospace;">DDH1011</code>...) hoặc <strong>Số điện thoại</strong> đã đăng ký.</li>
+            <li><strong style="color: #1e1b4b;">Tài khoản:</strong> Nhập <strong>Mã ID cá nhân</strong> (Ví dụ: <code style="background: #eef2ff; color: #4338ca; padding: 1px 5px; border-radius: 5px; font-weight: 800; font-family: monospace;">NVA1508</code> - Nguyễn Văn An sinh 15/08) hoặc <strong>Số điện thoại</strong> đã đăng ký.</li>
             <li><strong style="color: #1e1b4b;">Mật khẩu:</strong> Mặc định là <code style="background: #ecfdf5; color: #065f46; padding: 1px 5px; border-radius: 5px; font-weight: 800; font-family: monospace;">123456</code> (hoặc 4 số ngày tháng sinh DDMM).</li>
             <li><strong style="color: #1e1b4b;">Đổi mật khẩu:</strong> Có thể đổi mật khẩu bất kỳ lúc nào tại mục <em>"Tùy chọn tài khoản"</em> sau khi đăng nhập.</li>
           </ul>
@@ -958,11 +989,11 @@
 
             <div style="flex: 1; min-width: 0;">
               <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #1e1b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Đỗ Mạnh Cường</h2>
+                <h2 id="memName" style="font-size: 16px; font-weight: 900; color: #1e1b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Thành viên CLB</h2>
                 <span id="badgeAdm" class="hidden" style="font-size: 8.5px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe;">Admin</span>
               </div>
-              <p id="memRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Trưởng ban nhân sự</p>
-              <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: DMC0806</p>
+              <p id="memRole" style="font-size: 11.5px; font-weight: 700; color: var(--primary); margin-top: 1px;">Hội viên chính thức</p>
+              <p id="memId" style="font-size: 10px; color: #64748b; font-family: monospace; font-weight: 800;">ID: SPORTPASS</p>
             </div>
           </div>
 
@@ -1468,6 +1499,10 @@
 
       <!-- Viewport camera quét QR với HUD reticle và laser beam -->
       <div style="position: relative; width: 100%; max-width: 320px; height: 250px; margin: 0 auto; border-radius: 22px; overflow: hidden; background: #0f172a; border: 2px solid #818cf8; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);">
+        <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; align-items: center; gap: 6px; background: rgba(15, 23, 42, 0.72); backdrop-filter: blur(8px); padding: 4px 11px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.45); pointer-events: none;">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8; display: inline-block;"></span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #f0f9ff; letter-spacing: 0.5px;">ĐANG QUÉT MÃ QR</span>
+        </div>
         <video id="qrScannerVideo" playsinline autoplay muted style="width: 100%; height: 100%; object-fit: cover;"></video>
         <canvas id="qrScannerCanvas" style="display: none;"></canvas>
         <div class="qr-scan-reticle"></div>
@@ -1486,28 +1521,21 @@
         </button>
       </div>
 
-      <!-- Công cụ mô phỏng quét / Điểm danh thủ công (Dự phòng hiện trường không có camera) -->
-      <div style="margin-top: 10px; padding: 10px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0;">
-        <span style="font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 5px;">
-          Điểm danh nhanh / Mô phỏng quét (Dự phòng hiện trường):
-        </span>
-        <div style="display: flex; gap: 6px;">
-          <select id="selSimulateScanMember" class="input-box" style="flex: 2; padding: 6px 9px; font-size: 11px; font-weight: 700; border-radius: 10px;">
-          </select>
-          <button onclick="simulateScanSelectedMember()" class="spring-touch glow-indigo" style="flex: 1; padding: 6px 10px; border-radius: 10px; font-weight: 800; font-size: 11px;">
-            Xác Nhận
-          </button>
-        </div>
+      <!-- Thông báo khi camera chưa cấp quyền -->
+      <div id="qrCameraNotice" class="hidden" style="margin-top: 10px; padding: 12px; border-radius: 14px; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; font-size: 11px; text-align: center;">
+        <p style="font-weight: 800; margin-bottom: 3px;">⚠️ Chưa kết nối được Camera</p>
+        <p style="font-size: 10px; color: #b45309; margin: 0;">Vui lòng cấp quyền Camera trên trình duyệt để kích hoạt ống kính quét mã trực tiếp.</p>
+        <button onclick="initQrCameraStream()" class="spring-touch" style="margin-top: 8px; padding: 5px 14px; border-radius: 9px; background: #d97706; color: #ffffff; border: none; font-weight: 800; font-size: 10.5px;">Thử lại</button>
       </div>
 
       <!-- Thẻ kết quả quét thành công -->
       <div id="qrScanResultContainer" class="hidden" style="margin-top: 10px; padding: 12px; border-radius: 16px; background: #ecfdf5; border: 1.2px solid #6ee7b7;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 34px; height: 34px; border-radius: 50%; background: #047857; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px;" id="qrResultAvatar">H</div>
+            <div style="width: 34px; height: 34px; border-radius: 50%; background: #047857; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px;" id="qrResultAvatar">✓</div>
             <div>
-              <h4 id="qrResultName" style="font-size: 13px; font-weight: 900; color: #064e3b;">Lương Đình Hiếu</h4>
-              <p id="qrResultMeta" style="font-size: 10px; color: #047857;">ID: LDH0912 &bull; Ban Cầu Lông</p>
+              <h4 id="qrResultName" style="font-size: 13px; font-weight: 900; color: #064e3b;">Hội viên CLB</h4>
+              <p id="qrResultMeta" style="font-size: 10px; color: #047857;">ID: SPORTPASS</p>
             </div>
           </div>
           <span style="font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 8px; background: #d1fae5; color: #064e3b; border: 1px solid #a7f3d0;">Điểm danh thành công</span>
@@ -2080,7 +2108,7 @@
       <!-- Thanh tìm kiếm & Lọc nhanh theo Ban -->
       <div style="margin-bottom: 8px;">
         <div style="position: relative; display: flex; align-items: center;">
-          <input type="text" id="iptRoleMemberSearch" placeholder="Tìm theo Tên, Mã ID (DMC0806...) hoặc Ban..." oninput="filterRoleMemberList()" class="input-box" style="padding-left: 36px; padding-right: 32px; font-size: 11.5px; width: 100%;">
+          <input type="text" id="iptRoleMemberSearch" placeholder="Tìm theo Tên, Mã ID (NVA1508...) hoặc Ban..." oninput="filterRoleMemberList()" class="input-box" style="padding-left: 36px; padding-right: 32px; font-size: 11.5px; width: 100%;">
           <div style="position: absolute; left: 11px; color: #94a3b8; pointer-events: none;">
             <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </div>
@@ -2604,6 +2632,11 @@
       if (typeof saveMemberProfileEdit === 'function') window.saveMemberProfileEdit = saveMemberProfileEdit;
       if (typeof requestNotificationPermission === 'function') window.requestNotificationPermission = requestNotificationPermission;
       if (typeof triggerTaskNotification === 'function') window.triggerTaskNotification = triggerTaskNotification;
+      if (typeof startQrScanner === 'function') window.startQrScanner = startQrScanner;
+      if (typeof tickQrScan === 'function') window.tickQrScan = tickQrScan;
+      if (typeof handleScanQrPayload === 'function') window.handleScanQrPayload = handleScanQrPayload;
+      if (typeof syncRealtimeData === 'function') window.syncRealtimeData = syncRealtimeData;
+      if (typeof restartAdaptivePolling === 'function') window.restartAdaptivePolling = restartAdaptivePolling;
     }
 
     function saveLocalState() {
@@ -2890,11 +2923,15 @@
     }
 
     function saveDeletedTaskId(id) {
+      if (!id) return;
       try {
         const list = getDeletedTaskIds();
         if (!list.includes(id)) {
           list.push(id);
           localStorage.setItem('CLB_DELETED_TASK_IDS', JSON.stringify(list));
+        }
+        if (Array.isArray(currentTasks)) {
+          currentTasks = currentTasks.filter(t => t && t.id !== id);
         }
       } catch(e) {}
     }
@@ -2908,11 +2945,15 @@
     }
 
     function saveDeletedPostId(id) {
+      if (!id) return;
       try {
         const list = getDeletedPostIds();
         if (!list.includes(id)) {
           list.push(id);
           localStorage.setItem('CLB_DELETED_POST_IDS', JSON.stringify(list));
+        }
+        if (Array.isArray(currentPosts)) {
+          currentPosts = currentPosts.filter(p => p && p.id !== id);
         }
       } catch(e) {}
     }
@@ -3412,6 +3453,14 @@
       });
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Khi chuyển sang tab Nhiệm vụ (Tab 1), lập tức đồng bộ thời gian thực không chờ đợi
+      if (normalized === 1 && currentUser && navigator.onLine) {
+        syncRealtimeData();
+      }
+      if (typeof restartAdaptivePolling === 'function') {
+        restartAdaptivePolling();
+      }
     }
     window.switchTab = switchDockTab;
     window.goToTab = switchDockTab;
@@ -5122,7 +5171,8 @@
         mediaList: [...currentComposerMedia],
         reactions: { like: 1, userReactions: { [currentUser?.id]: 'like' } },
         comments: [],
-        createdAt: 'Vừa xong'
+        createdAt: 'Vừa xong',
+        localCreatedAt: Date.now()
       };
 
       currentPosts.unshift(newPost);
@@ -5818,7 +5868,9 @@
         lockDeadline: deadline,
         status: 'active',
         departmentQuotas: deptQuotas,
-        notes: notes
+        notes: notes,
+        createdAt: Date.now(),
+        localCreatedAt: Date.now()
       };
 
       currentTasks.unshift(newTask);
@@ -6092,6 +6144,11 @@
     }
 
     // ==================== CAMERA QR SCANNER & JSQR REAL-TIME (PHÂN QUYỀN NGHIÊM NGẶT) ====================
+    // ==================== CAMERA QR SCANNER & JSQR REAL-TIME (PHÂN QUYỀN NGHIÊM NGẶT) ====================
+    async function startQrScanner(targetTaskId = null) {
+      return openQrScannerModal(targetTaskId);
+    }
+
     async function openQrScannerModal(targetTaskId = null) {
       triggerHaptic('light');
 
@@ -6111,11 +6168,11 @@
           : 'Quét mã QR Thẻ Nhận Ca của thành viên tại hiện trường';
       }
 
-      populateSimulationMembersList(targetTaskId);
-
       const modal = document.getElementById('modalQrScanner');
       const resultCard = document.getElementById('qrScanResultContainer');
+      const notice = document.getElementById('qrCameraNotice');
       if (resultCard) resultCard.classList.add('hidden');
+      if (notice) notice.classList.add('hidden');
       modal?.classList.add('open');
       setBodyScrollLock(true);
       await initQrCameraStream();
@@ -6128,67 +6185,78 @@
     }
 
     function populateSimulationMembersList(targetTaskId = null) {
-      const sel = document.getElementById('selSimulateScanMember');
-      if (!sel) return;
-      const targetTask = currentTasks.find(t => t.id === targetTaskId);
-      
-      let candidates = [];
-      if (targetTask) {
-        const joined = targetTask.joinedMembers || [];
-        const assigned = targetTask.assignedMembers || [];
-        const allIds = [...new Set([...joined, ...assigned])];
-        candidates = membersDirectory.filter(m => allIds.includes(m.id));
-      }
-      if (candidates.length === 0) {
-        candidates = membersDirectory;
-      }
-
-      sel.innerHTML = candidates.map(m => `
-        <option value="${m.id}">${escapeHtml(m.hoTen)} (${m.id} - ${m.chucVu || 'Thành viên'})</option>
-      `).join('');
+      // Giữ cho tính tương thích nội bộ
     }
 
-    function simulateScanSelectedMember() {
-      const sel = document.getElementById('selSimulateScanMember');
-      if (!sel || !sel.value) return;
-      const memberId = sel.value;
-      const member = membersDirectory.find(m => m.id === memberId);
-      if (!member) return;
-
-      let taskId = activeScanTargetTaskId;
-      if (!taskId) {
-        const memberTasks = currentTasks.filter(t => (t.joinedMembers || []).includes(memberId) || (t.assignedMembers || []).includes(memberId));
-        if (memberTasks.length > 0) {
-          taskId = memberTasks[0].id;
-        } else {
-          triggerHaptic('warning');
-          showAquaIsland(`Thành viên ${member.hoTen} chưa đăng ký ca trực nào hôm nay!`, '⚠️');
-          return;
-        }
-      }
-
-      performFieldCheckin(taskId, memberId);
+    function simulateScanSelectedMember(targetTaskId = null, memberId = null) {
+      if (memberId) performFieldCheckin(targetTaskId || activeScanTargetTaskId, memberId);
     }
 
     async function initQrCameraStream() {
       const video = document.getElementById('qrScannerVideo');
+      const notice = document.getElementById('qrCameraNotice');
       if (!video) return;
+
+      if (notice) notice.classList.add('hidden');
 
       try {
         if (qrScannerStream) {
           qrScannerStream.getTracks().forEach(t => t.stop());
+          qrScannerStream = null;
         }
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: currentCameraFacing }
-        });
+
+        let stream = null;
+        const facing = currentCameraFacing || 'environment';
+        const constraintsList = [
+          { video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false },
+          { video: { facingMode: facing }, audio: false },
+          { video: true, audio: false }
+        ];
+
+        for (const c of constraintsList) {
+          try {
+            stream = await navigator.mediaDevices.getUserMedia(c);
+            if (stream) break;
+          } catch(e) {}
+        }
+
+        if (!stream) {
+          throw new Error('Camera stream initialization failed');
+        }
+
         qrScannerStream = stream;
         video.srcObject = stream;
-        video.setAttribute('playsinline', true);
-        video.play();
-        requestAnimationFrame(scanQrVideoFrame);
+        video.setAttribute('playsinline', 'true');
+        video.setAttribute('webkit-playsinline', 'true');
+        video.playsInline = true;
+        video.muted = true;
+        video.autoplay = true;
+
+        await new Promise((resolve) => {
+          if (video.readyState >= 1 && video.videoWidth > 0) {
+            resolve();
+          } else {
+            const onLoaded = () => {
+              video.removeEventListener('loadedmetadata', onLoaded);
+              resolve();
+            };
+            video.addEventListener('loadedmetadata', onLoaded);
+            setTimeout(resolve, 800);
+          }
+        });
+
+        try {
+          await video.play();
+        } catch(e) {
+          console.warn('video.play() deferred:', e);
+        }
+
+        if (qrScanAnimFrame) cancelAnimationFrame(qrScanAnimFrame);
+        qrScanAnimFrame = requestAnimationFrame(tickQrScan);
       } catch (err) {
-        // Camera không khả dụng (máy tính bàn / từ chối quyền) - Hệ thống vẫn hỗ trợ mô phỏng điểm danh
-        showAquaIsland('Không thể truy cập camera. Bạn có thể dùng bộ chọn Điểm danh nhanh bên dưới!', 'ℹ️');
+        console.warn('Camera error:', err);
+        if (notice) notice.classList.remove('hidden');
+        showAquaIsland('Vui lòng cấp quyền Camera trên trình duyệt để quét mã QR!', 'ℹ️');
       }
     }
 
@@ -6211,7 +6279,8 @@
       if (resultCard) resultCard.classList.add('hidden');
       const video = document.getElementById('qrScannerVideo');
       if (video && video.srcObject) {
-        qrScanAnimFrame = requestAnimationFrame(scanQrVideoFrame);
+        if (qrScanAnimFrame) cancelAnimationFrame(qrScanAnimFrame);
+        qrScanAnimFrame = requestAnimationFrame(tickQrScan);
       }
     }
 
@@ -6237,35 +6306,42 @@
       }
     }
 
-    function scanQrVideoFrame() {
+    function tickQrScan() {
       const video = document.getElementById('qrScannerVideo');
       const canvas = document.getElementById('qrScannerCanvas');
-      if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) {
-        qrScanAnimFrame = requestAnimationFrame(scanQrVideoFrame);
+      if (!video || !canvas || video.readyState < 2 || !video.videoWidth || !video.videoHeight || video.videoWidth === 0 || video.videoHeight === 0) {
+        qrScanAnimFrame = requestAnimationFrame(tickQrScan);
         return;
       }
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      try {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-      let decodedCode = null;
-      if (typeof jsQR !== 'undefined') {
-        decodedCode = jsQR(imgData.data, imgData.width, imgData.height, {
-          inversionAttempts: 'dontInvert'
-        });
+        let decodedCode = null;
+        if (typeof jsQR !== 'undefined') {
+          decodedCode = jsQR(imgData.data, imgData.width, imgData.height, {
+            inversionAttempts: 'dontInvert'
+          });
+        }
+
+        if (decodedCode && decodedCode.data) {
+          handleScanQrPayload(decodedCode.data);
+          return;
+        }
+      } catch (e) {
+        console.warn('Error in tickQrScan:', e);
       }
 
-      if (decodedCode && decodedCode.data) {
-        handleQrScanSuccess(decodedCode.data);
-        return;
-      }
-      qrScanAnimFrame = requestAnimationFrame(scanQrVideoFrame);
+      qrScanAnimFrame = requestAnimationFrame(tickQrScan);
     }
+    const scanQrVideoFrame = tickQrScan;
 
-    function handleQrScanSuccess(rawCode) {
+    function handleScanQrPayload(rawCode) {
+      if (!rawCode) return;
       triggerHaptic('success');
       let parsedPayload = null;
       let memberId = '';
@@ -6277,10 +6353,20 @@
         else if (parsedPayload.id) memberId = parsedPayload.id;
         if (parsedPayload.taskId) taskId = parsedPayload.taskId;
       } catch (e) {
-        memberId = rawCode.replace('CLB-PASS|', '').split('|')[0].trim();
+        const trimmed = String(rawCode).trim();
+        if (trimmed.startsWith('SPORTPASS:CHECKIN:')) {
+          const parts = trimmed.split(':');
+          if (parts[2]) taskId = parts[2];
+          if (parts[3]) memberId = parts[3];
+        } else if (trimmed.startsWith('SPORTPASS:MEMBER:')) {
+          const parts = trimmed.split(':');
+          if (parts[2]) memberId = parts[2];
+        } else {
+          memberId = trimmed.replace('CLB-PASS|', '').replace('SPORTPASS|', '').split('|')[0].trim();
+        }
       }
 
-      // Kiểm tra hạn sử dụng của mã QR bảo mật động (chống chụp màn hình gian lận)
+      // Kiểm tra hạn sử dụng của mã QR bảo mật động
       if (parsedPayload && parsedPayload.exp) {
         if (Date.now() > parsedPayload.exp + 120000) {
           triggerHaptic('warning');
@@ -6289,12 +6375,11 @@
         }
       }
 
-      if (parsedPayload && parsedPayload.type === 'FIELD_CHECKIN' && taskId && memberId) {
+      if ((parsedPayload?.type === 'FIELD_CHECKIN' || !parsedPayload) && taskId && memberId) {
         performFieldCheckin(taskId, memberId);
         return;
       }
 
-      // Nếu là mã hội viên tổng quát hoặc chưa gắn taskId
       const member = membersDirectory.find(m => m.id === memberId || m.mssv === memberId);
       if (member) {
         if (taskId) {
@@ -6354,6 +6439,7 @@
         showAquaIsland('Không tìm thấy thông tin thành viên từ mã QR!', '⚠️');
       }
     }
+    const handleQrScanSuccess = handleScanQrPayload;
 
     // ĐIỂM DANH HIỆN TRƯỜNG: Phân quyền nghiêm ngặt, tích lũy soCaHoanThanh, lưu dấu vết kiểm toán, cập nhật UI tức thì
     function performFieldCheckin(taskId, memberId) {
@@ -6545,12 +6631,26 @@
 
 // Nhật ký kiểm toán đã loại bỏ hoàn toàn
 
+    let isSyncingRealtime = false;
+
     async function syncRealtimeData() {
-      if (!currentUser) return;
+      if (!currentUser || isSyncingRealtime) return;
+      isSyncingRealtime = true;
       try {
         const res = await fetch(`${BACKEND_URL}?action=syncAll&memberId=${currentUser.id}`);
         const data = await res.json();
         if (data.success) {
+          if (Array.isArray(data.deletedTaskIds)) {
+            data.deletedTaskIds.forEach(id => {
+              if (id) saveDeletedTaskId(id);
+            });
+          }
+          if (Array.isArray(data.deletedPostIds)) {
+            data.deletedPostIds.forEach(id => {
+              if (id) saveDeletedPostId(id);
+            });
+          }
+
           const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
           const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
 
@@ -6566,14 +6666,21 @@
             const backendTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id));
             const backendTaskMap = new Map(backendTasks.map(t => [t.id, t]));
 
-            // Hợp nhất an toàn: bảo toàn các ca trực vừa tạo trên client chưa kịp phản hồi từ Google Apps Script
+            // Hợp nhất an toàn: bảo toàn ca trực vừa tạo offline trong 30s. Nếu không có trên server và đã quá 30s -> coi như server đã xóa, tuyệt đối không hồi sinh!
             const mergedTasks = [...backendTasks];
             if (Array.isArray(currentTasks)) {
               for (const localTask of currentTasks) {
-                if (localTask && localTask.id && !backendTaskMap.has(localTask.id) && !deletedTasks.includes(localTask.id)) {
+                if (!localTask || !localTask.id) continue;
+                if (deletedTasks.includes(localTask.id)) continue;
+                if (backendTaskMap.has(localTask.id)) continue;
+
+                const isRecentLocal = localTask.localCreatedAt && (Date.now() - localTask.localCreatedAt < 30000);
+                if (isRecentLocal) {
                   mergedTasks.push(localTask);
-                  // Đẩy lại vào hàng đợi đồng bộ nền lên máy chủ
                   syncTaskToBackend(localTask);
+                } else {
+                  // Đã bị xóa trên server: lưu vào tombstone cục bộ để không bao giờ tái xuất hiện
+                  saveDeletedTaskId(localTask.id);
                 }
               }
             }
@@ -6593,7 +6700,25 @@
           }
           if (data.swaps) currentSwaps = data.swaps;
           if (data.posts) {
-            currentPosts = (data.posts || []).filter(p => p && !deletedPosts.includes(p.id));
+            const backendPosts = (data.posts || []).filter(p => p && !deletedPosts.includes(p.id));
+            const backendPostMap = new Map(backendPosts.map(p => [p.id, p]));
+            const mergedPosts = [...backendPosts];
+
+            if (Array.isArray(currentPosts)) {
+              for (const localPost of currentPosts) {
+                if (!localPost || !localPost.id) continue;
+                if (deletedPosts.includes(localPost.id)) continue;
+                if (backendPostMap.has(localPost.id)) continue;
+
+                const isRecentLocal = localPost.localCreatedAt && (Date.now() - localPost.localCreatedAt < 30000);
+                if (isRecentLocal) {
+                  mergedPosts.push(localPost);
+                } else {
+                  saveDeletedPostId(localPost.id);
+                }
+              }
+            }
+            currentPosts = mergedPosts;
           }
 
           saveLocalState();
@@ -6605,6 +6730,8 @@
         }
       } catch (err) {
         console.log('Chế độ hoạt động offline/local cache.');
+      } finally {
+        isSyncingRealtime = false;
       }
     }
 
@@ -7015,15 +7142,26 @@
     }
 
     // ==================== ĐỒNG BỘ ĐỊNH KỲ BACKGROUND VÀ VISIBILITY ====================
-    setInterval(() => {
-      if (currentUser && navigator.onLine) {
-        syncRealtimeData();
-      }
-    }, 25000);
+    let syncPollingTimer = null;
+
+    function restartAdaptivePolling() {
+      if (syncPollingTimer) clearInterval(syncPollingTimer);
+      // Khi đang ở tab Nhiệm vụ (Tab 1), chu kỳ rút ngắn xuống 10s để lệnh điều động cập nhật tức thì.
+      // Khi ở các tab khác, duy trì chu kỳ 22s để tối ưu tài nguyên mạng và pin.
+      const intervalMs = (typeof currentActiveTabIdx !== 'undefined' && currentActiveTabIdx === 1) ? 10000 : 22000;
+      syncPollingTimer = setInterval(() => {
+        if (currentUser && navigator.onLine && document.visibilityState === 'visible') {
+          syncRealtimeData();
+        }
+      }, intervalMs);
+    }
+
+    restartAdaptivePolling();
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && currentUser && navigator.onLine) {
         syncRealtimeData();
+        restartAdaptivePolling();
       }
     });
 
