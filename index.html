@@ -1003,46 +1003,36 @@
           </div>
         </section>
 
-        <!-- THẺ ĐỊNH DANH SỐ & DIGITAL SPORTPASS (AQUAMORPHIC LUXURY PASTEL) -->
-        <section class="acrylic-card digital-pass-luxury-card" style="padding: 18px 16px; border-radius: 24px; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(255,255,255,0.94) 0%, rgba(238,242,255,0.88) 100%); border: 1.2px solid rgba(199,210,254,0.85); box-shadow: 0 12px 32px -4px rgba(99,102,241,0.12), inset 0 1px 2px rgba(255,255,255,0.95);">
-          <!-- Decorative Holographic Specular Ribbon -->
-          <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(165,180,252,0.3) 0%, rgba(224,231,255,0) 70%); border-radius: 50%; pointer-events: none;"></div>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <div style="width: 32px; height: 32px; border-radius: 11px; background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border: 1px solid #a5b4fc; color: #3730a3; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(99,102,241,0.15);">
-                <svg class="svg-icon" style="width: 17px; height: 17px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+        <!-- THANH ĐỊNH DANH SỐ TINH TẾ & XUẤT TRÌNH THẺ HỘI VIÊN -->
+        <section class="acrylic-card compact-id-badge" style="padding: 12px 14px; border-radius: 20px; margin-bottom: 11px; background: linear-gradient(135deg, rgba(255,255,255,0.94) 0%, rgba(245,243,255,0.9) 100%); border: 1.2px solid rgba(199,210,254,0.75); box-shadow: 0 4px 16px -2px rgba(99,102,241,0.08);">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+              <div style="width: 28px; height: 20px; border-radius: 5px; background: linear-gradient(135deg, #fde68a, #f59e0b); border: 1px solid #d97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 5px rgba(217,119,6,0.25);">
+                <span style="display: block; width: 14px; height: 10px; border: 1px solid rgba(255,255,255,0.8); border-radius: 2px;"></span>
               </div>
-              <div style="text-align: left;">
-                <h3 style="font-size: 13px; font-weight: 900; color: #1e1b4b; text-transform: uppercase; letter-spacing: -0.2px;">THẺ HỘI VIÊN &bull; DIGITAL SPORTPASS</h3>
-                <p style="font-size: 9.5px; color: #64748b; font-weight: 700;">Hội viên chính thức &bull; CLB Thể Thao Trường Đại học Hải Dương</p>
+              <div style="min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-size: 11px; font-weight: 900; color: #1e1b4b; letter-spacing: 0.2px;">SPORTPASS &bull; UHD</span>
+                  <span style="font-size: 8px; font-weight: 800; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 1.5px 5px; border-radius: 6px;">Hội Viên Số</span>
+                </div>
+                <p style="font-size: 9px; color: #64748b; font-family: monospace; font-weight: 700; margin-top: 1px;" id="digitalPassTokenSummary">SPORTPASS-UHD</p>
               </div>
             </div>
-            <span style="font-size: 9px; font-weight: 800; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2.5px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;">
-              <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
-              <span>Trực Tuyến</span>
-            </span>
+
+            <button onclick="openDigitalSportPassModal()" class="spring-touch glow-indigo" style="padding: 7px 12px; border-radius: 12px; font-size: 10px; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+              <span>Xem Thẻ Hội Viên Số</span>
+            </button>
           </div>
 
-          <!-- Chip & Hologram Bar -->
-          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(241,245,249,0.7); padding: 8px 12px; border-radius: 14px; border: 1px solid #e2e8f0; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 7px;">
-              <div style="width: 22px; height: 16px; border-radius: 4px; background: linear-gradient(135deg, #fde68a, #f59e0b); border: 1px solid #d97706; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(217,119,6,0.2);">
-                <span style="display: block; width: 12px; height: 8px; border: 1px solid rgba(255,255,255,0.7); border-radius: 2px;"></span>
-              </div>
-              <span style="font-size: 10px; font-weight: 800; color: #334155; font-family: monospace;" id="digitalPassTokenSummary">SPORTPASS-UHD</span>
-            </div>
-            <span style="font-size: 9px; font-weight: 800; color: #047857; background: #ecfdf5; padding: 2px 7px; border-radius: 6px; border: 1px solid #a7f3d0;">UHD DIGITAL PASS</span>
-          </div>
-
-          <!-- Action Buttons -->
-          <div style="display: flex; gap: 8px;">
-            <button onclick="openFieldCheckinQrModal()" class="spring-touch glow-indigo" style="flex: 1.5; padding: 11px 14px; border-radius: 14px; font-weight: 800; font-size: 11.5px; display: flex; align-items: center; justify-content: center; gap: 7px;">
-              <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <!-- Nút hành động nhanh điểm danh hiện trường -->
+          <div style="display: flex; gap: 7px; margin-top: 9px; padding-top: 8px; border-top: 1px dashed rgba(199,210,254,0.6);">
+            <button onclick="openFieldCheckinQrModal()" class="spring-touch" style="flex: 1.4; padding: 7px 10px; border-radius: 11px; font-weight: 800; font-size: 10.5px; background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; display: flex; align-items: center; justify-content: center; gap: 5px;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
               <span>Xuất Trình QR Nhận Ca</span>
             </button>
-            <button id="btnProfileScanCheckin" onclick="openQrScannerModal()" class="spring-touch glow-teal hidden" style="flex: 1; padding: 11px 12px; border-radius: 14px; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px;">
-              <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <button id="btnProfileScanCheckin" onclick="openQrScannerModal()" class="spring-touch hidden" style="flex: 1; padding: 7px 10px; border-radius: 11px; font-weight: 800; font-size: 10.5px; background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               <span>Quét Điểm Danh</span>
             </button>
           </div>
@@ -1114,9 +1104,12 @@
         <!-- Bộ lọc nhanh theo Ban -->
         <div id="taskFilterBar" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 6px;" class="no-scrollbar">
           <button onclick="setTaskDeptFilter('ALL')" data-dept-filter="ALL" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #a5b4fc; background: #e0e7ff; color: #312e81;">Tất cả lệnh</button>
-          <button onclick="setTaskDeptFilter('Ban Cầu Lông')" data-dept-filter="Ban Cầu Lông" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Cầu Lông</button>
+          <button onclick="setTaskDeptFilter('Ban Chủ Nhiệm')" data-dept-filter="Ban Chủ Nhiệm" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Chủ Nhiệm</button>
+          <button onclick="setTaskDeptFilter('Ban Nhân Sự')" data-dept-filter="Ban Nhân Sự" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Nhân Sự</button>
           <button onclick="setTaskDeptFilter('Ban Bóng Chuyền')" data-dept-filter="Ban Bóng Chuyền" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Chuyền</button>
-          <button onclick="setTaskDeptFilter('Ban Bóng Đá')" data-dept-filter="Ban Bóng Đá" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá</button>
+          <button onclick="setTaskDeptFilter('Ban Bóng Đá Nam')" data-dept-filter="Ban Bóng Đá Nam" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nam</button>
+          <button onclick="setTaskDeptFilter('Ban Bóng Đá Nữ')" data-dept-filter="Ban Bóng Đá Nữ" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nữ</button>
+          <button onclick="setTaskDeptFilter('Ban Cầu Lông')" data-dept-filter="Ban Cầu Lông" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Cầu Lông</button>
           <button onclick="setTaskDeptFilter('Ban Truyền Thông')" data-dept-filter="Ban Truyền Thông" class="spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Truyền Thông</button>
         </div>
 
@@ -1607,12 +1600,25 @@
           <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <input type="text" id="iptSearchDirectory" oninput="filterDirectoryMembers()" placeholder="Tìm theo tên, ID, MSSV, SĐT..." class="input-box" style="margin-top: 0; margin-bottom: 9px; font-size: 11.5px; padding: 8px 12px;">
+
+      <!-- Bộ lọc nhanh theo 7 Ban chuyên môn -->
+      <div id="directoryDeptFilterBar" style="display: flex; gap: 5px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 8px;" class="no-scrollbar">
+        <button onclick="setDirectoryDeptFilter('ALL')" data-dir-filter="ALL" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #a5b4fc; background: #e0e7ff; color: #312e81;">Tất cả ban</button>
+        <button onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')" data-dir-filter="Ban Chủ Nhiệm" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Chủ Nhiệm</button>
+        <button onclick="setDirectoryDeptFilter('Ban Nhân Sự')" data-dir-filter="Ban Nhân Sự" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Nhân Sự</button>
+        <button onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')" data-dir-filter="Ban Bóng Chuyền" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Chuyền</button>
+        <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')" data-dir-filter="Ban Bóng Đá Nam" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nam</button>
+        <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')" data-dir-filter="Ban Bóng Đá Nữ" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nữ</button>
+        <button onclick="setDirectoryDeptFilter('Ban Cầu Lông')" data-dir-filter="Ban Cầu Lông" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Cầu Lông</button>
+        <button onclick="setDirectoryDeptFilter('Ban Truyền Thông')" data-dir-filter="Ban Truyền Thông" class="spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 800; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Truyền Thông</button>
+      </div>
+
+      <input type="text" id="iptSearchDirectory" oninput="filterDirectoryMembers()" placeholder="Tìm theo tên, Mã ID, Lớp, SĐT..." class="input-box" style="margin-top: 0; margin-bottom: 9px; font-size: 11.5px; padding: 8px 12px;">
       <div id="directoryListContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 7px; max-height: 58vh;"></div>
     </div>
   </div>
 
-  <!-- 5. MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC -->
+  <!-- 5. MODAL XEM HỒ SƠ THÀNH VIÊN KHÁC (8 CỘT CHUẨN) -->
   <div id="modalOtherMember" class="modal-overlay">
     <div class="modal-sheet">
       <div style="display: flex; justify-content: flex-end; margin-bottom: -8px;">
@@ -1650,14 +1656,25 @@
         </div>
       </div>
 
+      <!-- Widget điều chỉnh số ca trực thủ công cho Admin -->
+      <div id="adminShiftAdjustRow" class="hidden" style="margin-bottom: 10px; padding: 7px 11px; border-radius: 12px; background: #faf5ff; border: 1px dashed #d8b4fe; display: flex; align-items: center; justify-content: space-between;">
+        <span style="font-size: 10.5px; font-weight: 800; color: #6b21a8;">Điều chỉnh ca trực (Admin):</span>
+        <div style="display: flex; gap: 6px;">
+          <button onclick="promptAdjustSelectedMemberShifts(-1)" class="spring-touch" style="padding: 4px 9px; border-radius: 8px; border: 1px solid #fca5a5; background: #fff1f2; color: #b91c1c; font-size: 10px; font-weight: 800;">-1 Ca</button>
+          <button onclick="promptAdjustSelectedMemberShifts(1)" class="spring-touch" style="padding: 4px 9px; border-radius: 8px; border: 1px solid #86efac; background: #f0fdf4; color: #15803d; font-size: 10px; font-weight: 800;">+1 Ca</button>
+        </div>
+      </div>
+
+      <!-- BỐ CỤC 8 CỘT CHUẨN: Mã ID, Họ và Tên, Lớp, Ban chuyên môn, Chức vụ, Y tế/Thể trạng, Số điện thoại, Liên hệ ICE -->
       <div style="border-top: 1px solid #f1f5f9; padding-top: 7px;">
+        <div class="info-row"><span class="info-label">Mã ID:</span><span id="otherMemIdVal" class="selectable-text info-value" style="font-family: monospace; font-weight: 800; color: #4338ca;">---</span></div>
+        <div class="info-row"><span class="info-label">Họ và Tên:</span><span id="otherMemNameVal" class="selectable-text info-value" style="font-weight: 800; color: #1e1b4b;">---</span></div>
         <div class="info-row"><span class="info-label">Lớp:</span><span id="otherClass" class="selectable-text info-value">---</span></div>
-        <div class="info-row"><span class="info-label">MSSV:</span><span id="otherMssv" class="selectable-text info-value" style="font-family: monospace;">---</span></div>
-        <div class="info-row"><span class="info-label">Đơn Vị:</span><span class="selectable-text info-value" style="color: #1e1b4b; font-weight: 700;">Trường Đại học Hải Dương</span></div>
-        <div class="info-row"><span class="info-label">Bộ Môn / Ban:</span><span id="otherDept" class="selectable-text info-value">---</span></div>
-        <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="selectable-text info-value" style="color: var(--primary); cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
-        <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="selectable-text info-value" style="color: #be123c; cursor: pointer;" onclick="callTargetMemberIce()">---</span></div>
-        <div class="info-row"><span class="info-label">Y Tế &amp; Nhóm Máu:</span><span id="otherMed" class="selectable-text info-value" style="color: #9f1239;">---</span></div>
+        <div class="info-row"><span class="info-label">Ban Chuyên Môn:</span><span id="otherDept" class="selectable-text info-value">---</span></div>
+        <div class="info-row"><span class="info-label">Chức Vụ:</span><span id="otherRoleVal" class="selectable-text info-value" style="color: #0284c7; font-weight: 800;">---</span></div>
+        <div class="info-row"><span class="info-label">Y Tế / Thể Trạng:</span><span id="otherMed" class="selectable-text info-value" style="color: #9f1239; font-weight: 700;">---</span></div>
+        <div class="info-row"><span class="info-label">Số Điện Thoại:</span><span id="otherPhone" class="selectable-text info-value" style="color: var(--primary); font-weight: 800; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span></div>
+        <div class="info-row"><span class="info-label">Liên Hệ Khẩn (ICE):</span><span id="otherIce" class="selectable-text info-value" style="color: #be123c; font-weight: 800; cursor: pointer;" onclick="callTargetMemberIce()">---</span></div>
       </div>
 
       <div style="display: flex; gap: 7px; margin-top: 13px;">
@@ -1858,12 +1875,13 @@
         <span>Xuất Trình QR Nhận Ca Hiện Trường</span>
       </button>
 
-      <button onclick="closeHeaderMoreActionSheetDirect(); requestNotificationPermission();" class="spring-touch" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #0f766e; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
-        <div style="width: 28px; height: 28px; border-radius: 9px; background: #f0fdfa; border: 1px solid #99f6e4; display: flex; align-items: center; justify-content: center;">
+      <div style="width: 100%; padding: 9px 11px; font-size: 11.5px; font-weight: 700; color: #0f766e; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; background: #f0fdfa; border-radius: 12px; margin-top: 4px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
           <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span>Thông báo khi tắt app</span>
         </div>
-        <span>Bật thông báo nhiệm vụ khi tắt app</span>
-      </button>
+        <span style="font-size: 9.5px; font-weight: 800; background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; padding: 2px 7px; border-radius: 8px;">Mặc định bật</span>
+      </div>
 
       <button onclick="openQrScannerModal()" id="btnMenuQrScanner" class="spring-touch hidden" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #0f766e; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
         <div style="width: 28px; height: 28px; border-radius: 9px; background: #f0fdfa; border: 1px solid #99f6e4; display: flex; align-items: center; justify-content: center;">
@@ -2091,8 +2109,158 @@
     </div>
   </div>
 
+  <!-- MODAL THẺ HỘI VIÊN SỐ 3D GLASSMORPHISM VIP -->
+  <div id="modalDigitalSportPassCard" class="modal-overlay">
+    <div class="modal-sheet" style="max-width: 420px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.18); color: #ffffff; padding: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <div style="width: 28px; height: 28px; border-radius: 9px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(245,158,11,0.35);">
+            <svg class="svg-icon" style="width: 15px; height: 15px; color: #fff;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <h3 style="font-size: 13px; font-weight: 900; color: #f8fafc; letter-spacing: 0.5px;">THẺ HỘI VIÊN CHÍNH THỨC</h3>
+            <p style="font-size: 9px; color: #94a3b8;">CLB Thể Thao Trường Đại học Hải Dương</p>
+          </div>
+        </div>
+        <button onclick="closeDigitalSportPassModal()" class="spring-touch modal-close-btn" style="background: rgba(255,255,255,0.12); color: #fff;" title="Đóng">
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Thẻ 3D VIP Holographic Card -->
+      <div class="vip-sportpass-card" style="border-radius: 20px; padding: 18px; position: relative; overflow: hidden; background: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #0f172a 100%); border: 1.5px solid rgba(165,180,252,0.35); box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.25);">
+        <div style="position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; background: radial-gradient(circle, rgba(129,140,248,0.4) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+          <div>
+            <span style="font-size: 9px; font-weight: 800; letter-spacing: 1.5px; color: #a5b4fc; text-transform: uppercase;">SPORTPASS &bull; UHD DIGITAL ID</span>
+            <h4 style="font-size: 16px; font-weight: 900; color: #ffffff; margin-top: 2px;" id="vipCardMemberName">---</h4>
+            <p style="font-size: 10px; color: #cbd5e1; font-weight: 700; margin-top: 1px;" id="vipCardMemberRole">---</p>
+          </div>
+          <div style="width: 36px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #b45309 100%); border: 1px solid #d97706; box-shadow: 0 3px 8px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;">
+            <div style="width: 20px; height: 14px; border: 1px solid rgba(255,255,255,0.7); border-radius: 3px;"></div>
+          </div>
+        </div>
+
+        <!-- Chi tiết 8 cột chuẩn & mã QR Pass -->
+        <div style="display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.06); padding: 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);">
+          <div id="vipCardQrContainer" style="width: 80px; height: 80px; background: #ffffff; border-radius: 10px; padding: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"></div>
+          <div style="flex: 1; min-width: 0; font-size: 10px; line-height: 1.5;">
+            <div><span style="color: #94a3b8;">Mã ID:</span> <b style="color: #a5b4fc; font-family: monospace;" id="vipCardMemberId">---</b></div>
+            <div><span style="color: #94a3b8;">Lớp:</span> <b style="color: #f1f5f9;" id="vipCardMemberClass">---</b></div>
+            <div><span style="color: #94a3b8;">Ban:</span> <b style="color: #f1f5f9;" id="vipCardMemberDept">---</b></div>
+            <div><span style="color: #94a3b8;">Cống hiến:</span> <b style="color: #34d399;" id="vipCardMemberShifts">0 ca</b></div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 8.5px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+          <span>HỘI VIÊN CHÍNH THỨC</span>
+          <span style="color: #10b981; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+            <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981;"></span>
+            HIỆU LỰC TOÀN KHÓA
+          </span>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; display: flex; gap: 8px;">
+        <button onclick="openFieldCheckinQrModal(); closeDigitalSportPassModal();" class="spring-touch glow-indigo" style="flex: 1.4; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Mở QR Nhận Ca</span>
+        </button>
+        <button onclick="closeDigitalSportPassModal()" class="spring-touch" style="flex: 0.8; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.1); color: #f1f5f9; border: 1px solid rgba(255,255,255,0.15); font-weight: 700; font-size: 11px;">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL XOAY TUA ĐIỀU PHỐI THÔNG MINH THEO BAN (SMART SHIFT ROTATION) -->
+  <div id="modalSmartRotation" class="modal-overlay">
+    <div class="modal-sheet" style="max-height: 85vh; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <div style="width: 32px; height: 32px; border-radius: 10px; background: #fdf4ff; border: 1px solid #f0abfc; color: #a21caf; display: flex; align-items: center; justify-content: center;">
+            <svg class="svg-icon" style="width: 17px; height: 17px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </div>
+          <div>
+            <h3 style="font-size: 13.5px; font-weight: 900; color: #1e1b4b;">XOAY TUA ĐIỀU PHỐI THÔNG MINH</h3>
+            <p style="font-size: 9.5px; color: #64748b; font-weight: 700;" id="smartRotationTaskTitle">Đang phân tích...</p>
+          </div>
+        </div>
+        <button onclick="closeSmartRotationModal()" class="spring-touch modal-close-btn" title="Đóng">
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div style="padding: 8px 11px; border-radius: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 10px; font-weight: 700; margin-bottom: 10px; line-height: 1.4;">
+        ⚡ Thuật toán điều phối: Tự động phân tích theo chỉ tiêu từng Ban, ưu tiên thành viên có <b>số ca cống hiến ít hơn</b> để chia đều tải, tự động loại trừ chấn thương/ốm sốt và xung đột thời gian.
+      </div>
+
+      <div id="smartRotationResultsContainer" class="custom-scroll" style="display: flex; flex-direction: column; gap: 8px; max-height: 50vh; overflow-y: auto;"></div>
+
+      <div style="display: flex; gap: 8px; margin-top: 12px; padding-top: 8px; border-top: 1px solid #f1f5f9;">
+        <button onclick="applySmartRotationCandidates()" id="btnApplySmartRotation" class="spring-touch glow-purple" style="flex: 1.5; padding: 11px; border-radius: 14px; font-weight: 800; font-size: 11.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Áp Dụng Điều Động Nhanh</span>
+        </button>
+        <button onclick="closeSmartRotationModal()" class="spring-touch" style="flex: 1; padding: 11px; border-radius: 14px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; font-weight: 800; font-size: 11.5px;">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ĐIỀU CHỈNH SỐ CA TRỰC THỦ CÔNG CHO ADMIN -->
+  <div id="modalAdjustShifts" class="modal-overlay">
+    <div class="modal-sheet" style="max-width: 360px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <div style="width: 30px; height: 30px; border-radius: 9px; background: #f3e8ff; border: 1px solid #d8b4fe; color: #7e22ce; display: flex; align-items: center; justify-content: center;">
+            <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <h3 style="font-size: 13px; font-weight: 900; color: #1e1b4b;">ĐIỀU CHỈNH SỐ CA THỦ CÔNG</h3>
+            <p style="font-size: 9.5px; color: #64748b;" id="adjustShiftsMemberName">Thành viên: ---</p>
+          </div>
+        </div>
+        <button onclick="closeAdjustShiftsModal()" class="spring-touch modal-close-btn" title="Đóng">
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; padding: 12px; border-radius: 14px; background: #faf5ff; border: 1px solid #e9d5ff;">
+        <button onclick="changeAdjustDelta(-1)" class="spring-touch" style="width: 36px; height: 36px; border-radius: 10px; background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c; font-size: 18px; font-weight: 900; display: flex; align-items: center; justify-content: center;">-</button>
+        <div style="text-align: center;">
+          <span style="font-size: 10px; color: #6b21a8; font-weight: 700; text-transform: uppercase;">Mức điều chỉnh</span>
+          <p id="adjustDeltaDisplay" style="font-size: 20px; font-weight: 900; color: #1e1b4b; margin-top: 1px;">+1 ca</p>
+        </div>
+        <button onclick="changeAdjustDelta(1)" class="spring-touch" style="width: 36px; height: 36px; border-radius: 10px; background: #dcfce7; border: 1px solid #86efac; color: #15803d; font-size: 18px; font-weight: 900; display: flex; align-items: center; justify-content: center;">+</button>
+      </div>
+
+      <label style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase;">Lý do điều chỉnh:</label>
+      <input type="text" id="iptAdjustShiftsReason" placeholder="VD: Thưởng cống hiến giải đấu, hoàn tác ca..." class="input-box" style="margin-top: 4px; margin-bottom: 12px; font-size: 11.5px; padding: 8px 10px;">
+
+      <div style="display: flex; gap: 8px;">
+        <button onclick="executeAdjustShiftsSubmit()" class="spring-touch glow-purple" style="flex: 1.5; padding: 10px; border-radius: 12px; font-weight: 800; font-size: 11px;">Xác Nhận Lưu</button>
+        <button onclick="closeAdjustShiftsModal()" class="spring-touch" style="flex: 1; padding: 10px; border-radius: 12px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; font-weight: 800; font-size: 11px;">Hủy</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzOzxjkLP684tGXQn7HFptjiYyMoyEFMkTackb8K56f1gJvqMlvV5mFc0JBTm9gbO7U/exec";
+
+    // Danh sách 7 Ban chuyên môn chính thức của CLB Thể Thao UHD
+    const ALL_DEPARTMENTS = [
+      'Ban Chủ Nhiệm',
+      'Ban Nhân Sự',
+      'Ban Bóng Chuyền',
+      'Ban Bóng Đá Nam',
+      'Ban Bóng Đá Nữ',
+      'Ban Cầu Lông',
+      'Ban Truyền Thông'
+    ];
+    let currentDirDeptFilter = 'ALL';
+    let currentAdjustTargetMemberId = null;
+    let currentAdjustDelta = 1;
+    let currentSmartRotationTaskId = null;
+    let pendingSmartRotationCandidates = [];
 
     // Toàn bộ danh mục 125 thành viên CLB chuẩn hóa 8 cột
     const DEFAULT_MEMBERS_DIRECTORY = [{"id": "NTD2108", "hoTen": "Nguyễn Tiến Duy", "lop": "K13A.SPTOAN", "mssv": "21/08/2004", "boMon": "Ban Chủ Nhiệm", "chucVu": "Phó chủ nhiệm", "sdt": "0399757027", "yTe": "Bình thường", "ice": "0399757027", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "LDH0912", "hoTen": "Lương Đình Hiếu", "lop": "K13.GDTC", "mssv": "09/12/2004", "boMon": "Ban Chủ Nhiệm", "chucVu": "Trưởng ban cầu lông", "sdt": "0787246014", "yTe": "Bình thường", "ice": "0787246014", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "NLH1312", "hoTen": "Nguyễn Lê Hoàng", "lop": "K13-GDTC", "mssv": "13/12/2005", "boMon": "Ban Chủ Nhiệm", "chucVu": "Phó chủ nhiệm", "sdt": "0827055999", "yTe": "Bình thường", "ice": "0827055999", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTTL1805", "hoTen": "Tào Thị Tuyết Linh", "lop": "K15D.GDTH", "mssv": "18/05/2007", "boMon": "Ban Chủ Nhiệm", "chucVu": "Trưởng ban truyền thông", "sdt": "0394828197", "yTe": "Bình thường", "ice": "0394828197", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "HDP2106", "hoTen": "Hoàng Duy Phong", "lop": "K13B.SPTOAN", "mssv": "21/06/2005", "boMon": "Ban Chủ Nhiệm", "chucVu": "Tổng thư ký", "sdt": "0971466280", "yTe": "Bình thường", "ice": "0971466280", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "TCT0803", "hoTen": "Triệu Chiến Thái", "lop": "K13.SPLS", "mssv": "08/03/2004", "boMon": "Ban Chủ Nhiệm", "chucVu": "Trưởng ban Bóng Chuyền", "sdt": "0354269904", "yTe": "Bình thường", "ice": "0354269904", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "TVT3006", "hoTen": "Trần Văn Tiệp", "lop": "K13-GDTC", "mssv": "30/06/2002", "boMon": "Ban Chủ Nhiệm", "chucVu": "Chủ nhiệm clb", "sdt": "082214976", "yTe": "Bình thường", "ice": "082214976", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "LNT1805", "hoTen": "Lương Nhật Tân", "lop": "K13-GDTC", "mssv": "18/05/2005", "boMon": "Ban Chủ Nhiệm", "chucVu": "Thủ quỹ", "sdt": "0822131805", "yTe": "Bình thường", "ice": "0822131805", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "NQD1509", "hoTen": "Ngô Quang Đoàn", "lop": "K15C.GDTC", "mssv": "15/09/2001", "boMon": "Ban Chủ Nhiệm", "chucVu": "Trưởng ban bóng đá nam", "sdt": "0867322795", "yTe": "Bình thường", "ice": "0867322795", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "DMC0806", "hoTen": "Đỗ Mạnh Cường", "lop": "K13.GDTC", "mssv": "08/06/2003", "boMon": "Ban Nhân Sự", "chucVu": "Trưởng ban nhân sự", "sdt": "", "yTe": "Bình thường", "ice": "", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": true, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "NHN1502", "hoTen": "Nguyễn Hoài Nam", "lop": "K13B.SPToan", "mssv": "15/02/2005", "boMon": "Ban Nhân Sự", "chucVu": "Phó ban nhân sự", "sdt": "", "yTe": "Bình thường", "ice": "", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTDL0303", "hoTen": "Nguyễn Thị Diệu Linh", "lop": "K15A.GDTH", "mssv": "03/03/2007", "boMon": "Ban Nhân Sự", "chucVu": "Phó ban nhân sự", "sdt": "0967182101", "yTe": "Bình thường", "ice": "0967182101", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "NLA0611", "hoTen": "Nguyễn Long An", "lop": "K12NNA", "mssv": "06/11/2004", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "", "yTe": "Bình thường", "ice": "", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NDA0407", "hoTen": "Nguyễn Đức Anh", "lop": "K16-KHTN", "mssv": "04/07/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0862020080", "yTe": "Bình thường", "ice": "0862020080", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TMA1812", "hoTen": "Trần Minh Anh", "lop": "K15B.GDTH", "mssv": "18/12/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0862231812", "yTe": "Bình thường", "ice": "0862231812", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTTB2810", "hoTen": "Lò Thị Thảo Biên", "lop": "K15C.GDTH", "mssv": "28/10/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0333014010", "yTe": "Bình thường", "ice": "0333014010", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VHB0201", "hoTen": "Vương Hoàng Bắc", "lop": "K16B.GDTC", "mssv": "02/01/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành Viên", "sdt": "0356749335", "yTe": "Bình thường", "ice": "0356749335", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "BTC2907", "hoTen": "Bùi Thu Cúc", "lop": "K16A.SPDIA", "mssv": "29/07/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0362105729", "yTe": "Bình thường", "ice": "0362105729", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TPD2809", "hoTen": "Tòng Phương Duy", "lop": "K15C-GDTH", "mssv": "28/09/2006", "boMon": "Ban Bóng Chuyền", "chucVu": "Phó ban chuyên môn", "sdt": "0829782899", "yTe": "Bình thường", "ice": "0829782899", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "HDD2302", "hoTen": "Hà Đức Dũng", "lop": "K16A.GDTC", "mssv": "23/02/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0338578667", "yTe": "Bình thường", "ice": "0338578667", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTD0302", "hoTen": "Trần Tiến Dũng", "lop": "K16.GDTC", "mssv": "03/02/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0342344521", "yTe": "Bình thường", "ice": "0342344521", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "BTD2411", "hoTen": "Bùi Trịnh Dương", "lop": "K16. QTDVDL", "mssv": "24/11/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0374136827", "yTe": "Bình thường", "ice": "0374136827", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HCTD1207", "hoTen": "Hoàng Châu Thái Dương", "lop": "K15C.GDTH", "mssv": "12/07/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0366289127", "yTe": "Bình thường", "ice": "0366289127", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DTBD3008", "hoTen": "Đinh Thị Bình Dương", "lop": "K48C-GDMN", "mssv": "30/08/2006", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0382247405", "yTe": "Bình thường", "ice": "0382247405", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTHG1803", "hoTen": "Trương Thị Hà Giang", "lop": "K16.Sp Toán", "mssv": "18/03/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0862394839", "yTe": "Bình thường", "ice": "0862394839", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PMH2211", "hoTen": "Phạm Minh Hiếu", "lop": "K16A.GDTC", "mssv": "22/11/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0865789135", "yTe": "Bình thường", "ice": "0865789135", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTTH0403", "hoTen": "Nguyễn Thị Thanh Hoa", "lop": "K15B.GDTH", "mssv": "04/03/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0353992007", "yTe": "Bình thường", "ice": "0353992007", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "MCH0312", "hoTen": "Ma Công Hoàng", "lop": "K14.GDTC", "mssv": "03/12/2006", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0325481411", "yTe": "Bình thường", "ice": "0325481411", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LMH0208", "hoTen": "Lê Minh Hùng", "lop": "K16A.GDTC", "mssv": "02/08/2002", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0837430777", "yTe": "Bình thường", "ice": "0837430777", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PTH2409", "hoTen": "Phạm Thị Hạnh", "lop": "K16.GDTC", "mssv": "24/09/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0392736086", "yTe": "Bình thường", "ice": "0392736086", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DMH2510", "hoTen": "Đinh Minh Hằng", "lop": "K16B.VAN", "mssv": "25/10/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0985983840", "yTe": "Bình thường", "ice": "0985983840", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TCK0603", "hoTen": "Trần Công Kiên", "lop": "K14- GDTC", "mssv": "06/03/2006", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0357397824", "yTe": "Bình thường", "ice": "0357397824", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTL3108", "hoTen": "Trịnh Thị Lan", "lop": "K16A.GDTH", "mssv": "31/08/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0369375145", "yTe": "Bình thường", "ice": "0369375145", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HKL2104", "hoTen": "Hà Khánh Linh", "lop": "K16D.GDTH", "mssv": "21/04/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0982471505", "yTe": "Bình thường", "ice": "0982471505", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VTTL1012", "hoTen": "Vũ Thị Thuỳ Linh", "lop": "K49.GDMN", "mssv": "10/12/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0347515236", "yTe": "Bình thường", "ice": "0347515236", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DHL3005", "hoTen": "Đỗ Hiền Linh", "lop": "K13A-SPAnh", "mssv": "30/05/2005", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0386159238", "yTe": "Bình thường", "ice": "0386159238", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "GVL1911", "hoTen": "Giàng Văn Long", "lop": "K16.SP Địa", "mssv": "19/11/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0372084594", "yTe": "Bình thường", "ice": "0372084594", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTHM0803", "hoTen": "Lê Thị Hồng Minh", "lop": "K13E.GDTH", "mssv": "08/03/2005", "boMon": "Ban Bóng Chuyền", "chucVu": "Phó ban truyền thông", "sdt": "0829488725", "yTe": "Bình thường", "ice": "0829488725", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTN1207", "hoTen": "Lê Thảo Nhi", "lop": "K16.SP Hoá", "mssv": "12/07/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0917775464", "yTe": "Bình thường", "ice": "0917775464", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTYN2111", "hoTen": "Trần Thị Yến Nhi", "lop": "K15A. SP Toán", "mssv": "21/11/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0988473222", "yTe": "Bình thường", "ice": "0988473222", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NPN2309", "hoTen": "Nguyễn Phương Như", "lop": "K16A.GDTC", "mssv": "23/09/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0936536859", "yTe": "Bình thường", "ice": "0936536859", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTKO1901", "hoTen": "Nguyễn Thị Kim Oanh", "lop": "k16B. spvăn", "mssv": "19/01/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0334337410", "yTe": "Bình thường", "ice": "0334337410", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HDP2106", "hoTen": "Hoàng Duy Phong", "lop": "K13B.SPTOAN", "mssv": "21/06/2005", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0971466280", "yTe": "Bình thường", "ice": "0971466280", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LMP0308", "hoTen": "Lê Minh Phong", "lop": "k15A-SPVL", "mssv": "03/08/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0971154906", "yTe": "Bình thường", "ice": "0971154906", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DTP2203", "hoTen": "Đặng Thanh Phong", "lop": "K15A.CNTT", "mssv": "22/03/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0564067036", "yTe": "Bình thường", "ice": "0564067036", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DHQP2004", "hoTen": "Đặng Hữu Quốc Pháp", "lop": "K16A.SPDIA", "mssv": "20/04/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0356869620", "yTe": "Bình thường", "ice": "0356869620", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HTP1608", "hoTen": "Hồ Tấn Phát", "lop": "K15.SPKHTN", "mssv": "16/08/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0369724633", "yTe": "Bình thường", "ice": "0369724633", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DHP2510", "hoTen": "Đinh Hồng Phú", "lop": "K16.SP Tin", "mssv": "25/10/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0962107151", "yTe": "Bình thường", "ice": "0962107151", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TCS1206", "hoTen": "Trần Cao Sơn", "lop": "K16A.GDTC", "mssv": "12/06/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0862384582", "yTe": "Bình thường", "ice": "0862384582", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTTT0210", "hoTen": "Lê Thị Tâm Thanh", "lop": "K16A.GDTH", "mssv": "02/10/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0334741502", "yTe": "Bình thường", "ice": "0334741502", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "MTT2508", "hoTen": "Ma Thị Thuyết", "lop": "K15A.GDMN", "mssv": "25/08/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0833226289", "yTe": "Bình thường", "ice": "0833226289", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TCT0308", "hoTen": "Triệu Chiến Thái", "lop": "K13.SPLSU", "mssv": "03/08/2004", "boMon": "Ban Bóng Chuyền", "chucVu": "Trưởng ban Bóng chuyền", "sdt": "0354269904", "yTe": "Bình thường", "ice": "0354269904", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "BAT1003", "hoTen": "Bùi Anh Thương", "lop": "K15C.GDTH", "mssv": "10/03/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0349403164", "yTe": "Bình thường", "ice": "0349403164", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HTPT1709", "hoTen": "Hà Thị Phương Thảo", "lop": "K15C.GDTH", "mssv": "17/09/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0988852507", "yTe": "Bình thường", "ice": "0988852507", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "KVHT2207", "hoTen": "Kiều Vũ Hồng Thảo", "lop": "K15A.SP Toán", "mssv": "22/07/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0867733592", "yTe": "Bình thường", "ice": "0867733592", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PMT1908", "hoTen": "Phùng Minh Thảo", "lop": "K15C.SPVAN", "mssv": "19/08/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0386616269", "yTe": "Bình thường", "ice": "0386616269", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LNT2108", "hoTen": "Lò Ngọc Thế", "lop": "K15A.KTD", "mssv": "21/08/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0914270871", "yTe": "Bình thường", "ice": "0914270871", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "MTT1209", "hoTen": "Mai Thị Trang", "lop": "K15B.GDTH", "mssv": "12/09/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0397056215", "yTe": "Bình thường", "ice": "0397056215", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "STQT2011", "hoTen": "Sầm Thị Quỳnh Trang", "lop": "K15A. SP DIA LI", "mssv": "20/11/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0795110756", "yTe": "Bình thường", "ice": "0795110756", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HNT1706", "hoTen": "Hoàng Ngọc Trâm", "lop": "K16A.SPANH", "mssv": "17/06/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0962425044", "yTe": "Bình thường", "ice": "0962425044", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HBT2510", "hoTen": "Hờ Bá Trưởng", "lop": "K15B-SPTOAN", "mssv": "25/10/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0347598476", "yTe": "Bình thường", "ice": "0347598476", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TMT1404", "hoTen": "Trần Mạnh Tuấn", "lop": "K15B-GDTC", "mssv": "14/04/2004", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0877661191", "yTe": "Bình thường", "ice": "0877661191", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NNT3009", "hoTen": "Nguyễn Như Tài", "lop": "K16.GDTC", "mssv": "30/09/2008", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0968580853", "yTe": "Bình thường", "ice": "0968580853", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TVT0912", "hoTen": "Trần Văn Tài", "lop": "K15D.GDTH", "mssv": "09/12/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0965554923", "yTe": "Bình thường", "ice": "0965554923", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VQT1204", "hoTen": "Vì Quang Tạo", "lop": "K14 CNTT", "mssv": "12/04/2005", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành Viên", "sdt": "0393224983", "yTe": "Bình thường", "ice": "0393224983", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTTV2308", "hoTen": "Nguyễn Thị Thảo Vân", "lop": "K15B.GDTH", "mssv": "23/08/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0856076668", "yTe": "Bình thường", "ice": "0856076668", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "MTD0212", "hoTen": "Mai Thế Đăng", "lop": "K15A-SPVL", "mssv": "02/12/2007", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0399732007", "yTe": "Bình thường", "ice": "0399732007", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTD1409", "hoTen": "Lường Thành Đạt", "lop": "K14.GDMN.VHVL", "mssv": "14/09/2003", "boMon": "Ban Bóng Chuyền", "chucVu": "Thành viên", "sdt": "0339416044", "yTe": "Bình thường", "ice": "0339416044", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NQA1302", "hoTen": "Ngô Quốc An", "lop": "k15A-GDTC", "mssv": "13/02/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0789377952", "yTe": "Bình thường", "ice": "0789377952", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PTA0808", "hoTen": "Phạm Tuấn Anh", "lop": "K15A GDTC", "mssv": "08/08/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0385202407", "yTe": "Bình thường", "ice": "0385202407", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DPA1711", "hoTen": "Đoàn Phan Anh", "lop": "K16A.CĐT", "mssv": "17/11/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0835122299", "yTe": "Bình thường", "ice": "0835122299", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LMC0801", "hoTen": "Lê Minh Chiến", "lop": "K15A.GDTC", "mssv": "08/01/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0963230064", "yTe": "Bình thường", "ice": "0963230064", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DDC3007", "hoTen": "Đặng Duy Cương", "lop": "K16A QTKD", "mssv": "30/07/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0931762637", "yTe": "Bình thường", "ice": "0931762637", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TMH0103", "hoTen": "Trần Mạnh Hà", "lop": "K15A.Kinh tế", "mssv": "01/03/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0912491307", "yTe": "Bình thường", "ice": "0912491307", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DVH1303", "hoTen": "Đặng Văn Hùng", "lop": "K16B-GDTC", "mssv": "13/03/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0364917959", "yTe": "Bình thường", "ice": "0364917959", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NGH0108", "hoTen": "Nguyễn Gia Hưng", "lop": "K16A-CDT", "mssv": "01/08/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0972789358", "yTe": "Bình thường", "ice": "0972789358", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LVH1810", "hoTen": "Lê Văn Hướng", "lop": "K16B-CDT", "mssv": "18/10/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0912296068", "yTe": "Bình thường", "ice": "0912296068", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "CSH1102", "hoTen": "Cao Sơn Hải", "lop": "K15C.GDTC", "mssv": "11/02/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0981482364", "yTe": "Bình thường", "ice": "0981482364", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VNH0902", "hoTen": "Vũ Ngọc Hải", "lop": "K16A.GDTC", "mssv": "09/02/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0982091671", "yTe": "Bình thường", "ice": "0982091671", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TVL1408", "hoTen": "Trần Văn Long", "lop": "K15A-GDTC", "mssv": "14/08/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0936864936", "yTe": "Bình thường", "ice": "0936864936", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LHTN2902", "hoTen": "Lưu Hữu Thiện Nhân", "lop": "k16A.GDTC", "mssv": "29/02/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0916173056", "yTe": "Bình thường", "ice": "0916173056", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VKP0310", "hoTen": "Vũ Kim Phúc", "lop": "K15A-KTĐ", "mssv": "03/10/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0977323116", "yTe": "Bình thường", "ice": "0977323116", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "BVQ3009", "hoTen": "Bùi Việt Quang", "lop": "K16B-GDTC", "mssv": "30/09/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0364036198", "yTe": "Bình thường", "ice": "0364036198", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VVMQ1809", "hoTen": "Vũ Văn Minh Quân", "lop": "K15A.GDTC", "mssv": "18/09/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0393902677", "yTe": "Bình thường", "ice": "0393902677", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NQT1112", "hoTen": "Nguyễn Quang Thắng", "lop": "K16A.GDTC", "mssv": "11/12/2008", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0395662248", "yTe": "Bình thường", "ice": "0395662248", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NAT0408", "hoTen": "Nguyễn Anh Tuấn", "lop": "K16A.SPDIA", "mssv": "04/08/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "Thành viên ban bóng đá", "sdt": "0329055362", "yTe": "Bình thường", "ice": "0329055362", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TMT1404", "hoTen": "Trần Mạnh Tuấn", "lop": "K15B.GDTC", "mssv": "14/04/2004", "boMon": "Ban Bóng Đá Nam", "chucVu": "Phó Ban", "sdt": "0877661191", "yTe": "Bình thường", "ice": "0877661191", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "NQD1509", "hoTen": "Ngô Quang Đoàn", "lop": "K15C.GDTC", "mssv": "15/09/2001", "boMon": "Ban Bóng Đá Nam", "chucVu": "Trưởng ban bóng đá nam", "sdt": "0867322795", "yTe": "Bình thường", "ice": "0867322795", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "CMD0402", "hoTen": "Chu Minh Đức", "lop": "k15A-GDTC", "mssv": "04/02/2007", "boMon": "Ban Bóng Đá Nam", "chucVu": "thành viên ban bóng đá", "sdt": "0394594078", "yTe": "Bình thường", "ice": "0394594078", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TPC1107", "hoTen": "Trần Phương Cúc", "lop": "K15ASPSU", "mssv": "11/07/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0868208922", "yTe": "Bình thường", "ice": "0868208922", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DTH0111", "hoTen": "Đồng Thanh Hiền", "lop": "K15C SPTOAN", "mssv": "01/11/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0398509120", "yTe": "Bình thường", "ice": "0398509120", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTNH1912", "hoTen": "Nguyễn Thị Ngọc Huyền", "lop": "K14B.NNA", "mssv": "19/12/2006", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0982636974", "yTe": "Bình thường", "ice": "0982636974", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTHH1401", "hoTen": "Nguyễn Trần Huyền Hạnh", "lop": "K14C.GDTH", "mssv": "14/01/2006", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên bóng đá nữ", "sdt": "0915748614", "yTe": "Bình thường", "ice": "0915748614", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PTH2409", "hoTen": "Phạm Thị Hạnh", "lop": "K16A.GDTC", "mssv": "24/09/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0392736086", "yTe": "Bình thường", "ice": "0392736086", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTLH1203", "hoTen": "Nguyễn Thị Lâm Hằng", "lop": "K15B.KT", "mssv": "12/03/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0373256635", "yTe": "Bình thường", "ice": "0373256635", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTKK2504", "hoTen": "Lê Thị Kim Khánh", "lop": "K16B-GDTC", "mssv": "25/04/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0348135923", "yTe": "Bình thường", "ice": "0348135923", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTL0902", "hoTen": "Lương Thanh Lam", "lop": "k16. SP Hoá", "mssv": "09/02/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0829262712", "yTe": "Bình thường", "ice": "0829262712", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTL0912", "hoTen": "Nguyễn Thị Linh", "lop": "K16B-NNA", "mssv": "09/12/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0335402186", "yTe": "Bình thường", "ice": "0335402186", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTTL1805", "hoTen": "Tào Thị Tuyết Linh", "lop": "K15D.GDTH", "mssv": "18/05/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0394828197", "yTe": "Bình thường", "ice": "0394828197", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTKL1305", "hoTen": "Nguyễn Thị Khánh Ly", "lop": "K15G.GDTH", "mssv": "13/05/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0336821586", "yTe": "Bình thường", "ice": "0336821586", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VQM1712", "hoTen": "Vũ Quỳnh Mai", "lop": "K15A-GDTC", "mssv": "17/12/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0865563238", "yTe": "Bình thường", "ice": "0865563238", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTTN1610", "hoTen": "Trần Thị Tuyết Nhung", "lop": "K16D.GDTH", "mssv": "16/10/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0962118003", "yTe": "Bình thường", "ice": "0962118003", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "MTMT1305", "hoTen": "Ma Thị Mai Thoa", "lop": "K16A.SPTOAN", "mssv": "13/05/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0962729061", "yTe": "Bình thường", "ice": "0962729061", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTT1001", "hoTen": "La Thị Thuý", "lop": "K15A.SP SU", "mssv": "10/01/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0347685459", "yTe": "Bình thường", "ice": "0347685459", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTT2407", "hoTen": "Nguyễn Thị Thuận", "lop": "K14G-GDTH", "mssv": "24/07/2006", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0967683506", "yTe": "Bình thường", "ice": "0967683506", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PAT2011", "hoTen": "Phạm Anh Thư", "lop": "K16A.GDTC", "mssv": "20/11/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0344821428", "yTe": "Bình thường", "ice": "0344821428", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HTTT2211", "hoTen": "Hoàng Thị Thanh Thảo", "lop": "K14G-GDTH", "mssv": "22/11/2006", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0354100952", "yTe": "Bình thường", "ice": "0354100952", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NTPT2604", "hoTen": "Nguyễn Thị Phương Thảo", "lop": "K16A- GDTC", "mssv": "26/04/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0385256670", "yTe": "Bình thường", "ice": "0385256670", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NBT0605", "hoTen": "Nguyễn Bảo Trâm", "lop": "K16B-GDTC", "mssv": "06/05/2008", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0962857725", "yTe": "Bình thường", "ice": "0962857725", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTNT2912", "hoTen": "Lường Thị Ngọc Tuyến", "lop": "K14-GDCT", "mssv": "29/12/2006", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0343797536", "yTe": "Bình thường", "ice": "0343797536", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "HHTV0511", "hoTen": "Hoàng Hà Thanh Vân", "lop": "K15B.GDTC", "mssv": "05/11/2007", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0868057090", "yTe": "Bình thường", "ice": "0868057090", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTHY0308", "hoTen": "Trần Thị Hoa Yên", "lop": "K15D.GDTH", "mssv": "03/08/2004", "boMon": "Ban Bóng Đá Nữ", "chucVu": "Thành viên ban bóng đá", "sdt": "0345826551", "yTe": "Bình thường", "ice": "0345826551", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LDH0912", "hoTen": "Lương Đình Hiếu", "lop": "K13.GDTC", "mssv": "09/12/2004", "boMon": "Ban Cầu Lông", "chucVu": "Trưởng ban cầu lông", "sdt": "0787246014", "yTe": "Bình thường", "ice": "0787246014", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "DDH1011", "hoTen": "Đinh Đức Huy", "lop": "K15A.GDTC", "mssv": "10/11/2007", "boMon": "Ban Cầu Lông", "chucVu": "Phó ban cầu lông", "sdt": "0362936958", "yTe": "Bình thường", "ice": "0362936958", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTNA0809", "hoTen": "Trương Thị Ngọc Anh", "lop": "K15.SP Vật lí", "mssv": "08/09/2007", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0944212679", "yTe": "Bình thường", "ice": "0944212679", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PTND2909", "hoTen": "Phạm Thị Ngọc Duyên", "lop": "K15E.GDTH", "mssv": "29/09/2007", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0379230662", "yTe": "Bình thường", "ice": "0379230662", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "DNHH2205", "hoTen": "Đỗ Nguyệt Hải Hà", "lop": "K15A SP Toán", "mssv": "22/05/2007", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0335897056", "yTe": "Bình thường", "ice": "0335897056", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "TTTL1805", "hoTen": "Tào Thị Tuyết Linh", "lop": "K15D.GDTH", "mssv": "18/05/2007", "boMon": "Ban Truyền Thông", "chucVu": "Trưởng ban truyền thông", "sdt": "0394828197", "yTe": "Bình thường", "ice": "0394828197", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "LKN1707", "hoTen": "Lê Kim Ngân", "lop": "K15E.GDTH", "mssv": "17/07/2007", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0376009544", "yTe": "Bình thường", "ice": "0376009544", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "BTP2006", "hoTen": "Bùi Thị Phương", "lop": "K48C GDMN", "mssv": "20/06/2007", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0338540588", "yTe": "Bình thường", "ice": "0338540588", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTTP1710", "hoTen": "Lê Thị Thu Phương", "lop": "K15E.GDTH", "mssv": "17/10/2007", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0362495007", "yTe": "Bình thường", "ice": "0362495007", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "VMQ2311", "hoTen": "Vũ Minh Quang", "lop": "K15.GDTC", "mssv": "23/11/2007", "boMon": "Ban Truyền Thông", "chucVu": "Phó ban truyền thông", "sdt": "0866189811", "yTe": "Bình thường", "ice": "0866189811", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": true, "donVi": "Trường Đại học Hải Dương"}, {"id": "LTTT2112", "hoTen": "Lê Thị Thu Thương", "lop": "K13G.GDTH", "mssv": "21/12/2005", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0704128206", "yTe": "Bình thường", "ice": "0704128206", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "NNT2202", "hoTen": "Nguyễn Nhật Tân", "lop": "K16 SP Vật Lý", "mssv": "22/02/2008", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0396291862", "yTe": "Bình thường", "ice": "0396291862", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}, {"id": "PTD2507", "hoTen": "Phạm Tiến Đạt", "lop": "K16.GDTC", "mssv": "25/07/2007", "boMon": "Ban Truyền Thông", "chucVu": "Thành viên ban truyền thông", "sdt": "0967395691", "yTe": "Bình thường", "ice": "0967395691", "soCa": 0, "soCaHoanThanh": 0, "status": "Sẵn sàng", "theTrang": "Khỏe mạnh (100% Sẵn sàng)", "avatar": "", "isAdmin": false, "isShiftLeader": false, "donVi": "Trường Đại học Hải Dương"}];
@@ -3033,6 +3201,14 @@
       exposeGlobalState();
     }
 
+    function autoEnableBackgroundNotifications() {
+      if ('Notification' in window) {
+        if (Notification.permission === 'default') {
+          Notification.requestPermission().catch(() => {});
+        }
+      }
+    }
+
     function showMainAppView() {
       document.getElementById('viewLoginContainer')?.classList.add('hidden');
       document.getElementById('viewMainAppContainer')?.classList.remove('hidden');
@@ -3043,6 +3219,7 @@
       generateDynamicQrPass();
       updateOfflineQueueBadge();
       exposeGlobalState();
+      autoEnableBackgroundNotifications();
     }
 
     // Demo and role switching removed for production integrity
@@ -3543,6 +3720,9 @@
 
         const adminActionsHtml = currentUser?.isAdmin ? `
           <div style="display: flex; align-items: center; gap: 5px;">
+            <button onclick="openSmartRotationModal('${t.id}')" class="spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #f0abfc; background: #fdf4ff; color: #a21caf; display: inline-flex; align-items: center; justify-content: center;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </button>
             <button onclick="openEditTaskModal('${t.id}')" class="spring-touch" title="Chỉnh sửa lệnh điều động" aria-label="Chỉnh sửa lệnh điều động" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #c7d2fe; background: #eef2ff; color: #4338ca; display: inline-flex; align-items: center; justify-content: center;">
               <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </button>
@@ -3550,7 +3730,11 @@
               <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </button>
           </div>
-        ` : '';
+        ` : (currentUser?.isShiftLeader ? `
+          <button onclick="openSmartRotationModal('${t.id}')" class="spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #f0abfc; background: #fdf4ff; color: #a21caf; display: inline-flex; align-items: center; justify-content: center;">
+            <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        ` : '');
 
         // Xây dựng các nút hành động Sprint 1 & Điểm danh hiện trường
         let actionButtonsHtml = '';
@@ -4367,18 +4551,30 @@
 
       const task = currentTasks.find(t => t.id === leave.taskId);
       if (task) {
+        // Kiểm tra nếu thành viên đã điểm danh (checkedInMembers)
+        let wasCheckedIn = false;
+        if (task.checkedInMembers && task.checkedInMembers.includes(leave.memberId)) {
+          wasCheckedIn = true;
+          task.checkedInMembers = task.checkedInMembers.filter(m => m !== leave.memberId);
+        }
+
         // Gỡ người xin rút khỏi ca trực
         task.joinedMembers = (task.joinedMembers || []).filter(m => m !== leave.memberId);
         task.assignedMembers = (task.assignedMembers || []).filter(m => m !== leave.memberId);
 
-        // QUAN TRỌNG: TUYỆT ĐỐI KHÔNG TRỪ soCaHoanThanh lịch sử!
-        // Chỉ giảm số ca đang giữ soCa của thành viên xin rút đúng 1 lần duy nhất
+        // Giảm số ca đang giữ; Nếu đã điểm danh trước đó thì tự động trừ 1 ca hoàn thành
         const targetMem = membersDirectory.find(m => m.id === leave.memberId);
         if (targetMem) {
           targetMem.soCa = Math.max(0, (targetMem.soCa || 1) - 1);
+          if (wasCheckedIn) {
+            targetMem.soCaHoanThanh = Math.max(0, (targetMem.soCaHoanThanh != null ? targetMem.soCaHoanThanh : 1) - 1);
+          }
         }
         if (currentUser && currentUser.id === leave.memberId) {
           currentUser.soCa = targetMem ? targetMem.soCa : Math.max(0, (currentUser.soCa || 1) - 1);
+          if (wasCheckedIn && targetMem) {
+            currentUser.soCaHoanThanh = targetMem.soCaHoanThanh;
+          }
         }
 
         // Đôn người từ Waitlist nếu có chỉ định
@@ -4392,6 +4588,14 @@
           if (currentUser && currentUser.id === promoteWaitlistId && pMem) {
             currentUser.soCa = pMem.soCa;
           }
+        }
+
+        // Gửi thông báo rút ca đồng bộ lên Google Sheet backend
+        if (navigator.onLine) {
+          fetch(`${BACKEND_URL}?action=withdrawTask&taskId=${encodeURIComponent(task.id)}&memberId=${encodeURIComponent(leave.memberId)}`, {
+            method: 'GET',
+            mode: 'no-cors'
+          }).catch(() => {});
         }
       }
 
@@ -4969,6 +5173,17 @@
       setBodyScrollLock(false);
     }
 
+    function setDirectoryDeptFilter(dept) {
+      currentDirDeptFilter = dept;
+      document.querySelectorAll('#directoryDeptFilterBar button').forEach(btn => {
+        const isAct = btn.getAttribute('data-dir-filter') === dept;
+        btn.style.background = isAct ? '#e0e7ff' : 'rgba(255,255,255,0.85)';
+        btn.style.borderColor = isAct ? '#a5b4fc' : '#e2e8f0';
+        btn.style.color = isAct ? '#312e81' : '#475569';
+      });
+      filterDirectoryMembers();
+    }
+
     function filterDirectoryMembers() {
       const q = (document.getElementById('iptSearchDirectory')?.value || '').toLowerCase().trim();
       const container = document.getElementById('directoryListContainer');
@@ -4982,30 +5197,74 @@
         return true;
       });
 
-      const filtered = uniqueMems.filter(m => 
-        (m.hoTen || '').toLowerCase().includes(q) ||
-        (m.id || '').toLowerCase().includes(q) ||
-        (m.mssv || '').toLowerCase().includes(q) ||
-        (m.sdt || '').includes(q)
-      );
+      const filtered = uniqueMems.filter(m => {
+        if (currentDirDeptFilter !== 'ALL') {
+          const matchDept = m.boMon === currentDirDeptFilter || (m.cacBan && m.cacBan.includes(currentDirDeptFilter));
+          if (!matchDept) return false;
+        }
+        if (!q) return true;
+        return (m.hoTen || '').toLowerCase().includes(q) ||
+               (m.id || '').toLowerCase().includes(q) ||
+               (m.lop || '').toLowerCase().includes(q) ||
+               (m.boMon || '').toLowerCase().includes(q) ||
+               (m.chucVu || '').toLowerCase().includes(q) ||
+               (m.sdt || '').includes(q) ||
+               (m.ice || '').includes(q);
+      });
 
       container.innerHTML = filtered.map(m => {
         const theme = getTheTrangTheme(m.theTrang);
         const initial = m.hoTen ? m.hoTen.trim().split(' ').pop().charAt(0).toUpperCase() : 'A';
+        const doneShifts = m.soCaHoanThanh != null ? m.soCaHoanThanh : (m.soCa || 0);
         return `
-          <div class="spring-touch" onclick="openOtherMemberInspector('${m.id}')" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: 15px; background: #ffffff; border: 1px solid #f1f5f9;">
-            <div style="display: flex; align-items: center; gap: 9px;">
-              <div class="avatar-box" style="width: 36px; height: 36px; font-size: 14px; border-radius: 12px; ${m.avatar ? `background-image: url('${m.avatar}'); background-size: cover;` : ''}">
-                ${m.avatar ? '' : initial}
+          <div class="acrylic-card" style="padding: 10px; margin-bottom: 0; border: 1.2px solid #e2e8f0; border-radius: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 9px;">
+                <div class="avatar-box" style="width: 40px; height: 40px; font-size: 15px; border-radius: 12px; ${m.avatar ? `background-image: url('${m.avatar}'); background-size: cover;` : ''}">
+                  ${m.avatar ? '' : initial}
+                </div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 5px;">
+                    <h4 style="font-size: 12.5px; font-weight: 900; color: #1e1b4b;">${escapeHtml(m.hoTen)}</h4>
+                    ${m.isAdmin ? '<span style="font-size: 8px; font-weight: 800; background: #f3e8ff; color: #6b21a8; padding: 1px 5px; border-radius: 5px; border: 1px solid #d8b4fe;">Admin</span>' : ''}
+                  </div>
+                  <p style="font-size: 10px; color: #4338ca; font-weight: 700;">${escapeHtml(m.chucVu || 'Thành viên')} &bull; <span style="font-family: monospace; font-weight: 800; color: #64748b;">${escapeHtml(m.id)}</span></p>
+                </div>
               </div>
-              <div>
-                <p style="font-size: 12px; font-weight: 800; color: #1e1b4b;">${m.hoTen}</p>
-                <p style="font-size: 9.5px; color: #64748b;">${m.boMon || m.chucVu} &bull; ${m.soCa || 0} ca</p>
+              <span style="font-size: 9px; font-weight: 800; padding: 3px 7px; border-radius: 8px; background: ${theme.bg}; color: ${theme.color}; border: 1px solid ${theme.border}; white-space: nowrap;">
+                ${formatShortTheTrang(m.theTrang || 'Khỏe mạnh')}
+              </span>
+            </div>
+
+            <!-- 8 Cột thông tin chuẩn hóa -->
+            <div style="margin-top: 8px; padding-top: 6px; border-top: 1px dashed #e2e8f0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 9.5px; line-height: 1.4;">
+              <div><span style="color: #64748b;">Lớp:</span> <b>${escapeHtml(m.lop || '---')}</b></div>
+              <div><span style="color: #64748b;">Ban:</span> <b style="color: #4338ca;">${escapeHtml(m.boMon || '---')}</b></div>
+              <div><span style="color: #64748b;">Cống hiến:</span> <b style="color: #047857;">${doneShifts} ca</b></div>
+              <div><span style="color: #64748b;">Y tế:</span> <b style="color: #9f1239;">${escapeHtml(m.yTe || 'Bình thường')}</b></div>
+              <div style="grid-column: span 2; display: flex; justify-content: space-between; align-items: center; margin-top: 2px;">
+                <span>SĐT: <b style="color: #2563eb; cursor: pointer;" onclick="makePhoneCall('${escapeHtml(m.sdt)}')">${escapeHtml(m.sdt || '---')}</b></span>
+                <span>ICE: <b style="color: #dc2626; cursor: pointer;" onclick="makePhoneCall('${escapeHtml(m.ice || m.sdt)}')">${escapeHtml(m.ice || m.sdt || '---')}</b></span>
               </div>
             </div>
-            <span style="font-size: 9px; font-weight: 800; padding: 3px 7px; border-radius: 8px; background: ${theme.bg}; color: ${theme.color}; border: 1px solid ${theme.border}; white-space: nowrap;">
-              ${formatShortTheTrang(m.theTrang || 'Khỏe mạnh')}
-            </span>
+
+            <!-- Action buttons: Chi tiết, Gọi điện, và Admin điều chỉnh ca -->
+            <div style="display: flex; gap: 6px; margin-top: 8px; align-items: center;">
+              <button onclick="openOtherMemberInspector('${m.id}')" class="spring-touch" style="flex: 1; padding: 6px 8px; border-radius: 10px; background: #eef2ff; border: 1px solid #c7d2fe; color: #3730a3; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Hồ Sơ Chi Tiết</span>
+              </button>
+              ${m.sdt ? `
+                <button onclick="makePhoneCall('${escapeHtml(m.sdt)}')" class="spring-touch" style="padding: 6px 10px; border-radius: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+                  <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>Gọi</span>
+                </button>
+              ` : ''}
+              ${currentUser?.isAdmin ? `
+                <button onclick="openAdjustShiftsModal('${m.id}', -1)" class="spring-touch" title="Trừ 1 ca" style="padding: 6px 8px; border-radius: 9px; background: #fff1f2; border: 1px solid #fca5a5; color: #b91c1c; font-size: 9.5px; font-weight: 900;">-1 Ca</button>
+                <button onclick="openAdjustShiftsModal('${m.id}', 1)" class="spring-touch" title="Cộng 1 ca" style="padding: 6px 8px; border-radius: 9px; background: #f0fdf4; border: 1px solid #86efac; color: #15803d; font-size: 9.5px; font-weight: 900;">+1 Ca</button>
+              ` : ''}
+            </div>
           </div>
         `;
       }).join('');
@@ -5023,15 +5282,23 @@
         if (el) el.innerText = text;
       };
 
+      const doneShifts = m.soCaHoanThanh != null ? m.soCaHoanThanh : (m.soCa || 0);
       safeSetText('otherMemName', m.hoTen || '---');
       safeSetText('otherMemRole', m.chucVu || 'Thành viên');
       safeSetText('otherMemId', 'ID: ' + (m.id || '---'));
-      safeSetText('otherMemDuty', `${(m.soCaHoanThanh != null ? m.soCaHoanThanh : m.soCa) || 0} ca`);
+      safeSetText('otherMemDuty', `${doneShifts} ca`);
       safeSetText('otherMemFit', formatShortTheTrang(m.theTrang || 'Khỏe mạnh'));
 
       const otherBadgeAdm = document.getElementById('otherMemBadgeAdm');
       if (m.isAdmin) otherBadgeAdm?.classList.remove('hidden');
       else otherBadgeAdm?.classList.add('hidden');
+
+      const adminShiftRow = document.getElementById('adminShiftAdjustRow');
+      if (currentUser?.isAdmin) {
+        adminShiftRow?.classList.remove('hidden');
+      } else {
+        adminShiftRow?.classList.add('hidden');
+      }
 
       const fitTheme = getTheTrangTheme(m.theTrang);
       const otherFitBox = document.getElementById('otherBoxMemFit');
@@ -5064,14 +5331,16 @@
         }
       }
 
+      // 8 Cột thông tin chuẩn hóa
+      safeSetText('otherMemIdVal', m.id || '---');
+      safeSetText('otherMemNameVal', m.hoTen || '---');
       safeSetText('otherClass', m.lop || '---');
-      safeSetText('otherMssv', m.mssv || m.id || '---');
-      
       const otherDeptDisplay = (m.cacBan && m.cacBan.length > 1) ? m.cacBan.join(', ') : (m.boMon || '---');
       safeSetText('otherDept', otherDeptDisplay);
+      safeSetText('otherRoleVal', m.chucVu || 'Thành viên');
+      safeSetText('otherMed', m.yTe || 'Bình thường');
       safeSetText('otherPhone', m.sdt || '---');
       safeSetText('otherIce', m.ice || m.sdt || '---');
-      safeSetText('otherMed', m.yTe || 'Bình thường');
 
       applyAvatarElement(
         document.getElementById('otherMemAvatarBox'),
@@ -5082,6 +5351,88 @@
 
       document.getElementById('modalOtherMember')?.classList.add('open');
       setBodyScrollLock(true);
+    }
+
+    // ==================== ĐIỀU CHỈNH SỐ CA THỦ CÔNG (ADMIN ONLY) ====================
+    function promptAdjustSelectedMemberShifts(delta) {
+      if (!selectedOtherMember) return;
+      openAdjustShiftsModal(selectedOtherMember.id, delta);
+    }
+
+    function openAdjustShiftsModal(memberId, delta = 1) {
+      if (!currentUser?.isAdmin) {
+        showAquaIsland('Chỉ Admin mới có quyền điều chỉnh số ca trực!', '⚠️');
+        return;
+      }
+      const m = membersDirectory.find(item => item.id === memberId) || (currentUser.id === memberId ? currentUser : null);
+      if (!m) return;
+      currentAdjustTargetMemberId = memberId;
+      currentAdjustDelta = delta;
+
+      const nameEl = document.getElementById('adjustShiftsMemberName');
+      if (nameEl) nameEl.innerText = `Thành viên: ${m.hoTen} (${m.id})`;
+
+      const displayEl = document.getElementById('adjustDeltaDisplay');
+      if (displayEl) {
+        displayEl.innerText = (currentAdjustDelta >= 0 ? `+${currentAdjustDelta}` : `${currentAdjustDelta}`) + ' ca';
+        displayEl.style.color = currentAdjustDelta >= 0 ? '#15803d' : '#b91c1c';
+      }
+
+      const iptReason = document.getElementById('iptAdjustShiftsReason');
+      if (iptReason) iptReason.value = '';
+
+      document.getElementById('modalAdjustShifts')?.classList.add('open');
+      setBodyScrollLock(true);
+    }
+
+    function closeAdjustShiftsModal() {
+      document.getElementById('modalAdjustShifts')?.classList.remove('open');
+      setBodyScrollLock(false);
+    }
+
+    function changeAdjustDelta(d) {
+      currentAdjustDelta += d;
+      if (currentAdjustDelta === 0) currentAdjustDelta += (d > 0 ? 1 : -1);
+      const displayEl = document.getElementById('adjustDeltaDisplay');
+      if (displayEl) {
+        displayEl.innerText = (currentAdjustDelta >= 0 ? `+${currentAdjustDelta}` : `${currentAdjustDelta}`) + ' ca';
+        displayEl.style.color = currentAdjustDelta >= 0 ? '#15803d' : '#b91c1c';
+      }
+    }
+
+    async function executeAdjustShiftsSubmit() {
+      if (!currentUser?.isAdmin || !currentAdjustTargetMemberId) return;
+      const reason = (document.getElementById('iptAdjustShiftsReason')?.value || '').trim() || 'Admin điều chỉnh số ca trực';
+      const m = membersDirectory.find(item => item.id === currentAdjustTargetMemberId);
+      if (!m) return;
+
+      const oldDone = m.soCaHoanThanh != null ? m.soCaHoanThanh : (m.soCa || 0);
+      m.soCaHoanThanh = Math.max(0, oldDone + currentAdjustDelta);
+      if (currentUser.id === m.id) {
+        currentUser.soCaHoanThanh = m.soCaHoanThanh;
+        renderProfileData();
+      }
+
+      if (selectedOtherMember && selectedOtherMember.id === m.id) {
+        selectedOtherMember.soCaHoanThanh = m.soCaHoanThanh;
+        const dutyEl = document.getElementById('otherMemDuty');
+        if (dutyEl) dutyEl.innerText = `${m.soCaHoanThanh} ca`;
+      }
+
+      saveLocalState();
+      filterDirectoryMembers();
+      closeAdjustShiftsModal();
+      showAquaIsland(`Đã điều chỉnh ${currentAdjustDelta >= 0 ? '+' : ''}${currentAdjustDelta} ca cho ${m.hoTen}!`, '✨');
+
+      // Đồng bộ lên Google Sheet backend
+      try {
+        const url = `${BACKEND_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(m.id)}&delta=${currentAdjustDelta}&reason=${encodeURIComponent(reason)}&adminActorId=${encodeURIComponent(currentUser.id)}`;
+        if (navigator.onLine) {
+          fetch(url).catch(() => {});
+        }
+      } catch(e) {
+        console.warn('Sync shift adjust error:', e);
+      }
     }
 
     function closeOtherMemberModal() {
@@ -5241,10 +5592,9 @@
         if (el) el.style.display = 'none';
       });
 
-      addDepartmentQuotaRow('Ban Cầu Lông', 2);
-      addDepartmentQuotaRow('Ban Bóng Chuyền', 2);
-      addDepartmentQuotaRow('Ban Bóng Đá', 2);
-      addDepartmentQuotaRow('Ban Truyền Thông', 2);
+      ALL_DEPARTMENTS.forEach(dept => {
+        addDepartmentQuotaRow(dept, (dept === 'Ban Chủ Nhiệm' || dept === 'Ban Nhân Sự') ? 1 : 2);
+      });
 
       document.getElementById('modalCreateTask')?.classList.add('open');
       setBodyScrollLock(true);
@@ -5362,6 +5712,7 @@
           existingTask.lockDeadline = deadline;
           existingTask.departmentQuotas = deptQuotas;
           existingTask.notes = notes;
+          syncTaskToBackend(existingTask);
         }
         saveLocalState();
         renderTasksList();
@@ -5385,6 +5736,7 @@
       };
 
       currentTasks.unshift(newTask);
+      syncTaskToBackend(newTask);
       saveLocalState();
       renderTasksList();
       closeCreateTaskModal();
@@ -6286,5 +6638,251 @@
         showAquaIsland('Không thể đăng ký thông báo: ' + e.message, '⚠️');
       }
     }
+
+
+    // ==================== ĐỒNG BỘ LỆNH ĐIỀU ĐỘNG LÊN GOOGLE SHEET BACKEND ====================
+    async function syncTaskToBackend(task) {
+      if (!task) return;
+      try {
+        const payload = JSON.stringify({ action: 'createTask', task: task });
+        if (navigator.onLine) {
+          await fetch(BACKEND_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: payload
+          }).catch(async () => {
+            await fetch(`${BACKEND_URL}?action=createTask&task=${encodeURIComponent(JSON.stringify(task))}`, {
+              method: 'GET',
+              mode: 'no-cors'
+            }).catch(() => {});
+          });
+        } else {
+          enqueueOfflineMutation('CREATE_TASK', task);
+        }
+      } catch (err) {
+        console.warn('Sync task failed:', err);
+        enqueueOfflineMutation('CREATE_TASK', task);
+      }
+    }
+
+    // ==================== THẺ HỘI VIÊN SỐ 3D GLASSMORPHISM VIP ====================
+    function openDigitalSportPassModal() {
+      if (!currentUser) return;
+      const nameEl = document.getElementById('vipCardMemberName');
+      const roleEl = document.getElementById('vipCardMemberRole');
+      const idEl = document.getElementById('vipCardMemberId');
+      const classEl = document.getElementById('vipCardMemberClass');
+      const deptEl = document.getElementById('vipCardMemberDept');
+      const shiftsEl = document.getElementById('vipCardMemberShifts');
+      const qrContainer = document.getElementById('vipCardQrContainer');
+
+      if (nameEl) nameEl.innerText = currentUser.hoTen || 'Thành viên CLB';
+      if (roleEl) roleEl.innerText = currentUser.chucVu || 'Hội viên chính thức';
+      if (idEl) idEl.innerText = currentUser.id || '---';
+      if (classEl) classEl.innerText = currentUser.lop || '---';
+      const myDept = (currentUser.cacBan && currentUser.cacBan.length > 1) ? currentUser.cacBan.join(', ') : (currentUser.boMon || '---');
+      if (deptEl) deptEl.innerText = myDept;
+      const doneShifts = currentUser.soCaHoanThanh != null ? currentUser.soCaHoanThanh : (currentUser.soCa || 0);
+      if (shiftsEl) shiftsEl.innerText = `${doneShifts} ca`;
+
+      if (qrContainer) {
+        qrContainer.innerHTML = '';
+        const passData = JSON.stringify({
+          id: currentUser.id,
+          name: currentUser.hoTen,
+          dept: currentUser.boMon,
+          class: currentUser.lop,
+          shifts: doneShifts,
+          type: 'VIP_SPORTPASS_DIGITAL_ID'
+        });
+        let rendered = false;
+        try {
+          if (typeof QRCode !== 'undefined') {
+            new QRCode(qrContainer, {
+              text: passData,
+              width: 72,
+              height: 72,
+              colorDark: '#1e1b4b',
+              colorLight: '#ffffff',
+              correctLevel: QRCode.CorrectLevel.M
+            });
+            rendered = true;
+          }
+        } catch(e) {}
+        if (!rendered && typeof generateOfflineSvgQr === 'function') {
+          qrContainer.innerHTML = generateOfflineSvgQr(passData);
+        }
+      }
+
+      document.getElementById('modalDigitalSportPassCard')?.classList.add('open');
+      setBodyScrollLock(true);
+    }
+
+    function closeDigitalSportPassModal() {
+      document.getElementById('modalDigitalSportPassCard')?.classList.remove('open');
+      setBodyScrollLock(false);
+    }
+
+    // ==================== XOAY TUA ĐIỀU PHỐI THÔNG MINH THEO BAN (SMART ROTATION) ====================
+    function openSmartRotationModal(taskId) {
+      const task = currentTasks.find(t => t.id === taskId);
+      if (!task) return;
+      currentSmartRotationTaskId = taskId;
+
+      const titleEl = document.getElementById('smartRotationTaskTitle');
+      if (titleEl) titleEl.innerText = `${task.title} (${task.time || 'Linh hoạt'})`;
+
+      calculateSmartRotation(task);
+      document.getElementById('modalSmartRotation')?.classList.add('open');
+      setBodyScrollLock(true);
+    }
+
+    function closeSmartRotationModal() {
+      document.getElementById('modalSmartRotation')?.classList.remove('open');
+      setBodyScrollLock(false);
+    }
+
+    function calculateSmartRotation(task) {
+      const container = document.getElementById('smartRotationResultsContainer');
+      if (!container) return;
+
+      const currentOccupied = new Set([...(task.joinedMembers || []), ...(task.assignedMembers || [])]);
+      pendingSmartRotationCandidates = [];
+
+      const deptQuotas = (task.departmentQuotas && Object.keys(task.departmentQuotas).length > 0)
+        ? task.departmentQuotas
+        : { 'Ban Cầu Lông': 2, 'Ban Bóng Chuyền': 2, 'Ban Bóng Đá Nam': 2, 'Ban Truyền Thông': 2 };
+
+      let html = '';
+
+      Object.entries(deptQuotas).forEach(([deptName, quotaVal]) => {
+        const quota = parseInt(quotaVal, 10) || 0;
+        const currentDeptMembers = [...currentOccupied].filter(mId => {
+          const m = membersDirectory.find(x => x.id === mId);
+          return m && (m.boMon === deptName || (m.cacBan && m.cacBan.includes(deptName)));
+        });
+
+        const needed = Math.max(0, quota - currentDeptMembers.length);
+
+        const candidates = membersDirectory.filter(m => {
+          if (!m || !m.id) return false;
+          const isDept = m.boMon === deptName || (m.cacBan && m.cacBan.includes(deptName));
+          if (!isDept) return false;
+          if (currentOccupied.has(m.id)) return false;
+
+          const theme = getTheTrangTheme(m.theTrang);
+          if (theme.exempt) return false;
+          const tTrang = (m.theTrang || '').toLowerCase();
+          if (tTrang.includes('ốm') || tTrang.includes('sốt') || tTrang.includes('chấn thương') || tTrang.includes('tạm vắng')) {
+            return false;
+          }
+
+          if (task.time && task.time !== 'Linh hoạt') {
+            const hasTimeConflict = currentTasks.some(otherTask => {
+              if (otherTask.id === task.id) return false;
+              if (otherTask.time === task.time) {
+                const otherOcc = [...(otherTask.joinedMembers || []), ...(otherTask.assignedMembers || [])];
+                return otherOcc.includes(m.id);
+              }
+              return false;
+            });
+            if (hasTimeConflict) return false;
+          }
+
+          return true;
+        });
+
+        candidates.sort((a, b) => {
+          const doneA = a.soCaHoanThanh != null ? a.soCaHoanThanh : (a.soCa || 0);
+          const doneB = b.soCaHoanThanh != null ? b.soCaHoanThanh : (b.soCa || 0);
+          if (doneA !== doneB) return doneA - doneB;
+          return (a.soCa || 0) - (b.soCa || 0);
+        });
+
+        const recommended = candidates.slice(0, needed);
+        recommended.forEach(c => pendingSmartRotationCandidates.push({ member: c, dept: deptName, taskId: task.id }));
+
+        html += `
+          <div style="background: rgba(255,255,255,0.9); border: 1.2px solid #e2e8f0; border-radius: 14px; padding: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11px; font-weight: 800; color: #4338ca;">${escapeHtml(deptName)}</span>
+              <span style="font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: ${needed === 0 ? '#ecfdf5' : '#fef3c7'}; color: ${needed === 0 ? '#047857' : '#92400e'}; border: 1px solid ${needed === 0 ? '#a7f3d0' : '#fde68a'};">
+                ${currentDeptMembers.length}/${quota} (Cần thêm: ${needed})
+              </span>
+            </div>
+            ${needed === 0 ? `
+              <p style="font-size: 10px; color: #059669; font-weight: 700;">✓ Đã đủ chỉ tiêu quân số theo ban.</p>
+            ` : (recommended.length === 0 ? `
+              <p style="font-size: 10px; color: #dc2626; font-weight: 700;">⚠️ Không còn thành viên khả dụng (Tất cả đang bận/nghỉ/miễn trừ).</p>
+            ` : `
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                ${recommended.map((m, idx) => {
+                  const shifts = m.soCaHoanThanh != null ? m.soCaHoanThanh : (m.soCa || 0);
+                  return `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 5px 8px; border-radius: 9px; background: #faf5ff; border: 1px solid #e9d5ff;">
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 9px; font-weight: 900; color: #7e22ce;">#${idx + 1}</span>
+                        <span style="font-size: 11px; font-weight: 800; color: #1e1b4b;">${escapeHtml(m.hoTen)}</span>
+                        <span style="font-size: 9px; color: #64748b; font-family: monospace;">(${m.id})</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 9px; font-weight: 800; color: #047857; background: #ecfdf5; padding: 1px 6px; border-radius: 6px;">${shifts} ca hoàn thành</span>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `)}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    async function applySmartRotationCandidates() {
+      if (!currentSmartRotationTaskId) return;
+      const task = currentTasks.find(t => t.id === currentSmartRotationTaskId);
+      if (!task) return;
+
+      if (pendingSmartRotationCandidates.length === 0) {
+        showAquaIsland('Không có ứng viên nào cần bổ sung!', 'ℹ️');
+        closeSmartRotationModal();
+        return;
+      }
+
+      task.assignedMembers = task.assignedMembers || [];
+      let addedCount = 0;
+
+      pendingSmartRotationCandidates.forEach(item => {
+        const mId = item.member.id;
+        if (!task.assignedMembers.includes(mId) && !(task.joinedMembers || []).includes(mId)) {
+          task.assignedMembers.push(mId);
+          const m = membersDirectory.find(x => x.id === mId);
+          if (m) m.soCa = (m.soCa || 0) + 1;
+          addedCount++;
+        }
+      });
+
+      saveLocalState();
+      renderTasksList();
+      closeSmartRotationModal();
+      showAquaIsland(`Đã điều phối xoay tua thành công +${addedCount} thành viên!`, '🎯');
+
+      syncTaskToBackend(task);
+    }
+
+    // ==================== ĐỒNG BỘ ĐỊNH KỲ BACKGROUND VÀ VISIBILITY ====================
+    setInterval(() => {
+      if (currentUser && navigator.onLine) {
+        syncRealtimeData();
+      }
+    }, 25000);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && currentUser && navigator.onLine) {
+        syncRealtimeData();
+      }
+    });
 
   </script>

@@ -1521,6 +1521,14 @@ function handleRequest(e) {
       var adminActorId = params.adminActorId || '';
       responseData = handleUpdateMemberRole(ss, memberId, isAdmin, isShiftLeader, adminActorId);
     }
+    // 12. ĐIỀU CHỈNH SỐ CA TRỰC THỦ CÔNG CHO ADMIN (adjustMemberShifts)
+    else if (action === 'adjustMemberShifts') {
+      var memberId = params.memberId;
+      var delta = Number(params.delta) || 0;
+      var reason = params.reason || '';
+      var adminActorId = params.adminActorId || '';
+      responseData = handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId);
+    }
 
   } catch(error) {
     responseData = { success: false, message: 'Lỗi máy chủ: ' + error.toString() };
@@ -1846,7 +1854,7 @@ function handleClaimTask(ss, taskId, memberId, waitlist) {
 }
 
 /**
- * Xử lý rút ca trực
+ * Xử lý rút ca trực (Tự động hoàn tác/trừ ca nếu đã được điểm danh trước đó)
  */
 function handleWithdrawTask(ss, taskId, memberId, reason) {
   var sheet = ss.getSheetByName('Tasks');
@@ -1856,21 +1864,33 @@ function handleWithdrawTask(ss, taskId, memberId, reason) {
   var idCol = headers.indexOf('id');
   var joinedCol = headers.indexOf('joinedMembers');
   var waitlistCol = headers.indexOf('waitlist');
+  var checkCol = headers.indexOf('checkedInMembers');
 
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][idCol]) === String(taskId)) {
       var joined = parseJsonSafe(rows[i][joinedCol], []);
       var wait = parseJsonSafe(rows[i][waitlistCol], []);
+      var checked = checkCol !== -1 ? parseJsonSafe(rows[i][checkCol], []) : [];
 
       var jIdx = joined.indexOf(memberId);
       var wIdx = wait.indexOf(memberId);
+      var cIdx = checked.indexOf(memberId);
 
-      if (jIdx === -1 && wIdx === -1) {
+      if (jIdx === -1 && wIdx === -1 && cIdx === -1) {
         return { success: false, message: 'Bạn chưa tham gia ca trực này' };
       }
 
       if (jIdx !== -1) joined.splice(jIdx, 1);
       if (wIdx !== -1) wait.splice(wIdx, 1);
+
+      // Nếu đã được điểm danh trước đó, tự động hoàn tác/trừ lại 1 ca đã tích lũy
+      if (cIdx !== -1) {
+        checked.splice(cIdx, 1);
+        if (checkCol !== -1) {
+          sheet.getRange(i + 1, checkCol + 1).setValue(JSON.stringify(checked));
+        }
+        decrementMemberCompletedShifts(ss, memberId);
+      }
 
       // Nếu có người trong hàng chờ, đôn lên vị trí chính thức
       if (wait.length > 0 && joined.length < (Number(rows[i][headers.indexOf('quota')]) || 6)) {
@@ -1892,11 +1912,11 @@ function handleWithdrawTask(ss, taskId, memberId, reason) {
           '',
           '',
           new Date().toISOString(),
-          'Đã rút ca: ' + reason
+          'Đã rút ca' + (cIdx !== -1 ? ' (Sau điểm danh - Đã trừ 1 ca): ' : ': ') + reason
         ]);
       }
 
-      return { success: true, message: 'Đã rút ca trực thành công' };
+      return { success: true, message: 'Đã rút ca trực thành công' + (cIdx !== -1 ? ' (Đã hoàn tác 1 ca hoàn thành)' : '') };
     }
   }
   return { success: false, message: 'Không tìm thấy ca trực: ' + taskId };
@@ -1942,7 +1962,7 @@ function handleCheckinMember(ss, taskId, memberId, adminId) {
 }
 
 /**
- * Tăng số ca trực hoàn thành trong sheet tương ứng (Cột 1 là Mã ID)
+ * Tăng số ca trực hoàn thành trong sheet tương ứng (Cột 1 là Mã ID, Cột 9 là Số Ca)
  */
 function incrementMemberCompletedShifts(ss, memberId) {
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
@@ -1951,45 +1971,135 @@ function incrementMemberCompletedShifts(ss, memberId) {
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
       if (String(rows[i][0]).trim() === memberId) {
-        // Nếu có cột 9 (Số Ca Đã Làm) thì tăng lên 1, nếu chưa có thì có thể ghi vào cột 9
         var cur = (rows[i].length >= 9 && !isNaN(Number(rows[i][8]))) ? Number(rows[i][8]) : 0;
         sheet.getRange(i + 1, 9).setValue(cur + 1);
         if (rows[0].length < 9) {
           sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
         }
-        return;
+        return cur + 1;
       }
     }
+  }
+  return 0;
+}
+
+/**
+ * Trừ số ca trực hoàn thành khi rút ca sau điểm danh hoặc khi Admin điều chỉnh
+ */
+function decrementMemberCompletedShifts(ss, memberId) {
+  for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
+    var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
+    if (!sheet) continue;
+    var rows = sheet.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      if (String(rows[i][0]).trim() === memberId) {
+        var cur = (rows[i].length >= 9 && !isNaN(Number(rows[i][8]))) ? Number(rows[i][8]) : 0;
+        var nextVal = Math.max(0, cur - 1);
+        sheet.getRange(i + 1, 9).setValue(nextVal);
+        if (rows[0].length < 9) {
+          sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+        }
+        return nextVal;
+      }
+    }
+  }
+  return 0;
+}
+
+/**
+ * Admin điều chỉnh số ca trực thủ công (+1 / -1 / tuỳ biến) cho thành viên
+ */
+function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId) {
+  if (!memberId) return { success: false, message: 'Thiếu mã thành viên' };
+  var found = false;
+  var newCount = 0;
+  for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
+    var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
+    if (!sheet) continue;
+    var rows = sheet.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      if (String(rows[i][0]).trim() === memberId) {
+        var cur = (rows[i].length >= 9 && !isNaN(Number(rows[i][8]))) ? Number(rows[i][8]) : 0;
+        newCount = Math.max(0, cur + delta);
+        sheet.getRange(i + 1, 9).setValue(newCount);
+        if (rows[0].length < 9) {
+          sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+        }
+        found = true;
+        break;
+      }
+    }
+    if (found) break;
+  }
+
+  // Ghi nhật ký vào Swaps sheet
+  var swapsSheet = ss.getSheetByName('Swaps');
+  if (swapsSheet) {
+    swapsSheet.appendRow([
+      'ADJUST_' + Date.now(),
+      'SHIFT_ADJUST',
+      'Admin điều chỉnh: ' + (delta >= 0 ? '+' + delta : delta) + ' ca',
+      memberId,
+      adminActorId || 'Admin',
+      String(newCount),
+      new Date().toISOString(),
+      reason || 'Điều chỉnh số ca cống hiến'
+    ]);
+  }
+
+  if (found) {
+    return { success: true, message: 'Đã điều chỉnh thành công! Số ca mới: ' + newCount, memberId: memberId, newShifts: newCount };
+  } else {
+    return { success: false, message: 'Không tìm thấy thành viên: ' + memberId };
   }
 }
 
 /**
- * Xử lý tạo ca trực mới
+ * Xử lý tạo mới hoặc cập nhật ca trực (Lưu vào Google Sheet Tasks)
  */
 function handleCreateTask(ss, taskObj) {
   var sheet = ss.getSheetByName('Tasks');
   if (!sheet) return { success: false, message: 'Chưa có sheet Tasks' };
 
   var id = taskObj.id || ('TASK_' + Date.now());
-  sheet.appendRow([
+  var rows = sheet.getDataRange().getValues();
+  var headers = rows[0];
+  var idCol = headers.indexOf('id');
+  if (idCol === -1) idCol = 0;
+
+  var rowIndex = -1;
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][idCol]).trim() === String(id).trim()) {
+      rowIndex = i + 1;
+      break;
+    }
+  }
+
+  var rowData = [
     id,
     taskObj.title || 'Ca trực mới',
     taskObj.location || 'Sân trường',
     taskObj.time || '',
     Number(taskObj.quota) || 6,
-    JSON.stringify(taskObj.joinedMembers || []),
-    JSON.stringify(taskObj.assignedMembers || []),
-    JSON.stringify(taskObj.waitlist || []),
+    typeof taskObj.joinedMembers === 'string' ? taskObj.joinedMembers : JSON.stringify(taskObj.joinedMembers || []),
+    typeof taskObj.assignedMembers === 'string' ? taskObj.assignedMembers : JSON.stringify(taskObj.assignedMembers || []),
+    typeof taskObj.waitlist === 'string' ? taskObj.waitlist : JSON.stringify(taskObj.waitlist || []),
     taskObj.leaderId || '',
-    JSON.stringify(taskObj.checkedInMembers || []),
-    JSON.stringify(taskObj.checkinLogs || []),
+    typeof taskObj.checkedInMembers === 'string' ? taskObj.checkedInMembers : JSON.stringify(taskObj.checkedInMembers || []),
+    typeof taskObj.checkinLogs === 'string' ? taskObj.checkinLogs : JSON.stringify(taskObj.checkinLogs || []),
     taskObj.lockDeadline || '',
-    taskObj.status || 'Mở Đăng Ký',
-    JSON.stringify(taskObj.departmentQuotas || {}),
+    taskObj.status || 'active',
+    typeof taskObj.departmentQuotas === 'string' ? taskObj.departmentQuotas : JSON.stringify(taskObj.departmentQuotas || {}),
     taskObj.notes || ''
-  ]);
+  ];
 
-  return { success: true, message: 'Tạo ca trực mới thành công!', taskId: id };
+  if (rowIndex !== -1) {
+    sheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
+    return { success: true, message: 'Cập nhật lệnh điều động thành công!', taskId: id };
+  } else {
+    sheet.appendRow(rowData);
+    return { success: true, message: 'Ban hành lệnh điều động mới thành công!', taskId: id };
+  }
 }
 
 /**

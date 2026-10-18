@@ -138,7 +138,7 @@ self.addEventListener('notificationclick', (event) => {
 // ==================== BACKGROUND SYNC & PERIODIC SYNC KHI TẮT APP ====================
 async function checkNewTasksBackground() {
   try {
-    const res = await fetch('https://script.google.com/macros/s/AKfycbxAD9-2mrhinr9P7_bJc7pNaH49Sxi3PL9zjDNAkcajHWS5MbE03CRwwTjGUDmFASkf/exec?action=syncAll');
+    const res = await fetch('https://script.google.com/macros/s/AKfycbzOzxjkLP684tGXQn7HFptjiYyMoyEFMkTackb8K56f1gJvqMlvV5mFc0JBTm9gbO7U/exec?action=syncAll');
     const data = await res.json();
     if (data && data.success && Array.isArray(data.tasks) && data.tasks.length > 0) {
       const latest = data.tasks[0];
