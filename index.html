@@ -441,19 +441,30 @@
     }
     .avatar-cam-badge {
       position: absolute;
-      bottom: -3px;
-      right: -3px;
-      width: 30px;
-      height: 30px;
+      bottom: 0px;
+      right: 0px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: #eef2ff;
-      color: #4338ca;
-      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.18);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #4f46e5;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.22), 0 1px 2px rgba(0, 0, 0, 0.05);
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid #ffffff;
+      border: 1.5px solid #ffffff;
       z-index: 2;
+      opacity: 0.92;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .avatar-cam-badge:hover, .avatar-cam-badge:active {
+      opacity: 1;
+      transform: scale(1.08);
+      color: #3730a3;
+      background: #ffffff;
     }
 
     /* Thanh Dock Nổi Pastel Capsule */
@@ -892,11 +903,7 @@
         <svg class="svg-icon" style="width: 17px; height: 17px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </button>
 
-      <!-- Chỉ Báo Đồng Bộ Ngoại Tuyến -->
-      <button onclick="syncOfflineMutations(true)" id="btnOfflineSync" class="spring-touch icon-square-btn" title="Đồng bộ an toàn ngoại tuyến" aria-label="Đồng bộ ngoại tuyến" style="position: relative; color: #0284c7; background: #f0f9ff; border-color: #bae6fd;">
-        <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
-        <span id="offlineSyncBadge" class="hidden" style="position: absolute; top: -3px; right: -3px; background: #be123c; color: #fff; font-size: 8px; font-weight: 900; width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid #fff;">0</span>
-      </button>
+
 
       <!-- Danh bạ & ICE -->
       <button onclick="openDirectoryModal()" class="spring-touch icon-square-btn" title="Danh bạ &amp; ICE" aria-label="Mở danh bạ và cấp cứu CLB" style="color: #0f766e; background: #f0fdfa; border-color: #99f6e4;">
@@ -983,7 +990,7 @@
                 <span id="memAvatarInitial">A</span>
               </div>
               <button onclick="openAvatarModal()" class="spring-touch avatar-cam-badge" title="Đổi ảnh đại diện" aria-label="Đổi ảnh đại diện">
-                <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               </button>
             </div>
 
@@ -1909,13 +1916,7 @@
         <span>Xuất Trình QR Nhận Ca Hiện Trường</span>
       </button>
 
-      <div style="width: 100%; padding: 9px 11px; font-size: 11.5px; font-weight: 700; color: #0f766e; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; background: #f0fdfa; border-radius: 12px; margin-top: 4px;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span>Thông báo khi tắt app</span>
-        </div>
-        <span style="font-size: 9.5px; font-weight: 800; background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; padding: 2px 7px; border-radius: 8px;">Mặc định bật</span>
-      </div>
+
 
       <button onclick="openQrScannerModal()" id="btnMenuQrScanner" class="spring-touch hidden" style="width: 100%; padding: 11px; border: none; background: transparent; font-size: 12.5px; font-weight: 700; color: #0f766e; display: flex; align-items: center; gap: 9px; border-top: 1px solid #f1f5f9;">
         <div style="width: 28px; height: 28px; border-radius: 9px; background: #f0fdfa; border: 1px solid #99f6e4; display: flex; align-items: center; justify-content: center;">
@@ -1995,15 +1996,12 @@
           <input type="text" id="iptEditProfileMed" placeholder="Ví dụ: Bình thường, Tiền sử hen suyễn, Nhóm máu O..." class="input-box">
         </div>
 
-        <div style="padding: 10px; border-radius: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 10.5px; color: #166534; line-height: 1.5;">
-          💡 <b>Đồng bộ dữ liệu:</b> Khi bạn bấm lưu, thông tin mới sẽ lập tức cập nhật vào thẻ số cá nhân và đồng bộ với Google Sheet của Ban bạn đang tham gia.
-        </div>
       </div>
 
       <div style="display: flex; gap: 7px; margin-top: 12px;">
         <button onclick="saveMemberProfileEdit()" id="btnSaveProfileEdit" class="spring-touch glow-indigo" style="flex: 1.5; padding: 11px; border-radius: 14px; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
           <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          <span>Lưu &amp; Đồng Bộ Google Sheet</span>
+          <span>Lưu thay đổi</span>
         </button>
         <button onclick="closeEditProfileModal()" class="spring-touch" style="flex: 1; padding: 11px; border-radius: 14px; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; font-weight: 800; font-size: 12px;">Hủy</button>
       </div>
@@ -2656,6 +2654,8 @@
       if (typeof handleScanQrPayload === 'function') window.handleScanQrPayload = handleScanQrPayload;
       if (typeof syncRealtimeData === 'function') window.syncRealtimeData = syncRealtimeData;
       if (typeof restartAdaptivePolling === 'function') window.restartAdaptivePolling = restartAdaptivePolling;
+      if (typeof deduplicateTasks === 'function') window.deduplicateTasks = deduplicateTasks;
+      if (typeof triggerInstantSync === 'function') window.triggerInstantSync = triggerInstantSync;
     }
 
     function saveLocalState() {
@@ -2664,7 +2664,7 @@
         const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
         const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
         if (Array.isArray(currentTasks)) {
-          currentTasks = currentTasks.filter(t => t && !deletedTasks.includes(t.id));
+          currentTasks = (typeof deduplicateTasks === 'function') ? deduplicateTasks(currentTasks) : currentTasks.filter(t => t && !deletedTasks.includes(t.id));
         }
         if (Array.isArray(currentPosts)) {
           currentPosts = currentPosts.filter(p => p && !deletedPosts.includes(p.id));
@@ -2955,6 +2955,105 @@
         }
       } catch(e) {}
     }
+
+    // ==================== CƠ CHẾ DEDUPLICATION & INSTANT AUTO-SYNC ====================
+    function deduplicateTasks(tasks) {
+      if (!Array.isArray(tasks)) return [];
+      const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
+      const taskMap = new Map();
+      const semanticMap = new Map();
+
+      for (const t of tasks) {
+        if (!t) continue;
+        const tid = String(t.id || '').trim();
+        if (tid && deletedTasks.includes(tid)) continue;
+
+        const normTitle = String(t.title || '').trim().toLowerCase();
+        const normTime = String(t.time || '').trim().toLowerCase();
+        const normLoc = String(t.location || '').trim().toLowerCase();
+        const semKey = `${normTitle}|${normTime}|${normLoc}`;
+
+        let existing = null;
+        if (tid && taskMap.has(tid)) {
+          existing = taskMap.get(tid);
+        } else if (normTitle && semanticMap.has(semKey)) {
+          existing = semanticMap.get(semKey);
+        }
+
+        if (existing) {
+          // Hợp nhất quân số nhận ca, chờ duyệt, điểm danh không trùng lặp
+          const joined = Array.from(new Set([...(existing.joinedMembers || []), ...(t.joinedMembers || [])]));
+          const assigned = Array.from(new Set([...(existing.assignedMembers || []), ...(t.assignedMembers || [])]));
+          const waitlist = Array.from(new Set([...(existing.waitlist || []), ...(t.waitlist || [])]));
+          const checkedIn = Array.from(new Set([...(existing.checkedInMembers || []), ...(t.checkedInMembers || [])]));
+
+          // Deduplicate checkinLogs
+          const logs = [...(existing.checkinLogs || []), ...(t.checkinLogs || [])];
+          const logSeen = new Set();
+          const cleanLogs = [];
+          for (const lg of logs) {
+            if (!lg) continue;
+            const lgKey = `${lg.memberId || ''}_${lg.timestamp || lg.time || ''}`;
+            if (!logSeen.has(lgKey)) {
+              logSeen.add(lgKey);
+              cleanLogs.push(lg);
+            }
+          }
+
+          existing.joinedMembers = joined;
+          existing.assignedMembers = assigned;
+          existing.waitlist = waitlist;
+          existing.checkedInMembers = checkedIn;
+          existing.checkinLogs = cleanLogs;
+
+          if (t.quota && (!existing.quota || t.quota > existing.quota)) existing.quota = t.quota;
+          if (t.notes && !existing.notes) existing.notes = t.notes;
+          if (t.lockDeadline && !existing.lockDeadline) existing.lockDeadline = t.lockDeadline;
+          if (t.departmentQuotas && Object.keys(t.departmentQuotas).length > 0) {
+            existing.departmentQuotas = Object.assign({}, existing.departmentQuotas || {}, t.departmentQuotas);
+          }
+          if (t.createdAt && (!existing.createdAt || t.createdAt < existing.createdAt)) existing.createdAt = t.createdAt;
+
+          // Nếu một bên có ID định danh cố định (ví dụ TASK_01, TASK_02) và bên kia là ID tạm thời, bảo tồn ID cố định
+          if (/^TASK_\d{6,}$/.test(existing.id) && !/^TASK_\d{6,}$/.test(tid) && tid.startsWith('TASK_')) {
+            taskMap.delete(existing.id);
+            existing.id = tid;
+            taskMap.set(existing.id, existing);
+          }
+        } else {
+          const item = Object.assign({}, t);
+          if (!item.id) item.id = 'TASK_' + Date.now().toString().slice(-6);
+          if (!Array.isArray(item.joinedMembers)) item.joinedMembers = [];
+          if (!Array.isArray(item.assignedMembers)) item.assignedMembers = [];
+          if (!Array.isArray(item.waitlist)) item.waitlist = [];
+          if (!Array.isArray(item.checkedInMembers)) item.checkedInMembers = [];
+          if (!Array.isArray(item.checkinLogs)) item.checkinLogs = [];
+          if (!item.departmentQuotas || typeof item.departmentQuotas !== 'object') item.departmentQuotas = {};
+
+          taskMap.set(item.id, item);
+          if (normTitle) {
+            semanticMap.set(semKey, item);
+          }
+        }
+      }
+
+      return Array.from(taskMap.values());
+    }
+
+    let instantSyncTimer = null;
+    function triggerInstantSync(delay = 80) {
+      if (instantSyncTimer) clearTimeout(instantSyncTimer);
+      instantSyncTimer = setTimeout(() => {
+        if (currentUser && navigator.onLine) {
+          if (typeof window.syncRealtimeData === 'function') {
+            window.syncRealtimeData();
+          } else if (typeof syncRealtimeData === 'function') {
+            syncRealtimeData();
+          }
+        }
+      }, delay);
+    }
+    window.triggerInstantSync = triggerInstantSync;
 
     function getDeletedPostIds() {
       try {
@@ -3292,7 +3391,8 @@
             const parsed = JSON.parse(dataCache);
             const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
             const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
-            currentTasks = (parsed.currentTasks && parsed.currentTasks.length) ? parsed.currentTasks.filter(t => t && !deletedTasks.includes(t.id)) : (typeof DEFAULT_TASKS !== 'undefined' ? DEFAULT_TASKS.map(t => JSON.parse(JSON.stringify(t))) : []);
+            const rawTasks = (parsed.currentTasks && parsed.currentTasks.length) ? parsed.currentTasks : (typeof DEFAULT_TASKS !== 'undefined' ? DEFAULT_TASKS : []);
+            currentTasks = (typeof deduplicateTasks === 'function') ? deduplicateTasks(rawTasks) : rawTasks.filter(t => t && !deletedTasks.includes(t.id));
             currentPosts = (parsed.currentPosts || []).filter(p => p && !deletedPosts.includes(p.id));
             currentSwaps = parsed.currentSwaps || [];
             currentLeaves = parsed.currentLeaves || [];
@@ -3301,7 +3401,10 @@
           } else {
             membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY.slice() : []);
             if (!currentTasks || currentTasks.length === 0) {
-              currentTasks = (typeof DEFAULT_TASKS !== 'undefined' ? DEFAULT_TASKS.map(t => JSON.parse(JSON.stringify(t))) : []);
+              const seedTasks = typeof DEFAULT_TASKS !== 'undefined' ? DEFAULT_TASKS : [];
+              currentTasks = (typeof deduplicateTasks === 'function') ? deduplicateTasks(seedTasks) : seedTasks.map(t => JSON.parse(JSON.stringify(t)));
+            } else if (typeof deduplicateTasks === 'function') {
+              currentTasks = deduplicateTasks(currentTasks);
             }
           }
           applyCustomAdminRoles(membersDirectory);
@@ -3426,9 +3529,13 @@
         const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
         const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
         if (!currentTasks || currentTasks.length === 0) {
-          currentTasks = (typeof DEFAULT_TASKS !== 'undefined' ? DEFAULT_TASKS.map(t => JSON.parse(JSON.stringify(t))) : []);
+          const seedTasks = typeof DEFAULT_TASKS !== 'undefined' ? DEFAULT_TASKS : [];
+          currentTasks = (typeof deduplicateTasks === 'function') ? deduplicateTasks(seedTasks) : seedTasks.map(t => JSON.parse(JSON.stringify(t)));
+        } else if (typeof deduplicateTasks === 'function') {
+          currentTasks = deduplicateTasks(currentTasks);
+        } else {
+          currentTasks = (currentTasks || []).filter(t => t && !deletedTasks.includes(t.id));
         }
-        currentTasks = (currentTasks || []).filter(t => t && !deletedTasks.includes(t.id));
         currentPosts = (currentPosts || []).filter(p => p && !deletedPosts.includes(p.id));
         saveLocalState();
         showMainAppView();
@@ -3488,6 +3595,10 @@
 
       // Khi chuyển sang tab Nhiệm vụ (Tab 1), lập tức đồng bộ thời gian thực không chờ đợi
       if (normalized === 1 && currentUser && navigator.onLine) {
+        syncRealtimeData();
+      }
+      // Đồng bộ tức thời trên mọi chuyển tab
+      if (currentUser && navigator.onLine) {
         syncRealtimeData();
       }
       if (typeof restartAdaptivePolling === 'function') {
@@ -3726,9 +3837,13 @@
       renderTasksList();
     }
 
-        function renderTasksList() {
+    function renderTasksList() {
       const container = document.getElementById('tasksListContainer');
       if (!container) return;
+
+      if (typeof deduplicateTasks === 'function') {
+        currentTasks = deduplicateTasks(currentTasks);
+      }
 
       const filteredTasks = (currentTasks || []).filter(t => {
         if (currentTaskDeptFilter === 'ALL') return true;
@@ -4095,6 +4210,7 @@
         renderProfileData();
         renderTasksList();
         showAquaIsland('Nhận ca trực thành công!', '🎉');
+        if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
       });
     }
 
@@ -4118,6 +4234,7 @@
       saveLocalState();
       renderTasksList();
       showAquaIsland(`Đã gia nhập Waitlist ở vị trí #${task.waitlist.length}!`, '⏳');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     // Rời khỏi Hàng đợi dự khuyết
@@ -4132,6 +4249,7 @@
           saveLocalState();
           renderTasksList();
           showAquaIsland('Đã rời khỏi danh sách chờ!', '🗑️');
+          if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
         }
       );
     }
@@ -4287,6 +4405,7 @@
       closeLeaveTaskModal();
       triggerHaptic('success');
       showAquaIsland('Đã gửi đơn xin rút ca tới Ban Quản Trị!', '📨');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     // Hủy đơn xin rút ca đang chờ duyệt
@@ -4307,6 +4426,7 @@
             renderTasksList();
             triggerHaptic('light');
             showAquaIsland('Đã hủy đơn xin rút ca thành công!', '🗑️');
+            if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
           }
         }
       );
@@ -4330,6 +4450,7 @@
             renderTasksList();
             triggerHaptic('light');
             showAquaIsland('Đã hủy yêu cầu xin đổi ca!', '🗑️');
+            if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
           }
         }
       );
@@ -4366,6 +4487,7 @@
             fetch(`${BACKEND_URL}?action=deleteTask&taskId=${encodeURIComponent(taskId)}&actorId=${encodeURIComponent(currentUser?.id || '')}`)
               .catch(() => console.log('Đã ghi nhận xóa lệnh offline'));
           } catch(e) {}
+          if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
         }
       );
     }
@@ -4423,6 +4545,7 @@
       renderTasksList();
       closeSwapRequestModal();
       showAquaIsland('Đã gửi yêu cầu đổi ca tới Ban Quản Trị!', '📨');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     // Cập nhật tổng số đơn chờ duyệt (Đổi ca + Rút ca)
@@ -4675,6 +4798,7 @@
       renderAdminSwapsList();
       triggerHaptic(isApproved ? 'success' : 'medium');
       showAquaIsland(isApproved ? 'Đã phê duyệt đổi ca thành công!' : 'Đã từ chối yêu cầu đổi ca!', '⚖️');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     // SPRINT 1: Xử lý phê duyệt đơn xin rút ca (TUYỆT ĐỐI KHÔNG TRỪ NHẦM soCaHoanThanh LỊCH SỬ)
@@ -4692,6 +4816,7 @@
         renderAdminLeavesList();
         triggerHaptic('medium');
         showAquaIsland('Đã bác bỏ đơn xin rút ca!', 'ℹ️');
+        if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
         return;
       }
 
@@ -4767,8 +4892,8 @@
       renderAdminLeavesList();
       triggerHaptic('success');
       showAquaIsland('Đã phê duyệt đơn xin rút ca!', '⚖️');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
-
 
     function renderForumFeed() {
       const container = document.getElementById('postsListContainer');
@@ -5012,6 +5137,7 @@
 
       saveLocalState();
       renderForumFeed();
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(150);
     }
 
     function prepareReplyComment(postId, commentId, targetName) {
@@ -5182,6 +5308,7 @@
             fetch(`${BACKEND_URL}?action=deletePost&postId=${encodeURIComponent(postId)}&actorId=${encodeURIComponent(currentUser?.id || '')}`)
               .catch(() => console.log('Đã ghi nhận xóa bài đăng offline'));
           } catch(e) {}
+          if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
         }
       );
     }
@@ -5224,6 +5351,7 @@
       saveLocalState();
       renderForumFeed();
       showAquaIsland('Đăng bài thành công lên Bảng tin!', '🎉');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     async function handlePostMediaSelect(event) {
@@ -5644,6 +5772,7 @@
       applyStatusBadgeStyle();
       closeTheTrangModal();
       showAquaIsland(`Đã cập nhật thể trạng: ${formatShortTheTrang(theTrangValue)}`, '💪');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
 
       // Tự động kiểm tra và đề xuất rút ca nếu thể trạng sang ốm / chấn thương / miễn trừ
       const isSickOrInjured = getTheTrangTheme(theTrangValue).exempt || 
@@ -5732,6 +5861,7 @@
         closeAvatarModal();
         triggerHaptic('success');
         showAquaIsland('Cập nhật ảnh đại diện thành công!', '📷');
+        if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
       } catch (err) {
         showAquaIsland('Không thể xử lý ảnh đại diện!', '⚠️');
       }
@@ -5872,6 +6002,7 @@
       });
 
       const notes = (document.getElementById('iptTaskNotes')?.value || '').trim();
+
       if (editingTaskId) {
         const existingTask = currentTasks.find(t => t.id === editingTaskId);
         if (existingTask) {
@@ -5884,10 +6015,37 @@
           existingTask.notes = notes;
           syncTaskToBackend(existingTask);
         }
+        if (typeof deduplicateTasks === 'function') currentTasks = deduplicateTasks(currentTasks);
         saveLocalState();
         renderTasksList();
         closeCreateTaskModal();
         showAquaIsland('Đã cập nhật lệnh điều động thành công!', '✨');
+        if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
+        return;
+      }
+
+      // Kiểm tra trùng lặp ngữ cảnh (title + time + location) trước khi tạo mới
+      const normNewTitle = title.trim().toLowerCase();
+      const normNewTime = (time || 'Linh hoạt').trim().toLowerCase();
+      const normNewLoc = location.trim().toLowerCase();
+      const existingSemantic = currentTasks.find(t => 
+        String(t.title || '').trim().toLowerCase() === normNewTitle &&
+        String(t.time || '').trim().toLowerCase() === normNewTime &&
+        String(t.location || '').trim().toLowerCase() === normNewLoc
+      );
+
+      if (existingSemantic) {
+        existingSemantic.quota = totalQuota;
+        existingSemantic.lockDeadline = deadline;
+        existingSemantic.departmentQuotas = deptQuotas;
+        existingSemantic.notes = notes;
+        syncTaskToBackend(existingSemantic);
+        if (typeof deduplicateTasks === 'function') currentTasks = deduplicateTasks(currentTasks);
+        saveLocalState();
+        renderTasksList();
+        closeCreateTaskModal();
+        showAquaIsland('Lệnh điều động tương đương đã tồn tại và đã được cập nhật chỉ tiêu!', '✨');
+        if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
         return;
       }
 
@@ -5908,11 +6066,13 @@
       };
 
       currentTasks.unshift(newTask);
+      if (typeof deduplicateTasks === 'function') currentTasks = deduplicateTasks(currentTasks);
       syncTaskToBackend(newTask);
       saveLocalState();
       renderTasksList();
       closeCreateTaskModal();
       showAquaIsland('Đã ban hành lệnh điều động mới!', '🎯');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     function openHeaderMoreActionSheet() {
@@ -6631,6 +6791,7 @@
       renderProfileData();
       renderTasksList();
       showAquaIsland(`Điểm danh thành công: ${member.hoTen} (+1 ca cống hiến)!`, '🎯');
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
       return true;
     }
 
@@ -6751,9 +6912,18 @@
             membersDirectory = data.membersList;
             applyCustomAdminRoles(membersDirectory);
           }
+          if (offlineMutationQueue.length > 0 && navigator.onLine) {
+            syncOfflineMutations(false);
+          }
+
           if (data.tasks) {
-            const backendTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id));
+            const rawBackendTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id));
+            const backendTasks = (typeof deduplicateTasks === 'function') ? deduplicateTasks(rawBackendTasks) : rawBackendTasks;
             const backendTaskMap = new Map(backendTasks.map(t => [t.id, t]));
+            const backendSemanticMap = new Map(backendTasks.map(t => [
+              `${String(t.title || '').trim().toLowerCase()}|${String(t.time || '').trim().toLowerCase()}|${String(t.location || '').trim().toLowerCase()}`,
+              t
+            ]));
 
             // Hợp nhất an toàn: bảo toàn ca trực vừa tạo offline trong 30s. Nếu không có trên server và đã quá 30s -> coi như server đã xóa, tuyệt đối không hồi sinh!
             const mergedTasks = [...backendTasks];
@@ -6762,6 +6932,8 @@
                 if (!localTask || !localTask.id) continue;
                 if (deletedTasks.includes(localTask.id)) continue;
                 if (backendTaskMap.has(localTask.id)) continue;
+                const semKey = `${String(localTask.title || '').trim().toLowerCase()}|${String(localTask.time || '').trim().toLowerCase()}|${String(localTask.location || '').trim().toLowerCase()}`;
+                if (backendSemanticMap.has(semKey)) continue;
 
                 const isRecentLocal = localTask.localCreatedAt && (Date.now() - localTask.localCreatedAt < 30000);
                 if (isRecentLocal) {
@@ -6815,7 +6987,7 @@
                 );
               }
             }
-            currentTasks = mergedTasks;
+            currentTasks = (typeof deduplicateTasks === 'function') ? deduplicateTasks(mergedTasks) : mergedTasks;
           }
           if (data.swaps) currentSwaps = data.swaps;
           if (data.posts) {
@@ -6861,6 +7033,7 @@
         isSyncingRealtime = false;
       }
     }
+    window.syncRealtimeData = syncRealtimeData;
 
     function triggerTaskNotification(title, body) {
       if (!('Notification' in window) || Notification.permission !== 'granted') return;
@@ -6956,6 +7129,7 @@
         if (btn) btn.disabled = false;
         showAquaIsland('Đã lưu hồ sơ trên thiết bị (Sẽ đồng bộ khi có mạng)!', 'ℹ️');
       }
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     // ==================== THÔNG BÁO PWA WEB PUSH ====================
@@ -7266,6 +7440,7 @@
       showAquaIsland(`Đã điều phối xoay tua thành công +${addedCount} thành viên!`, '🎯');
 
       syncTaskToBackend(task);
+      if (typeof triggerInstantSync === 'function') triggerInstantSync(50);
     }
 
     // ==================== ĐỒNG BỘ ĐỊNH KỲ BACKGROUND VÀ VISIBILITY ====================
@@ -7276,11 +7451,13 @@
       // Khi đang ở tab Nhiệm vụ (Tab 1), chu kỳ rút ngắn xuống 10s để lệnh điều động cập nhật tức thì.
       // Khi ở các tab khác, duy trì chu kỳ 22s để tối ưu tài nguyên mạng và pin.
       const intervalMs = (typeof currentActiveTabIdx !== 'undefined' && currentActiveTabIdx === 1) ? 10000 : 22000;
+      // Chu kỳ siêu tốc 6s - 8s tức thời không chờ đợi:
+      const fastIntervalMs = (typeof currentActiveTabIdx !== 'undefined' && currentActiveTabIdx === 1) ? 6000 : 8000;
       syncPollingTimer = setInterval(() => {
         if (currentUser && navigator.onLine && document.visibilityState === 'visible') {
           syncRealtimeData();
         }
-      }, intervalMs);
+      }, fastIntervalMs);
     }
 
     restartAdaptivePolling();
@@ -7289,6 +7466,15 @@
       if (document.visibilityState === 'visible' && currentUser && navigator.onLine) {
         syncRealtimeData();
         restartAdaptivePolling();
+      }
+    });
+
+    window.addEventListener('online', () => {
+      if (typeof syncOfflineMutations === 'function') {
+        syncOfflineMutations(false);
+      }
+      if (typeof triggerInstantSync === 'function') {
+        triggerInstantSync(50);
       }
     });
 

@@ -1779,8 +1779,18 @@ function getTasksList(ss) {
   if (rows.length <= 1) return [];
   var headers = rows[0];
   var tasks = [];
+  var seenIds = {};
+  var seenSemantics = {};
   for (var i = 1; i < rows.length; i++) {
     var t = rowToObject(headers, rows[i]);
+    if (!t) continue;
+    var tid = String(t.id || '').trim();
+    var semKey = (String(t.title || '').trim().toLowerCase()) + '|' + (String(t.time || '').trim().toLowerCase()) + '|' + (String(t.location || '').trim().toLowerCase());
+    if (tid && seenIds[tid]) continue;
+    if (semKey && seenSemantics[semKey]) continue;
+    if (tid) seenIds[tid] = true;
+    if (semKey) seenSemantics[semKey] = true;
+
     t.quota = Number(t.quota) || 6;
     t.joinedMembers = parseJsonSafe(t.joinedMembers, []);
     t.assignedMembers = parseJsonSafe(t.assignedMembers, []);
@@ -2107,12 +2117,29 @@ function handleCreateTask(ss, taskObj) {
   var headers = rows[0];
   var idCol = headers.indexOf('id');
   if (idCol === -1) idCol = 0;
+  var titleCol = headers.indexOf('title');
+  var timeCol = headers.indexOf('time');
+  var locCol = headers.indexOf('location');
+  var targetTitle = String(taskObj.title || '').trim().toLowerCase();
+  var targetTime = String(taskObj.time || '').trim().toLowerCase();
+  var targetLoc = String(taskObj.location || '').trim().toLowerCase();
 
   var rowIndex = -1;
   for (var i = 1; i < rows.length; i++) {
-    if (String(rows[i][idCol]).trim() === String(id).trim()) {
+    var rowId = String(rows[i][idCol]).trim();
+    if (rowId === String(id).trim()) {
       rowIndex = i + 1;
       break;
+    }
+    if (targetTitle && titleCol !== -1) {
+      var rTitle = String(rows[i][titleCol]).trim().toLowerCase();
+      var rTime = timeCol !== -1 ? String(rows[i][timeCol]).trim().toLowerCase() : '';
+      var rLoc = locCol !== -1 ? String(rows[i][locCol]).trim().toLowerCase() : '';
+      if (rTitle === targetTitle && rTime === targetTime && rLoc === targetLoc) {
+        rowIndex = i + 1;
+        id = rowId; // Bảo toàn ID chuẩn đã tồn tại
+        break;
+      }
     }
   }
 
