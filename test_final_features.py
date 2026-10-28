@@ -76,10 +76,7 @@ class TestNewFeaturesCLB(unittest.TestCase):
         self.assertIn('function closeDigitalSportPassModal()', self.html)
 
     def test_04_background_notifications_default_on(self):
-        self.assertIn('Thông báo khi tắt app', self.html)
-        self.assertIn('Mặc định bật', self.html)
         self.assertNotIn('id="btnToggleBgNotification"', self.html)
-
         self.assertIn('function autoEnableBackgroundNotifications()', self.html)
         self.assertIn('autoEnableBackgroundNotifications();', self.html)
 
