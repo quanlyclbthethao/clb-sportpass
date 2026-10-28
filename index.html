@@ -2733,6 +2733,33 @@
       queueMicrotask(syncBodyScrollLock);
     }
 
+    // ==================== UNIFIED MODAL & DOM UTILITIES (PONYTAIL SPEC) ====================
+    function openGenericModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return null;
+      m.classList.add('open');
+      syncBodyScrollLock();
+      return m;
+    }
+
+    function closeGenericModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return null;
+      m.classList.remove('open');
+      syncBodyScrollLock();
+      return m;
+    }
+
+    function safeSetText(id, text) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (el) el.innerText = (text != null ? text : '');
+    }
+
+    function safeSetValue(id, val) {
+      const el = typeof id === 'string' ? document.getElementById(id) : id;
+      if (el) el.value = (val != null ? val : '');
+    }
+
     function openConfirmDialog(title, msg, confirmLabelOrFn, maybeFn) {
       const is3Args = typeof confirmLabelOrFn === 'function';
       const confirmLabel = is3Args ? 'Xác Nhận' : (confirmLabelOrFn || 'Xác Nhận');
@@ -2872,8 +2899,7 @@
         document.querySelectorAll('.reaction-bar-dock.active').forEach(d => d.classList.remove('active'));
       }
       if (e.target.classList.contains('modal-overlay') && e.target.classList.contains('open')) {
-        e.target.classList.remove('open');
-        setBodyScrollLock(false);
+        closeGenericModal(e.target.id);
       }
     });
 
@@ -3138,8 +3164,7 @@
     }
 
     function closeAdminRoleManagementModal() {
-      document.getElementById('modalAdminRoleManagement')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalAdminRoleManagement');
     }
 
     function setRoleDeptFilter(dept) {
@@ -3666,11 +3691,6 @@
 
     function renderProfileData() {
       if (!currentUser) return;
-
-      const safeSetText = (id, text) => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = text;
-      };
 
       safeSetText('memName', currentUser.hoTen || 'Thành viên');
       safeSetText('memRole', currentUser.chucVu || 'Thành viên CLB');
@@ -4316,8 +4336,7 @@
     }
 
     function closeLeaveTaskModal() {
-      document.getElementById('modalLeaveTaskRequest')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalLeaveTaskRequest');
     }
 
     // Chọn & nén ảnh minh chứng rút ca qua Canvas
@@ -4504,8 +4523,7 @@
     }
 
     function closeSwapRequestModal() {
-      document.getElementById('modalSwapRequest')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalSwapRequest');
     }
 
     function submitSwapRequestAction() {
@@ -4588,8 +4606,7 @@
     }
 
     function closeAdminDispatchModal() {
-      document.getElementById('modalAdminDispatchHub')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalAdminDispatchHub');
     }
 
     function openAdminSwapsModal() {
@@ -5254,8 +5271,7 @@
 
     function closeEditPostModal() {
       editingPostId = null;
-      document.getElementById('modalEditPost')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalEditPost');
     }
 
     function submitEditPostAction() {
@@ -5409,8 +5425,7 @@
     }
 
     function closeChangePasswordModal() {
-      document.getElementById('modalChangePassword')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalChangePassword');
     }
 
     function submitChangePassword() {
@@ -5446,8 +5461,7 @@
     }
 
     function closeDirectoryModal() {
-      document.getElementById('modalDirectory')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalDirectory');
     }
 
     function setDirectoryDeptFilter(dept) {
@@ -5560,11 +5574,6 @@
 
       document.getElementById('modalDirectory')?.classList.remove('open');
 
-      const safeSetText = (id, text) => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = text;
-      };
-
       const doneShifts = m.soCaHoanThanh != null ? m.soCaHoanThanh : (m.soCa || 0);
       safeSetText('otherMemName', m.hoTen || '---');
       safeSetText('otherMemRole', m.chucVu || 'Thành viên');
@@ -5669,8 +5678,7 @@
     }
 
     function closeAdjustShiftsModal() {
-      document.getElementById('modalAdjustShifts')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalAdjustShifts');
     }
 
     function changeAdjustDelta(d) {
@@ -5727,8 +5735,7 @@
     }
 
     function closeOtherMemberModal() {
-      document.getElementById('modalOtherMember')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalOtherMember');
     }
 
     function callTargetMemberPhone() {
@@ -5750,8 +5757,7 @@
     }
 
     function closeTheTrangModal() {
-      document.getElementById('modalTheTrang')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalTheTrang');
     }
 
     function selectTheTrang(theTrangValue) {
@@ -5830,8 +5836,7 @@
     }
 
     function closeAvatarModal() {
-      document.getElementById('modalAvatar')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalAvatar');
     }
 
     async function handleAvatarFileSelect(event) {
@@ -5934,8 +5939,7 @@
 
     function closeCreateTaskModal() {
       editingTaskId = null;
-      document.getElementById('modalCreateTask')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalCreateTask');
     }
 
     function addDepartmentQuotaRow(name = '', quota = 2) {
@@ -6074,8 +6078,7 @@
     }
 
     function closeHeaderMoreActionSheetDirect() {
-      document.getElementById('modalHeaderMore')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalHeaderMore');
     }
 
     let activeLightboxMediaList = [];
@@ -6115,8 +6118,7 @@
 
     function closeLightboxModal() {
       activeLightboxMediaList = [];
-      document.getElementById('modalLightbox')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalLightbox');
     }
 
     // ==================== THẺ NHẬN CA & ĐIỂM DANH HIỆN TRƯỜNG (DYNAMIC QR PASS) ====================
@@ -6284,8 +6286,7 @@
 
     function closeFieldCheckinQrModal() {
       if (fieldQrCountdownInterval) clearInterval(fieldQrCountdownInterval);
-      document.getElementById('modalFieldCheckinQr')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalFieldCheckinQr');
     }
 
     // Tương thích ngược: Khi mở profile hoặc làm mới pass
@@ -6367,8 +6368,7 @@
 
     async function closeQrScannerModal() {
       stopQrCameraStream();
-      document.getElementById('modalQrScanner')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalQrScanner');
     }
 
     function handleQrFileSelected(event) {
@@ -6840,8 +6840,7 @@
     }
 
     function closeEmergencyIceModal() {
-      document.getElementById('modalEmergencyICE')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalEmergencyICE');
     }
 
     function executeIceDirectCall() {
@@ -7073,8 +7072,7 @@
     }
 
     function closeEditProfileModal() {
-      document.getElementById('modalEditProfile')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalEditProfile');
     }
 
     async function saveMemberProfileEdit() {
@@ -7244,8 +7242,7 @@
     }
 
     function closeDigitalSportPassModal() {
-      document.getElementById('modalDigitalSportPassCard')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalDigitalSportPassCard');
     }
 
     // ==================== XOAY TUA ĐIỀU PHỐI THÔNG MINH THEO BAN (SMART ROTATION) ====================
@@ -7263,8 +7260,7 @@
     }
 
     function closeSmartRotationModal() {
-      document.getElementById('modalSmartRotation')?.classList.remove('open');
-      setBodyScrollLock(false);
+      closeGenericModal('modalSmartRotation');
     }
 
     function calculateSmartRotation(task) {
