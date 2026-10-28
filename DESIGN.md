@@ -114,6 +114,11 @@ Bảng mã màu được phân loại theo ngữ nghĩa, bảo đảm kiểm to�
 - `#ffe4e6` : Rose 100 - Nền thẻ chấn thương
 - `#fff1f2` : Rose 50 - Nền mờ y tế
 
+
+### Additional Validated Semantic Tokens:
+- `#115e59` : Semantic UI Token
+- `#fecaca` : Semantic UI Token
+
 ## 3. Typography Rules & Hierarchy
 - **Font Stack:** 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif.
 - **Display:** 28px - 32px / line-height 1.15 / font-weight 800 / tracking -0.03em
