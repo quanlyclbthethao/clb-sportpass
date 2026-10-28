@@ -128,28 +128,41 @@ Bảng mã màu được phân loại theo ngữ nghĩa, bảo đảm kiểm to�
 - **Body:** 13.5px - 14px / line-height 1.55 / font-weight 450
 - **Caption:** 11.5px - 12px / line-height 1.4 / font-weight 600 / tracking +0.01em
 
-## 4. Component Stylings & Complete States
+## 4. Component Stylings & Complete States (ColorOS 17 Aquamorphic Kinetics)
 - **Mọi nút bấm:** 100% trang bị class `.focus-ring` (outline 2px solid #4f46e5 có khoảng cách 2px).
-- **Trạng thái Active:** `.spring-touch:active` co nhẹ `scale(0.97)` phản hồi tự nhiên.
-- **Micro Avatar Camera Badge:** 18px x 18px đặt tại góc `bottom: -1px; right: -1px;` viền trắng 1.5px, không che mặt avatar.
+- **Trạng thái Active (Tactile Response):** `.spring-touch:active` co nén đàn hồi `scale(0.962)` phản hồi xúc giác theo đường cong `--coloros-spring: cubic-bezier(0.25, 1, 0.4, 1)`.
+- **Fluid Cloud (Dynamic Capsule):** Viên nang thông báo Lưu Vân mở rộng với `--coloros-bounce: cubic-bezier(0.34, 1.42, 0.64, 1)` và nhịp thở quang học `colorosPulse`.
+- **Parallel Floating Dock:** Thanh điều hướng đáy hiệu ứng kính mờ `backdrop-filter: blur(24px) saturate(180%)`, con trượt chất lỏng lướt êm ái giữa các tab với `cubic-bezier(0.25, 1, 0.4, 1)`.
+- **Micro Avatar Camera Badge:** 22px x 22px đặt tại góc `bottom: 0px; right: 0px;` viền trắng 2px, chứa biểu tượng máy ảnh chuẩn 11px x 11px không che avatar.
 
-## 5. Layout Principles & Spacing Grid
+## 5. Calibrated Optical Vector System (Hệ Thống Vector Cân Chỉnh)
+- **Chuẩn quang học:** Đường nét vector `stroke-width: 1.85` kèm `vector-effect: non-scaling-stroke;` và `display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;`.
+- **Phân cấp quang học 6 bậc (Không dùng kích thước lẻ):**
+  - **Tier 1 - Micro (Badge/Chip/Dismiss):** 11px (Avatar camera) / 12px (Micro tags & dismiss)
+  - **Tier 2 - Small (Inline Metadata/Detail/Time):** 14px
+  - **Tier 3 - Regular (Buttons/Form Inputs/Actions):** 16px
+  - **Tier 4 - Medium (Navigation Dock/Header Tools):** 18px
+  - **Tier 5 - Featured (Section Headers/Admin Badges):** 20px / 22px
+  - **Tier 6 - Hero (Login Branding/Empty State):** 28px / 32px
+
+## 6. Layout Principles & Spacing Grid
 - Lưới 8pt đồng bộ (4px, 8px, 12px, 16px, 20px, 24px, 32px).
-- Max-width 480px căn giữa chuẩn mobile PWA.
+- Max-width 440px căn giữa chuẩn mobile PWA.
 
-## 6. Depth & Elevation Systems
-- Đổ bóng vật lý 2 tầng (Physical Diffuse Shadows): `0 1px 3px rgba(10,37,64,0.04), 0 4px 12px rgba(10,37,64,0.02)`.
-- Không dùng bóng đen gắt.
+## 7. Depth & Elevation Systems
+- Đổ bóng vật lý 2 tầng (Physical Diffuse Shadows): `0 1px 3px rgba(15,23,42,0.04), 0 4px 14px rgba(15,23,42,0.02)`.
+- Không dùng bóng đen gắt hoặc màu dạ quang chói.
 
-## 7. Do's and Don'ts (Lằn Ranh Đỏ Chống AI-Slop)
+## 8. Do's and Don'ts (Lằn Ranh Đỏ Chống AI-Slop)
 - ❌ KHÔNG dùng màu đen thuần #000000.
 - ❌ KHÔNG dùng gradient tím hồng sáo rỗng.
+- ❌ KHÔNG dùng kích thước pixel lẻ cho vector icon (10.5px, 13.5px, v.v.).
 - ❌ KHÔNG để nút bấm thiếu tiêu điểm bàn phím focus-visible.
 - ❌ KHÔNG hiển thị các badge / nút bấm thừa thãi cho các tính năng chạy ngầm tự động.
 
-## 8. Responsive & Accessibility
+## 9. Responsive & Accessibility
 - Vùng chạm tối thiểu 44x44px.
-- Khóa cuộn ngang, chuyển tab 60fps mượt mà không khựng.
+- Khóa cuộn ngang, chuyển tab 120fps mượt mà không khựng nhờ ColorOS Parallel Animation.
 
-## 9. Code Implementation Guide
+## 10. Code Implementation Guide
 - Đồng bộ hoàn hảo giữa mã nguồn HTML và danh mục token trên.
