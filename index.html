@@ -903,6 +903,11 @@
         <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </button>
 
+      <!-- Trợ Giúp & Hướng Dẫn Tính Năng (Nguyên tắc phản hồi & đơn giản) -->
+      <button onclick="openHelpCenterModal()" id="btnHelpCenter" class="focus-ring spring-touch icon-square-btn" title="Hướng dẫn &amp; Giải đáp tính năng" aria-label="Xem hướng dẫn sử dụng" style="color: #0284c7; background: #f0f9ff; border-color: #bae6fd;">
+        <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </button>
+
       <!-- Tùy Chọn Tài Khoản -->
       <button onclick="openHeaderMoreActionSheet()" class="focus-ring spring-touch icon-square-btn" title="Tùy chọn tài khoản" aria-label="Mở tùy chọn tài khoản" style="color: #4338ca; background: #eef2ff; border-color: #c7d2fe;">
         <svg class="svg-icon" style="width: 18px; height: 18px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
@@ -7263,6 +7268,23 @@
       closeGenericModal('modalSmartRotation');
     }
 
+    // ==================== TRUNG TÂM TRỢ GIÚP & HƯỚNG DẪN 6 NGUYÊN TẮC UI/UX ====================
+    function openHelpCenterModal(topic = 'all') {
+      triggerHaptic('light');
+      openGenericModal('modalHelpCenter');
+      if (topic && topic !== 'all') {
+        const targetEl = document.getElementById(`helpTopic_${topic}`);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+
+    function closeHelpCenterModal() {
+      closeGenericModal('modalHelpCenter');
+    }
+
+
     function calculateSmartRotation(task) {
       const container = document.getElementById('smartRotationResultsContainer');
       if (!container) return;
@@ -7467,4 +7489,73 @@
       }
     });
 
-  </script>
+  </script>  <!-- Modal Trung Tâm Hướng Dẫn & Giải Đáp Tính Năng (Tuân thủ 6 Nguyên tắc UI/UX Quốc tế) -->
+  <div id="modalHelpCenter" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="helpCenterTitle">
+    <div class="modal-sheet" style="max-width: 440px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 32px; height: 32px; border-radius: 10px; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center;">
+            <svg class="svg-icon" style="width: 18px; height: 18px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <h2 id="helpCenterTitle" style="font-size: 15px; font-weight: 700; color: #0f172a;">Hướng Dẫn &amp; Trợ Giúp</h2>
+            <p style="font-size: 11px; color: #64748b;">Giải đáp và hướng dẫn sử dụng nhanh hệ thống</p>
+          </div>
+        </div>
+        <button onclick="closeHelpCenterModal()" class="focus-ring spring-touch modal-close-btn" title="Đóng hướng dẫn" aria-label="Đóng hướng dẫn">
+          <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Help Topics -->
+      <div style="display: flex; flex-direction: column; gap: 10px; max-height: calc(80vh - 120px); overflow-y: auto; padding-right: 2px;">
+        <div id="helpTopic_tasks" class="acrylic-card" style="margin-bottom: 0; padding: 12px; border-color: #c7d2fe; background: #f8fafc;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 22px; height: 22px; border-radius: 6px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">1</div>
+            <h3 style="font-size: 13px; font-weight: 700; color: #1e1b4b;">Đăng Ký &amp; Nhận Ca Trực Ban</h3>
+          </div>
+          <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">
+            Mỗi lệnh điều động có chỉ tiêu quân số riêng cho từng Ban. Bạn chỉ có thể nhận ca thuộc Ban của mình hoặc ca chung. Hệ thống sẽ tự động phát hiện và cảnh báo nếu có 2 ca trùng giờ nhau.
+          </p>
+        </div>
+
+        <div id="helpTopic_qr" class="acrylic-card" style="margin-bottom: 0; padding: 12px; border-color: #a7f3d0; background: #f8fafc;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 22px; height: 22px; border-radius: 6px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">2</div>
+            <h3 style="font-size: 13px; font-weight: 700; color: #064e3b;">Điểm Danh QR Thông Minh 60 Giây</h3>
+          </div>
+          <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">
+            Khi đến hiện trường, mở Thẻ Căn Cước Số để hiển thị mã QR động (mã thay đổi mỗi 60 giây chống chụp ảnh gửi hộ). Trưởng ca sử dụng nút quét QR trên thanh tiêu đề để xác thực điểm danh.
+          </p>
+        </div>
+
+        <div id="helpTopic_swaps" class="acrylic-card" style="margin-bottom: 0; padding: 12px; border-color: #fed7aa; background: #f8fafc;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 22px; height: 22px; border-radius: 6px; background: #fff7ed; color: #ea580c; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">3</div>
+            <h3 style="font-size: 13px; font-weight: 700; color: #78350f;">Đổi Ca &amp; Xin Rút Ca Trực</h3>
+          </div>
+          <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">
+            Nếu có việc bận đột xuất, bạn có thể gửi yêu cầu Đổi ca cho thành viên khác hoặc Xin rút ca (kèm minh chứng lý do). Trưởng ban và Quản trị viên sẽ xem xét duyệt tại trung tâm điều phối.
+          </p>
+        </div>
+
+        <div id="helpTopic_thetrang" class="acrylic-card" style="margin-bottom: 0; padding: 12px; border-color: #c7d2fe; background: #f8fafc;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="width: 22px; height: 22px; border-radius: 6px; background: #eef2ff; color: #4338ca; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">4</div>
+            <h3 style="font-size: 13px; font-weight: 700; color: #1e1b4b;">Hệ Thống 4 Cấp Độ Thể Trạng</h3>
+          </div>
+          <p style="font-size: 11.5px; color: #475569; line-height: 1.5;">
+            Gồm 4 trạng thái: Khỏe mạnh (100% Sẵn sàng), Đang phục hồi thể lực, Mệt mỏi nhẹ, và Chấn thương/Không sẵn sàng. Giúp Trưởng ban phân công nhiệm vụ phù hợp với sức khỏe của từng hội viên.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; text-align: center;">
+        <button onclick="closeHelpCenterModal()" class="focus-ring spring-touch glow-indigo" style="width: 100%; height: 42px; border-radius: 12px; font-size: 13px; font-weight: 600; border: none; cursor: pointer;">
+          Đã Hiểu &amp; Tiếp Tục
+        </button>
+      </div>
+    </div>
+  </div>
+
+
