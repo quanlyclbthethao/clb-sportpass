@@ -294,6 +294,7 @@
     .icon-square-btn {
       width: 36px;
       height: 36px;
+      position: relative;
       border-radius: 10px;
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -303,6 +304,14 @@
       justify-content: center;
       color: #334155;
       transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .icon-square-btn::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      bottom: -4px;
+      left: -4px;
+      right: -4px;
     }
     .icon-square-btn:hover {
       background: #f8fafc;
@@ -583,6 +592,7 @@
     .reaction-emoji-btn {
       width: 32px;
       height: 32px;
+      position: relative;
       flex-shrink: 0;
       border-radius: 50%;
       border: 1px solid transparent;
@@ -593,6 +603,14 @@
       transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease;
       padding: 0;
       user-select: none;
+    }
+    .reaction-emoji-btn::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      bottom: -6px;
+      left: -6px;
+      right: -6px;
     }
     .reaction-emoji-btn:hover {
       transform: scale(1.15);
@@ -651,6 +669,7 @@
     .modal-close-btn {
       width: 28px;
       height: 28px;
+      position: relative;
       border-radius: 8px;
       border: 1px solid #e2e8f0;
       background: #f8fafc;
@@ -661,6 +680,14 @@
       cursor: pointer;
       flex-shrink: 0;
       transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .modal-close-btn::after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      bottom: -8px;
+      left: -8px;
+      right: -8px;
     }
     .modal-close-btn:hover {
       background: #f1f5f9;

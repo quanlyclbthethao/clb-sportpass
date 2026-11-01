@@ -160,9 +160,15 @@ Bảng mã màu được phân loại theo ngữ nghĩa, bảo đảm kiểm to�
 - ❌ KHÔNG để nút bấm thiếu tiêu điểm bàn phím focus-visible.
 - ❌ KHÔNG hiển thị các badge / nút bấm thừa thãi cho các tính năng chạy ngầm tự động.
 
-## 9. Responsive & Accessibility
-- Vùng chạm tối thiểu 44x44px.
-- Khóa cuộn ngang, chuyển tab 120fps mượt mà không khựng nhờ ColorOS Parallel Animation.
+## 9. Responsive & Accessibility (Telos Academy 8 Mobile Principles, iOS HIG & Android Material)
+- **1.1 Dễ dàng thao tác (Make it Easy):** Luồng nghiệp vụ tinh gọn, phân đoạn rõ ràng cho từng tác vụ (nhận ca, quét QR, đổi ca).
+- **1.2 Tính nhất quán (Consistency):** Đồng bộ 100% token mã màu, typography, thẻ card bo góc 16px và vector 6 bậc.
+- **1.3 Phản hồi rõ ràng (Feedback):** Tích hợp haptic cơ học `triggerHaptic()`, viên nang thông báo Dynamic Capsule Lưu Vân (`showAquaIsland()`) và hoạt ảnh chuyển tab 120fps.
+- **1.4 Lấy người dùng làm trọng tâm (User-centricity):** Phân chia trải nghiệm rõ ràng cho Hội viên, Trưởng ban và Quản trị viên.
+- **1.5 Sự tinh gọn (Simplicity):** Triệt tiêu 100% chi tiết rác (Zero Clutter, Zero AI-slop), giữ lại thông tin hữu ích nhất.
+- **1.6 Điều hướng trực quan (Intuitive Navigation):** Thanh điều hướng đáy (Floating Bottom Dock) cố định, định vị tab tức thời.
+- **1.7 Tối ưu chạm cảm ứng (Touch Targets):** Vùng chạm tối thiểu 44x44px (iOS HIG) & 48x48dp (Android Material) nhờ cơ chế mở rộng Ghost Touch Target (`::after` hit area).
+- **1.8 Khả năng tiếp cận (Accessibility):** Độ tương phản cao chuẩn WCAG AAA trên nền Slate, trang bị đầy đủ `.focus-ring:focus-visible` cho bàn phím.
 
 ## 10. Code Implementation Guide
 - Đồng bộ hoàn hảo giữa mã nguồn HTML và danh mục token trên.
