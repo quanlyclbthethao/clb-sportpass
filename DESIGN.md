@@ -178,3 +178,14 @@ Bảng mã màu được phân loại theo ngữ nghĩa, bảo đảm kiểm to�
 - `#1d4ed8` : Varsity Royal Blue Token
 - `#1e3a8a` : Varsity Royal Blue Token
 - `#93c5fd` : Varsity Royal Blue Token
+
+### F. Bổ sung Token Apple HIG:
+- `#0056b3` : Apple HIG Design Token
+- `#0062cc` : Apple HIG Design Token
+- `#007aff` : Apple HIG Design Token
+- `#1c1c1e` : Apple HIG Design Token
+- `#636366` : Apple HIG Design Token
+- `#8e8e93` : Apple HIG Design Token
+- `#e5e5ea` : Apple HIG Design Token
+- `#f0f7ff` : Apple HIG Design Token
+- `#f2f2f7` : Apple HIG Design Token
