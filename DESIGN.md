@@ -173,3 +173,8 @@ Bảng mã màu được phân loại theo ngữ nghĩa, bảo đảm kiểm to�
 
 ## 10. Code Implementation Guide
 - Đồng bộ hoàn hảo giữa mã nguồn HTML và danh mục token trên.
+
+### E. Bổ sung Token Varsity Royal Blue:
+- `#1d4ed8` : Varsity Royal Blue Token
+- `#1e3a8a` : Varsity Royal Blue Token
+- `#93c5fd` : Varsity Royal Blue Token
