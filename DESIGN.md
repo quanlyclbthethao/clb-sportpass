@@ -2,8 +2,9 @@
 
 ## 1. Visual Theme & Atmosphere
 - **Triết lý:** Stripe Clean Precision kết hợp Athletic Modernism & Apple HIG Physics.
-- **Bầu không khí:** Trong trẻo (Clean Light Surface), chuẩn xác số đo (8pt grid), dứt khoát, thanh lịch và tạo sự tin tưởng tuyệt đối cho thẻ định danh số và quản trị trực ban thể thao.
-- **Nguyên tắc cốt lõi:** Loại bỏ 100% chi tiết thừa (zero clutter), loại bỏ màu đen thuần thô ráp (#000000) và các dải gradient tím hồng sáo rỗng (anti-slop).
+- **Phong cách chủ đạo:** Chuẩn Thể Thao Đại Học Chững Chạc (Collegiate Varsity Athletics & Ivy League Sports Portal).
+- **Bầu không khí:** Chững chạc, hiện đại, uy tín, chuẩn xác số đo (8pt grid), dứt khoát, thanh lịch và tạo sự tin tưởng tuyệt đối cho sinh viên và ban điều hành thể thao trường đại học.
+- **Nguyên tắc cốt lõi:** Loại bỏ 100% màu sắc pastel kẹo ngọt / trẻ con (anti-childish candy slop), loại bỏ màu đen thuần thô ráp (#000000) và các dải gradient tím hồng sáo rỗng. Sử dụng hệ màu Trắng Tinh Khiết - Slate Trung Tính kết hợp Xanh Navy Varsity quyền lực (#1e293b, #0f172a).
 
 ## 2. Color Palette & Semantic Roles (Toàn bộ 90 Token Mã Màu Chuẩn Hóa)
 Bảng mã màu được phân loại theo ngữ nghĩa, bảo đảm kiểm toán Zero Token Drift:
