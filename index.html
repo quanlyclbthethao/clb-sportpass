@@ -105,10 +105,10 @@
     /* ColorOS 17 Layered Elevated Cards */
     /* SportPass Flagship Card & Elevated Surfaces */
     .sportpass-hero-card {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 45%, #eef2ff 100%) !important;
-      border: 1.5px solid rgba(199, 210, 254, 0.85) !important;
-      box-shadow: 0 12px 32px -8px rgba(79, 70, 229, 0.12), 0 2px 6px rgba(15, 23, 42, 0.04) !important;
-      border-radius: 22px !important;
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+      border-radius: 20px !important;
       position: relative;
       overflow: hidden;
     }
@@ -131,56 +131,65 @@
 
     /* Refined Button Classes (Clean solid & semantic outlines - Zero neon candy) */
     .glow-green {
-      background: #f0fdf4 !important;
-      color: #166534 !important;
-      border: 1px solid #bbf7d0 !important;
+      background: #ffffff !important;
+      color: #1e293b !important;
+      border: 1px solid #cbd5e1 !important;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
     }
     .glow-green:hover {
-      background: #dcfce7 !important;
+      background: #f8fafc !important;
+      border-color: #94a3b8 !important;
     }
 
     .glow-red {
-      background: #fef2f2 !important;
-      color: #991b1b !important;
-      border: 1px solid #fecaca !important;
+      background: #ffffff !important;
+      color: #b91c1c !important;
+      border: 1px solid #fca5a5 !important;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
     }
     .glow-red:hover {
-      background: #fee2e2 !important;
+      background: #fef2f2 !important;
     }
 
     .glow-amber {
-      background: #fffbeb !important;
-      color: #92400e !important;
-      border: 1px solid #fde68a !important;
+      background: #ffffff !important;
+      color: #334155 !important;
+      border: 1px solid #cbd5e1 !important;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
     }
     .glow-amber:hover {
-      background: #fef3c7 !important;
+      background: #f8fafc !important;
+      border-color: #94a3b8 !important;
     }
 
     .glow-purple {
-      background: #eef2ff !important;
-      color: #3730a3 !important;
-      border: 1px solid #c7d2fe !important;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+      background: #1e293b !important;
+      color: #ffffff !important;
+      border: 1px solid #0f172a !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12) !important;
+    }
+    .glow-purple:hover {
+      background: #0f172a !important;
     }
 
     .glow-indigo {
-      background: #4f46e5 !important;
+      background: #1e293b !important;
       color: #ffffff !important;
-      border: 1px solid #4338ca !important;
-      box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2) !important;
+      border: 1px solid #0f172a !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12) !important;
     }
     .glow-indigo:hover {
-      background: #4338ca !important;
+      background: #0f172a !important;
     }
 
     .glow-teal {
-      background: #f0fdfa !important;
-      color: #115e59 !important;
-      border: 1px solid #99f6e4 !important;
+      background: #ffffff !important;
+      color: #1e293b !important;
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+    }
+    .glow-teal:hover {
+      background: #f8fafc !important;
     }
 
     /* Clean Badge Tokens */
@@ -476,9 +485,9 @@
       left: 4px;
       width: calc((100% - 8px) / 3);
       border-radius: 14px;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
       transition: transform 0.38s var(--coloros-spring), width 0.38s var(--coloros-spring);
       transform: translateX(calc(100% * var(--active-tab-idx)));
       z-index: 1;
@@ -502,12 +511,12 @@
       cursor: pointer;
     }
     .dock-item-btn.active {
-      color: #4f46e5 !important;
-      font-weight: 650;
+      color: #0f172a !important;
+      font-weight: 700;
     }
     .dock-item-btn.active .svg-icon {
-      transform: scale(1.1);
-      stroke: #4f46e5;
+      transform: scale(1.08);
+      stroke: #0f172a;
     }
     .dock-item-btn .svg-icon {
       transition: transform 0.3s var(--coloros-spring), stroke 0.25s ease;
@@ -928,24 +937,22 @@
 
     <div id="headerActionButtons" style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
       <!-- Quét QR Điểm Danh Hiện Trường (Chỉ hiển thị cho Admin & Trưởng ca) -->
-      <button onclick="openQrScannerModal()" id="btnQuickQrScanner" class="focus-ring spring-touch icon-square-btn hidden" title="Quét mã QR Điểm danh Hiện trường" aria-label="Quét mã QR Điểm danh" style="color: #4f46e5; background: #eef2ff; border-color: #c7d2fe;">
+      <button onclick="openQrScannerModal()" id="btnQuickQrScanner" class="focus-ring spring-touch icon-square-btn hidden" title="Quét mã QR Điểm danh Hiện trường" aria-label="Quét mã QR Điểm danh" style="color: #1e293b; background: #f8fafc; border-color: #e2e8f0;">
         <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </button>
 
-
-
       <!-- Danh bạ & ICE -->
-      <button onclick="openDirectoryModal()" class="focus-ring spring-touch icon-square-btn" title="Danh bạ &amp; ICE" aria-label="Mở danh bạ và cấp cứu CLB" style="color: #0f766e; background: #f0fdfa; border-color: #99f6e4;">
+      <button onclick="openDirectoryModal()" class="focus-ring spring-touch icon-square-btn" title="Danh bạ &amp; ICE" aria-label="Mở danh bạ và cấp cứu CLB" style="color: #1e293b; background: #f8fafc; border-color: #e2e8f0;">
         <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </button>
 
       <!-- Trợ Giúp & Hướng Dẫn Tính Năng (Nguyên tắc phản hồi & đơn giản) -->
-      <button onclick="openHelpCenterModal()" id="btnHelpCenter" class="focus-ring spring-touch icon-square-btn" title="Hướng dẫn &amp; Giải đáp tính năng" aria-label="Xem hướng dẫn sử dụng" style="color: #0284c7; background: #f0f9ff; border-color: #bae6fd;">
+      <button onclick="openHelpCenterModal()" id="btnHelpCenter" class="focus-ring spring-touch icon-square-btn" title="Hướng dẫn &amp; Giải đáp tính năng" aria-label="Xem hướng dẫn sử dụng" style="color: #1e293b; background: #f8fafc; border-color: #e2e8f0;">
         <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </button>
 
       <!-- Tùy Chọn Tài Khoản -->
-      <button onclick="openHeaderMoreActionSheet()" class="focus-ring spring-touch icon-square-btn" title="Tùy chọn tài khoản" aria-label="Mở tùy chọn tài khoản" style="color: #4338ca; background: #eef2ff; border-color: #c7d2fe;">
+      <button onclick="openHeaderMoreActionSheet()" class="focus-ring spring-touch icon-square-btn" title="Tùy chọn tài khoản" aria-label="Mở tùy chọn tài khoản" style="color: #1e293b; background: #f8fafc; border-color: #e2e8f0;">
         <svg class="svg-icon" style="width: 18px; height: 18px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
       </button>
     </div>
@@ -957,8 +964,8 @@
     <div id="viewLoginContainer" class="hidden">
       <section class="acrylic-card" style="text-align: center; padding: 24px 20px;">
         <!-- Biểu trưng Cổng Định Danh Thể Thao -->
-        <div style="width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #e0e7ff 0%, #eef2ff 100%); color: #4338ca; border: 1.5px solid #c7d2fe; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px auto; box-shadow: 0 10px 24px rgba(79, 70, 229, 0.12);">
-          <svg class="svg-icon" style="width: 30px; height: 30px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M13 8l-4 5h5l-1 4 4-5h-5l1-4z"/></svg>
+        <div style="width: 60px; height: 60px; border-radius: 18px; background: #1e293b; color: #ffffff; border: 1px solid #0f172a; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px auto; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);">
+          <svg class="svg-icon" style="width: 28px; height: 28px; stroke: #ffffff;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M13 8l-4 5h5l-1 4 4-5h-5l1-4z"/></svg>
         </div>
         <div style="margin-bottom: 4px;">
           <span style="font-size: 9.5px; font-weight: 700; color: #4338ca; letter-spacing: 0.6px; text-transform: uppercase;">CLB THỂ THAO &bull; ĐH HẢI DƯƠNG</span>
@@ -1003,18 +1010,18 @@
         </div>
 
         <!-- BẢNG HƯỚNG DẪN TRUY CẬP VÀ BẢO MẬT CHUẨN APPLE BULLETIN -->
-        <div style="margin-top: 18px; padding: 14px 15px; border-radius: 16px; background: #eef2ff; border: 1.2px solid #c7d2fe; box-shadow: 0 4px 16px rgba(79, 70, 229, 0.06); text-align: left;">
+        <div style="margin-top: 18px; padding: 14px 15px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0; text-align: left;">
           <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 9px;">
-            <div style="width: 22px; height: 22px; border-radius: 7px; background: #e0e7ff; color: #4338ca; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <div style="width: 22px; height: 22px; border-radius: 6px; background: #f1f5f9; color: #1e293b; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
               <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
             </div>
-            <span style="font-size: 11px; font-weight: 700; color: #312e81; text-transform: uppercase; letter-spacing: 0.3px;">Hướng Dẫn Đăng Nhập Minh Bạch</span>
+            <span style="font-size: 11px; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: 0.3px;">Hướng Dẫn Đăng Nhập Minh Bạch</span>
           </div>
 
           <ul style="margin: 0; padding-left: 16px; font-size: 11px; color: #475569; line-height: 1.6; display: flex; flex-direction: column; gap: 5px;">
-            <li><strong style="color: #1e1b4b;">Tài khoản:</strong> Nhập <strong>Mã ID cá nhân</strong> (Ví dụ: <code style="background: #ffffff; color: #4338ca; padding: 1px 6px; border-radius: 5px; font-weight: 600; font-family: monospace; border: 1px solid #c7d2fe;">NVA1508</code> - Nguyễn Văn An sinh 15/08) hoặc <strong>Số điện thoại</strong> đã đăng ký.</li>
-            <li><strong style="color: #1e1b4b;">Mật khẩu:</strong> Mặc định là <code style="background: #ecfdf5; color: #065f46; padding: 1px 6px; border-radius: 5px; font-weight: 600; font-family: monospace; border: 1px solid #a7f3d0;">123456</code> (hoặc 4 số ngày tháng sinh DDMM).</li>
-            <li><strong style="color: #1e1b4b;">Đổi mật khẩu:</strong> Có thể đổi mật khẩu bất kỳ lúc nào tại mục <em>"Tùy chọn tài khoản"</em> sau khi đăng nhập.</li>
+            <li><strong style="color: #0f172a;">Tài khoản:</strong> Nhập <strong>Mã ID cá nhân</strong> (Ví dụ: <code style="background: #ffffff; color: #0f172a; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-family: monospace; border: 1px solid #cbd5e1;">NVA1508</code> - Nguyễn Văn An sinh 15/08) hoặc <strong>Số điện thoại</strong> đã đăng ký.</li>
+            <li><strong style="color: #0f172a;">Mật khẩu:</strong> Mặc định là <code style="background: #ffffff; color: #047857; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-family: monospace; border: 1px solid #cbd5e1;">123456</code> (hoặc 4 số ngày tháng sinh DDMM).</li>
+            <li><strong style="color: #0f172a;">Đổi mật khẩu:</strong> Có thể đổi mật khẩu bất kỳ lúc nào tại mục <em>"Tùy chọn tài khoản"</em> sau khi đăng nhập.</li>
           </ul>
         </div>
       </section>
@@ -1032,19 +1039,19 @@
           <!-- Dòng thương hiệu đầu thẻ -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
             <div style="display: flex; align-items: center; gap: 7px;">
-              <div style="width: 24px; height: 24px; border-radius: 7px; background: #4f46e5; color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(79,70,229,0.3);">
-                <svg class="svg-icon" style="width: 13px; height: 13px; stroke: #fff;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <div style="width: 26px; height: 26px; border-radius: 8px; background: #1e293b; color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(15,23,42,0.15);">
+                <svg class="svg-icon" style="width: 14px; height: 14px; stroke: #fff;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
               <div>
-                <span style="font-size: 10px; font-weight: 700; color: #4338ca; letter-spacing: 0.5px; text-transform: uppercase;">CLB THỂ THAO &bull; ĐH HẢI DƯƠNG</span>
-                <p style="font-size: 8.5px; color: #64748b; font-weight: 600; margin: 0;">SPORTPASS UHD &bull; DIGITAL ID</p>
+                <span style="font-size: 10px; font-weight: 750; color: #0f172a; letter-spacing: 0.5px; text-transform: uppercase;">CLB THỂ THAO &bull; ĐH HẢI DƯƠNG</span>
+                <p style="font-size: 8.5px; color: #64748b; font-weight: 600; margin: 0; letter-spacing: 0.3px;">SPORTPASS UHD &bull; DIGITAL ID</p>
               </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 5px;">
-              <span id="badgeAdm" class="hidden" style="font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe;">Admin</span>
-              <span style="font-size: 8.5px; font-weight: 600; background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; padding: 2px 7px; border-radius: 999px; display: inline-flex; align-items: center; gap: 3px;">
-                <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+              <span id="badgeAdm" class="hidden" style="font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: #1e293b; color: #ffffff;">Admin</span>
+              <span style="font-size: 8.5px; font-weight: 600; background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; padding: 2px 7px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                <span style="width: 5px; height: 5px; border-radius: 50%; background: #059669; display: inline-block;"></span>
                 Hội Viên Số
               </span>
             </div>
@@ -1075,16 +1082,16 @@
           </div>
 
           <!-- Thanh hành động nhanh tích hợp ngay trên thẻ Apple Wallet style -->
-          <div style="display: flex; gap: 7px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(199,210,254,0.6);">
-            <button onclick="openFieldCheckinQrModal()" class="focus-ring spring-touch glow-indigo" style="flex: 1.3; padding: 9px 12px; border-radius: 13px; font-weight: 650; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(79,70,229,0.25);">
+          <div style="display: flex; gap: 7px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
+            <button onclick="openFieldCheckinQrModal()" class="focus-ring spring-touch glow-indigo" style="flex: 1.3; padding: 9px 12px; border-radius: 11px; font-weight: 650; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 6px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
               <span>Xuất Trình QR Nhận Ca</span>
             </button>
-            <button onclick="openDigitalSportPassModal()" class="focus-ring spring-touch" style="flex: 1; padding: 9px 10px; border-radius: 13px; font-size: 10.5px; font-weight: 600; background: #ffffff; color: #3730a3; border: 1px solid #c7d2fe; display: flex; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 1px 3px rgba(15,23,42,0.04);">
+            <button onclick="openDigitalSportPassModal()" class="focus-ring spring-touch" style="flex: 1; padding: 9px 10px; border-radius: 11px; font-size: 10.5px; font-weight: 600; background: #ffffff; color: #1e293b; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; gap: 5px; box-shadow: 0 1px 2px rgba(15,23,42,0.04);">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><line x1="15" y1="8" x2="17" y2="8"/><line x1="15" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
               <span>Xem Thẻ Hội Viên Số</span>
             </button>
-            <button id="btnProfileScanCheckin" onclick="openQrScannerModal()" class="focus-ring spring-touch hidden" style="flex: 1; padding: 9px 8px; border-radius: 13px; font-weight: 600; font-size: 10.5px; background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; display: flex; align-items: center; justify-content: center; gap: 4px;">
+            <button id="btnProfileScanCheckin" onclick="openQrScannerModal()" class="focus-ring spring-touch hidden" style="flex: 1; padding: 9px 8px; border-radius: 11px; font-weight: 600; font-size: 10.5px; background: #ffffff; color: #1e293b; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; gap: 4px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               <span>Quét Điểm Danh</span>
             </button>
@@ -1098,25 +1105,25 @@
             <span style="font-size: 9px; color: #4338ca; font-weight: 600;">Thời gian thực &bull; Tự đồng bộ</span>
           </div>
 
-          <!-- Lưới 3 thẻ chỉ số Pastel chống tràn chữ -->
-          <div class="metrics-grid" style="margin: 0; gap: 9px;">
-            <div class="metric-item" style="background: rgba(238, 242, 255, 0.92); border: 1px solid #c7d2fe; border-radius: 14px; padding: 10px 6px;">
-              <span class="metric-label" style="color: #4338ca; font-size: 10px;">
-                <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <!-- Lưới 3 thẻ chỉ số Varsity Collegiate chững chạc -->
+          <div class="metrics-grid" style="margin: 0; gap: 8px;">
+            <div class="metric-item" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 8px;">
+              <span class="metric-label" style="color: #64748b; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;">
+                <svg class="svg-icon" style="width: 11px; height: 11px; color: #475569;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 <span>Cống Hiến</span>
               </span>
-              <span id="memDuty" class="metric-val" style="color: #3730a3; font-size: 14px; font-weight: 750; margin-top: 3px;">0 ca</span>
+              <span id="memDuty" class="metric-val" style="color: #0f172a; font-size: 15px; font-weight: 800; margin-top: 3px;">0 ca</span>
             </div>
-            <div id="boxMemFit" class="metric-item spring-touch" onclick="openTheTrangModal()" style="background: rgba(240, 253, 244, 0.92); border: 1px solid #bbf7d0; border-radius: 14px; padding: 10px 6px; cursor: pointer;" title="Chạm để cập nhật thể trạng">
-              <span class="metric-label" style="color: #0f766e; font-size: 10px;">
-                <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <div id="boxMemFit" class="metric-item spring-touch" onclick="openTheTrangModal()" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 8px; cursor: pointer;" title="Chạm để cập nhật thể trạng">
+              <span class="metric-label" style="color: #64748b; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;">
+                <svg class="svg-icon" style="width: 11px; height: 11px; color: #475569;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                 <span>Thể Trạng</span>
               </span>
-              <span id="memFit" class="metric-val" style="color: #15803d; font-size: 13px; font-weight: 750; margin-top: 3px;">Khỏe mạnh</span>
+              <span id="memFit" class="metric-val" style="color: #047857; font-size: 13px; font-weight: 750; margin-top: 3px;">Khỏe mạnh</span>
             </div>
-            <div id="boxMemStat" class="metric-item" style="background: rgba(236, 253, 245, 0.92); border: 1px solid #a7f3d0; border-radius: 14px; padding: 10px 6px;">
-              <span class="metric-label" style="color: #065f46; font-size: 10px;">
-                <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <div id="boxMemStat" class="metric-item" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 8px;">
+              <span class="metric-label" style="color: #64748b; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;">
+                <svg class="svg-icon" style="width: 11px; height: 11px; color: #475569;" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 <span>Trạng Thái</span>
               </span>
               <span id="memStat" class="metric-val" style="color: #047857; font-size: 13px; font-weight: 750; margin-top: 3px;">Sẵn sàng</span>
@@ -1125,12 +1132,12 @@
 
           <!-- Nút liên hệ nhanh & Cấp cứu ICE -->
           <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <button onclick="callContactDirect()" class="focus-ring spring-touch glow-green" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 12px; border-radius: 13px; font-weight: 600; font-size: 11.5px; flex: 1;">
-              <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <button onclick="callContactDirect()" class="focus-ring spring-touch" style="background: #ffffff; border: 1px solid #cbd5e1; color: #1e293b; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 12px; border-radius: 11px; font-weight: 600; font-size: 11.5px; flex: 1; box-shadow: 0 1px 2px rgba(15,23,42,0.04);">
+              <svg class="svg-icon" style="width: 14px; height: 14px; color: #475569;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               <span>Gọi Thành Viên</span>
             </button>
-            <button onclick="openEmergencyIceModal()" class="focus-ring spring-touch glow-red" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 12px; border-radius: 13px; font-weight: 600; font-size: 11.5px; flex: 1;">
-              <svg class="svg-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <button onclick="openEmergencyIceModal()" class="focus-ring spring-touch" style="background: #ffffff; border: 1px solid #fca5a5; color: #b91c1c; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 12px; border-radius: 11px; font-weight: 600; font-size: 11.5px; flex: 1; box-shadow: 0 1px 2px rgba(15,23,42,0.04);">
+              <svg class="svg-icon" style="width: 14px; height: 14px; color: #dc2626;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
               <span>Cấp Cứu (ICE)</span>
             </button>
           </div>
@@ -1160,7 +1167,7 @@
           <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; padding: 2px 14px;">
             <div class="info-row" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
               <div style="display: flex; align-items: center; gap: 9px;">
-                <div style="width: 28px; height: 28px; border-radius: 8px; background: #eef2ff; color: #4338ca; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                   <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
                 <div>
@@ -1172,19 +1179,19 @@
 
             <div class="info-row" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
               <div style="display: flex; align-items: center; gap: 9px;">
-                <div style="width: 28px; height: 28px; border-radius: 8px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                   <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
                 </div>
                 <div>
                   <span class="info-label" style="display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.3px; color: #64748b; font-weight: 600;">Mã ID Thẻ Số</span>
-                  <span id="dMemberId" class="selectable-text info-value" style="font-family: monospace; font-weight: 700; color: #4338ca; font-size: 12.5px;">---</span>
+                  <span id="dMemberId" class="selectable-text info-value" style="font-family: monospace; font-weight: 700; color: #0f172a; font-size: 12.5px;">---</span>
                 </div>
               </div>
             </div>
 
             <div class="info-row" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
               <div style="display: flex; align-items: center; gap: 9px;">
-                <div style="width: 28px; height: 28px; border-radius: 8px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                   <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                 </div>
                 <div>
@@ -1196,7 +1203,7 @@
 
             <div class="info-row" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
               <div style="display: flex; align-items: center; gap: 9px;">
-                <div style="width: 28px; height: 28px; border-radius: 8px; background: #fff1f2; color: #e11d48; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                   <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                 </div>
                 <div>
@@ -1208,24 +1215,24 @@
 
             <div class="info-row" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
               <div style="display: flex; align-items: center; gap: 9px;">
-                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f0f9ff; color: #0284c7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                   <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
                 <div>
                   <span class="info-label" style="display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.3px; color: #64748b; font-weight: 600;">Chức Vụ</span>
-                  <span id="dRole" class="selectable-text info-value" style="color: #0284c7; font-weight: 700; font-size: 12.5px;">---</span>
+                  <span id="dRole" class="selectable-text info-value" style="color: #0f172a; font-weight: 700; font-size: 12.5px;">---</span>
                 </div>
               </div>
             </div>
 
             <div class="info-row" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
               <div style="display: flex; align-items: center; gap: 9px;">
-                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f0fdf4; color: #16a34a; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; color: #475569; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                   <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 </div>
                 <div>
                   <span class="info-label" style="display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.3px; color: #64748b; font-weight: 600;">Số Điện Thoại</span>
-                  <span id="dPhone" class="selectable-text info-value" style="color: #4338ca; font-weight: 700; font-size: 12.5px; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span>
+                  <span id="dPhone" class="selectable-text info-value" style="color: #0f172a; font-weight: 700; font-size: 12.5px; cursor: pointer;" onclick="makePhoneCall(this.innerText)">---</span>
                 </div>
               </div>
             </div>
@@ -1271,29 +1278,29 @@
 
       <!-- ==================== TAB 1: ĐIỀU ĐỘNG QUÂN SỐ ==================== -->
       <div id="tabContentTasks" class="hidden">
-        <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 13px 15px; margin-bottom: 10px; background: linear-gradient(135deg, rgba(250, 245, 255, 0.9) 0%, rgba(243, 232, 255, 0.85) 100%); border-color: #eef2ff;">
+        <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding: 13px 15px; margin-bottom: 10px; background: #ffffff; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);">
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 8px; min-width: 150px; flex: 1;">
-              <div style="width: 34px; height: 34px; border-radius: 12px; background: #ffffff; border: 1px solid #c7d2fe; color: #3730a3; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <div style="width: 34px; height: 34px; border-radius: 10px; background: #1e293b; color: #ffffff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                 <svg class="svg-icon" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
               </div>
               <div>
-                <span style="font-size: 11.5px; font-weight: 600; color: #1e1b4b; display: block;">Quản trị viên điều hành</span>
-                <p style="font-size: 9.5px; color: #3730a3;">Ban hành, sửa, xóa lệnh &amp; duyệt xoay ca</p>
+                <span style="font-size: 12px; font-weight: 700; color: #0f172a; display: block;">Quản trị viên điều hành</span>
+                <p style="font-size: 9.5px; color: #64748b; margin: 0;">Ban hành, sửa, xóa lệnh &amp; duyệt xoay ca</p>
               </div>
             </div>
             <div style="display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap;">
-              <button onclick="openAdminRoleManagementModal()" class="focus-ring spring-touch" title="Phân Quyền Admin & Trưởng Ca" style="border: 1px solid #818cf8; background: linear-gradient(135deg, #eef2ff 0%, #eef2ff 100%); color: #3730a3; padding: 6px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(168, 85, 247, 0.15);">
-                <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <button onclick="openAdminRoleManagementModal()" class="focus-ring spring-touch" title="Phân Quyền Admin & Trưởng Ca" style="border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; padding: 6px 10px; border-radius: 10px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 <span>Phân Quyền Admin</span>
               </button>
-              <button onclick="openAdminSwapsModal()" class="focus-ring spring-touch" style="border: 1px solid #c7d2fe; background: #ffffff; color: #3730a3; padding: 6px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              <button onclick="openAdminSwapsModal()" class="focus-ring spring-touch" style="border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; padding: 6px 10px; border-radius: 10px; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
                 <span>Duyệt Ca</span>
-                <span id="pendingSwapsBadge" class="hidden" style="background: #ffe4e6; color: #9f1239; border: 1px solid #fda4af; border-radius: 7px; padding: 0 5px; font-size: 8.5px; font-weight: 700;">0</span>
+                <span id="pendingSwapsBadge" class="hidden" style="background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 6px; padding: 0 5px; font-size: 8.5px; font-weight: 700;">0</span>
               </button>
-              <button onclick="openCreateTaskModal()" class="focus-ring spring-touch glow-purple" style="padding: 6px 11px; font-size: 10.5px; border-radius: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <button onclick="openCreateTaskModal()" class="focus-ring spring-touch glow-indigo" style="padding: 6px 11px; font-size: 10.5px; border-radius: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>Tạo Lệnh</span>
               </button>
             </div>
@@ -1302,14 +1309,14 @@
 
         <!-- Bộ lọc nhanh theo Ban -->
         <div id="taskFilterBar" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 6px;" class="no-scrollbar">
-          <button onclick="setTaskDeptFilter('ALL')" data-dept-filter="ALL" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #a5b4fc; background: #e0e7ff; color: #312e81;">Tất cả lệnh</button>
-          <button onclick="setTaskDeptFilter('Ban Chủ Nhiệm')" data-dept-filter="Ban Chủ Nhiệm" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Chủ Nhiệm</button>
-          <button onclick="setTaskDeptFilter('Ban Nhân Sự')" data-dept-filter="Ban Nhân Sự" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Nhân Sự</button>
-          <button onclick="setTaskDeptFilter('Ban Bóng Chuyền')" data-dept-filter="Ban Bóng Chuyền" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Chuyền</button>
-          <button onclick="setTaskDeptFilter('Ban Bóng Đá Nam')" data-dept-filter="Ban Bóng Đá Nam" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nam</button>
-          <button onclick="setTaskDeptFilter('Ban Bóng Đá Nữ')" data-dept-filter="Ban Bóng Đá Nữ" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nữ</button>
-          <button onclick="setTaskDeptFilter('Ban Cầu Lông')" data-dept-filter="Ban Cầu Lông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Cầu Lông</button>
-          <button onclick="setTaskDeptFilter('Ban Truyền Thông')" data-dept-filter="Ban Truyền Thông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Truyền Thông</button>
+          <button onclick="setTaskDeptFilter('ALL')" data-dept-filter="ALL" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 700; border: 1px solid #0f172a; background: #1e293b; color: #ffffff;">Tất cả lệnh</button>
+          <button onclick="setTaskDeptFilter('Ban Chủ Nhiệm')" data-dept-filter="Ban Chủ Nhiệm" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Chủ Nhiệm</button>
+          <button onclick="setTaskDeptFilter('Ban Nhân Sự')" data-dept-filter="Ban Nhân Sự" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Nhân Sự</button>
+          <button onclick="setTaskDeptFilter('Ban Bóng Chuyền')" data-dept-filter="Ban Bóng Chuyền" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Bóng Chuyền</button>
+          <button onclick="setTaskDeptFilter('Ban Bóng Đá Nam')" data-dept-filter="Ban Bóng Đá Nam" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Bóng Đá Nam</button>
+          <button onclick="setTaskDeptFilter('Ban Bóng Đá Nữ')" data-dept-filter="Ban Bóng Đá Nữ" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Bóng Đá Nữ</button>
+          <button onclick="setTaskDeptFilter('Ban Cầu Lông')" data-dept-filter="Ban Cầu Lông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Cầu Lông</button>
+          <button onclick="setTaskDeptFilter('Ban Truyền Thông')" data-dept-filter="Ban Truyền Thông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 5px 11px; border-radius: 10px; font-size: 10px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Truyền Thông</button>
         </div>
 
         <!-- Danh sách các ca trực -->
@@ -1805,14 +1812,14 @@
 
       <!-- Bộ lọc nhanh theo 7 Ban chuyên môn -->
       <div id="directoryDeptFilterBar" style="display: flex; gap: 5px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 8px;" class="no-scrollbar">
-        <button onclick="setDirectoryDeptFilter('ALL')" data-dir-filter="ALL" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #a5b4fc; background: #e0e7ff; color: #312e81;">Tất cả ban</button>
-        <button onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')" data-dir-filter="Ban Chủ Nhiệm" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Chủ Nhiệm</button>
-        <button onclick="setDirectoryDeptFilter('Ban Nhân Sự')" data-dir-filter="Ban Nhân Sự" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Nhân Sự</button>
-        <button onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')" data-dir-filter="Ban Bóng Chuyền" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Chuyền</button>
-        <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')" data-dir-filter="Ban Bóng Đá Nam" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nam</button>
-        <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')" data-dir-filter="Ban Bóng Đá Nữ" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Bóng Đá Nữ</button>
-        <button onclick="setDirectoryDeptFilter('Ban Cầu Lông')" data-dir-filter="Ban Cầu Lông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Cầu Lông</button>
-        <button onclick="setDirectoryDeptFilter('Ban Truyền Thông')" data-dir-filter="Ban Truyền Thông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 10px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.85); color: #475569;">Ban Truyền Thông</button>
+        <button onclick="setDirectoryDeptFilter('ALL')" data-dir-filter="ALL" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 700; border: 1px solid #0f172a; background: #1e293b; color: #ffffff;">Tất cả ban</button>
+        <button onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')" data-dir-filter="Ban Chủ Nhiệm" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Chủ Nhiệm</button>
+        <button onclick="setDirectoryDeptFilter('Ban Nhân Sự')" data-dir-filter="Ban Nhân Sự" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Nhân Sự</button>
+        <button onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')" data-dir-filter="Ban Bóng Chuyền" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Bóng Chuyền</button>
+        <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')" data-dir-filter="Ban Bóng Đá Nam" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Bóng Đá Nam</button>
+        <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')" data-dir-filter="Ban Bóng Đá Nữ" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Bóng Đá Nữ</button>
+        <button onclick="setDirectoryDeptFilter('Ban Cầu Lông')" data-dir-filter="Ban Cầu Lông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Cầu Lông</button>
+        <button onclick="setDirectoryDeptFilter('Ban Truyền Thông')" data-dir-filter="Ban Truyền Thông" class="focus-ring spring-touch" style="flex-shrink: 0; padding: 4px 10px; border-radius: 8px; font-size: 9.5px; font-weight: 600; border: 1px solid #e2e8f0; background: #ffffff; color: #475569;">Ban Truyền Thông</button>
       </div>
 
       <div style="position: relative; display: flex; align-items: center; margin-bottom: 9px;">
@@ -4135,11 +4142,11 @@
         let notesHtml = '';
         if (t.notes && String(t.notes).trim() !== '') {
           notesHtml = `
-            <div style="margin-top: 7px; padding: 7px 11px; border-radius: 12px; background: rgba(245, 243, 255, 0.85); border: 1px dashed #c7d2fe; font-size: 11px; color: #1e1b4b; line-height: 1.4; display: flex; align-items: flex-start; gap: 6px;">
-              <span style="font-size: 12px; flex-shrink: 0; line-height: 1.2;">📝</span>
+            <div style="margin-top: 7px; padding: 7px 10px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 11px; color: #334155; line-height: 1.4; display: flex; align-items: flex-start; gap: 6px;">
+              <svg class="svg-icon" style="width: 13px; height: 13px; color: #64748b; margin-top: 2px; flex-shrink: 0;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
               <div>
-                <strong style="color: #0a2540; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px;">Ghi chú nhiệm vụ:</strong>
-                <p style="margin: 1px 0 0 0; color: #1e1b4b; font-weight: 600;">${escapeHtml(t.notes)}</p>
+                <strong style="color: #0f172a; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px;">Ghi chú nhiệm vụ:</strong>
+                <p style="margin: 1px 0 0 0; color: #1e293b; font-weight: 600;">${escapeHtml(t.notes)}</p>
               </div>
             </div>
           `;
@@ -4213,14 +4220,14 @@
 
         const adminActionsHtml = currentUser?.isAdmin ? `
           <div style="display: flex; align-items: center; gap: 5px;">
-            <button onclick="openSmartRotationModal('${t.id}')" class="focus-ring spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #c7d2fe; background: #eff6ff; color: #4f46e5; display: inline-flex; align-items: center; justify-content: center;">
-              <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            <button onclick="openSmartRotationModal('${t.id}')" class="focus-ring spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; display: inline-flex; align-items: center; justify-content: center;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             </button>
-            <button onclick="openEditTaskModal('${t.id}')" class="focus-ring spring-touch" title="Chỉnh sửa lệnh điều động" aria-label="Chỉnh sửa lệnh điều động" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #c7d2fe; background: #eef2ff; color: #4338ca; display: inline-flex; align-items: center; justify-content: center;">
-              <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <button onclick="openEditTaskModal('${t.id}')" class="focus-ring spring-touch" title="Chỉnh sửa lệnh điều động" aria-label="Chỉnh sửa lệnh điều động" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #cbd5e1; background: #ffffff; color: #1e293b; display: inline-flex; align-items: center; justify-content: center;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </button>
-            <button onclick="confirmDeleteTask('${t.id}')" class="focus-ring spring-touch" title="Xóa lệnh điều động" aria-label="Xóa lệnh điều động" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #fecdd3; background: #fff1f2; color: #be123c; display: inline-flex; align-items: center; justify-content: center;">
-              <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <button onclick="confirmDeleteTask('${t.id}')" class="focus-ring spring-touch" title="Xóa lệnh điều động" aria-label="Xóa lệnh điều động" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #fca5a5; background: #ffffff; color: #b91c1c; display: inline-flex; align-items: center; justify-content: center;">
+              <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </button>
           </div>
         ` : (currentUser?.isShiftLeader ? `
@@ -4304,10 +4311,10 @@
             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
               <div style="flex: 1; min-width: 0;">
                 <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                  <span style="font-size: 8.5px; font-weight: 700; color: #4338ca; background: #eef2ff; padding: 2px 7px; border-radius: 7px; border: 1px solid #c7d2fe; font-family: monospace;">
+                  <span style="font-size: 8.5px; font-weight: 700; color: #475569; background: #f1f5f9; padding: 2px 7px; border-radius: 6px; border: 1px solid #cbd5e1; font-family: monospace;">
                     ${escapeHtml(t.id)}
                   </span>
-                  <span style="font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 8px; background: ${isGeneralFull ? '#f1f5f9' : '#e0e7ff'}; color: ${isGeneralFull ? '#475569' : '#3730a3'}; border: 1px solid ${isGeneralFull ? '#cbd5e1' : '#c7d2fe'};">
+                  <span style="font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: ${isGeneralFull ? '#f1f5f9' : '#ffffff'}; color: ${isGeneralFull ? '#475569' : '#0f172a'}; border: 1px solid #cbd5e1;">
                     ${allOccupied.length} / ${t.quota} bạn
                   </span>
                   ${waitlist.length > 0 ? `
@@ -4321,25 +4328,25 @@
               ${adminActionsHtml}
             </div>
 
-            <!-- Thanh tiến độ chỉ tiêu trực quan ColorOS 17 -->
-            <div style="height: 5px; width: 100%; border-radius: 99px; background: #f1f5f9; margin: 8px 0 10px 0; overflow: hidden; border: 1px solid #e2e8f0;">
-              <div style="height: 100%; width: ${quotaPercent}%; background: ${isGeneralFull ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, #6366f1, #4f46e5)'}; border-radius: 99px;"></div>
+            <!-- Thanh tiến độ chỉ tiêu trực quan tối giản -->
+            <div style="height: 4px; width: 100%; border-radius: 99px; background: #f1f5f9; margin: 8px 0 10px 0; overflow: hidden; border: 1px solid #e2e8f0;">
+              <div style="height: 100%; width: ${quotaPercent}%; background: ${isGeneralFull ? '#047857' : '#1e293b'}; border-radius: 99px;"></div>
             </div>
 
             <div style="margin-top: 4px; font-size: 11px; color: #475569; display: flex; flex-direction: column; gap: 5px;">
               <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                <span style="display: inline-flex; align-items: center; gap: 5px; padding: 3.5px 8px; border-radius: 8px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 10.5px; font-weight: 600; color: #1e1b4b;">
-                  <svg class="svg-icon" style="width: 13px; height: 13px; color: #4f46e5;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span style="display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 10.5px; font-weight: 600; color: #1e293b;">
+                  <svg class="svg-icon" style="width: 12px; height: 12px; color: #475569;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                   <span>${escapeHtml(formatSportsText(t.location))}</span>
                 </span>
-                <span style="display: inline-flex; align-items: center; gap: 5px; padding: 3.5px 8px; border-radius: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; font-size: 10.5px; font-weight: 600; color: #166534;">
-                  <svg class="svg-icon" style="width: 13px; height: 13px; color: #16a34a;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span style="display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 10.5px; font-weight: 600; color: #1e293b;">
+                  <svg class="svg-icon" style="width: 12px; height: 12px; color: #475569;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   <span>${escapeHtml(t.time)}</span>
                 </span>
               </div>
               ${t.lockDeadline ? `
-                <div style="display: flex; align-items: center; gap: 5px; padding: 3.5px 8px; border-radius: 8px; background: #fffbeb; border: 1px solid #fde68a; font-size: 10px; font-weight: 600; color: #92400e;">
-                  <svg class="svg-icon" style="width: 13px; height: 13px; color: #d97706;" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+                <div style="display: flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 10px; font-weight: 600; color: #475569;">
+                  <svg class="svg-icon" style="width: 12px; height: 12px; color: #64748b;" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
                   <span><b>Hạn chót bù quân số:</b> ${escapeHtml(t.lockDeadline.replace('T', ' '))}</span>
                 </div>
               ` : ''}
