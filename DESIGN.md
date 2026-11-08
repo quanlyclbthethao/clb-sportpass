@@ -10,6 +10,15 @@
 - **Philosophy:** Single Source of Truth for university sports logistics, field attendance, and digital pass verification.
 
 ## 2. Color Palette & Roles
+
+- **Deep Ocean Navy** (`#001833`) — Aquamorphic deep primary background
+- **Ocean Blue** (`#003865`) — Card core gradient stop & headline ink
+- **Varsity Royal** (`#005fa8`) — Accent athletic gradient stop
+- **Aquamorphic Cyan** (`#0284c7`) — Core interaction accent and primary CTAs
+- **Sky Bright** (`#0ea5e9`) — Button gradient end stop & badge accents
+- **Cyan Glow** (`#38bdf8`) — Vector rim highlights, sparks, and borders
+- **Electronic Cyan** (`#00f2fe`) — Radial glow & Victory Spark highlights
+
 - **Canvas Gray** (`#f2f2f7`) — Primary background surface (iOS System Grouped Background)
 - **Pure Surface** (`#ffffff`) — High-contrast card, container, and modal fill
 - **Charcoal Ink** (`#1c1c1e`) — Primary text label (Apple System Label, WCAG AAA compliant)
