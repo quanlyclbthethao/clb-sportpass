@@ -1,0 +1,36 @@
+{
+  "name": "projects/clb-sportpass-uhd-2026",
+  "projectId": "clb-sportpass-uhd-2026",
+  "title": "CLB Thể Thao - SportPass UHD",
+  "visibility": "PRIVATE",
+  "origin": "STITCH",
+  "deviceType": "MOBILE",
+  "designTheme": {
+    "colorMode": "LIGHT",
+    "font": "BE_VIETNAM_PRO",
+    "monoFont": "JETBRAINS_MONO",
+    "roundness": "ROUND_EIGHTEEN",
+    "customColor": "#007aff",
+    "saturation": 80
+  },
+  "screens": {
+    "profile": {
+      "id": "screen_profile_sportpass",
+      "title": "Hồ Sơ & Thẻ SportPass Số",
+      "width": 412,
+      "height": 915
+    },
+    "tasks": {
+      "id": "screen_tasks_dispatch",
+      "title": "Điều Động & Ca Trực Thực Địa",
+      "width": 412,
+      "height": 915
+    },
+    "directory": {
+      "id": "screen_directory_ice",
+      "title": "Danh Bạ & Cấp Cứu CLB",
+      "width": 412,
+      "height": 915
+    }
+  }
+}
