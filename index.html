@@ -115,8 +115,8 @@
     .acrylic-card {
       background: #ffffff;
       border: 1px solid #e5e5ea;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.02);
-      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 16px rgba(0, 0, 0, 0.02);
+      border-radius: 18px;
       padding: 16px;
       margin-bottom: 12px;
       position: relative;
@@ -515,10 +515,10 @@
       color: #007aff !important;
       font-weight: 700;
     }
-    .dock-item-btn.active .compact-id-badge, code {
+    .dock-item-btn.active .compact-id-badge, code, .metric-val, .tabular-mono {
       font-family: 'JetBrains Mono', monospace !important;
       font-variant-numeric: tabular-nums;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
     h1, h2, h3, h4 {
       letter-spacing: -0.02em;
@@ -527,10 +527,10 @@
       transform: scale(1.1);
       stroke: #007aff;
     }
-    .dock-item-btn .compact-id-badge, code {
+    .dock-item-btn .compact-id-badge, code, .metric-val, .tabular-mono {
       font-family: 'JetBrains Mono', monospace !important;
       font-variant-numeric: tabular-nums;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
     h1, h2, h3, h4 {
       letter-spacing: -0.02em;
@@ -780,10 +780,10 @@
     .selectable-text { user-select: text !important; }
     .hidden { display: none !important; }
     /* Calibrated Optical Vector System */
-    .compact-id-badge, code {
+    .compact-id-badge, code, .metric-val, .tabular-mono {
       font-family: 'JetBrains Mono', monospace !important;
       font-variant-numeric: tabular-nums;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
     h1, h2, h3, h4 {
       letter-spacing: -0.02em;
@@ -1145,7 +1145,7 @@
                 <svg class="svg-icon" style="width: 11px; height: 11px; color: #636366;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 <span>Cống Hiến</span>
               </span>
-              <span id="memDuty" class="metric-val" style="color: #1c1c1e; font-size: 15px; font-weight: 800; margin-top: 3px;">0 ca</span>
+              <span id="memDuty" class="metric-val tabular-mono" style="color: #1c1c1e; font-size: 16px; font-weight: 700; margin-top: 3px;">0 ca</span>
             </div>
             <div id="boxMemFit" class="metric-item spring-touch" onclick="openTheTrangModal()" style="background: #ffffff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 10px 8px; cursor: pointer;" title="Chạm để cập nhật thể trạng">
               <span class="metric-label" style="color: #8e8e93; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;">
@@ -7402,7 +7402,7 @@
       try {
         const perm = await Notification.requestPermission();
         if (perm === 'granted') {
-          showAquaIsland('Đã bật thông báo nhiệm vụ khi tắt app!', '🔔');
+          showAquaIsland('Đã bật thông báo nhiệm vụ khi tắt app!', 'info');
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.ready.then(reg => {
               if ('periodicSync' in reg) {
@@ -7427,7 +7427,7 @@
             });
           }
         } else {
-          showAquaIsland('Bạn chưa cấp quyền nhận thông báo.', 'ℹ️');
+          showAquaIsland('Bạn chưa cấp quyền nhận thông báo.', 'info');
         }
       } catch(e) {
         showAquaIsland('Không thể đăng ký thông báo: ' + e.message, '⚠️');

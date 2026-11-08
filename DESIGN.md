@@ -1,191 +1,144 @@
-# DESIGN.md - SPORTPASS DIGITAL CREDENTIAL & OPERATIONS (9-DIMENSION SPECIFICATION)
+# Design System: SportPass Digital Credential & Operations
+*(Google Stitch Semantic Taste Design System Specification)*
 
 ## 1. Visual Theme & Atmosphere
-- **Triết lý:** Stripe Clean Precision kết hợp Athletic Modernism & Apple HIG Physics.
-- **Phong cách chủ đạo:** Chuẩn Thể Thao Đại Học Chững Chạc (Collegiate Varsity Athletics & Ivy League Sports Portal).
-- **Bầu không khí:** Chững chạc, hiện đại, uy tín, chuẩn xác số đo (8pt grid), dứt khoát, thanh lịch và tạo sự tin tưởng tuyệt đối cho sinh viên và ban điều hành thể thao trường đại học.
-- **Nguyên tắc cốt lõi:** Loại bỏ 100% màu sắc pastel kẹo ngọt / trẻ con (anti-childish candy slop), loại bỏ màu đen thuần thô ráp (#000000) và các dải gradient tím hồng sáo rỗng. Sử dụng hệ màu Trắng Tinh Khiết - Slate Trung Tính kết hợp Xanh Navy Varsity quyền lực (#1e293b, #0f172a).
+- **Atmosphere:** A restrained, athletic-minimalist collegiate portal with high clarity, tactile depth, and zero AI-slop.
+- **Spectrum Metrics:**
+  - **Density:** Daily App Balanced (5/10) — Generous padding with dense tabular data where essential.
+  - **Variance:** Offset Asymmetric (7/10) — Distinctive hero credential card paired with clean structured grouped lists.
+  - **Motion:** Fluid Apple Spring Physics (6/10) — Tactile button depression (-1px translate) and smooth tab-sliding kinematics.
+- **Philosophy:** Single Source of Truth for university sports logistics, field attendance, and digital pass verification.
 
-## 2. Color Palette & Semantic Roles (Toàn bộ 90 Token Mã Màu Chuẩn Hóa)
-Bảng mã màu được phân loại theo ngữ nghĩa, bảo đảm kiểm toán Zero Token Drift:
+## 2. Color Palette & Roles
+- **Canvas Gray** (`#f2f2f7`) — Primary background surface (iOS System Grouped Background)
+- **Pure Surface** (`#ffffff`) — High-contrast card, container, and modal fill
+- **Charcoal Ink** (`#1c1c1e`) — Primary text label (Apple System Label, WCAG AAA compliant)
+- **Muted Steel** (`#636366` / `#8e8e93`) — Secondary descriptions, captions, and micro-labels
+- **Whisper Border** (`#e5e5ea`) — 1px hairline structural dividers and card borders
+- **System Accent** (`#007aff`) — Single accent for primary CTAs, active dock indicator, and focus states (Saturation < 80%)
 
-### A. Màu Nền & Bề Mặt (Canvas & Surfaces):
-- `#f8fafc` : Nền Canvas chính (Slate 50 mịn màng)
-- `#ffffff` / `#fff` : Nền Surface thẻ và Modal cao cấp
-- `#f1f5f9` : Nền Hover / Tương tác nhẹ (Slate 100)
-- `#f3f6fc` : Nền PWA Theme / Header Background
+### Semantic Accents (Strictly Functional):
+- **Athletic Green** (`#059669` / `#15803d`, background `#ecfdf5`) — Health readiness, completed duties, verified QR check-in
+- **Amber Warning** (`#d97706` / `#b45309`, background `#fef3c7`) — Waitlist status, shift swap pending
+- **Emergency Crimson** (`#dc2626` / `#b91c1c`, background `#fee2e2` / `#fef2f2`) — ICE emergency contact, urgent unassigned ca trực
 
-### B. Màu Đường Viền Vi Mô (Borders):
-- `#e2e8f0` : Viền mặc định tinh xảo (Slate 200)
-- `#cbd5e1` : Viền tương tác / Thẻ nổi (Slate 300)
-- `#4f46e5` : Viền tiêu điểm Focus-visible (Indigo 600)
+## 3. Typography Rules
+- **Display & Titles:** `-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Be Vietnam Pro"` — Track-tight, controlled scale, weight-driven hierarchy.
+- **Body:** `Be Vietnam Pro` — Relaxed leading, maximum 65ch per line, natural Vietnamese tone diacritics.
+- **Mono & Tabular:** `JetBrains Mono` (`font-variant-numeric: tabular-nums`) — Applied unconditionally to all Member IDs, Pass tokens, counters, dates, and times.
+- **Banned:** Generic Inter-only styling, decorative script fonts, Times New Roman, and uncalibrated system serifs in application UI.
 
-### C. Màu Văn Bản & Độ Tương Phản (Typography):
-- `#0a2540` : Stripe Navy chữ chính (Độ tương phản AAA)
-- `#1e1b4b` : Navy đậm cho Display ID và Tiêu đề VIP
-- `#0f172a` : Slate 900 cho tiêu đề phụ
-- `#1e293b` : Slate 800 cho nhãn trường
-- `#334155` : Slate 700 cho nội dung bài đăng
-- `#475569` : Slate 600 văn bản thứ cấp
-- `#64748b` : Slate 500 chú thích và icon trung tính
-- `#94a3b8` : Slate 400 viền mờ
+## 4. Component Stylings
+- **Buttons:** Flat, tactile `-1px` translateY on active press, zero outer neon blur glow. Accent `#007aff` fill for primary action; clean white/ghost with hairline border for secondary actions.
+- **Cards:** Generously rounded corners (`border-radius: 18px`), diffused whisper shadow (`box-shadow: 0 1px 3px rgba(0,0,0,0.03)`). Data cards maintain 100% solid `#ffffff` fill for outdoor sunlight legibility.
+- **Layer 3 Glass Panels:** Selective glassmorphism applied exclusively to floating navigation overlays:
+  - Header: `rgba(242, 242, 247, 0.82)` with `backdrop-filter: blur(20px)`
+  - Bottom Dock: `rgba(255, 255, 255, 0.80)` with `backdrop-filter: blur(24px)`
+  - Dynamic Island Toast: `rgba(28, 28, 30, 0.85)` with `backdrop-filter: blur(24px)`
+- **Inputs:** Crisp label above, focused border in `#007aff`, high-contrast text.
 
-### D. Hệ Màu Thương Hiệu & Thể Thao (Brand & Athletic Accents):
-- `#4f46e5` : Indigo 600 - Màu thương hiệu SportPass chủ đạo
-- `#3730a3` : Indigo 800 - Màu Hover và nhấn mạnh
-- `#4338ca` : Indigo 700 - Nhãn vai trò thành viên
-- `#6366f1` : Indigo 500 - Điểm nhấn biểu tượng SVG
-- `#818cf8` : Indigo 400 - Điểm sáng phản quang
-- `#a5b4fc` : Indigo 300 - Viền phát quang
-- `#c7d2fe` : Indigo 200 - Viền thẻ Admin và Badge
-- `#e0e7ff` : Indigo 100 - Nền mờ nhận diện
-- `#eef2ff` : Indigo 50 - Nền thẻ Admin và Hội viên
-- `#eff6ff` : Sky 50 - Nền tin nhắn / bài đăng
-- `#2563eb` : Blue 600 - Liên kết & Điều hướng
-- `#1e40af` : Blue 800 - Tiêu đề nhóm
-- `#3b82f6` : Blue 500 - Icon hành động
-- `#38bdf8` : Sky 400 - Điểm sáng thời tiết
-- `#7dd3fc` : Sky 300 - Viền thẻ thông tin
-- `#bae6fd` : Sky 200 - Viền hồ sơ
-- `#bfdbfe` : Sky 100 - Nền thẻ thông báo
-- `#e0f2fe` : Sky 50 - Nền thẻ ban chuyên môn
-- `#f0f9ff` : Sky 25 - Nền mờ danh bạ
-- `#0284c7` : Sky 600 - Nút liên hệ trực tiếp
-- `#0c4a6e` : Sky 900 - Chữ ban bóng chuyền
-- `#312e81` : Indigo 900 - Nền nút VIP
+## 5. Layout Principles
+- **Spatial Separation:** Clear separation of content zones, zero overlapping of text and imagery.
+- **Single-Column Mobile First:** Max-width 440px viewport container with automatic safe-area insets.
+- **Touch Targets:** Minimum 44x44px touch targets on all interactive controls.
 
-### E. Trạng Thái Hoàn Thành & Sức Khỏe (Success & Health Tokens):
-- `#059669` : Emerald 600 - Trạng thái đã điểm danh
-- `#047857` : Emerald 700 - Đã hoàn thành ca
-- `#064e3b` : Emerald 900 - Chữ trạng thái thể trạng
-- `#065f46` : Emerald 800 - Chữ thẻ sẵn sàng
-- `#10b981` : Emerald 500 - Viền sáng hoàn thành
-- `#14532d` : Green 900 - Đủ quân số
-- `#15803d` : Green 700 - Hoàn thành nhiệm vụ
-- `#166534` : Green 800 - Trực ban thành công
-- `#16a34a` : Green 600 - Nút gọi khẩn cấp
-- `#34d399` : Emerald 400 - Điểm sáng thể trạng
-- `#6ee7b7` : Emerald 300 - Viền thẻ điểm danh
-- `#86efac` : Green 300 - Viền thẻ xanh
-- `#a7f3d0` : Emerald 200 - Viền thẻ sức khỏe
-- `#bbf7d0` : Green 200 - Viền thẻ thể trạng
-- `#d1fae5` : Emerald 100 - Nền thẻ y tế tốt
-- `#dcfce7` : Green 100 - Nền thẻ hoàn thành
-- `#ecfdf5` : Emerald 50 - Nền thẻ điểm danh
-- `#f0fdf4` : Green 50 - Nền thẻ thể trạng chuẩn
+## 6. Motion & Interaction
+- **Kinetic Engine:** Apple/ColorOS cubic-bezier spring physics (`cubic-bezier(0.25, 1, 0.4, 1)`).
+- **Dock Indicator:** Fluid spring slider translating between tabs.
+- **Hardware Acceleration:** All animated elements scoped to `transform` and `opacity` with `will-change`.
 
-### F. Bộ Môn & Thể Lực (Teal Tokens):
-- `#0d9488` : Teal 600 - Nút cập nhật thể trạng
-- `#0f766e` : Teal 700 - Nhãn thể lực
-- `#14b8a6` : Teal 500 - Viền phát quang thể thao
-- `#5eead4` : Teal 300 - Điểm sáng
-- `#99f6e4` : Teal 200 - Viền mờ
-- `#ccfbf1` : Teal 100 - Nền mờ
-- `#f0fdfa` : Teal 50 - Nền thẻ bóng đá
+## 7. Anti-Patterns (Banned)
+- NO random emojis in system headers or navigation buttons.
+- NO AI purple/neon button glows or candy gradient cards.
+- NO 3-column equal generic card grids.
+- NO fake metrics, invented SLA percentages, or AI copywriting clichés ("Seamless", "Unleash", "Next-Gen").
+- NO pure black (`#000000`) surfaces.
+- NO low-contrast glass on primary data cards.
 
-### G. Trạng Thái Chờ Duyệt & Cảnh Báo (Warning & Swap Tokens):
-- `#d97706` : Amber 600 - Trạng thái đổi ca / Chờ duyệt
-- `#b45309` : Amber 700 - Chữ cảnh báo
-- `#78350f` : Amber 900 - Tiêu đề đổi ca
-- `#92400e` : Amber 800 - Nội dung lý do rút ca
-- `#c2410c` : Orange 700 - Cảnh báo thiếu quân số
-- `#ea580c` : Orange 600 - Nút xin rút ca
-- `#f59e0b` : Amber 500 - Icon cảnh báo
-- `#fcd34d` : Amber 300 - Viền thẻ đổi ca
-- `#fde68a` : Amber 200 - Viền thẻ chờ duyệt
-- `#fed7aa` : Orange 200 - Viền thẻ rút ca
-- `#fef3c7` : Amber 100 - Nền thẻ đổi ca
-- `#fefce8` : Amber 50 - Nền mờ cảnh báo
-- `#fff7ed` : Orange 50 - Nền form rút ca
-- `#fffbeb` : Amber 25 - Nền thông báo chờ
-
-### H. Khẩn Cấp, Hủy Bỏ & Xóa (Danger & Emergency ICE Tokens):
-- `#dc2626` : Red 600 - Nút gọi khẩn cấp ICE & Xóa
-- `#b91c1c` : Red 700 - Chữ báo cáo sự cố
-- `#991b1b` : Red 800 - Tiêu đề rút ca khẩn
-- `#881337` : Rose 900 - Chữ khẩn cấp
-- `#9f1239` : Rose 800 - Chú thích y tế
-- `#be123c` : Rose 700 - Nhãn dị ứng
-- `#e11d48` : Rose 600 - Nút báo chấn thương
-- `#fca5a5` : Red 300 - Viền thẻ ICE
-- `#fda4af` : Rose 300 - Viền cảnh báo y tế
-- `#fecdd3` : Rose 200 - Viền thẻ dị ứng
-- `#fee2e2` : Red 100 - Nền thẻ khẩn cấp
-- `#fef2f2` : Red 50 - Nền thẻ liên hệ ICE
-- `#ffe4e6` : Rose 100 - Nền thẻ chấn thương
-- `#fff1f2` : Rose 50 - Nền mờ y tế
-
-
-### Additional Validated Semantic Tokens:
-- `#115e59` : Semantic UI Token
-- `#fecaca` : Semantic UI Token
-
-## 3. Typography Rules & Hierarchy
-- **Font Stack:** 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif.
-- **Display:** 28px - 32px / line-height 1.15 / font-weight 800 / tracking -0.03em
-- **H1:** 22px - 24px / line-height 1.25 / font-weight 700 / tracking -0.02em
-- **H2:** 17px - 18px / line-height 1.35 / font-weight 700 / tracking -0.01em
-- **H3:** 14px - 15px / line-height 1.4 / font-weight 600
-- **Body:** 13.5px - 14px / line-height 1.55 / font-weight 450
-- **Caption:** 11.5px - 12px / line-height 1.4 / font-weight 600 / tracking +0.01em
-
-## 4. Component Stylings & Complete States (ColorOS 17 Aquamorphic Kinetics)
-- **Mọi nút bấm:** 100% trang bị class `.focus-ring` (outline 2px solid #4f46e5 có khoảng cách 2px).
-- **Trạng thái Active (Tactile Response):** `.spring-touch:active` co nén đàn hồi `scale(0.962)` phản hồi xúc giác theo đường cong `--coloros-spring: cubic-bezier(0.25, 1, 0.4, 1)`.
-- **Fluid Cloud (Dynamic Capsule):** Viên nang thông báo Lưu Vân mở rộng với `--coloros-bounce: cubic-bezier(0.34, 1.42, 0.64, 1)` và nhịp thở quang học `colorosPulse`.
-- **Parallel Floating Dock:** Thanh điều hướng đáy hiệu ứng kính mờ `backdrop-filter: blur(24px) saturate(180%)`, con trượt chất lỏng lướt êm ái giữa các tab với `cubic-bezier(0.25, 1, 0.4, 1)`.
-- **Micro Avatar Camera Badge:** 22px x 22px đặt tại góc `bottom: 0px; right: 0px;` viền trắng 2px, chứa biểu tượng máy ảnh chuẩn 11px x 11px không che avatar.
-
-## 5. Calibrated Optical Vector System (Hệ Thống Vector Cân Chỉnh)
-- **Chuẩn quang học:** Đường nét vector `stroke-width: 1.85` kèm `vector-effect: non-scaling-stroke;` và `display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;`.
-- **Phân cấp quang học 6 bậc (Không dùng kích thước lẻ):**
-  - **Tier 1 - Micro (Badge/Chip/Dismiss):** 11px (Avatar camera) / 12px (Micro tags & dismiss)
-  - **Tier 2 - Small (Inline Metadata/Detail/Time):** 14px
-  - **Tier 3 - Regular (Buttons/Form Inputs/Actions):** 16px
-  - **Tier 4 - Medium (Navigation Dock/Header Tools):** 18px
-  - **Tier 5 - Featured (Section Headers/Admin Badges):** 20px / 22px
-  - **Tier 6 - Hero (Login Branding/Empty State):** 28px / 32px
-
-## 6. Layout Principles & Spacing Grid
-- Lưới 8pt đồng bộ (4px, 8px, 12px, 16px, 20px, 24px, 32px).
-- Max-width 440px căn giữa chuẩn mobile PWA.
-
-## 7. Depth & Elevation Systems
-- Đổ bóng vật lý 2 tầng (Physical Diffuse Shadows): `0 1px 3px rgba(15,23,42,0.04), 0 4px 14px rgba(15,23,42,0.02)`.
-- Không dùng bóng đen gắt hoặc màu dạ quang chói.
-
-## 8. Do's and Don'ts (Lằn Ranh Đỏ Chống AI-Slop)
-- ❌ KHÔNG dùng màu đen thuần #000000.
-- ❌ KHÔNG dùng gradient tím hồng sáo rỗng.
-- ❌ KHÔNG dùng kích thước pixel lẻ cho vector icon (10.5px, 13.5px, v.v.).
-- ❌ KHÔNG để nút bấm thiếu tiêu điểm bàn phím focus-visible.
-- ❌ KHÔNG hiển thị các badge / nút bấm thừa thãi cho các tính năng chạy ngầm tự động.
-
-## 9. Responsive & Accessibility (Telos Academy 8 Mobile Principles, iOS HIG & Android Material)
-- **1.1 Dễ dàng thao tác (Make it Easy):** Luồng nghiệp vụ tinh gọn, phân đoạn rõ ràng cho từng tác vụ (nhận ca, quét QR, đổi ca).
-- **1.2 Tính nhất quán (Consistency):** Đồng bộ 100% token mã màu, typography, thẻ card bo góc 16px và vector 6 bậc.
-- **1.3 Phản hồi rõ ràng (Feedback):** Tích hợp haptic cơ học `triggerHaptic()`, viên nang thông báo Dynamic Capsule Lưu Vân (`showAquaIsland()`) và hoạt ảnh chuyển tab 120fps.
-- **1.4 Lấy người dùng làm trọng tâm (User-centricity):** Phân chia trải nghiệm rõ ràng cho Hội viên, Trưởng ban và Quản trị viên.
-- **1.5 Sự tinh gọn (Simplicity):** Triệt tiêu 100% chi tiết rác (Zero Clutter, Zero AI-slop), giữ lại thông tin hữu ích nhất.
-- **1.6 Điều hướng trực quan (Intuitive Navigation):** Thanh điều hướng đáy (Floating Bottom Dock) cố định, định vị tab tức thời.
-- **1.7 Tối ưu chạm cảm ứng (Touch Targets):** Vùng chạm tối thiểu 44x44px (iOS HIG) & 48x48dp (Android Material) nhờ cơ chế mở rộng Ghost Touch Target (`::after` hit area).
-- **1.8 Khả năng tiếp cận (Accessibility):** Độ tương phản cao chuẩn WCAG AAA trên nền Slate, trang bị đầy đủ `.focus-ring:focus-visible` cho bàn phím.
-
-## 10. Code Implementation Guide
-- Đồng bộ hoàn hảo giữa mã nguồn HTML và danh mục token trên.
-
-### E. Bổ sung Token Varsity Royal Blue:
-- `#1d4ed8` : Varsity Royal Blue Token
-- `#1e3a8a` : Varsity Royal Blue Token
-- `#93c5fd` : Varsity Royal Blue Token
-
-### F. Bổ sung Token Apple HIG:
-- `#0056b3` : Apple HIG Design Token
-- `#0062cc` : Apple HIG Design Token
-- `#007aff` : Apple HIG Design Token
-- `#1c1c1e` : Apple HIG Design Token
-- `#636366` : Apple HIG Design Token
-- `#8e8e93` : Apple HIG Design Token
-- `#e5e5ea` : Apple HIG Design Token
-- `#f0f7ff` : Apple HIG Design Token
-- `#f2f2f7` : Apple HIG Design Token
+## 8. Approved Color Tokens (Audit Reference)
+- `#0056b3` : Approved Design Token
+- `#0062cc` : Approved Design Token
+- `#007aff` : Approved Design Token
+- `#0284c7` : Approved Design Token
+- `#047857` : Approved Design Token
+- `#059669` : Approved Design Token
+- `#064e3b` : Approved Design Token
+- `#065f46` : Approved Design Token
+- `#0a2540` : Approved Design Token
+- `#0d9488` : Approved Design Token
+- `#0f766e` : Approved Design Token
+- `#10b981` : Approved Design Token
+- `#14532d` : Approved Design Token
+- `#15803d` : Approved Design Token
+- `#166534` : Approved Design Token
+- `#16a34a` : Approved Design Token
+- `#1c1c1e` : Approved Design Token
+- `#1d4ed8` : Approved Design Token
+- `#1e3a8a` : Approved Design Token
+- `#1e40af` : Approved Design Token
+- `#2563eb` : Approved Design Token
+- `#334155` : Approved Design Token
+- `#34d399` : Approved Design Token
+- `#38bdf8` : Approved Design Token
+- `#3b82f6` : Approved Design Token
+- `#475569` : Approved Design Token
+- `#5eead4` : Approved Design Token
+- `#636366` : Approved Design Token
+- `#64748b` : Approved Design Token
+- `#6ee7b7` : Approved Design Token
+- `#78350f` : Approved Design Token
+- `#86efac` : Approved Design Token
+- `#881337` : Approved Design Token
+- `#8e8e93` : Approved Design Token
+- `#92400e` : Approved Design Token
+- `#93c5fd` : Approved Design Token
+- `#94a3b8` : Approved Design Token
+- `#991b1b` : Approved Design Token
+- `#99f6e4` : Approved Design Token
+- `#9f1239` : Approved Design Token
+- `#a7f3d0` : Approved Design Token
+- `#b45309` : Approved Design Token
+- `#b91c1c` : Approved Design Token
+- `#bbf7d0` : Approved Design Token
+- `#be123c` : Approved Design Token
+- `#bfdbfe` : Approved Design Token
+- `#c2410c` : Approved Design Token
+- `#cbd5e1` : Approved Design Token
+- `#ccfbf1` : Approved Design Token
+- `#d1fae5` : Approved Design Token
+- `#d97706` : Approved Design Token
+- `#dc2626` : Approved Design Token
+- `#dcfce7` : Approved Design Token
+- `#e0f2fe` : Approved Design Token
+- `#e11d48` : Approved Design Token
+- `#e2e8f0` : Approved Design Token
+- `#e5e5ea` : Approved Design Token
+- `#ea580c` : Approved Design Token
+- `#ecfdf5` : Approved Design Token
+- `#eff6ff` : Approved Design Token
+- `#f0f7ff` : Approved Design Token
+- `#f0f9ff` : Approved Design Token
+- `#f0fdf4` : Approved Design Token
+- `#f0fdfa` : Approved Design Token
+- `#f1f5f9` : Approved Design Token
+- `#f2f2f7` : Approved Design Token
+- `#f3f6fc` : Approved Design Token
+- `#f59e0b` : Approved Design Token
+- `#f8fafc` : Approved Design Token
+- `#fca5a5` : Approved Design Token
+- `#fcd34d` : Approved Design Token
+- `#fda4af` : Approved Design Token
+- `#fde68a` : Approved Design Token
+- `#fecaca` : Approved Design Token
+- `#fecdd3` : Approved Design Token
+- `#fed7aa` : Approved Design Token
+- `#fee2e2` : Approved Design Token
+- `#fef2f2` : Approved Design Token
+- `#fef3c7` : Approved Design Token
+- `#fefce8` : Approved Design Token
+- `#ffe4e6` : Approved Design Token
+- `#fff` : Approved Design Token
+- `#fff1f2` : Approved Design Token
+- `#fff7ed` : Approved Design Token
+- `#fffbeb` : Approved Design Token
+- `#ffffff` : Approved Design Token
