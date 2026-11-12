@@ -1,97 +1,72 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Varsity Pass - Điều Phối Thể Thao Học Đường</title>
-  <!-- Google Fonts: Be Vietnam Pro -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+<!DOCTYPE html><html class="h-full bg-[#F4F6FB]" lang="vi"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<title>SportPass Pro - Chuẩn Native Mobile</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
     tailwind.config = {
+      darkMode: "class",
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['"Be Vietnam Pro"', 'sans-serif'],
-          },
           colors: {
-            primary: {
-              DEFAULT: '#007aff',
-              dark: '#0056b3',
-              light: '#38bdf8',
-            },
-            surface: {
-              base: '#f8fafc',
-              card: '#ffffff',
-              glass: 'rgba(255, 255, 255, 0.85)',
-            }
+            "primary": "#0058bc",
+            "primary-container": "#0070eb"
           },
-          animation: {
-            'fade-in': 'fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-            'slide-up': 'slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0' },
-              '100%': { opacity: '1' },
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(100%)', opacity: '0.8' },
-              '100%': { transform: 'translateY(0)', opacity: '1' },
-            }
+          fontFamily: {
+            sans: ["'Be Vietnam Pro'", "sans-serif"],
+            mono: ["'JetBrains Mono'", "monospace"],
           }
         }
       }
-    }
+    };
   </script>
+
   <!-- External Libraries for QR Code generation and scanning -->
   <script defer src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
   <style>
-    body {
-      font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #F4F6FB;
+      font-family: 'Be Vietnam Pro', sans-serif;
       -webkit-font-smoothing: antialiased;
-      background: linear-gradient(180deg, #f0f4f9 0%, #e2eaf4 100%);
-      min-height: 100vh;
-      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
     }
-    .frosted-glass {
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-    }
-    .frosted-card {
+    ::-webkit-scrollbar { display: none; }
+    .spring-tap { position: relative; overflow: hidden; transition: transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .spring-tap:active { transform: scale(0.96); }
+    .ripple-wave { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple 550ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards; pointer-events: none; background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%); z-index: 30; }
+    .ripple-wave-dark { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple 550ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards; pointer-events: none; background: radial-gradient(circle, rgba(0, 88, 188, 0.3) 0%, rgba(0, 88, 188, 0) 70%); z-index: 30; }
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+    .sheet-transition { transition: transform 340ms cubic-bezier(0.32, 1.25, 0.58, 1), opacity 260ms ease; }
+    .perspective-card-wrapper { perspective: 1000px; }
+    .tilt-card { transform-style: preserve-3d; transition: transform 150ms ease-out, box-shadow 200ms ease; will-change: transform; }
+    .tilt-sheen { pointer-events: none; position: absolute; inset: 0; background: radial-gradient(circle 300px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.35), transparent 70%); opacity: 0; transition: opacity 250ms ease; mix-blend-mode: overlay; z-index: 15; }
+    .tilt-card:hover .tilt-sheen { opacity: 1; }
+    @keyframes radarWave { 0% { transform: scale(0.85); opacity: 0.9; } 100% { transform: scale(2.6); opacity: 0; } }
+    .radar-pulse-ring::before { content: ''; position: absolute; inset: -3px; border-radius: 9999px; border: 1.5px solid currentColor; animation: radarWave 2.2s infinite; }
+    .profile-row-item:hover { background: linear-gradient(90deg, rgba(240, 249, 255, 0.85) 0%, rgba(255, 255, 255, 0.95) 100%); padding-left: 1.25rem; }
+    .profile-row-item { transition: background-color 200ms ease, padding-left 200ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+    /* Frosted glass modal styling */
+    .glass-sheet {
       background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 4px 20px -2px rgba(0, 122, 255, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 25px 50px -12px rgba(2, 44, 95, 0.22), 0 0 0 1px rgba(186, 230, 253, 0.4);
     }
-    .hero-pass-gradient {
-      background: linear-gradient(135deg, #022340 0%, #00529e 55%, #007aff 100%);
-      box-shadow: 0 12px 32px -4px rgba(0, 82, 158, 0.35);
+    .hero-gradient {
+      background: linear-gradient(135deg, rgb(9, 51, 90) 0%, rgb(3, 105, 161) 45%, rgb(2, 132, 199) 80%, rgb(14, 165, 233) 100%);
     }
-    .ripple-active {
-      position: relative;
-      overflow: hidden;
-    }
-    .ripple-active:active::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.25);
-    }
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(0, 122, 255, 0.2);
-      border-radius: 9999px;
-    }
+  
     /* QR Scanner Reticle with GPU-accelerated laser sweep */
     .qr-scan-reticle {
       position: relative;
@@ -116,9 +91,10 @@
       0%, 100% { transform: translateY(0); opacity: 0.8; }
       50% { transform: translateY(215px); opacity: 1; }
     }
+
   </style>
 </head>
-<body class="flex justify-center items-start text-slate-800 antialiased py-0 sm:py-6 selection:bg-sky-500 selection:text-white min-h-screen">
+<body class="bg-[#F4F6FB] text-slate-900 w-full min-h-full flex flex-col selection:bg-sky-100 relative">
 
   <!-- DYNAMIC AQUA ISLAND TOAST -->
   <div id="aquaIsland" class="fixed top-3 inset-x-0 mx-auto w-[340px] z-50 pointer-events-none transition-[background-color,transform,box-shadow,opacity] duration-300 opacity-0 -translate-y-4 flex items-center justify-between px-4 py-2.5 rounded-full bg-slate-900/90 backdrop-blur-xl text-white text-xs font-semibold shadow-2xl border border-white/20">
@@ -129,247 +105,248 @@
     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
   </div>
 
-  <!-- Mobile Container Mockup (390px Native Viewport) -->
-  <div id="viewMainAppContainer" class="relative w-full max-w-[390px] min-h-[844px] bg-[#f8fafc] sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col border border-white/60 pb-24">
-
-    <!-- TOP APP BAR -->
-    <header class="sticky top-0 z-30 flex items-center justify-between px-5 pt-3 pb-3 bg-white/70 backdrop-blur-xl border-b border-slate-100">
-      <div class="flex items-center space-x-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-sky-500/25">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-          </svg>
+<!-- Ambient Glow Background -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute -top-12 -right-12 w-72 h-72 rounded-full bg-cyan-400/20 blur-[54px]"></div>
+<div class="absolute top-64 -left-16 w-64 h-64 rounded-full bg-sky-400/15 blur-[54px]"></div>
+</div>
+<div class="w-full flex-1 flex flex-col relative z-10 max-w-[440px] mx-auto min-h-screen">
+<!-- 1. TOP APP BAR & HEADER -->
+<header class="sticky top-0 z-40 w-full bg-white/85 backdrop-blur-xl border-b border-white/60 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+<div class="h-14 px-4 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 flex items-center justify-center text-white shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-[16px] font-bold text-slate-900 tracking-tight">Varsity Pass</span>
+<span class="text-[10px] font-bold text-sky-700 bg-sky-100 px-1.5 py-0.5 rounded uppercase font-mono border border-sky-200/60" id="role-badge">ADMIN</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="spring-tap w-9 h-9 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-sky-600 relative" onclick="openModal('modal-noti', 'sheet-noti')" title="Thông báo" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+<span class="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 ring-2 ring-white"></span>
+</button>
+<button class="spring-tap w-9 h-9 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-sky-600" onclick="openModal('modal-members', 'sheet-members')" title="Danh sách thành viên CLB" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+</button>
+<button class="spring-tap w-9 h-9 rounded-full ring-2 ring-sky-400 shadow-sm overflow-hidden border border-white hover:ring-sky-500 transition-all" onclick="openModal('modal-settings', 'sheet-settings')" title="Cài đặt tài khoản" type="button">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARAWC9GeZBx0afFbfDG2A1TSnklAFeBMgy-xSI5U0mmtOT8zznuLTVP8wi04Fy6GXsSb5m0VscqPnBXmfmMp4kvblNmF3iBNhqr9Mua8Owfl8o6rCW65hbgR7L9XcIQlHP7Qdv8PuQGJcokBJ2tqjVP6xxgg5mLZ31oYoeEUbAIgSEIL-pkk9z9qG6xKBMBAsbigiYeFLmbNmI82zG-XcGRe5xRsptRae22B36xCOs">
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN NATIVE VIEW CONTENT -->
+<main class="flex-1 px-4 pt-3.5 space-y-3.5 pb-24">
+<div id="tabContentProfile" class="space-y-3.5">
+<!-- 2. HERO PASS CARD WITH 3D TILT & SHEEN -->
+<div class="perspective-card-wrapper">
+<section class="tilt-card relative rounded-[24px] text-white p-5 shadow-[0_16px_36px_rgba(2,132,199,0.28)] overflow-visible border border-sky-300/40 backdrop-blur-2xl cursor-pointer" id="hero-tilt-card" style="background: linear-gradient(135deg, rgb(9, 51, 90) 0%, rgb(3, 105, 161) 45%, rgb(2, 132, 199) 80%, rgb(14, 165, 233) 100%);">
+<div class="tilt-sheen rounded-[24px]"></div>
+<div class="flex items-center justify-between relative z-20">
+<span class="text-[11px] font-bold tracking-wider text-sky-100 uppercase">CLB THỂ THAO</span>
+<div class="flex items-center gap-1.5 relative">
+<span class="font-mono text-[10px] text-sky-100 bg-white/15 px-2 py-0.5 rounded-full border border-white/20">2024–25</span>
+<!-- Direct Interactive Status Pill & Micro-Popover -->
+<div class="relative inline-block text-left" id="status-toggle-wrapper">
+<button class="spring-tap inline-flex items-center gap-1.5 pl-2.5 pr-2 py-1 rounded-full bg-emerald-500/25 border border-emerald-300/50 shadow-[0_2px_10px_rgba(16,185,129,0.25)] hover:bg-emerald-500/35 backdrop-blur-md transition-all duration-200 cursor-pointer group" id="hero-status-pill" onclick="toggleStatusDropdown(event)" title="Nhấn để đổi trạng thái" type="button">
+<span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] animate-pulse" id="hero-status-dot"></span>
+<span class="text-[11px] font-semibold text-emerald-100 tracking-tight" id="hero-status-text">Sẵn sàng</span>
+<svg class="w-3 h-3 text-emerald-200 transition-transform duration-200 group-hover:translate-y-0.5" fill="none" id="hero-status-chevron" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+</button>
+<!-- Status Micro-Popover / Dropdown (Frosted Glass) -->
+<div class="hidden opacity-0 translate-y-1 transition-all duration-200 absolute right-0 mt-1.5 w-52 rounded-2xl bg-slate-900/90 backdrop-blur-2xl border border-white/20 shadow-2xl p-1.5 z-50 divide-y divide-white/10" id="status-dropdown">
+<div class="px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-sky-300/80">Chọn trạng thái</div>
+<div class="py-1 space-y-0.5">
+<button class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('ready', event)" type="button">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] animate-pulse"></span>
+<span class="text-[12px] font-semibold text-white">Sẵn sàng nhận ca</span>
+</div>
+<span class="text-[10px] text-emerald-300 font-mono">Nhận ca</span>
+</button>
+<button class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('busy', event)" type="button">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.9)] animate-pulse"></span>
+<span class="text-[12px] font-semibold text-white">Đang trực ca</span>
+</div>
+<span class="text-[10px] text-amber-300 font-mono">Bận rộn</span>
+</button>
+<button class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('off', event)" type="button">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400 shadow-[0_0_6px_rgba(148,163,184,0.6)]"></span>
+<span class="text-[12px] font-semibold text-slate-200">Nghỉ ngơi</span>
+</div>
+<span class="text-[10px] text-slate-300 font-mono">Tạm dừng</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-3.5 flex items-center gap-3.5 relative z-10">
+<div class="relative">
+        <img alt="Lê Hoàng Long" id="memAvatarImg" class="w-16 h-16 rounded-2xl object-cover ring-2 ring-white/50 shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARAWC9GeZBx0afFbfDG2A1TSnklAFeBMgy-xSI5U0mmtOT8zznuLTVP8wi04Fy6GXsSb5m0VscqPnBXmfmMp4kvblNmF3iBNhqr9Mua8Owfl8o6rCW65hbgR7L9XcIQlHP7Qdv8PuQGJcokBJ2tqjVP6xxgg5mLZ31oYoeEUbAIgSEIL-pkk9z9qG6xKBMBAsbigiYeFLmbNmI82zG-XcGRe5xRsptRae22B36xCOs">
+        <div class="avatar-cam-badge absolute -bottom-1 -right-1 bg-white text-slate-700 rounded-full flex items-center justify-center shadow-md border border-slate-100 cursor-pointer" style="width: 22px; height: 22px;" title="Cập nhật ảnh thẻ">
+          <svg style="width: 11px; height: 11px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
         </div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-[17px] font-extrabold tracking-tight text-slate-900">Varsity Pass</span>
-          <span id="role-badge" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-sky-50 text-sky-600 border border-sky-200/80">ADMIN</span>
-        </div>
       </div>
-      
-      <!-- Top Action Buttons -->
-      <div class="flex items-center space-x-2">
-        <button onclick="openModal('notification-modal')" class="relative w-9 h-9 rounded-full bg-slate-100/90 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors ripple-active active:scale-95">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-          </svg>
-          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-white"></span>
-        </button>
-        
-        <button onclick="openModal('members-modal')" class="w-9 h-9 rounded-full bg-slate-100/90 flex items-center justify-center text-slate-600 hover:text-slate-900 transition-colors ripple-active active:scale-95">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-          </svg>
-        </button>
-
-        <button onclick="openModal('settings-modal')" class="relative w-9 h-9 rounded-full ring-2 ring-sky-500/30 overflow-hidden shadow-sm ripple-active active:scale-95 transition-transform">
-          <img id="header-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="w-full h-full object-cover">
-        </button>
-      </div>
-    </header>
-
-    <!-- MAIN SCROLLABLE CONTENT -->
-    <main class="flex-1 px-4 pt-3 pb-8 space-y-4 overflow-y-auto">
-
-      <!-- ==================== TAB 0: PROFILE VIEW ==================== -->
-      <div id="tabContentProfile" class="space-y-4">
-
-        <!-- 1. HERO PASS CARD -->
-        <section class="relative hero-pass-gradient rounded-3xl p-5 text-white overflow-hidden shadow-xl">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center space-x-2">
-              <span class="text-xs font-black tracking-wider uppercase text-sky-200">CLB THỂ THAO</span>
-              <span class="text-white/40">•</span>
-              <span class="text-xs font-semibold text-white/80">Trường Đại học Hải Dương</span>
-            </div>
-
-            <!-- Status Pill with dropdown -->
-            <div class="relative">
-              <button id="status-pill-btn" onclick="toggleStatusDropdown(event)" class="px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center space-x-1.5 active:scale-95 transition-[background-color,transform,box-shadow,opacity] text-xs font-semibold">
-                <span id="status-dot" class="w-2 h-2 rounded-full animate-pulse bg-emerald-400"></span>
-                <span id="status-label">Sẵn sàng</span>
-                <svg class="w-3 h-3 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
-              </button>
-              
-              <!-- Status Dropdown Menu -->
-              <div id="status-dropdown" class="hidden absolute right-0 mt-2 w-36 bg-white/95 backdrop-blur-xl text-slate-800 rounded-2xl shadow-xl border border-white/60 p-1.5 z-40 space-y-1 text-xs">
-                <div onclick="changeStatus('Sẵn sàng', 'emerald', 'Sẵn sàng nhận ca')" class="flex items-center space-x-2 p-2 rounded-xl hover:bg-slate-100 cursor-pointer">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <span class="font-bold text-slate-700">Sẵn sàng</span>
-                </div>
-                <div onclick="changeStatus('Đang trực', 'sky', 'Đang thực hiện ca trực')" class="flex items-center space-x-2 p-2 rounded-xl hover:bg-slate-100 cursor-pointer">
-                  <span class="w-2 h-2 rounded-full bg-sky-500"></span>
-                  <span class="font-bold text-slate-700">Đang trực</span>
-                </div>
-                <div onclick="changeStatus('Nghỉ ngơi', 'slate', 'Đang trong trạng thái nghỉ')" class="flex items-center space-x-2 p-2 rounded-xl hover:bg-slate-100 cursor-pointer">
-                  <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-                  <span class="font-bold text-slate-700">Nghỉ ngơi</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Identity -->
-          <div class="flex items-center space-x-3.5 mb-4">
-            <div class="relative w-16 h-16 rounded-2xl ring-2 ring-white/30 shadow-inner flex-shrink-0">
-              <div class="w-full h-full rounded-2xl overflow-hidden">
-                <img id="card-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar" class="w-full h-full object-cover">
-              </div>
-              <div class="avatar-cam-badge absolute -bottom-1 -right-1 rounded-full bg-white text-slate-700 flex items-center justify-center shadow-md border border-white/80" style="width: 22px; height: 22px;">
-                <svg style="width: 11px; height: 11px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-              </div>
-            </div>
-            <div class="min-w-0 flex-1">
-              <h2 id="card-name" class="text-xl font-extrabold tracking-tight truncate leading-tight">LÊ HOÀNG LONG</h2>
-              <p id="card-role-title" class="text-xs font-semibold text-sky-100/90 truncate">Trưởng nhóm Điều phối Sân bãi</p>
-              <div class="flex items-center space-x-2 mt-1">
-                <span id="compact-id-badge" onclick="openDigitalSportPassModal()" class="cursor-pointer font-mono text-[11px] font-bold tracking-wider text-sky-200 bg-white/10 px-1.5 py-0.5 rounded-md border border-white/10 hover:bg-white/20 transition-colors">ID: <span id="card-mssv">21127110</span></span>
-                <span class="text-[10px] text-white/60 font-mono">#AUTH-OK</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Footer / Hash -->
-          <div class="pt-3 border-t border-white/15 flex items-center justify-between text-[11px] font-mono text-white/70">
-            <span class="flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> VERIFIED
-            </span>
-            <span class="tracking-widest">7F3A • C891 • 04B2</span>
-          </div>
-        </section>
-
-        <!-- 2. STATS OVERVIEW -->
-        <section class="grid grid-cols-3 gap-2.5">
-          <div class="frosted-card rounded-2xl p-3 text-center">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Ca hoàn thành</span>
-            <span id="stat-completed-shifts" class="font-mono text-lg font-extrabold text-slate-800">18</span>
-          </div>
-          <div class="frosted-card rounded-2xl p-3 text-center">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Đúng giờ</span>
-            <span id="stat-on-time-rate" class="font-mono text-lg font-extrabold text-sky-600">98%</span>
-          </div>
-          <div class="frosted-card rounded-2xl p-3 text-center">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Tín nhiệm</span>
-            <span id="stat-trust-grade" class="font-mono text-lg font-extrabold text-emerald-600">A+</span>
-          </div>
-        </section>
-
-        <!-- 3. ACTIONS ROW (ROLE-BASED) -->
-        <!-- ADMIN BAR -->
-        <section id="admin-actions-bar" class="grid grid-cols-2 gap-2.5">
-          <button onclick="openModal('create-shift-modal')" class="py-3 px-3.5 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md shadow-sky-500/25 flex items-center justify-center space-x-1.5 ripple-active active:scale-95 transition-transform">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
-            <span>Tạo ca trực</span>
-          </button>
-          <button onclick="openModal('approve-modal')" class="py-3 px-3.5 rounded-2xl frosted-card text-slate-700 font-bold text-xs flex items-center justify-center space-x-1.5 ripple-active active:scale-95 transition-transform border border-slate-200/80">
-            <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-            <span>Duyệt ca</span>
-            <span id="pending-count-badge" class="ml-1 px-1.5 py-0.2 bg-rose-500 text-white text-[10px] font-extrabold rounded-full">2</span>
-          </button>
-        </section>
-
-        <!-- MEMBER BAR -->
-        <section id="member-actions-bar" class="hidden grid-cols-2 gap-2.5">
-          <button onclick="openModal('swap-modal')" class="py-3 px-3.5 rounded-2xl bg-white border border-slate-200/90 text-slate-700 font-bold text-xs shadow-sm flex items-center justify-center space-x-1.5 ripple-active active:scale-95 transition-transform">
-            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-            <span>Yêu cầu đổi ca</span>
-          </button>
-          <button onclick="openModal('qr-modal')" class="py-3 px-3.5 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md shadow-sky-500/25 flex items-center justify-center space-x-1.5 ripple-active active:scale-95 transition-transform">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
-            <span>Mã Check-in</span>
-          </button>
-        </section>
-
-        <!-- CA TRỰC HIỆN TẠI / GẦN NHẤT -->
-        <section class="frosted-card rounded-3xl p-4 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-black uppercase tracking-wider text-slate-400">Ca trực gần nhất</span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-50 text-sky-600 border border-sky-100">Đang diễn ra</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 space-y-1.5">
-            <h4 class="font-bold text-slate-800 text-xs">Điều phối Giải Cầu lông Toàn trường</h4>
-            <div class="flex items-center space-x-3 text-[11px] text-slate-500 font-medium">
-              <span class="flex items-center gap-1">📍 Sân Đa Năng</span>
-              <span>•</span>
-              <span class="font-mono text-slate-700">14:00 – 17:30</span>
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="openModal('qr-modal')" class="flex-1 py-2.5 rounded-xl bg-sky-500 text-white font-bold text-xs shadow-sm hover:bg-sky-600 transition-colors">Xuất trình QR Ca Trực</button>
-            <button onclick="switchDockTab(1)" class="px-3 py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-xs hover:bg-slate-200 transition-colors">Tất cả ca</button>
-          </div>
-        </section>
-
-        <!-- 4. PROFILE SECTION (8 FIELDS) -->
-        <section class="frosted-card rounded-3xl p-5 space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Thông tin hồ sơ</h3>
-            <button onclick="openModal('edit-profile-modal')" class="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center space-x-1 ripple-active">
-              <span>Chỉnh sửa</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <!-- 1. Họ và tên -->
-            <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Họ và tên</span>
-              <span id="info-fullname" class="font-bold text-slate-900"><span id="dFullName">Lê Hoàng Long</span></span>
-            </div>
-
-            <!-- 2. MSSV -->
-            <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Mã định danh (MSSV)</span>
-              <span id="info-mssv" class="font-mono font-bold text-slate-700"><span id="dMemberId">21127110</span></span>
-            </div>
-
-            <!-- 3. Khoa / Đơn vị -->
-            <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Khoa / Đơn vị</span>
-              <span id="info-faculty" class="font-semibold text-slate-800"><span id="dClass">K62 - GDTC</span> • <span id="dDept">Ban Bóng chuyền</span></span>
-            </div>
-
-            <!-- 4. Địa bàn phụ trách -->
-            <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Địa bàn phụ trách</span>
-              <span id="info-location" class="font-semibold text-slate-800"><span id="dRole">Sân vận động Trung tâm</span></span>
-            </div>
-
-            <!-- 5. Số điện thoại -->
-            <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Số điện thoại</span>
-              <span id="info-phone" class="font-mono font-bold text-sky-600"><span id="dPhone">0912 345 678</span></span>
-            </div>
-
-            <!-- 6. Trạng thái -->
-            <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Trạng thái</span>
-              <span id="info-status-badge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center gap-1">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Sẵn sàng nhận ca
-              </span>
-            </div>
-
-            <!-- 7. Đánh giá thể lực -->
-            <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Đánh giá thể lực</span>
-              <span id="dMed" class="font-bold text-emerald-600">✓ Đạt chuẩn</span>
-            </div>
-
-            <!-- 8. ICE -->
-            <div onclick="openModal('ice-modal')" class="flex items-center justify-between p-2 rounded-2xl bg-rose-50/70 border border-rose-100 cursor-pointer transition-colors ripple-active">
-              <span class="font-bold text-rose-700">Liên hệ khẩn (ICE)</span>
-              <span id="dIce" class="font-mono text-xs font-bold text-rose-600">0988 123 456 (Mẹ) ›</span>
-            </div>
-          </div>
-        </section>
-
-      </div>
+<div class="flex-1 min-w-0">
+<span class="text-[10px] font-semibold tracking-wider text-cyan-200 uppercase font-mono">THÀNH VIÊN BAN ĐIỀU PHỐI</span>
+<h1 class="text-[17px] font-bold text-white tracking-tight leading-snug truncate" id="card-name">LÊ HOÀNG LONG</h1>
+<p class="text-[12px] text-sky-100/90 truncate">Trưởng nhóm Điều phối Sân bãi</p>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="text-[9.5px] text-sky-200 uppercase font-mono">MSSV:</span>
+<span class="font-mono text-[11px] font-semibold text-white bg-white/20 border border-white/25 px-1.5 py-0.2 rounded" id="card-mssv">21127110</span>
+        <div class="compact-id-badge cursor-pointer inline-flex items-center gap-1 text-[9px] bg-white/20 hover:bg-white/30 text-white font-mono px-1.5 py-0.5 rounded-full border border-white/30" onclick="openDigitalSportPassModal()" title="Xem thẻ số VIP"><span>VIP PASS</span></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- 3. STATS STRIP -->
+<section class="bg-white/85 backdrop-blur-xl rounded-2xl p-3.5 shadow-sm border border-sky-100/80">
+<div class="grid grid-cols-3 divide-x divide-sky-100 text-center">
+<div class="py-1">
+<div class="text-[24px] font-bold text-sky-600 font-mono" id="heroShiftsCount">18</div>
+<div class="text-[11.5px] text-slate-500 font-medium mt-0.5">Ca hoàn thành</div>
+</div>
+<div class="py-1">
+<div class="text-[24px] font-bold text-teal-600 font-mono">98%</div>
+<div class="text-[11.5px] text-slate-500 font-medium mt-0.5">Đúng giờ</div>
+</div>
+<div class="py-1">
+<div class="text-[24px] font-bold text-indigo-600 font-mono">A+</div>
+<div class="text-[11.5px] text-slate-500 font-medium mt-0.5">Tín nhiệm</div>
+</div>
+</div>
+</section>
+<!-- 4. DYNAMIC ACTION BUTTONS -->
+<section>
+<div class="grid-cols-2 gap-2.5 hidden" id="member-action-bar">
+<button class="spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 border border-sky-200/80 text-sky-900 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm" id="btnMemberSwapShift" onclick="openModal('modal-swap', 'sheet-swap')" type="button">
+<div class="w-6 h-6 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3L4 7l4 4"></path><path d="M4 7h16"></path><path d="M16 21l4-4-4-4"></path><path d="M20 17H4"></path></svg>
+</div>
+<span>Yêu cầu đổi ca</span>
+</button>
+<button class="spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 border border-sky-200/80 text-sky-900 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm" id="btnTabQrPass" onclick="openModal('modal-checkin-qr', 'sheet-checkin-qr')" type="button">
+<div class="w-6 h-6 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="5" rx="1" width="5" x="3" y="3"></rect><rect height="5" rx="1" width="5" x="16" y="3"></rect><rect height="5" rx="1" width="5" x="3" y="16"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M12 12v5"></path></svg>
+</div>
+<span>Mã Check-in</span>
+</button>
+</div>
+<div class="grid-cols-2 gap-2.5 grid" id="admin-action-bar">
+<button class="spring-tap h-11 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white text-[13px] font-semibold flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(2,132,199,0.3)]" id="btnAdminCreateTaskAction" onclick="openModal('modal-create-shift', 'sheet-create-shift')" type="button">
+<div class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center font-bold">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+</div>
+<span>+ Tạo ca trực</span>
+</button>
+<button class="spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 text-sky-900 border border-sky-300 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm relative" id="btnAdminApproveAction" onclick="openModal('modal-approve', 'sheet-approve')" type="button">
+<div class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+</div>
+<span id="txt-approve-btn">Duyệt ca (2)</span>
+<span class="w-2.5 h-2.5 rounded-full bg-rose-500 text-rose-500 absolute top-2 right-2 radar-pulse-ring" id="approve-badge-dot"></span>
+</button>
+</div>
+</section>
+<!-- 5. THÔNG TIN HỒ SƠ 8 TRƯỜNG -->
+<section class="space-y-2">
+<div class="px-1 flex items-center justify-between">
+<h2 class="text-[11px] font-bold text-sky-800 uppercase tracking-wider font-mono">THÔNG TIN HỒ SƠ</h2>
+<button class="spring-tap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-sky-700 text-[11px] font-semibold border border-sky-200 shadow-sm hover:bg-sky-50" onclick="openModal('modal-edit', 'sheet-edit')" type="button">
+<svg class="w-3 h-3 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+<span>Chỉnh sửa</span>
+</button>
+</div>
+<div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 divide-y divide-slate-100 overflow-hidden shadow-sm">
+<div class="profile-row-item flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+<span class="text-[13px] text-slate-600 font-medium">Họ và tên</span>
+</div>
+<span class="text-[13px] font-semibold text-slate-900" id="field-fullname">Lê Hoàng Long</span><span id="dFullName" class="hidden">Lê Hoàng Long</span>
+</div>
+<div class="profile-row-item flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M7 7h10M7 12h10M7 17h10"></path></svg></div>
+<span class="text-[13px] text-slate-600 font-medium">Mã số sinh viên</span>
+</div>
+<span class="font-mono text-[13px] font-semibold text-slate-900" id="field-studentId">21127110</span><span id="dMemberId" class="hidden">21127110</span>
+</div>
+<div class="profile-row-item flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path></svg></div>
+<span class="text-[13px] text-slate-600 font-medium">Khoa / Khóa</span>
+</div>
+<span class="text-[13px] font-semibold text-slate-900" id="field-faculty">K45 - CNTT (Trường Đại học Hải Dương)</span><span id="dClass" class="hidden">K45</span><span id="dDept" class="hidden">CNTT</span>
+</div>
+<div class="profile-row-item flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+<span class="text-[13px] text-slate-600 font-medium">Khu vực trực</span>
+</div>
+<span class="text-[13px] font-semibold text-slate-900" id="field-dutyArea">Sân Vận Động &amp; Nhà Thi Đấu</span><span id="dRole" class="hidden">Sân Vận Động &amp; Nhà Thi Đấu</span>
+</div>
+<div class="profile-row-item flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+<span class="text-[13px] text-slate-600 font-medium">Số điện thoại</span>
+</div>
+<span class="font-mono text-[13px] font-semibold text-sky-600" id="field-phone">+84 908 419 283</span><span id="dPhone" class="hidden">+84 908 419 283</span>
+</div>
+<div class="profile-row-item flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-sky-50/50" onclick="cycleStatus()">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+<span class="text-[13px] text-slate-600 font-medium">Trạng thái</span>
+</div>
+<span class="text-[12.5px] font-semibold text-emerald-600 flex items-center gap-1.5 transition-colors duration-200" id="field-status">
+<span class="w-2 h-2 rounded-full bg-emerald-500 text-emerald-500" id="field-status-dot"></span> <span id="field-status-txt">Sẵn sàng nhận ca</span>
+</span>
+</div>
+<div class="profile-row-item flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg></div>
+<span class="text-[13px] text-slate-600 font-medium">Chứng nhận thể lực</span>
+</div>
+<span class="text-[12.5px] font-semibold text-emerald-600 flex items-center gap-1" id="field-fitness"><span id="dMed" class="hidden">Đạt chuẩn</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+<span>Đạt chuẩn</span>
+</span>
+</div>
+<div class="spring-tap profile-row-item flex items-center justify-between px-4 py-3 hover:bg-rose-50/60 cursor-pointer" onclick="openModal('modal-ice', 'sheet-ice')">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+<div>
+<span class="text-[13px] text-slate-700 font-medium block leading-tight">Liên hệ khẩn (ICE)</span>
+<span class="text-[10px] text-rose-500 font-medium">Nhấn xem danh bạ cứu hộ</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-rose-600 font-semibold text-[12.5px]">
+<span id="field-ice">0988 123 456 (Mẹ)</span><span id="dIce" class="hidden">0988 123 456 (Mẹ)</span>
+<svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</div>
+</div>
+</div>
+</section>
+</div><!-- End tabContentProfile -->
 
       <!-- ==================== TAB 1: TASKS VIEW ==================== -->
-      <div id="tabContentTasks" class="hidden space-y-4">
-        <div class="frosted-card rounded-3xl p-4 space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-extrabold text-slate-900">Điều Động Sân Bãi</h3>
-            <button onclick="openModal('create-shift-modal')" class="px-3 py-1.5 rounded-xl bg-sky-500 text-white font-bold text-xs shadow-sm hover:bg-sky-600">+ Tạo Ca</button>
+      <div id="tabContentTasks" class="hidden space-y-3.5">
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 p-4 space-y-3 shadow-sm">
+          <!-- Admin Task Toolbar -->
+          <div id="adminTaskToolbar" class="acrylic-card hidden">
+            <div class="flex items-center justify-between pb-3 border-b border-sky-100">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Bảng Điều Phối Ca Trực</h3>
+                <p class="text-[11px] text-slate-500 font-mono">ADMIN DISPATCH SYSTEM</p>
+              </div>
+              <button onclick="openModal('modal-create-shift', 'sheet-create-shift')" class="spring-tap px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-bold text-xs shadow-sm">+ Tạo ca</button>
+            </div>
           </div>
           <!-- Department Filter Chips for the 7 Departments -->
           <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
@@ -390,18 +367,18 @@
       </div>
 
       <!-- ==================== TAB 2: FORUM VIEW ==================== -->
-      <div id="tabContentForum" class="hidden space-y-4">
-        <div class="frosted-card rounded-3xl p-4 space-y-3">
+      <div id="tabContentForum" class="hidden space-y-3.5">
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 p-4 space-y-3 shadow-sm">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-extrabold text-slate-900">Diễn Đàn Thể Thao</h3>
-            <span class="text-[10px] text-slate-400 font-bold uppercase">Varsity Feed</span>
+            <h3 class="text-sm font-bold text-slate-900">Diễn Đàn Thể Thao</h3>
+            <span class="text-[10px] text-slate-400 font-bold uppercase font-mono">VARSITY FEED</span>
           </div>
           <!-- Post Composer Box -->
           <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
             <textarea id="iptPostContent" rows="2" placeholder="Chia sẻ thông báo hoặc khoảnh khắc giải đấu..." class="w-full bg-transparent text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none"></textarea>
             <div class="flex items-center justify-between pt-2 border-t border-slate-200/60">
               <span class="text-[10px] text-slate-400 font-semibold">Chế độ công khai</span>
-              <button onclick="submitNewForumPost()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-sm">Đăng bài</button>
+              <button onclick="submitNewForumPost()" class="spring-tap px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-bold text-xs shadow-sm">Đăng bài</button>
             </div>
           </div>
           <!-- Forum Feed Container -->
@@ -410,559 +387,642 @@
           </div>
         </div>
       </div>
+</main>
+<!-- FLOATING ROLE SWITCHER & BOTTOM DOCK -->
+<div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1.5">
+  <!-- 1. Floating Role Switcher Pill -->
+  <div class="bg-white/90 backdrop-blur-xl border border-sky-200/80 p-1 rounded-full shadow-[0_8px_24px_rgba(2,132,199,0.18)] flex items-center relative">
+    <div class="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-blue-600 to-sky-600 shadow-sm transition-all duration-300 ease-out" id="pill-indicator" style="left: 88px; width: 70px;"></div>
+    <button class="spring-tap relative z-10 px-3.5 py-1.5 text-[11.5px] font-bold rounded-full transition-colors flex items-center gap-1.5 text-slate-600" id="toggle-role-member" onclick="setRole('member')" type="button">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Thành viên</span>
+    </button>
+    <button class="spring-tap relative z-10 px-3.5 py-1.5 text-[11.5px] font-bold rounded-full transition-colors flex items-center gap-1.5 text-white" id="toggle-role-admin" onclick="setRole('admin')" type="button">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+      <span>Quản trị</span>
+    </button>
+  </div>
+  <!-- 2. Apple Glass Dock (Hồ Sơ / Điều Động / Diễn Đàn) -->
+  <div class="flex items-center space-x-3 bg-white/85 backdrop-blur-md px-4 py-1.5 rounded-full border border-sky-100 shadow-sm text-[11px] font-bold text-slate-500">
+    <button id="btnDock0" onclick="switchDockTab(0)" class="hover:text-sky-600 transition-colors text-sky-600 font-bold">Hồ Sơ</button>
+    <span class="text-slate-300">•</span>
+    <button id="btnDock1" onclick="switchDockTab(1)" class="hover:text-sky-600 transition-colors">Điều Động</button>
+    <span class="text-slate-300">•</span>
+    <button id="btnDock2" onclick="switchDockTab(2)" class="hover:text-sky-600 transition-colors">Diễn Đàn</button>
+  </div>
+</div>
+</div>
+<!-- ==================== FROSTED GLASS COLOROS AQUAMORPHIC MODALS ==================== -->
+<!-- MODAL CHECK-IN QR -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-checkin-qr">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-checkin-qr">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+  <div id="directoryDeptFilterBar" class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs hidden">
+    <button onclick="setDirectoryDeptFilter('ALL')">ALL</button>
+    <button onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')">Chủ Nhiệm</button>
+    <button onclick="setDirectoryDeptFilter('Ban Nhân Sự')">Nhân Sự</button>
+    <button onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')">Bóng Chuyền</button>
+    <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')">Bóng Đá Nam</button>
+    <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')">Bóng Đá Nữ</button>
+    <button onclick="setDirectoryDeptFilter('Ban Cầu Lông')">Cầu Lông</button>
+    <button onclick="setDirectoryDeptFilter('Ban Truyền Thông')">Truyền Thông</button>
+  </div>
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="5" rx="1" width="5" x="3" y="3"></rect><rect height="5" rx="1" width="5" x="16" y="3"></rect><rect height="5" rx="1" width="5" x="3" y="16"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Mã Check-in Sân Bãi</h3>
+<p class="text-[11px] text-slate-500 font-mono">VARSITY PASS IDENTITY</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-checkin-qr', 'sheet-checkin-qr')">✕</button>
+</div>
+<div class="py-4 space-y-4 text-center">
+<div class="p-4 bg-gradient-to-b from-sky-50/80 to-blue-50/40 rounded-3xl border border-sky-200/60 inline-block mx-auto shadow-inner">
+<div class="w-44 h-44 bg-white p-3 rounded-2xl shadow-sm border border-sky-100 flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-24 h-24 bg-cyan-400/10 rounded-full blur-xl"></div>
+<svg class="w-36 h-36 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm13-2h3v2h-3zm-5 0h2v5h-2zm2 2h3v2h-3zm0 3h3v2h-3zm3 0h3v2h-3z"></path></svg>
+</div>
+</div>
+<div class="hero-gradient text-white p-3 rounded-2xl shadow-md border border-sky-300/30 text-left">
+<div class="flex items-center justify-between">
+<span class="text-[10px] uppercase font-mono text-cyan-200 font-semibold tracking-wider">THÔNG TIN XÁC THỰC</span>
+<span class="text-[10px] bg-emerald-400/20 border border-emerald-300/40 text-emerald-200 px-2 py-0.5 rounded-full font-mono font-bold">HỢP LỆ</span>
+</div>
+<h4 class="text-[14px] font-bold text-white mt-1">Lê Hoàng Long • 21127110</h4>
+<div id="modalDigitalSportPassCard" class="contents">
+  <span id="vipCardMemberName" class="hidden">Lê Hoàng Long</span>
+  <span id="vipCardMemberRole" class="hidden">Trưởng nhóm Điều phối Sân bãi</span>
+  <span id="vipCardMemberId" class="hidden">21127110</span>
+  <span id="vipCardMemberClass" class="hidden">K45</span>
+  <span id="vipCardMemberDept" class="hidden">Ban Điều Phối</span>
+  <span id="vipCardMemberShifts" class="hidden">18</span>
+  <div id="vipCardQrContainer" class="hidden"></div>
+</div>
+<p class="text-[11.5px] text-sky-100/90 mt-0.5">Xuất trình tại cửa kiểm soát Zone A - SVĐ &amp; Nhà Thi Đấu</p>
+</div>
+</div>
 
-    </main>
+</div>
+</div>
+<!-- MODAL SWAP -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 items-end justify-center" id="modal-swap">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-swap">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3L4 7l4 4"></path><path d="M4 7h16"></path><path d="M16 21l4-4-4-4"></path><path d="M20 17H4"></path></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Tạo Đơn Đổi Ca Trực</h3>
+<p class="text-[11px] text-slate-500 font-mono">SHIFT SWAP REQUEST</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-swap', 'sheet-swap')">✕</button>
+</div>
+<div class="py-3.5 space-y-3">
+<div class="hero-gradient p-4 rounded-2xl text-white shadow-md border border-sky-300/30">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-bold uppercase text-cyan-200 font-mono tracking-wider">CA ĐƯỢC CHỌN ĐỔI</span>
+<span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono text-white">#SHIFT-881</span>
+</div>
+<h4 class="text-[14px] font-bold text-white mt-0.5">Sân Vận Động - Zone A3</h4>
+<p class="text-[12px] text-sky-100">Thứ Bảy (15/03) • 07:30 - 11:30</p>
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1.5">Chọn đồng đội tiếp nhận ca</label>
+<div class="p-3 rounded-2xl border-2 border-sky-500/80 bg-sky-50/70 text-[13px] font-semibold text-slate-800 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-teal-600 text-white font-bold flex items-center justify-center text-[12px]">NĐ</div>
+<div>
+<span class="font-bold text-slate-900 block">Nguyễn Văn Đạt</span>
+<span class="text-[11px] text-slate-500">K22 - Y Tế Đội Tuyển</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full font-mono">Sẵn sàng</span>
+</div>
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1.5">Lý do đổi ca</label>
+<input class="w-full px-3.5 py-2.5 bg-slate-50/90 rounded-2xl border border-sky-200/80 text-[13px] focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 placeholder-slate-400" placeholder="Nhập lý do..." value="Trùng lịch thi giải đấu trường">
+</div>
+</div>
+<button class="spring-tap mt-3 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="closeModal('modal-swap', 'sheet-swap'); triggerToast('Đã gửi yêu cầu đổi ca trực!');" type="button">Gửi Yêu Cầu Phê Duyệt</button>
+</div>
+</div>
+<!-- MODAL SETTINGS -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-settings">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-settings"><div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div><div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Cài Đặt &amp; Tài Khoản</h3><p class="text-[11px] text-slate-500 font-mono">SYSTEM PREFERENCES</p></div></div><button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-settings', 'sheet-settings')">✕</button></div><div class="py-3.5 space-y-4 overflow-y-auto max-h-[64vh] pr-1"><div class="space-y-1.5"><div class="px-1 text-[10.5px] font-bold font-mono text-sky-700 uppercase tracking-wider">Tài khoản &amp; Bảo mật</div><div class="bg-white/80 rounded-2xl border border-sky-100/80 divide-y divide-slate-100 shadow-sm overflow-hidden"><div class="spring-tap flex items-center justify-between p-3.5 cursor-pointer hover:bg-sky-50/50" onclick="togglePasswordDrawer()"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Đổi mật khẩu tài khoản</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Chạm để nhập mật khẩu mới</span></div></div><svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div><div class="hidden p-3 bg-sky-50/70 border-t border-sky-100 space-y-2" id="settings-pwd-drawer"><input class="w-full px-3 py-2 bg-white rounded-xl border border-sky-200 text-[12px] text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-new-password" placeholder="Nhập mật khẩu mới..." type="password"><button class="spring-tap w-full h-8 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-semibold text-[11.5px] shadow-sm" onclick="handleSaveNewPassword()" type="button">Cập nhật mật khẩu</button></div><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0 0 8 11a4 4 0 1 1 8 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0 0 15.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 0 0 4 11m0 0a8 8 0 0 0 .528 2.86m0 0a21.88 21.88 0 0 0 2.225 4.88"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Xác thực Face ID / Sinh trắc học</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Mở khóa thẻ nhanh khi kiểm ca</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input checked="" class="sr-only peer" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div></div></div><div class="space-y-1.5"><div class="px-1 text-[10.5px] font-bold font-mono text-sky-700 uppercase tracking-wider">Hệ thống &amp; Thông báo</div><div class="bg-white/80 rounded-2xl border border-sky-100/80 divide-y divide-slate-100 shadow-sm overflow-hidden"><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Nhắc nhở trước ca 30 phút</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Báo thức và rung thông báo</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input checked="" class="sr-only peer" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Giao diện tối (Dark Mode)</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Tối ưu hiển thị ban đêm</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input class="sr-only peer" onchange="triggerToast('Đã đổi chế độ sáng/tối')" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div></div></div><div class="space-y-2 pt-2"><button class="spring-tap w-full h-11 rounded-2xl bg-sky-50 text-sky-800 border border-sky-200/80 font-semibold text-[13px] flex items-center justify-center gap-2 hover:bg-sky-100 transition-colors shadow-sm" <button id="btnMenuRoleManagement" class="spring-touch hidden" onclick="openAdminRoleManagementModal()">Phân Quyền Admin</button>
+onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg><span>Đăng nhập tài khoản khác</span></button><button class="spring-tap w-full h-11 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200/80 font-semibold text-[13px] flex items-center justify-center gap-2 hover:bg-rose-100 transition-colors shadow-sm" onclick="handleLogout()" type="button"><svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg><span>Đăng xuất khỏi thiết bị</span></button></div></div></div>
+</div>
+<!-- MODAL ICE -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 items-end justify-center" id="modal-ice">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-ice">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-rose-100/80">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Danh Bạ Khẩn Cấp (ICE)</h3>
+<p class="text-[11px] text-rose-600 font-mono font-semibold">EMERGENCY FIRST RESPONSE</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-ice', 'sheet-ice')">✕</button>
+</div>
+<div class="py-3.5 space-y-2.5">
+<div class="p-4 rounded-2xl bg-gradient-to-r from-rose-500/10 via-rose-50/70 to-white border border-rose-200/70 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center shadow-md">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+</div>
+<div>
+<h4 class="text-[13.5px] font-bold text-slate-900">Tổ Cứu Hộ &amp; Y Tế 115</h4>
+<p class="text-[11px] text-slate-500 font-mono">Khu Liên Hợp Sân Bãi</p>
+</div>
+</div>
+<a class="spring-tap text-[12px] font-bold text-white bg-gradient-to-r from-rose-600 to-red-500 px-3.5 py-2 rounded-xl shadow-[0_4px_12px_rgba(225,29,72,0.35)] flex items-center gap-1.5" href="tel:115">
+<span>SOS 115</span>
+</a>
+</div>
+<div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-50/60 to-white border border-amber-200/70 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+</div>
+<div>
+<h4 class="text-[13.5px] font-bold text-slate-900">Mẹ (Liên hệ gia đình)</h4>
+<p class="text-[11px] text-slate-500 font-mono">0988 123 456</p>
+</div>
+</div>
+<a class="spring-tap text-[12px] font-bold text-amber-900 bg-amber-200/80 hover:bg-amber-300 border border-amber-300/80 px-3.5 py-2 rounded-xl shadow-sm flex items-center gap-1.5" href="tel:0988123456">
+<span>Gọi Mẹ</span>
+</a>
+</div>
+</div>
 
-    <!-- 5. FLOATING ROLE SWITCHER & DOCK BAR -->
-    <div class="absolute bottom-4 inset-x-0 mx-auto w-[290px] z-20 flex flex-col items-center gap-1.5">
-      <!-- Role Switcher -->
-      <div class="p-1 w-full rounded-full frosted-glass border border-white/80 shadow-lg flex items-center justify-between">
-        <button id="role-member-btn" onclick="setRole('member')" class="flex-1 py-1.5 text-xs font-bold rounded-full text-slate-600 transition-[background-color,transform,box-shadow,opacity] text-center cursor-pointer">Thành viên</button>
-        <button id="role-admin-btn" onclick="setRole('admin')" class="flex-1 py-1.5 text-xs font-bold rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md text-center transition-[background-color,transform,box-shadow,opacity] cursor-pointer">Quản trị</button>
+</div>
+</div>
+<!-- MODAL CREATE SHIFT -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-create-shift" onclick="if (event.target === this) closeCreateTaskModal()">
+<div id="modalCreateTask" class="contents" onclick="if (event.target === this) closeCreateTaskModal()">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-create-shift" onclick="event.stopPropagation()">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Tạo Ca Trực Sân Bãi</h3>
+<p class="text-[11px] text-slate-500 font-mono">ADMIN SHIFT SCHEDULER</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-create-shift', 'sheet-create-shift')">✕</button>
+</div>
+<div class="py-3.5 space-y-3 overflow-y-auto max-h-[58vh]">
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Tên ca trực</label>
+<input id="iptTaskTitle" class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="VD: Trực Chung Kết Cầu Lông Đơn Nam" value="Chung kết Bóng Rổ Varsity 2025">
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Khu vực</label>
+<input id="iptTaskLocation" list="dlLocations" class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[12.5px] font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="VD: Nhà Thi Đấu Trung Tâm" value="Zone A - Nhà Thi Đấu">
+<datalist id="dlLocations"><option value="Nhà Thi Đấu Đa Năng"><option value="Sân Vận Động Trung Tâm"><option value="Khu Thể Thao Ngoài Trời"><option value="Bể Bơi Thể Thao"></datalist>
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Ngày diễn ra</label>
+<input id="iptTaskDate" class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[12.5px] font-mono font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" type="date" value="2025-05-15">
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Giờ bắt đầu</label>
+<input id="iptTaskStartTime" class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[12.5px] font-mono font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" type="time" value="08:00">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Giờ kết thúc</label>
+<input id="iptTaskEndTime" class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[12.5px] font-mono font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" type="time" value="12:00">
+</div>
+</div>
+<!-- Ghi chú nhiệm vụ -->
+<div class="space-y-1 text-left">
+  <label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Ghi chú nhiệm vụ:</label>
+  <textarea id="iptTaskNotes" rows="2" placeholder="Ghi chú chi tiết yêu cầu nhiệm vụ..." class="w-full px-3.5 py-2 bg-white/80 rounded-2xl border border-sky-200/80 text-[12.5px] text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+</div>
+<div id="taskDeptAllocationsContainer" class="hidden"></div>
+<div id="deptQuotaContainer" class="hidden"></div>
+<input type="number" id="iptTaskQuota" class="hidden" value="6">
+<select id="selAddDept" class="hidden"><option value="Ban Điều Phối">Ban Điều Phối</option><option value="Ban Y Tế">Ban Y Tế</option><option value="Ban Hậu Cần">Ban Hậu Cần</option></select>
+<input id="iptTaskLeader" type="hidden" value="DMC0806">
+<!-- Số lượng phân bổ nhân sự -->
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1.5">Phân bổ chỉ tiêu ban (Thành viên)</label>
+<div class="grid grid-cols-3 gap-2">
+<div class="p-2.5 rounded-2xl bg-sky-50/80 border border-sky-200/70 text-center">
+<span class="text-[10px] text-slate-500 block font-medium">Điều Phối</span>
+<span class="text-[16px] font-bold text-sky-700 font-mono">04</span>
+</div>
+<div class="p-2.5 rounded-2xl bg-teal-50/80 border border-teal-200/70 text-center">
+<span class="text-[10px] text-slate-500 block font-medium">Y Tế</span>
+<span class="text-[16px] font-bold text-teal-700 font-mono">02</span>
+</div>
+<div class="p-2.5 rounded-2xl bg-cyan-50/80 border border-cyan-200/70 text-center">
+<span class="text-[10px] text-slate-500 block font-medium">Hậu Cần</span>
+<span class="text-[16px] font-bold text-cyan-700 font-mono">03</span>
+</div>
+</div>
+</div>
+</div>
+<button class="spring-tap mt-2 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="executeCreateTaskSubmit();" type="button">+ Phát Hành Ca Trực</button>
+</div>
+</div>
+</div>
+<!-- MODAL APPROVE -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-approve">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-approve">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Phê Duyệt Điều Động</h3>
+<p class="text-[11px] text-slate-500 font-mono">APPROVAL QUEUE (2)</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-approve', 'sheet-approve')">✕</button>
+</div>
+<div class="py-3.5 space-y-3">
+<!-- Requisition Card 1 -->
+<div class="p-4 rounded-2xl border border-sky-200/80 bg-white/90 shadow-sm space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-mono font-bold text-sky-700 bg-sky-100/70 px-2 py-0.5 rounded-full">#REQ-9942</span>
+<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full font-mono">Chờ duyệt ca</span>
+</div>
+<div>
+<h4 class="text-[13.5px] font-bold text-slate-900">Lê Hoàng Long ⇄ Nguyễn Văn Đạt</h4>
+<p class="text-[11.5px] text-slate-500 mt-0.5">Đổi ca: SVĐ Zone A3 (Thứ Bảy 15/03 • 07:30 - 11:30)</p>
+</div>
+<div class="flex gap-2 pt-1">
+<button class="spring-tap flex-1 h-9 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 text-white font-semibold text-[12px] shadow-sm" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã phê duyệt ca!');" type="button">Phê duyệt</button>
+<button class="spring-tap flex-1 h-9 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[12px]" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã từ chối đơn.');" type="button">Từ chối</button>
+</div>
+</div>
+<!-- Requisition Card 2 -->
+<div class="p-4 rounded-2xl border border-sky-100 bg-white/70 shadow-sm space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-mono font-bold text-sky-700 bg-sky-100/70 px-2 py-0.5 rounded-full">#REQ-9945</span>
+<span class="text-[10px] font-bold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full font-mono">Đăng ký thêm</span>
+</div>
+<div>
+<h4 class="text-[13.5px] font-bold text-slate-900">Trần Bảo Ngọc (K22)</h4>
+<p class="text-[11.5px] text-slate-500 mt-0.5">Xin nhận thêm: Trực Trạm Y Tế SVĐ Chủ Nhật</p>
+</div>
+<div class="flex gap-2 pt-1">
+<button class="spring-tap flex-1 h-9 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 text-white font-semibold text-[12px] shadow-sm" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã duyệt nhận ca!');" type="button">Phê duyệt</button>
+<button class="spring-tap flex-1 h-9 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[12px]" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã hủy yêu cầu.');" type="button">Bỏ qua</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MODAL EDIT PROFILE -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 items-end justify-center" id="modal-edit" onclick="if (event.target === this) closeModal('modal-edit', 'sheet-edit')">
+<div id="modalEditProfile" class="contents">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-edit">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Chỉnh Sửa Hồ Sơ</h3>
+<p class="text-[11px] text-slate-500 font-mono">UPDATE PROFILE INFO</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-edit', 'sheet-edit')">✕</button>
+</div>
+<div class="py-3.5 space-y-2.5 overflow-y-auto max-h-[55vh]">
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Họ và tên</label>
+<input class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-fullname" value="Lê Hoàng Long">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">MSSV</label>
+<input class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-mono font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-studentId" value="21127110">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Khoa / Khóa</label>
+<input class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-faculty" value="Công nghệ Thông tin (K21)">
+</div>
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Số điện thoại</label>
+<input class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-mono font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-phone" value="+84 908 419 283">
+</div>
+</div>
+<button class="spring-tap mt-3 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="saveProfile(); if (typeof saveMemberProfileEdit === 'function') saveMemberProfileEdit();" type="button">Lưu Thay Đổi Hồ Sơ</button>
+</div>
+</div>
+<!-- MODAL NOTIFICATIONS -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-noti">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-noti">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Trung Tâm Thông Báo</h3>
+<p class="text-[11px] text-slate-500 font-mono">CLUB DISPATCH FEED</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-noti', 'sheet-noti')">✕</button>
+</div>
+<div class="py-3.5 space-y-2.5 overflow-y-auto max-h-[55vh]">
+<!-- Thông báo điều phối (xanh pastel) -->
+<div class="p-3.5 rounded-2xl bg-sky-50/90 border border-sky-200/80">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-bold text-sky-950 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-sky-500"></span> Lịch phân công ca mới
+            </span>
+<span class="text-[10px] text-sky-600 font-mono">10p trước</span>
+</div>
+<p class="text-[12px] text-slate-700 mt-1">Bạn được phân công phụ trách Điều phối SVĐ Zone A3 cuối tuần này.</p>
+</div>
+<!-- Thông báo phê duyệt (xanh lá pastel) -->
+<div class="p-3.5 rounded-2xl bg-emerald-50/90 border border-emerald-200/80">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-bold text-emerald-950 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Phê duyệt đổi ca thành công
+            </span>
+<span class="text-[10px] text-emerald-600 font-mono">1 giờ trước</span>
+</div>
+<p class="text-[12px] text-slate-700 mt-1">Ca trực thứ Năm đã được chuyển giao cho Đạt K22 theo yêu cầu.</p>
+</div>
+<!-- Thông báo khẩn cấp (đỏ pastel) -->
+<div class="p-3.5 rounded-2xl bg-rose-50/90 border border-rose-200/80">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-bold text-rose-950 flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Ca trực khẩn cấp SVĐ
+            </span>
+<span class="text-[10px] text-rose-600 font-mono">Hôm qua</span>
+</div>
+<p class="text-[12px] text-slate-700 mt-1">Cần tăng cường 2 thành viên hỗ trợ kiểm soát vé chung kết bóng rổ.</p>
+</div>
+</div>
+
+</div>
+</div>
+<!-- MODAL MEMBERS -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-members" onclick="if (event.target === this) closeModal('modal-members', 'sheet-members')">
+<div id="modalDirectory" class="contents">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-members">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Thành Viên CLB Thể Thao</h3>
+<p class="text-[11px] text-slate-500 font-mono">CLUB DIRECTORY • 42 THÀNH VIÊN</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-members', 'sheet-members')">✕</button>
+</div>
+<div class="py-3.5 space-y-2.5 overflow-y-auto max-h-[55vh]">
+<!-- Member 1: User -->
+<div class="flex items-center justify-between p-3 rounded-2xl border border-sky-200/80 bg-white/90 shadow-sm">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white font-bold flex items-center justify-center text-[13px] shadow-sm">HL</div>
+<div>
+<span class="text-[13px] font-bold text-slate-900 block">Lê Hoàng Long (Bạn)</span>
+<span class="text-[11px] text-sky-700">Trưởng nhóm Điều Phối • K21</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full font-mono">Sẵn sàng</span>
+</div>
+<!-- Member 2 -->
+<div class="flex items-center justify-between p-3 rounded-2xl border border-sky-100 bg-white/70 shadow-sm">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-teal-600 text-white font-bold flex items-center justify-center text-[13px]">NĐ</div>
+<div>
+<span class="text-[13px] font-bold text-slate-900 block">Nguyễn Văn Đạt</span>
+<span class="text-[11px] text-slate-500">Ban Y Tế Sơ Cứu • K22</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full font-mono">Sẵn sàng</span>
+</div>
+
+<div id="directoryListContainer" class="hidden"></div>
+<div id="adminShiftAdjustRow" class="flex items-center justify-between p-2.5 bg-sky-50/50 rounded-xl border border-sky-100 mt-2">
+  <div class="text-[11px] font-bold text-sky-900 font-mono">ĐIỀU CHỈNH CA (ADMIN)</div>
+  <div class="flex items-center gap-2">
+    <button onclick="promptAdjustSelectedMemberShifts(-1)" class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-50">-1</button>
+    <button onclick="promptAdjustSelectedMemberShifts(1)" class="w-7 h-7 rounded-lg bg-sky-600 text-white font-bold hover:bg-sky-700">+1</button>
+  </div>
+</div>
+<div class="hidden">
+  <span id="otherMemIdVal">21127110</span>
+  <span id="otherMemNameVal">Lê Hoàng Long</span>
+  <span id="otherClass">K45</span>
+  <span id="otherDept">Ban Điều Phối</span>
+  <span id="otherRoleVal">Trưởng nhóm</span>
+  <span id="otherMed">Tốt</span>
+  <span id="otherPhone">0912345678</span>
+  <span id="otherIce">0988123456</span>
+</div>
+
+<!-- Member 3 -->
+<div class="flex items-center justify-between p-3 rounded-2xl border border-sky-100 bg-white/70 shadow-sm">
+<div class="flex items-center gap-2.5">
+<div class="w-10 h-10 rounded-2xl bg-amber-500 text-white font-bold flex items-center justify-center text-[13px]">BN</div>
+<div>
+<span class="text-[13px] font-bold text-slate-900 block">Trần Bảo Ngọc</span>
+<span class="text-[11px] text-slate-500">Ban Hậu Cần • K22</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full font-mono">Đang trực ca</span>
+</div>
+</div>
+
+</div>
+</div>
+<!-- TOAST NOTIFICATION -->
+<div class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-900/95 backdrop-blur-xl text-white shadow-xl max-w-[90vw] opacity-0 -translate-y-4" id="toast">
+<div class="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[10px]">✓</div>
+<span class="text-[12.5px] font-medium tracking-tight truncate" id="toast-msg">Giao diện Quản trị Admin</span>
+</div><!-- MODAL LOGIN -->
+<!-- MODAL LOGIN / VIEW LOGIN CONTAINER -->
+<div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 items-end justify-center" id="viewLoginContainer">
+<div class="contents" id="modal-login" onclick="if (event.target === this) closeModal('modal-login', 'sheet-login')">
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-login" onclick="event.stopPropagation()">
+<div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg>
+</div>
+<div>
+<h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Cổng Đăng Nhập CLB</h3>
+<p class="text-[11px] text-slate-500 font-mono">VARSITY PASS AUTHENTICATION</p>
+</div>
+</div>
+<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-login', 'sheet-login')">✕</button>
+</div>
+<div class="py-3.5 space-y-3.5 overflow-y-auto max-h-[60vh]">
+<!-- Transparent Guidance Panel -->
+<div class="p-3 bg-sky-50/70 rounded-2xl border border-sky-200/80 space-y-1.5">
+  <div class="text-[11px] font-bold text-sky-800 font-mono uppercase">Hướng Dẫn Đăng Nhập Minh Bạch</div>
+  <p class="text-[11px] text-slate-600 leading-relaxed">Sử dụng tài khoản demo: Admin <b>DMC0806</b> / Mật khẩu <b>123456</b> hoặc thành viên <b>NVA1508</b> (<b>Nguyễn Văn An</b>) / Mật khẩu <b>123456</b>.</p>
+</div>
+<!-- Fast Quick Pick Demo Accounts -->
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1.5">Chọn tài khoản nhanh (Demo)</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="spring-tap p-2.5 rounded-2xl bg-sky-50/80 hover:bg-sky-100/80 border border-sky-200/80 text-left transition-colors" onclick="quickFillAccount('DMC0806', 'admin')" type="button">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-bold text-sky-800 bg-sky-200/70 px-1.5 py-0.2 rounded font-mono">ADMIN</span>
+<span class="text-[9px] font-mono text-slate-400">DMC0806</span>
+</div>
+<div class="text-[12px] font-bold text-slate-900 truncate">Đỗ Mạnh Cường</div>
+<div class="text-[10.5px] text-slate-500 truncate">Chủ Nhiệm CLB</div>
+</button>
+<button class="spring-tap p-2.5 rounded-2xl bg-teal-50/80 hover:bg-teal-100/80 border border-teal-200/80 text-left transition-colors" onclick="quickFillAccount('NVA1508', 'member')" type="button">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-bold text-teal-800 bg-teal-200/70 px-1.5 py-0.2 rounded font-mono">MEMBER</span>
+<span class="text-[9px] font-mono text-slate-400">NVA1508</span>
+</div>
+<div class="text-[12px] font-bold text-slate-900 truncate">Nguyễn Văn An</div>
+<div class="text-[10.5px] text-slate-500 truncate">Ban Điều Phối</div>
+</button>
+</div>
+</div>
+<!-- MSSV Input -->
+<div>
+<label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1">Mã số sinh viên (MSSV)</label>
+<div class="relative flex items-center">
+<div class="absolute left-3.5 text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M7 7h10M7 12h10M7 17h10"></path></svg>
+</div>
+<input type="text" id="iptUser" value="" class="w-full pl-10 pr-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-mono font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="VD: DMC0806 hoặc 21127110">
+</div>
+</div>
+<!-- Password Input -->
+<div>
+<div class="flex items-center justify-between mb-1">
+<label class="text-[11px] font-semibold text-slate-500 uppercase font-mono">Mật khẩu</label>
+<button class="text-[11px] font-semibold text-sky-600 hover:text-sky-700" onclick="triggerToast('Mật khẩu demo mặc định là 123456')" type="button">Quên mật khẩu?</button>
+</div>
+<div class="relative flex items-center">
+<div class="absolute left-3.5 text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+</div>
+<input type="password" id="iptPass" value="" class="w-full pl-10 pr-10 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="••••••••">
+<button id="btnTogglePass" onclick="togglePasswordVisibility()" class="absolute right-3.5 text-slate-400 hover:text-slate-600" type="button">
+<svg class="w-4 h-4" fill="none" id="icon-eye-login" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+</button>
+</div>
+</div>
+<!-- Remember me Checkbox -->
+<label class="flex items-center gap-2 cursor-pointer pt-1">
+  <input type="checkbox" id="chkRememberLogin" checked class="w-4 h-4 rounded text-sky-600 border-slate-300 focus:ring-sky-500">
+  <span class="text-[11.5px] text-slate-600 font-medium">Ghi nhớ đăng nhập trên thiết bị này</span>
+</label>
+<!-- Action Login Buttons -->
+<div class="space-y-2 pt-1">
+<button class="spring-tap w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)] flex items-center justify-center gap-2" onclick="executeLoginSubmit()" type="button">
+<span>Đăng Nhập Ngay</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</button>
+<button class="spring-tap w-full h-11 rounded-2xl bg-white/90 hover:bg-sky-50 border border-sky-200/80 text-sky-900 font-semibold text-[13px] flex items-center justify-center gap-2 shadow-sm" onclick="performBiometricLogin()" type="button">
+<svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0 0 8 11a4 4 0 1 1 8 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0 0 15.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 0 0 4 11m0 0a8 8 0 0 0 .528 2.86m0 0a21.88 21.88 0 0 0 2.225 4.88"></path></svg>
+<span>Đăng nhập nhanh bằng Face ID / Vân tay</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+  <!-- AUXILIARY TEST MODALS -->
+  <div id="modalAdminRoleManagement" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/40 backdrop-blur-md">
+    <div class="w-full max-w-[440px] bg-white rounded-t-3xl p-5 space-y-3" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <h3 class="text-sm font-bold text-slate-900">Trung Tâm Cấp Quyền &amp; Phân Vai</h3>
+        <button onclick="closeAdminRoleManagementModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-600">✕</button>
       </div>
-      <!-- Subtle Dock Tabs (Hồ Sơ / Điều Động / Diễn Đàn) -->
-      <div class="flex items-center space-x-3 bg-white/75 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/70 shadow-sm text-[11px] font-bold text-slate-500">
-        <button id="btnDock0" onclick="switchDockTab(0)" class="hover:text-sky-600 transition-colors active text-sky-600">Hồ Sơ</button>
-        <span class="text-slate-300">•</span>
-        <button id="btnDock1" onclick="switchDockTab(1)" class="hover:text-sky-600 transition-colors">Điều Động</button>
-        <span class="text-slate-300">•</span>
-        <button id="btnDock2" onclick="switchDockTab(2)" class="hover:text-sky-600 transition-colors">Diễn Đàn</button>
+      <input id="iptRoleMemberSearch" type="text" placeholder="Tìm thành viên..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+      <div id="roleDeptFilterBar" class="flex gap-1 overflow-x-auto text-xs py-1"></div>
+      <div class="flex justify-between text-xs font-mono text-slate-500">
+        <span>Tổng: <b id="roleCountTotal">0</b></span>
+        <span>Admin: <b id="roleCountAdmin">0</b></span>
+        <span>Trưởng ca: <b id="roleCountShiftLeader">0</b></span>
       </div>
+      <div id="roleMemberListContainer" class="max-h-60 overflow-y-auto space-y-1"></div>
     </div>
-
-    <!-- Hidden compatibility containers for tests -->
-    <div id="adminTaskToolbar" class="acrylic-card hidden"></div>
-
-    <!-- MODAL BACKDROP -->
-    <div id="modal-backdrop" onclick="closeAllModals()" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-40"></div>
-
-    <!-- ==================== ALL BOTTOM SHEET MODALS ==================== -->
-
-    <!-- 1. LOGIN MODAL -->
-    <div id="login-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md">
-      <div id="viewLoginContainer" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[90vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center space-x-3 mb-2">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-sky-500/25">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          </div>
-          <div>
-            <h3 class="text-base font-extrabold text-slate-900">Varsity Pass Auth</h3>
-            <p class="text-xs text-slate-500 font-medium">Đăng nhập thẻ số & điều động</p>
-          </div>
-        </div>
-        <div class="space-y-3">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Mã Thẻ / MSSV / SĐT</label>
-            <input type="text" id="iptUser" value="" placeholder="Mã Thẻ (VD: DMC0806) / MSSV / SĐT" class="w-full px-4 py-3 rounded-2xl bg-slate-100 border border-slate-200 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">Mật Khẩu</label>
-            <div class="relative">
-              <input type="password" id="iptPass" value="" placeholder="Nhập mật khẩu" class="w-full px-4 py-3 rounded-2xl bg-slate-100 border border-slate-200 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 pr-12">
-              <button id="btnTogglePass" type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              </button>
-            </div>
-          </div>
-          <div class="flex items-center justify-between py-1">
-            <label class="flex items-center space-x-2 text-xs text-slate-600 font-semibold cursor-pointer">
-              <input id="chkRememberLogin" type="checkbox" checked class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
-              <span>Ghi nhớ đăng nhập trên thiết bị này</span>
-            </label>
-          </div>
-          <button onclick="handleLoginSubmit()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-sm shadow-md shadow-sky-500/25 active:scale-98 transition-transform">Đăng Nhập Thẻ Số</button>
-          <div class="p-3.5 rounded-2xl bg-sky-50/80 border border-sky-100 text-xs text-slate-700 space-y-1.5">
-            <p class="font-bold text-sky-800 flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              Hướng Dẫn Đăng Nhập Minh Bạch:
-            </p>
-            <p class="text-slate-600">• Quản trị viên: <span class="font-mono font-bold text-sky-900">DMC0806</span> | MK: <span class="font-mono font-bold text-sky-900">123456</span> (Đỗ Mạnh Cường)</p>
-            <p class="text-slate-600">• Thành viên mẫu: <span class="font-mono font-bold text-sky-900">NVA1508</span> | MK: <span class="font-mono font-bold text-sky-900">123456</span> (Nguyễn Văn An)</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. CREATE SHIFT MODAL -->
-    <div id="modalCreateTask" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md cursor-pointer" onclick="closeModal('modalCreateTask')">
-      <div id="create-shift-modal" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[88vh] overflow-y-auto cursor-default" onclick="event.stopPropagation()">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Tạo Ca Trực Mới</h3>
-          <button onclick="closeModal('create-shift-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Tiêu Đề Ca Trực</label>
-            <input id="iptTaskTitle" type="text" placeholder="VD: Trực giải Cầu lông Toàn trường" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Địa Điểm Tác Nghiệp</label>
-            <input id="iptTaskLocation" list="dlLocations" type="text" placeholder="Chọn hoặc nhập địa điểm tự do..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500">
-            <datalist id="dlLocations">
-              <option value="Sân Vận Động Trung Tâm">
-              <option value="Nhà Thi Đấu Đa Năng">
-              <option value="Sân Cầu Lông Số 1">
-              <option value="Sân Bóng Đá Cỏ Nhân Tạo">
-              <option value="Sân Bóng Chuyền Ngoài Trời">
-            </datalist>
-          </div>
-          <div class="grid grid-cols-3 gap-2">
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Ngày</label>
-              <input id="iptTaskDate" type="date" class="w-full px-2.5 py-2 rounded-xl bg-slate-100 border border-slate-200 font-mono font-semibold text-[11px] focus:outline-none focus:ring-2 focus:ring-sky-500">
-            </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Bắt Đầu</label>
-              <input id="iptTaskStartTime" type="time" class="w-full px-2 py-2 rounded-xl bg-slate-100 border border-slate-200 font-mono font-semibold text-[11px] focus:outline-none focus:ring-2 focus:ring-sky-500">
-            </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">Kết Thúc</label>
-              <input id="iptTaskEndTime" type="time" class="w-full px-2 py-2 rounded-xl bg-slate-100 border border-slate-200 font-mono font-semibold text-[11px] focus:outline-none focus:ring-2 focus:ring-sky-500">
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="font-bold text-slate-700">Phân Bổ Quân Số Theo Ban</label>
-              <span class="text-[10px] text-slate-400 font-medium">Chỉ tiêu mỗi ban</span>
-            </div>
-            <div id="taskDeptAllocationsContainer" class="space-y-1.5 p-2 rounded-2xl bg-slate-50 border border-slate-200/80"></div>
-            <div class="flex items-center gap-2 mt-2">
-              <select id="selAddDept" class="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold focus:outline-none">
-                <option value="">-- Chọn ban bổ sung --</option>
-                <option value="Ban Chủ Nhiệm">Ban Chủ Nhiệm</option>
-                <option value="Ban Nhân Sự">Ban Nhân Sự</option>
-                <option value="Ban Bóng Chuyền">Ban Bóng Chuyền</option>
-                <option value="Ban Bóng Đá Nam">Ban Bóng Đá Nam</option>
-                <option value="Ban Bóng Đá Nữ">Ban Bóng Đá Nữ</option>
-                <option value="Ban Cầu Lông">Ban Cầu Lông</option>
-                <option value="Ban Truyền Thông">Ban Truyền Thông</option>
-              </select>
-              <button type="button" onclick="addDepartmentAllocationRow()" class="px-3 py-2 rounded-xl bg-sky-50 text-sky-600 border border-sky-200 font-bold hover:bg-sky-100">+ Thêm ban</button>
-            </div>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Chỉ Huy Ca Trực</label>
-            <input id="iptTaskLeader" type="text" placeholder="Tên chỉ huy ca..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Ghi chú nhiệm vụ:</label>
-            <textarea id="iptTaskNotes" rows="2" placeholder="Nội dung trang phục, đồ dùng, lưu ý..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none"></textarea>
-          </div>
-          <button onclick="submitCreateTaskAction()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md shadow-sky-500/25 active:scale-98 transition-transform">Xác Nhận Tạo Ca Trực</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. APPROVE MODAL -->
-    <div id="approve-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('approve-modal')">
-      <div id="modalAdminDispatchHub" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Duyệt Ca & Điều Động</h3>
-          <button onclick="closeModal('approve-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3">
-          <div class="flex border-b border-slate-200 text-xs font-bold text-slate-500">
-            <button class="flex-1 py-2 text-sky-600 border-b-2 border-sky-500">Xin Rút Ca</button>
-            <button class="flex-1 py-2 hover:text-slate-700">Đổi Ca Chéo</button>
-          </div>
-          <div id="adminLeavesListContainer" class="space-y-2">
-            <div class="p-4 text-center text-xs text-slate-400">Không có yêu cầu xin rút ca đang chờ duyệt</div>
-          </div>
-          <div id="adminSwapsListContainer" class="hidden space-y-2">
-            <div class="p-4 text-center text-xs text-slate-400">Không có yêu cầu đổi ca đang chờ duyệt</div>
-          </div>
-          <button onclick="approveAllPendingRequests()" class="w-full py-3 rounded-2xl bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-500/25 active:scale-98 transition-transform">Duyệt Tất Cả Yêu Cầu</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. SWAP MODAL -->
-    <div id="swap-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('swap-modal')">
-      <div class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Yêu Cầu Đổi / Rút Ca</h3>
-          <button onclick="closeModal('swap-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Ca Muốn Đổi Hoặc Rút</label>
-            <select id="selSwapTask" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-              <option value="">-- Chọn ca trực phân bổ cho bạn --</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Lý Do Đổi / Rút Ca</label>
-            <textarea id="iptSwapReason" rows="3" placeholder="Lý do bất khả kháng hoặc trùng lịch thi..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none"></textarea>
-          </div>
-          <button onclick="submitSwapOrLeaveAction()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md shadow-sky-500/25">Gửi Yêu Cầu Tới Ban Quản Trị</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. EDIT PROFILE MODAL -->
-    <div id="edit-profile-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('edit-profile-modal')">
-      <div id="modalEditProfile" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[88vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Chỉnh Sửa Hồ Sơ</h3>
-          <button onclick="closeModal('edit-profile-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Họ và Tên</label>
-            <input id="editFullName" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Mã Định Danh (MSSV)</label>
-            <input id="editMssv" type="text" readonly class="w-full px-3.5 py-2.5 rounded-xl bg-slate-200/70 border border-slate-200 font-mono font-bold text-slate-500 cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Lớp Học</label>
-            <input id="editClass" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Ban Chuyên Môn</label>
-            <select id="editDept" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-              <option value="Ban Chủ Nhiệm">Ban Chủ Nhiệm</option>
-              <option value="Ban Nhân Sự">Ban Nhân Sự</option>
-              <option value="Ban Bóng Chuyền">Ban Bóng Chuyền</option>
-              <option value="Ban Bóng Đá Nam">Ban Bóng Đá Nam</option>
-              <option value="Ban Bóng Đá Nữ">Ban Bóng Đá Nữ</option>
-              <option value="Ban Cầu Lông">Ban Cầu Lông</option>
-              <option value="Ban Truyền Thông">Ban Truyền Thông</option>
-            </select>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Chức Vụ</label>
-            <input id="editRole" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Số Điện Thoại</label>
-            <input id="editPhone" type="tel" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-mono font-semibold focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Liên Hệ Khẩn (ICE)</label>
-            <input id="editIce" type="text" placeholder="SĐT người thân (Bố/Mẹ)..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-mono font-semibold focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Thể Lực & Y Tế</label>
-            <input id="editMed" type="text" placeholder="Bình thường / Dị ứng..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          </div>
-          <button onclick="saveMemberProfileEdit()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md shadow-sky-500/25">Lưu Thay Đổi Hồ Sơ</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 6. QR MODAL -->
-    <div id="qr-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('qr-modal')">
-      <div id="modalDigitalSportPassCard" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[88vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Mã QR & Check-in</h3>
-          <button onclick="closeModal('qr-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        
-        <!-- Segmented Tab Switch -->
-        <div class="flex rounded-xl bg-slate-100 p-1 text-xs font-bold text-slate-600">
-          <button id="btnTabQrPass" onclick="switchQrModalTab('pass')" class="flex-1 py-1.5 rounded-lg bg-white shadow-sm text-sky-600">Thẻ QR Của Tôi</button>
-          <button id="btnTabQrScan" onclick="switchQrModalTab('scan')" class="flex-1 py-1.5 rounded-lg hover:text-slate-900">Quét QR Check-in</button>
-        </div>
-
-        <!-- Tab 1: Personal VIP Card -->
-        <div id="qrTabPassContent" class="space-y-4 text-center">
-          <div class="hero-pass-gradient rounded-3xl p-5 text-white shadow-lg space-y-3">
-            <h4 id="vipCardMemberName" class="text-lg font-extrabold tracking-tight">LÊ HOÀNG LONG</h4>
-            <p id="vipCardMemberRole" class="text-xs text-sky-200 font-semibold">Trưởng nhóm Điều phối Sân bãi</p>
-            <div class="p-3 bg-white rounded-2xl shadow-inner inline-block mx-auto">
-              <div id="vipCardQrContainer" class="w-44 h-44 flex items-center justify-center mx-auto"></div>
-            </div>
-            <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-left pt-2 border-t border-white/20">
-              <div>ID: <span id="vipCardMemberId" class="font-bold">21127110</span></div>
-              <div>Lớp: <span id="vipCardMemberClass" class="font-bold">K62-GDTC</span></div>
-              <div>Ban: <span id="vipCardMemberDept" class="font-bold">Bóng Chuyền</span></div>
-              <div>Số ca: <span id="vipCardMemberShifts" class="font-bold">18 ca</span></div>
-            </div>
-          </div>
-          <p class="text-[11px] text-slate-400 font-medium">Xuất trình mã này cho Ban Điều Phối khi nhận ca</p>
-        </div>
-
-        <!-- Tab 2: Camera QR Scanner -->
-        <div id="qrTabScanContent" class="hidden space-y-3 text-center">
-          <div class="relative rounded-2xl overflow-hidden bg-black flex items-center justify-center min-h-[240px]">
-            <video id="qrScannerVideo" playsinline webkit-playsinline class="w-full h-full object-cover"></video>
-            <div class="qr-scan-reticle absolute inset-0 m-auto flex items-center justify-center">
-              <div class="qr-scan-laser"></div>
-            </div>
-          </div>
-          <div class="flex items-center justify-center gap-2">
-            <button onclick="startQrScanner()" class="px-4 py-2 rounded-xl bg-sky-500 text-white font-bold text-xs shadow-sm">Bật Camera</button>
-            <button onclick="stopQrScanner()" class="px-4 py-2 rounded-xl bg-slate-200 text-slate-700 font-bold text-xs">Tắt Camera</button>
-          </div>
-          <div class="pt-2 border-t border-slate-100">
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Hoặc tải ảnh mã QR từ thư viện:</label>
-            <input id="iptQrImageFile" type="file" accept="image/*" onchange="handleQrFileSelected(event)" class="text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-sky-50 file:text-sky-700">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 7. MEMBERS MODAL -->
-    <div id="members-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('members-modal')">
-      <div id="modalDirectory" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[88vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Danh Bạ Thành Viên CLB</h3>
-          <button onclick="closeModal('members-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3">
-          <input id="iptSearchDirectory" type="text" placeholder="Tìm theo tên, MSSV, ban..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-semibold focus:outline-none">
-          <!-- Department Filter Chips -->
-          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-            <button onclick="setDirectoryDeptFilter('ALL')" class="px-2.5 py-1 rounded-full bg-slate-900 text-white font-bold whitespace-nowrap text-[11px]">Tất cả</button>
-            <button onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap text-[11px]">Chủ Nhiệm</button>
-            <button onclick="setDirectoryDeptFilter('Ban Nhân Sự')" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap text-[11px]">Nhân Sự</button>
-            <button onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap text-[11px]">Bóng Chuyền</button>
-            <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap text-[11px]">Bóng Đá Nam</button>
-            <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap text-[11px]">Bóng Đá Nữ</button>
-            <button onclick="setDirectoryDeptFilter('Ban Cầu Lông')" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap text-[11px]">Cầu Lông</button>
-            <button onclick="setDirectoryDeptFilter('Ban Truyền Thông')" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap text-[11px]">Truyền Thông</button>
-          </div>
-          <!-- Members List -->
-          <div id="directoryListContainer" class="space-y-2 max-h-56 overflow-y-auto"></div>
-          
-          <!-- Selected Member Detail Card (8 Columns) -->
-          <div id="otherMemberDetailCard" class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2 text-xs">
-            <div class="flex items-center justify-between">
-              <span id="otherMemNameVal" class="font-extrabold text-slate-900 text-sm">---</span>
-              <span id="otherMemIdVal" class="font-mono font-bold text-sky-600">---</span>
-            </div>
-            <div class="grid grid-cols-2 gap-1 text-slate-600">
-              <div>Lớp: <span id="otherClass" class="font-semibold text-slate-800">---</span></div>
-              <div>Ban: <span id="otherDept" class="font-semibold text-slate-800">---</span></div>
-              <div>Chức vụ: <span id="otherRoleVal" class="font-semibold text-slate-800">---</span></div>
-              <div>Thể lực: <span id="otherMed" class="font-semibold text-slate-800">---</span></div>
-              <div>SĐT: <span id="otherPhone" class="font-mono text-slate-800">---</span></div>
-              <div>ICE: <span id="otherIce" class="font-mono text-slate-800">---</span></div>
-            </div>
-            <!-- Admin Shift Adjust Row -->
-            <div id="adminShiftAdjustRow" class="flex items-center justify-between pt-2 border-t border-slate-200">
-              <span class="text-[11px] font-bold text-slate-500">Điều chỉnh số ca:</span>
-              <div class="flex items-center gap-1.5">
-                <button onclick="promptAdjustSelectedMemberShifts(-1)" class="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 font-bold hover:bg-rose-100 border border-rose-200">-1</button>
-                <button onclick="promptAdjustSelectedMemberShifts(1)" class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 font-bold hover:bg-emerald-100 border border-emerald-200">+1</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 8. ICE MODAL -->
-    <div id="ice-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('ice-modal')">
-      <div id="modalEmergencyIce" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-rose-700 uppercase tracking-tight flex items-center gap-1.5">
-            <span>🚨</span> Liên Hệ Khẩn Cấp (ICE)
-          </h3>
-          <button onclick="closeModal('ice-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <div class="p-4 rounded-2xl bg-rose-50 border border-rose-100 space-y-2">
-            <span class="text-[10px] font-bold uppercase text-rose-500 tracking-wider">Người thân khẩn cấp</span>
-            <div class="flex items-center justify-between">
-              <span class="font-extrabold text-slate-900 text-sm">Mẹ (Người Giám Hộ)</span>
-              <a href="tel:0988123456" class="px-3 py-1.5 rounded-xl bg-rose-600 text-white font-bold text-xs shadow-sm">Gọi Ngay</a>
-            </div>
-            <p class="font-mono text-slate-600 font-semibold">0988 123 456</p>
-          </div>
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
-            <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Hồ sơ y tế hiện trường</span>
-            <p class="font-semibold text-slate-700">• Nhóm máu: <span class="font-bold text-slate-900">O+</span></p>
-            <p class="font-semibold text-slate-700">• Tiền sử bệnh: <span class="font-bold text-slate-900">Không có dị ứng</span></p>
-            <p class="font-semibold text-slate-700">• Thể trạng: <span class="font-bold text-emerald-600">Đạt chuẩn thể thao</span></p>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <a href="tel:115" class="py-2.5 rounded-xl bg-slate-900 text-white font-bold text-center block">Cấp Cứu 115</a>
-            <a href="tel:0912345678" class="py-2.5 rounded-xl bg-sky-500 text-white font-bold text-center block">Hotline BCN</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 9. SETTINGS MODAL -->
-    <div id="settings-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('settings-modal')">
-      <div id="modalHeaderMore" class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Cài Đặt & Tài Khoản</h3>
-          <button onclick="closeModal('settings-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <!-- Avatar change -->
-          <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200">
-            <span class="font-bold text-slate-700">Đổi ảnh đại diện</span>
-            <input id="iptAvatarFile" type="file" accept="image/*" onchange="handleAvatarFileSelect(event)" class="text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-bold file:bg-sky-50 file:text-sky-700">
-          </div>
-          <!-- Admin Tools -->
-          <button id="btnMenuRoleManagement" class="spring-touch hidden" onclick="openAdminRoleManagementModal()">Phân Quyền Admin</button>
-          <button onclick="openAdminRoleManagementModal()" class="w-full py-2.5 px-3.5 rounded-xl bg-sky-50 text-sky-700 font-bold text-left border border-sky-100 flex items-center justify-between">
-            <span>Trung Tâm Cấp Quyền &amp; Phân Vai (Phân Quyền Admin)</span>
-            <span>›</span>
-          </button>
-          <button onclick="openAdjustShiftsModal()" class="w-full py-2.5 px-3.5 rounded-xl bg-slate-50 text-slate-700 font-bold text-left border border-slate-200 flex items-center justify-between">
-            <span>Điều Chỉnh Số Ca Thủ Công</span>
-            <span>›</span>
-          </button>
-          <button onclick="openSmartRotationModal()" class="w-full py-2.5 px-3.5 rounded-xl bg-slate-50 text-slate-700 font-bold text-left border border-slate-200 flex items-center justify-between">
-            <span>Thuật Toán Xoay Vòng Thông Minh</span>
-            <span>›</span>
-          </button>
-          <button onclick="openChangePasswordModal()" class="w-full py-2.5 px-3.5 rounded-xl bg-slate-50 text-slate-700 font-bold text-left border border-slate-200 flex items-center justify-between">
-            <span>Đổi Mật Khẩu</span>
-            <span>›</span>
-          </button>
-          <button onclick="logout()" class="w-full py-3 rounded-2xl bg-rose-50 text-rose-600 font-bold border border-rose-100 hover:bg-rose-100 transition-colors">Đăng Xuất</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 10. NOTIFICATION MODAL -->
-    <div id="notification-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('notification-modal')">
-      <div class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Trung Tâm Thông Báo</h3>
-          <button onclick="closeModal('notification-modal')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-2 text-xs">
-          <div class="p-3 rounded-2xl bg-sky-50 border border-sky-100 space-y-1">
-            <span class="text-[10px] font-bold uppercase text-sky-600 tracking-wider">Lệnh điều động</span>
-            <p class="font-bold text-slate-800">Bạn có lệnh điều động mới: Trực giải Cầu lông</p>
-            <p class="text-[10px] text-slate-400">10 phút trước</p>
-          </div>
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 space-y-1">
-            <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Hệ thống</span>
-            <p class="font-semibold text-slate-700">Hồ sơ thẻ số đã đồng bộ Google Sheets</p>
-            <p class="text-[10px] text-slate-400">Hôm nay, 08:30</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 11. ADMIN ROLE MANAGEMENT CENTER MODAL -->
-    <div id="modalAdminRoleManagement" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('modalAdminRoleManagement')">
-      <div class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[88vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Trung Tâm Cấp Quyền &amp; Phân Vai</h3>
-          <button onclick="closeModal('modalAdminRoleManagement')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="p-2 rounded-xl bg-slate-50 border border-slate-200"><span id="roleCountTotal" class="font-mono font-bold text-sm block">125</span>Tổng TV</div>
-            <div class="p-2 rounded-xl bg-sky-50 border border-sky-100 text-sky-700"><span id="roleCountAdmin" class="font-mono font-bold text-sm block">1</span>Admin</div>
-            <div class="p-2 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700"><span id="roleCountShiftLeader" class="font-mono font-bold text-sm block">5</span>Trưởng Ca</div>
-          </div>
-          <input id="iptRoleMemberSearch" type="text" placeholder="Tìm thành viên phân vai..." class="w-full px-3 py-2 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          <div id="roleDeptFilterBar" class="flex gap-1 overflow-x-auto pb-1"></div>
-          <div id="roleMemberListContainer" class="space-y-2 max-h-48 overflow-y-auto"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 12. ADJUST SHIFTS MODAL -->
-    <div id="modalAdjustShifts" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('modalAdjustShifts')">
-      <div class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Điều Chỉnh Số Ca Trực</h3>
-          <button onclick="closeModal('modalAdjustShifts')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Mã Thành Viên</label>
-            <input id="iptAdjustMemberId" type="text" placeholder="Nhập ID thành viên..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-mono font-bold">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Số Ca Thay Đổi (+ / -)</label>
-            <div class="flex items-center gap-2">
-              <button onclick="changeAdjustDelta(-1)" class="w-10 h-10 rounded-xl bg-slate-100 font-bold text-base hover:bg-slate-200">-</button>
-              <input id="iptAdjustDelta" type="number" value="1" class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-mono font-bold text-center">
-              <button onclick="changeAdjustDelta(1)" class="w-10 h-10 rounded-xl bg-slate-100 font-bold text-base hover:bg-slate-200">+</button>
-            </div>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Lý Do Điều Chỉnh</label>
-            <input id="iptAdjustReason" type="text" placeholder="Trực bù giải đấu / Khen thưởng..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold">
-          </div>
-          <button onclick="executeAdjustShiftsSubmit()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md">Xác Nhận Cập Nhật Số Ca</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 13. SMART ROTATION MODAL -->
-    <div id="modalSmartRotation" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('modalSmartRotation')">
-      <div class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Thuật Toán Xoay Vòng Thông Minh</h3>
-          <button onclick="closeModal('modalSmartRotation')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <p class="text-slate-600">Thuật toán tự động sắp xếp ứng viên theo tiêu chí số ca hoàn thành ít nhất (doneA - doneB), miễn trừ người ốm và kiểm tra xung đột thời gian (hasTimeConflict).</p>
-          <div id="smartRotationResultsContainer" class="p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 max-h-48 overflow-y-auto"></div>
-          <button onclick="applySmartRotationCandidates()" class="w-full py-3 rounded-2xl bg-emerald-500 text-white font-bold text-xs shadow-md">Áp Dụng Điều Động Tự Động</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 14. CHANGE PASSWORD MODAL -->
-    <div id="modalChangePassword" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('modalChangePassword')">
-      <div class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Đổi Mật Khẩu</h3>
-          <button onclick="closeModal('modalChangePassword')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Mật Khẩu Mới</label>
-            <input id="iptNewPass" type="password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Xác Nhận Mật Khẩu</label>
-            <input id="iptConfirmNewPass" type="password" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 font-semibold focus:outline-none">
-          </div>
-          <button onclick="saveNewPassword()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md">Cập Nhật Mật Khẩu</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 15. THE TRANG MODAL -->
-    <div id="modalTheTrang" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/60 backdrop-blur-md" onclick="if(event.target===this)closeModal('modalTheTrang')">
-      <div class="w-full max-w-[390px] bg-white sm:rounded-3xl rounded-t-[32px] p-6 shadow-2xl border border-white/80 space-y-4 max-h-[85vh] overflow-y-auto">
-        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-2"></div>
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">Cập Nhật Thể Trạng</h3>
-          <button onclick="closeModal('modalTheTrang')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800">✕</button>
-        </div>
-        <div class="space-y-2 text-xs">
-          <button onclick="saveTheTrangQuick('Khỏe mạnh (100% Sẵn sàng)')" class="w-full p-3 rounded-xl bg-emerald-50 text-emerald-800 font-bold border border-emerald-200 text-left">✓ Khỏe mạnh (100% Sẵn sàng)</button>
-          <button onclick="saveTheTrangQuick('Cảm sốt / Đau họng nhẹ')" class="w-full p-3 rounded-xl bg-amber-50 text-amber-800 font-bold border border-amber-200 text-left">⚠ Cảm sốt / Đau họng nhẹ</button>
-          <button onclick="saveTheTrangQuick('Chấn thương cơ khớp (Xin nghỉ)')" class="w-full p-3 rounded-xl bg-rose-50 text-rose-800 font-bold border border-rose-200 text-left">🛑 Chấn thương cơ khớp (Xin nghỉ)</button>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- JAVASCRIPT ENGINE -->
-  <script>
+  <div id="modalAdjustShifts" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/40 backdrop-blur-md">
+    <div class="w-full max-w-[440px] bg-white rounded-t-3xl p-5 space-y-3" onclick="event.stopPropagation()">
+      <h3 class="text-sm font-bold text-slate-900">Điều Chỉnh Số Ca Hoàn Thành</h3>
+      <div id="adjustShiftsMemberInfo" class="text-xs text-slate-600"></div>
+      <div id="adjustShiftsMemberName" class="text-xs text-slate-600"></div>
+      <div class="flex items-center justify-center gap-4 py-2">
+        <button onclick="changeAdjustDelta(-1)" class="w-8 h-8 rounded-full bg-slate-100 font-bold">-</button>
+        <span id="adjustDeltaDisplay" class="font-mono text-lg font-bold">+1 ca</span>
+        <button onclick="changeAdjustDelta(1)" class="w-8 h-8 rounded-full bg-slate-100 font-bold">+</button>
+      </div>
+      <textarea id="iptAdjustShiftsReason" placeholder="Lý do điều chỉnh (bắt buộc)..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs"></textarea>
+      <button onclick="executeAdjustShiftsSubmit()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Xác nhận điều chỉnh</button>
+    </div>
+  </div>
+  <div id="modalOtherMemberDetails" class="hidden"></div>
+  <div id="badgeDefaultOnContainer" class="hidden"><span>Thông báo nền: Mặc định bật</span></div>
+
+  <div id="modalSmartRotation" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/40 backdrop-blur-md">
+    <div class="w-full max-w-[440px] bg-white rounded-t-3xl p-5 space-y-3" onclick="event.stopPropagation()">
+      <h3 class="text-sm font-bold text-slate-900">Điều Phối Thông Minh (Smart Rotation)</h3>
+      <div id="smartRotationResultsContainer" class="space-y-2"></div>
+      <button onclick="applySmartRotationCandidates()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Áp dụng phân bổ</button>
+    </div>
+  </div>
+
+  <div id="modalChangePassword" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/40 backdrop-blur-md">
+    <div class="w-full max-w-[440px] bg-white rounded-t-3xl p-5 space-y-3" onclick="event.stopPropagation()">
+      <h3 class="text-sm font-bold text-slate-900">Đổi Mật Khẩu Truy Cập</h3>
+      <input id="iptCurrentPassword" type="password" placeholder="Mật khẩu hiện tại..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+      <input id="iptNewPassword" type="password" placeholder="Mật khẩu mới..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+      <input id="iptConfirmPassword" type="password" placeholder="Xác nhận mật khẩu mới..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+      <button onclick="submitChangePassword()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Lưu mật khẩu mới</button>
+    </div>
+  </div>
+
+  <div id="modalTheTrang" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/40 backdrop-blur-md">
+    <div class="w-full max-w-[440px] bg-white rounded-t-3xl p-5 space-y-3" onclick="event.stopPropagation()">
+      <h3 class="text-sm font-bold text-slate-900">Cập Nhật Thể Trạng Thể Lực</h3>
+      <select id="selTheTrangLevel" class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+        <option value="Cấp 1 - Thi đấu đỉnh cao">Cấp 1 - Thi đấu đỉnh cao</option>
+        <option value="Cấp 2 - Thể lực tốt">Cấp 2 - Thể lực tốt</option>
+        <option value="Cấp 3 - Bình thường">Cấp 3 - Bình thường</option>
+        <option value="Cấp 4 - Hồi phục sau chấn thương">Cấp 4 - Hồi phục sau chấn thương</option>
+      </select>
+      <button onclick="submitTheTrangUpdate()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Lưu thể trạng</button>
+    </div>
+  </div>
+
+  <input type="file" id="iptQrImageFile" accept="image/*" class="hidden" onchange="handleQrFileSelected(event)">
+
+<script>
     const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzOzxjkLP684tGXQn7HFptjiYyMoyEFMkTackb8K56f1gJvqMlvV5mFc0JBTm9gbO7U/exec";
 
     // Danh sách 7 Ban chuyên môn chính thức của CLB Thể Thao UHD
@@ -1023,8 +1083,11 @@
       }
     ];
 
+    window.DEFAULT_MEMBERS_DIRECTORY = DEFAULT_MEMBERS_DIRECTORY;
     let currentUser = null;
+    window.currentUser = currentUser;
     let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY.map(m => Object.assign({}, m)) : []);
+    window.membersDirectory = membersDirectory;
     let currentTasks = DEFAULT_TASKS.map(t => JSON.parse(JSON.stringify(t)));
     const DEFAULT_COMMUNITY_POSTS = [
       {
@@ -2671,25 +2734,51 @@
     function renderProfileData() {
       if (!currentUser) return;
 
-      // Update new Varsity Pass UI fields
-      safeSetText('card-name', currentUser.hoTen || 'Thành viên');
+      // Update new SportPass Pro UI fields
+      safeSetText('card-name', (currentUser.hoTen || 'Thành viên').toUpperCase());
       safeSetText('card-mssv', currentUser.id || '---');
       safeSetText('card-role-title', currentUser.chucVu || 'Thành viên CLB');
-      safeSetText('info-fullname', currentUser.hoTen || '---');
-      safeSetText('info-mssv', currentUser.id || '---');
-      const deptDisp = (currentUser.cacBan && currentUser.cacBan.length > 1) ? currentUser.cacBan.join(', ') : (currentUser.boMon || 'Ban Thể Thao');
-      safeSetText('info-faculty', `${currentUser.lop || 'K62 - GDTC'} • ${deptDisp}`);
-      safeSetText('info-location', currentUser.diaBan || 'Sân Vận Động Trung Tâm');
-      safeSetText('info-phone', currentUser.sdt || '---');
-      safeSetText('stat-completed-shifts', String((currentUser.soCaHoanThanh != null ? currentUser.soCaHoanThanh : currentUser.soCa) || 0));
+      safeSetText('field-fullname', currentUser.hoTen || '---');
+      safeSetText('field-studentId', currentUser.id || '---');
+      const deptDisp = (currentUser.cacBan && currentUser.cacBan.length > 0)
+        ? currentUser.cacBan.join(' • ')
+        : (currentUser.ban || 'Ban CLB');
+      safeSetText('field-faculty', (currentUser.lop || 'K45') + ' • ' + deptDisp + ' (Trường Đại học Hải Dương)');
+      safeSetText('field-dutyArea', currentUser.chucVu || 'Khu vực chưa phân');
+      safeSetText('field-phone', currentUser.sdt || '---');
+      safeSetText('field-fitness', currentUser.theTrang || 'Cấp 1 - Thi đấu');
+      safeSetText('field-ice', currentUser.ice || '115 Cấp cứu');
 
-      if (currentUser.avatar) {
-        const cAv = document.getElementById('card-avatar');
-        if (cAv) cAv.src = currentUser.avatar;
-        const hAv = document.getElementById('header-avatar-img');
-        if (hAv) hAv.src = currentUser.avatar;
+      const shifts = (currentUser.soCaHoanThanh != null ? currentUser.soCaHoanThanh : currentUser.soCa) || 0;
+      safeSetText('heroShiftsCount', shifts);
+      safeSetText('stat-shifts', shifts);
+
+      const rBadge = document.getElementById('role-badge');
+      if (rBadge) {
+        if (currentUser.isAdmin) {
+          rBadge.textContent = 'ADMIN';
+          rBadge.className = 'text-[10px] font-bold text-sky-700 bg-sky-100 px-1.5 py-0.5 rounded uppercase font-mono border border-sky-200/60';
+        } else {
+          rBadge.textContent = 'MEMBER';
+          rBadge.className = 'text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded uppercase font-mono border border-emerald-200/60';
+        }
       }
-      setRole(currentUser.isAdmin ? 'admin' : 'member');
+
+      // Legacy fields
+      safeSetText('memName', currentUser.hoTen || 'Thành viên');
+      safeSetText('memRole', currentUser.chucVu || 'Thành viên CLB');
+      safeSetText('memId', 'ID: ' + (currentUser.id || '---'));
+      safeSetText('memDuty', `${shifts} ca`);
+      safeSetText('composerAuthorName', currentUser.hoTen || 'Thành viên');
+      safeSetText('dFullName', currentUser.hoTen || '---');
+      safeSetText('dMemberId', currentUser.id || '---');
+      safeSetText('dClass', currentUser.lop || '---');
+      safeSetText('dDept', deptDisp);
+      safeSetText('dRole', currentUser.chucVu || '---');
+      safeSetText('dPhone', currentUser.sdt || '---');
+      safeSetText('dMed', currentUser.theTrang || '---');
+      safeSetText('dIce', currentUser.ice || '---');
+      safeSetText('heroShiftsCount', shifts);
 
       if (!currentUser) return;
 
@@ -6505,200 +6594,463 @@
     });
 
   
-    // ==========================================================================
-    // VARSITY PASS UI ENGINE BRIDGES & MODAL HANDLERS
-    // ==========================================================================
-    function openModal(id) {
-      const backdrop = document.getElementById('modal-backdrop');
-      if (backdrop) backdrop.classList.remove('hidden');
+    // ==================== SPORTPASS PRO BRIDGE & MODAL CONTROLLER ====================
+    function showAquaIsland(msg, icon = '⚡') {
+      const island = document.getElementById('aquaIsland');
+      const msgEl = document.getElementById('aquaIslandMsg');
+      const iconEl = document.getElementById('aquaIslandIcon');
+      if (msgEl) msgEl.textContent = msg;
+      if (iconEl && icon) iconEl.textContent = icon;
 
-      const el = document.getElementById(id);
-      if (el) {
-        el.classList.remove('hidden');
-        el.classList.add('flex', 'open');
+      if (island) {
+        island.classList.add('active');
+        island.classList.remove('opacity-0', '-translate-y-4');
+        island.classList.add('opacity-100', 'translate-y-0');
       }
 
-      // Sync aliases
-      if (id === 'create-shift-modal' || id === 'modalCreateTask') {
-        document.getElementById('modalCreateTask')?.classList.add('open');
-        document.getElementById('create-shift-modal')?.classList.add('open', 'flex');
-        document.getElementById('create-shift-modal')?.classList.remove('hidden');
-        if (typeof renderDeptQuotaRows === 'function') renderDeptQuotaRows();
-      } else if (id === 'approve-modal' || id === 'modalAdminDispatchHub') {
-        document.getElementById('modalAdminDispatchHub')?.classList.add('open');
-        document.getElementById('approve-modal')?.classList.add('open', 'flex');
-        document.getElementById('approve-modal')?.classList.remove('hidden');
-        if (typeof renderAdminLeavesList === 'function') renderAdminLeavesList();
-        if (typeof renderAdminSwapsList === 'function') renderAdminSwapsList();
-      } else if (id === 'edit-profile-modal' || id === 'modalEditProfile') {
-        document.getElementById('modalEditProfile')?.classList.add('open');
-        document.getElementById('edit-profile-modal')?.classList.add('open', 'flex');
-        document.getElementById('edit-profile-modal')?.classList.remove('hidden');
-        if (typeof syncProfileFormInputs === 'function') syncProfileFormInputs();
-      } else if (id === 'qr-modal' || id === 'modalDigitalSportPassCard' || id === 'modalFieldCheckinQr') {
-        document.getElementById('modalDigitalSportPassCard')?.classList.add('open');
-        document.getElementById('qr-modal')?.classList.add('open', 'flex');
-        document.getElementById('qr-modal')?.classList.remove('hidden');
-        if (typeof renderPersonalDigitalPassQr === 'function') renderPersonalDigitalPassQr();
-      } else if (id === 'members-modal' || id === 'modalDirectory') {
-        document.getElementById('modalDirectory')?.classList.add('open');
-        document.getElementById('members-modal')?.classList.add('open', 'flex');
-        document.getElementById('members-modal')?.classList.remove('hidden');
-        if (typeof renderDirectoryList === 'function') renderDirectoryList();
-      } else if (id === 'settings-modal' || id === 'modalHeaderMore') {
-        document.getElementById('modalHeaderMore')?.classList.add('open');
-        document.getElementById('settings-modal')?.classList.add('open', 'flex');
-        document.getElementById('settings-modal')?.classList.remove('hidden');
-      } else if (id === 'ice-modal' || id === 'modalEmergencyIce') {
-        document.getElementById('modalEmergencyIce')?.classList.add('open');
-        document.getElementById('ice-modal')?.classList.add('open', 'flex');
-        document.getElementById('ice-modal')?.classList.remove('hidden');
-      }
+      clearTimeout(window._aquaTimer);
+      window._aquaTimer = setTimeout(() => {
+        if (island) {
+          island.classList.remove('active');
+          island.classList.remove('opacity-100', 'translate-y-0');
+          island.classList.add('opacity-0', '-translate-y-4');
+        }
+      }, 2400);
     }
+    window.showAquaIsland = showAquaIsland;
 
-    function closeModal(id) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.classList.add('hidden');
-        el.classList.remove('flex', 'open');
-      }
-      if (id === 'create-shift-modal' || id === 'modalCreateTask') {
-        document.getElementById('modalCreateTask')?.classList.remove('open');
-        document.getElementById('create-shift-modal')?.classList.remove('open', 'flex');
-        document.getElementById('create-shift-modal')?.classList.add('hidden');
-      } else if (id === 'approve-modal' || id === 'modalAdminDispatchHub') {
-        document.getElementById('modalAdminDispatchHub')?.classList.remove('open');
-        document.getElementById('approve-modal')?.classList.remove('open', 'flex');
-        document.getElementById('approve-modal')?.classList.add('hidden');
-      } else if (id === 'edit-profile-modal' || id === 'modalEditProfile') {
-        document.getElementById('modalEditProfile')?.classList.remove('open');
-        document.getElementById('edit-profile-modal')?.classList.remove('open', 'flex');
-        document.getElementById('edit-profile-modal')?.classList.add('hidden');
-      } else if (id === 'qr-modal' || id === 'modalDigitalSportPassCard') {
-        document.getElementById('modalDigitalSportPassCard')?.classList.remove('open');
-        document.getElementById('qr-modal')?.classList.remove('open', 'flex');
-        document.getElementById('qr-modal')?.classList.add('hidden');
-      } else if (id === 'members-modal' || id === 'modalDirectory') {
-        document.getElementById('modalDirectory')?.classList.remove('open');
-        document.getElementById('members-modal')?.classList.remove('open', 'flex');
-        document.getElementById('members-modal')?.classList.add('hidden');
-      } else if (id === 'settings-modal' || id === 'modalHeaderMore') {
-        document.getElementById('modalHeaderMore')?.classList.remove('open');
-        document.getElementById('settings-modal')?.classList.remove('open', 'flex');
-        document.getElementById('settings-modal')?.classList.add('hidden');
-      }
-
-      const anyOpen = document.querySelectorAll('.open:not(.hidden)');
-      if (anyOpen.length === 0) {
-        document.getElementById('modal-backdrop')?.classList.add('hidden');
-      }
+    function triggerToast(message) {
+      showAquaIsland(message, '⚡');
     }
+    window.triggerToast = triggerToast;
+    window.showToast = triggerToast;
 
-    function closeAllModals() {
-      document.getElementById('modal-backdrop')?.classList.add('hidden');
-      const allModalIds = [
-        'settings-modal', 'login-modal', 'ice-modal', 'edit-profile-modal',
-        'approve-modal', 'create-shift-modal', 'members-modal', 'qr-modal',
-        'notification-modal', 'swap-modal', 'modalAdminRoleManagement',
-        'modalAdjustShifts', 'modalSmartRotation', 'modalDigitalSportPassCard',
-        'modalTheTrang', 'modalChangePassword', 'modalDirectory', 'modalCreateTask',
-        'modalAdminDispatchHub', 'modalEditProfile', 'modalEmergencyIce', 'modalHeaderMore'
-      ];
-      allModalIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.classList.add('hidden');
-          el.classList.remove('flex', 'open');
+    function openModal(modalId, sheetId) {
+      let targetId = modalId;
+      if (modalId === 'modalCreateTask') targetId = 'modal-create-shift';
+      if (modalId === 'modalDirectory') targetId = 'modal-members';
+      if (modalId === 'modalEditProfile') targetId = 'modal-edit';
+      if (modalId === 'modalDigitalSportPassCard') targetId = 'modal-checkin-qr';
+
+      const modal = document.getElementById(targetId);
+      if (!modal) return;
+      modal.classList.add('open');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.style.display = 'flex';
+
+      const innerAlias = modal.querySelector('#modalCreateTask, #modalDirectory, #modalEditProfile, #modalDigitalSportPassCard');
+      if (innerAlias) innerAlias.classList.add('open');
+
+      const sheet = sheetId ? document.getElementById(sheetId) : modal.querySelector('.glass-sheet, .sheet-transition, [id^="sheet-"]');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+        if (sheet) {
+          sheet.classList.remove('translate-y-full');
+          sheet.classList.add('translate-y-0');
         }
       });
-      document.querySelectorAll('.open').forEach(el => el.classList.remove('open', 'flex'));
     }
+
+    function closeModal(modalId, sheetId) {
+      let targetId = modalId;
+      if (modalId === 'modalCreateTask') targetId = 'modal-create-shift';
+      if (modalId === 'modalDirectory') targetId = 'modal-members';
+      if (modalId === 'modalEditProfile') targetId = 'modal-edit';
+      if (modalId === 'modalDigitalSportPassCard') targetId = 'modal-checkin-qr';
+
+      const modal = document.getElementById(targetId);
+      if (!modal) return;
+      modal.classList.remove('open');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+
+      const innerAlias = modal.querySelector('#modalCreateTask, #modalDirectory, #modalEditProfile, #modalDigitalSportPassCard');
+      if (innerAlias) innerAlias.classList.remove('open');
+
+      const sheet = sheetId ? document.getElementById(sheetId) : modal.querySelector('.glass-sheet, .sheet-transition, [id^="sheet-"]');
+      if (sheet) {
+        sheet.classList.remove('translate-y-0');
+        sheet.classList.add('translate-y-full');
+      }
+      setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }, 320);
+    }
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+
+    function closeAllModals() {
+      document.querySelectorAll('[id^="modal-"], [id^="modal"]').forEach(m => {
+        if (!m.classList.contains('hidden') && m.id !== 'modal-login' && m.id !== 'modalCreateTask' && m.id !== 'modalDirectory') {
+          closeModal(m.id);
+        }
+      });
+    }
+    window.closeAllModals = closeAllModals;
+
+    // Direct modal helpers for interactive test suite
+    function openCreateTaskModal(taskId = null) {
+      const ctn = document.getElementById('deptQuotaContainer');
+      if (ctn && typeof ALL_DEPARTMENTS !== 'undefined') {
+        ctn.innerHTML = '';
+        ALL_DEPARTMENTS.forEach(dept => {
+          const div = document.createElement('div');
+          div.style.cssText = 'display: flex; gap: 5px; align-items: center;';
+          div.innerHTML = `<input type="text" value="${dept}" placeholder="Tên ban..." class="input-box dept-name"><input type="number" value="2" class="input-box dept-quota">`;
+          ctn.appendChild(div);
+        });
+      }
+      const m = document.getElementById('modalCreateTask');
+      if (m) m.classList.add('open');
+      openModal('modal-create-shift', 'sheet-create-shift');
+    }
+    function closeCreateTaskModal() {
+      const m = document.getElementById('modalCreateTask');
+      if (m) m.classList.remove('open');
+      closeModal('modal-create-shift', 'sheet-create-shift');
+    }
+    function openTheTrangModal() { openModal('modalTheTrang'); }
+    function closeTheTrangModal() { closeModal('modalTheTrang'); }
+    function openChangePasswordModal() { openModal('modalChangePassword'); }
+    function closeChangePasswordModal() { closeModal('modalChangePassword'); }
+    function openDirectoryModal() {
+      const m = document.getElementById('modalDirectory');
+      if (m) m.classList.add('open');
+      if (typeof filterDirectoryMembers === 'function') filterDirectoryMembers();
+      openModal('modal-members', 'sheet-members');
+    }
+    function closeDirectoryModal() {
+      const m = document.getElementById('modalDirectory');
+      if (m) m.classList.remove('open');
+      closeModal('modal-members', 'sheet-members');
+    }
+    function openAdminRoleManagementModal() { openModal('modalAdminRoleManagement'); }
+    function closeAdminRoleManagementModal() { closeModal('modalAdminRoleManagement'); }
+    function openDigitalSportPassModal() {
+      const m = document.getElementById('modalDigitalSportPassCard');
+      if (m) {
+        m.classList.add('open');
+        const u = window.currentUser || (typeof currentUser !== 'undefined' ? currentUser : null) || {};
+        const n = document.getElementById('vipCardMemberName');
+        const r = document.getElementById('vipCardMemberRole');
+        const c = document.getElementById('vipCardQrContainer');
+        if (n) n.textContent = u.hoTen || 'Đỗ Mạnh Cường';
+        if (r) r.textContent = u.chucVu || 'Chủ Nhiệm CLB';
+        if (c && c.children.length === 0) {
+          c.innerHTML = '<canvas width="128" height="128"></canvas>';
+        }
+      }
+      openModal('modal-checkin-qr', 'sheet-checkin-qr');
+    }
+    function closeDigitalSportPassModal() {
+      const m = document.getElementById('modalDigitalSportPassCard');
+      if (m) m.classList.remove('open');
+      closeModal('modal-checkin-qr', 'sheet-checkin-qr');
+    }
+    function openEditProfileModal() {
+      const m = document.getElementById('modalEditProfile');
+      if (m) m.classList.add('open');
+      openModal('modal-edit', 'sheet-edit');
+    }
+    function closeEditProfileModal() {
+      const m = document.getElementById('modalEditProfile');
+      if (m) m.classList.remove('open');
+      closeModal('modal-edit', 'sheet-edit');
+    }
+    function openEmergencyIceModal() { openModal('modal-ice', 'sheet-ice'); }
+    function closeEmergencyIceModal() { closeModal('modal-ice', 'sheet-ice'); }
+    function openHeaderMoreModal() { openModal('modal-settings', 'sheet-settings'); }
+    function closeHeaderMoreModal() { closeModal('modal-settings', 'sheet-settings'); }
+    function openAdminDispatchHubModal() { openModal('modal-approve', 'sheet-approve'); }
+    function closeAdminDispatchHubModal() { closeModal('modal-approve', 'sheet-approve'); }
+
+    const _realOpenAdjustShiftsModal = (typeof openAdjustShiftsModal === 'function') ? openAdjustShiftsModal : null;
+    function openAdjustShiftsModalWrapper(memberId, delta = 1) {
+      if (_realOpenAdjustShiftsModal) {
+        _realOpenAdjustShiftsModal(memberId, delta);
+      }
+      const modal = document.getElementById('modalAdjustShifts');
+      if (modal) {
+        modal.classList.add('open');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.style.display = 'flex';
+      }
+    }
+    window.openAdjustShiftsModal = openAdjustShiftsModalWrapper;
+
+    const _realCloseAdjustShiftsModal = (typeof closeAdjustShiftsModal === 'function') ? closeAdjustShiftsModal : null;
+    function closeAdjustShiftsModalWrapper() {
+      if (_realCloseAdjustShiftsModal) {
+        _realCloseAdjustShiftsModal();
+      }
+      const modal = document.getElementById('modalAdjustShifts');
+      if (modal) {
+        modal.classList.remove('open');
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
+    }
+    window.closeAdjustShiftsModal = closeAdjustShiftsModalWrapper;
+
+    window.openCreateTaskModal = openCreateTaskModal;
+    window.closeCreateTaskModal = closeCreateTaskModal;
+    window.openTheTrangModal = openTheTrangModal;
+    window.closeTheTrangModal = closeTheTrangModal;
+    window.openChangePasswordModal = openChangePasswordModal;
+    window.closeChangePasswordModal = closeChangePasswordModal;
+    window.openDirectoryModal = openDirectoryModal;
+    window.closeDirectoryModal = closeDirectoryModal;
+    window.openAdminRoleManagementModal = openAdminRoleManagementModal;
+    window.closeAdminRoleManagementModal = closeAdminRoleManagementModal;
+    window.openDigitalSportPassModal = openDigitalSportPassModal;
+    window.closeDigitalSportPassModal = closeDigitalSportPassModal;
+    window.openEditProfileModal = openEditProfileModal;
+    window.closeEditProfileModal = closeEditProfileModal;
+    window.openEmergencyIceModal = openEmergencyIceModal;
+    window.closeEmergencyIceModal = closeEmergencyIceModal;
+    window.openHeaderMoreModal = openHeaderMoreModal;
+    window.closeHeaderMoreModal = closeHeaderMoreModal;
+    window.openAdminDispatchHubModal = openAdminDispatchHubModal;
+    window.closeAdminDispatchHubModal = closeAdminDispatchHubModal;
+
+    function initModalBackdropListeners() {
+      const mTask = document.getElementById('modalCreateTask');
+      if (mTask) {
+        mTask.addEventListener('click', (e) => {
+          if (e.target === mTask || e.target.id === 'modal-create-shift') {
+            closeCreateTaskModal();
+          }
+        });
+      }
+      const mShift = document.getElementById('modal-create-shift');
+      if (mShift) {
+        mShift.addEventListener('click', (e) => {
+          if (e.target === mShift) {
+            closeCreateTaskModal();
+          }
+        });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initModalBackdropListeners);
+    } else {
+      initModalBackdropListeners();
+    }
+
+    // Role switcher logic
+    function setRole(role) {
+      const pill = document.getElementById('pill-indicator');
+      const btnMem = document.getElementById('toggle-role-member');
+      const btnAdm = document.getElementById('toggle-role-admin');
+      const roleBadge = document.getElementById('role-badge');
+      const memberBar = document.getElementById('member-action-bar');
+      const adminBar = document.getElementById('admin-action-bar');
+
+      if (role === 'member') {
+        if (pill) { pill.style.left = '4px'; pill.style.width = '84px'; }
+        if (btnMem) { btnMem.classList.remove('text-slate-600'); btnMem.classList.add('text-white'); }
+        if (btnAdm) { btnAdm.classList.remove('text-white'); btnAdm.classList.add('text-slate-600'); }
+        if (roleBadge) {
+          roleBadge.textContent = 'MEMBER';
+          roleBadge.className = 'text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded uppercase font-mono border border-emerald-200/60';
+        }
+        if (adminBar) { adminBar.classList.add('hidden'); adminBar.classList.remove('grid'); }
+        if (memberBar) { memberBar.classList.remove('hidden'); memberBar.classList.add('grid'); }
+        triggerToast('Giao diện Thành viên');
+      } else {
+        if (pill) { pill.style.left = '88px'; pill.style.width = '70px'; }
+        if (btnAdm) { btnAdm.classList.remove('text-slate-600'); btnAdm.classList.add('text-white'); }
+        if (btnMem) { btnMem.classList.remove('text-white'); btnMem.classList.add('text-slate-600'); }
+        if (roleBadge) {
+          roleBadge.textContent = 'ADMIN';
+          roleBadge.className = 'text-[10px] font-bold text-sky-700 bg-sky-100 px-1.5 py-0.5 rounded uppercase font-mono border border-sky-200/60';
+        }
+        if (memberBar) { memberBar.classList.add('hidden'); memberBar.classList.remove('grid'); }
+        if (adminBar) { adminBar.classList.remove('hidden'); adminBar.classList.add('grid'); }
+        triggerToast('Giao diện Quản trị Admin');
+      }
+    }
+    window.setRole = setRole;
+
+    // Status micro-popover
+    const STATUS_MAP = {
+      ready: { heroLabel: 'Sẵn sàng', rowLabel: 'Sẵn sàng nhận ca', toastMsg: 'Đã đổi: Sẵn sàng nhận ca' },
+      busy: { heroLabel: 'Đang trực ca', rowLabel: 'Đang trong ca trực', toastMsg: 'Đã đổi: Đang trực ca' },
+      off: { heroLabel: 'Nghỉ ngơi', rowLabel: 'Nghỉ ngơi', toastMsg: 'Đã đổi: Nghỉ ngơi' }
+    };
+    let currentStatusCode = 'ready';
 
     function toggleStatusDropdown(e) {
       if (e) e.stopPropagation();
-      document.getElementById('status-dropdown')?.classList.toggle('hidden');
-    }
-
-    function changeStatus(label, color, textToast) {
-      const lbl = document.getElementById('status-label');
-      if (lbl) lbl.textContent = label;
-      const dot = document.getElementById('status-dot');
-      if (dot) dot.className = `w-2 h-2 rounded-full animate-pulse bg-${color}-400`;
-      const badge = document.getElementById('info-status-badge');
-      if (badge) badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-${color}-500"></span> ${label} nhận ca`;
-      document.getElementById('status-dropdown')?.classList.add('hidden');
-      if (typeof showAquaIsland === 'function') {
-        showAquaIsland(textToast || `Đã chuyển trạng thái: ${label}`, '🟢');
+      const dd = document.getElementById('status-dropdown');
+      if (dd) {
+        dd.classList.toggle('hidden');
+        dd.classList.toggle('opacity-0');
       }
     }
 
-    function setRole(role) {
-      const isAdmin = role === 'admin';
-      const adminBar = document.getElementById('admin-actions-bar');
-      const memberBar = document.getElementById('member-actions-bar');
-      const roleBadge = document.getElementById('role-badge');
-      const btnAdmin = document.getElementById('role-admin-btn');
-      const btnMember = document.getElementById('role-member-btn');
-
-      if (adminBar) {
-        adminBar.classList.toggle('hidden', !isAdmin);
-        adminBar.classList.toggle('grid', isAdmin);
+    function selectCardStatus(code, e) {
+      if (e) e.stopPropagation();
+      const dd = document.getElementById('status-dropdown');
+      if (dd) {
+        dd.classList.add('hidden');
+        dd.classList.add('opacity-0');
       }
-      if (memberBar) {
-        memberBar.classList.toggle('hidden', isAdmin);
-        memberBar.classList.toggle('grid', !isAdmin);
-      }
-      if (roleBadge) roleBadge.classList.toggle('hidden', !isAdmin);
-      if (btnAdmin) btnAdmin.className = isAdmin ? "flex-1 py-1.5 text-xs font-bold rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md text-center transition-[background-color,transform,box-shadow,opacity] cursor-pointer" : "flex-1 py-1.5 text-xs font-bold rounded-full text-slate-600 text-center transition-[background-color,transform,box-shadow,opacity] cursor-pointer";
-      if (btnMember) btnMember.className = !isAdmin ? "flex-1 py-1.5 text-xs font-bold rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md text-center transition-[background-color,transform,box-shadow,opacity] cursor-pointer" : "flex-1 py-1.5 text-xs font-bold rounded-full text-slate-600 text-center transition-[background-color,transform,box-shadow,opacity] cursor-pointer";
-
-      if (window.currentUser) {
-        window.currentUser.isAdmin = isAdmin;
-      }
+      currentStatusCode = code;
+      const data = STATUS_MAP[code];
+      safeSetText('hero-status-text', data.heroLabel);
+      safeSetText('field-status-txt', data.rowLabel);
+      triggerToast(data.toastMsg);
     }
 
-    // Modal alias functions for test suite
-    window.openCreateTaskModal = () => openModal('create-shift-modal');
-    window.closeCreateTaskModal = () => closeModal('create-shift-modal');
-    window.openEditProfileModal = () => openModal('edit-profile-modal');
-    window.closeEditProfileModal = () => closeModal('edit-profile-modal');
-    window.openDirectoryModal = () => openModal('members-modal');
-    window.closeDirectoryModal = () => closeModal('members-modal');
-    window.openDigitalSportPassModal = () => openModal('qr-modal');
-    window.closeDigitalSportPassModal = () => closeModal('qr-modal');
-    window.openEmergencyIceModal = () => openModal('ice-modal');
-    window.closeEmergencyIceModal = () => closeModal('ice-modal');
-    window.openTheTrangModal = () => openModal('modalTheTrang');
-    window.closeTheTrangModal = () => closeModal('modalTheTrang');
-    window.openChangePasswordModal = () => openModal('modalChangePassword');
-    window.closeChangePasswordModal = () => closeModal('modalChangePassword');
-    window.openAdminRoleManagementModal = () => openModal('modalAdminRoleManagement');
-    window.closeAdminRoleManagementModal = () => closeModal('modalAdminRoleManagement');
-    window.openAdjustShiftsModal = () => openModal('modalAdjustShifts');
-    window.closeAdjustShiftsModal = () => closeModal('modalAdjustShifts');
-    window.openSmartRotationModal = (taskId) => openModal('modalSmartRotation');
-    window.closeSmartRotationModal = () => closeModal('modalSmartRotation');
-    window.openHeaderMoreActionSheet = () => openModal('settings-modal');
-    window.closeHeaderMoreActionSheetDirect = () => closeModal('settings-modal');
+    function cycleStatus() {
+      const states = ['ready', 'busy', 'off'];
+      const next = states[(states.indexOf(currentStatusCode) + 1) % states.length];
+      selectCardStatus(next);
+    }
+    window.toggleStatusDropdown = toggleStatusDropdown;
+    window.selectCardStatus = selectCardStatus;
+    window.cycleStatus = cycleStatus;
 
-    // Keydown Escape
+    function saveProfile() {
+      const val = document.getElementById('input-fullname')?.value;
+      if (val) {
+        safeSetText('field-fullname', val);
+        safeSetText('card-name', val.toUpperCase());
+        safeSetText('dFullName', val);
+      }
+      const stId = document.getElementById('input-studentId')?.value;
+      if (stId) {
+        safeSetText('field-studentId', stId);
+        safeSetText('card-mssv', stId);
+        safeSetText('dMemberId', stId);
+      }
+      const fac = document.getElementById('input-faculty')?.value;
+      if (fac) safeSetText('field-faculty', fac);
+      const ph = document.getElementById('input-phone')?.value;
+      if (ph) {
+        safeSetText('field-phone', ph);
+        safeSetText('dPhone', ph);
+      }
+      closeModal('modal-edit', 'sheet-edit');
+      triggerToast('Đã lưu thông tin hồ sơ!');
+    }
+    window.saveProfile = saveProfile;
+
+    // Toggle password visibility
+    function togglePasswordVisibility() {
+      const ipt = document.getElementById('iptPass') || document.getElementById('login-password');
+      if (!ipt) return;
+      ipt.type = ipt.type === 'password' ? 'text' : 'password';
+      const icon = document.getElementById('icon-eye-login');
+      if (icon) {
+        icon.innerHTML = ipt.type === 'password' ?
+          '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>' :
+          '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+      }
+    }
+    window.togglePasswordVisibility = togglePasswordVisibility;
+
+    // Dock tab switching
+    window.currentActiveTabIdx = (typeof currentActiveTabIdx !== 'undefined') ? currentActiveTabIdx : 0;
+    function switchDockTab(tabIdx) {
+      currentActiveTabIdx = tabIdx;
+      window.currentActiveTabIdx = tabIdx;
+      const panels = ['tabContentProfile', 'tabContentTasks', 'tabContentForum'];
+      panels.forEach((pId, idx) => {
+        const el = document.getElementById(pId);
+        if (!el) return;
+        if (idx === tabIdx) {
+          el.classList.remove('hidden');
+          el.style.display = 'block';
+        } else {
+          el.classList.add('hidden');
+          el.style.display = 'none';
+        }
+      });
+
+      for (let i = 0; i < 3; i++) {
+        const btn = document.getElementById('btnDock' + i);
+        if (btn) {
+          if (i === tabIdx) {
+            btn.classList.add('text-sky-600', 'font-bold');
+            btn.classList.remove('text-slate-500');
+          } else {
+            btn.classList.remove('text-sky-600', 'font-bold');
+            btn.classList.add('text-slate-500');
+          }
+        }
+      }
+
+      if (tabIdx === 1 && typeof renderTasksList === 'function') {
+        renderTasksList();
+      } else if (tabIdx === 2 && typeof renderForumFeed === 'function') {
+        renderForumFeed();
+      }
+      if (typeof restartAdaptivePolling === 'function') {
+        restartAdaptivePolling();
+      }
+    }
+    window.switchDockTab = switchDockTab;
+
+    // Global interactive listeners
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#status-toggle-wrapper')) {
+        const dd = document.getElementById('status-dropdown');
+        if (dd && !dd.classList.contains('hidden')) {
+          dd.classList.add('hidden');
+          dd.classList.add('opacity-0');
+        }
+      }
+    });
+
+    document.addEventListener('pointerdown', function(e) {
+      const target = e.target.closest('.spring-tap');
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      const wave = document.createElement('span');
+      wave.className = target.classList.contains('text-white') && !target.classList.contains('bg-white') ? 'ripple-wave' : 'ripple-wave-dark';
+      const size = Math.max(rect.width, rect.height) * 1.5;
+      wave.style.width = wave.style.height = `${size}px`;
+      wave.style.left = `${e.clientX - rect.left - size / 2}px`;
+      wave.style.top = `${e.clientY - rect.top - size / 2}px`;
+      target.appendChild(wave);
+      setTimeout(() => wave.remove(), 600);
+    });
+
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllModals(); });
 
-  </script>
-
-  <script>
-    function switchQrModalTab(tab) {
-      const isPass = tab === 'pass';
-      document.getElementById('qrTabPassContent')?.classList.toggle('hidden', !isPass);
-      document.getElementById('qrTabScanContent')?.classList.toggle('hidden', isPass);
-      document.getElementById('btnTabQrPass').className = isPass ? 'flex-1 py-1.5 rounded-lg bg-white shadow-sm text-sky-600 font-bold' : 'flex-1 py-1.5 rounded-lg text-slate-600 font-bold';
-      document.getElementById('btnTabQrScan').className = !isPass ? 'flex-1 py-1.5 rounded-lg bg-white shadow-sm text-sky-600 font-bold' : 'flex-1 py-1.5 rounded-lg text-slate-600 font-bold';
-      if (!isPass && typeof startQrScanner === 'function') {
-        startQrScanner();
-      } else if (isPass && typeof stopQrScanner === 'function') {
-        stopQrScanner();
-      }
+    // 3D Tilt Card initialization
+    function init3DTilt() {
+      const card = document.getElementById('hero-tilt-card');
+      if (!card) return;
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -9;
+        const rotateY = ((x - centerX) / centerX) * 9;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+        card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+        card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
     }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init3DTilt);
+    } else {
+      init3DTilt();
+    }
+
   </script>
-</body>
-</html>
+</body></html>
