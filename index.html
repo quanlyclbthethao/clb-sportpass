@@ -492,8 +492,7 @@
 <div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-checkin-qr" onclick="if (event.target === this) closeModal('modal-checkin-qr', 'sheet-checkin-qr')">
 <div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-checkin-qr" onclick="event.stopPropagation()">
 <div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
-<div class="flex flex-col gap-2.5 pb-3.5 border-b border-sky-100/70">
-  <div class="flex items-center justify-between w-full">
+<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
 <div class="flex items-center gap-2.5">
 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="5" rx="1" width="5" x="3" y="3"></rect><rect height="5" rx="1" width="5" x="16" y="3"></rect><rect height="5" rx="1" width="5" x="3" y="16"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path></svg>
@@ -783,6 +782,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <button class="spring-tap mt-3 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="saveProfile(); if (typeof saveMemberProfileEdit === 'function') saveMemberProfileEdit();" type="button">Lưu Thay Đổi Hồ Sơ</button>
 </div>
 </div>
+</div>
 <!-- MODAL NOTIFICATIONS -->
 <div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-noti" onclick="if (event.target === this) closeModal('modal-noti', 'sheet-noti')">
 <div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-noti" onclick="event.stopPropagation()">
@@ -839,7 +839,8 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <div id="modalDirectory" class="contents">
 <div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-members" onclick="event.stopPropagation()">
 <div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
-<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
+<div class="flex flex-col gap-2.5 pb-3.5 border-b border-sky-100/70">
+  <div class="flex items-center justify-between w-full">
 <div class="flex items-center gap-2.5">
 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path></svg>
@@ -884,6 +885,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 </div>
 </div>
 
+</div>
 </div>
 </div>
 <!-- TOAST NOTIFICATION -->
@@ -6708,6 +6710,15 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       if (modalId === 'modalEditProfile') targetId = 'modal-edit';
       if (modalId === 'modalDigitalSportPassCard') targetId = 'modal-checkin-qr';
 
+      if (targetId === 'modal-login') {
+        const mainApp = document.getElementById('viewMainAppContainer');
+        const loggedOut = (typeof currentUser === 'undefined' || !currentUser);
+        if (loggedOut && mainApp && mainApp.classList.contains('hidden')) {
+          if (typeof triggerToast === 'function') triggerToast('Vui lòng đăng nhập hoặc chọn tài khoản Demo!');
+          return;
+        }
+      }
+
       const modal = document.getElementById(targetId);
       if (!modal) return;
       modal.classList.remove('open');
@@ -6940,14 +6951,40 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       setTimeout(() => {
         const isAdm = (typeof currentUser !== 'undefined' && currentUser && currentUser.isAdmin !== undefined) ? currentUser.isAdmin : true;
         setRole(isAdm ? 'admin' : 'member', true);
+        const mainApp = document.getElementById('viewMainAppContainer');
+        if ((typeof currentUser === 'undefined' || !currentUser) || (mainApp && mainApp.classList.contains('hidden'))) {
+          openModal('modal-login', 'sheet-login');
+        }
       }, 60);
     });
 
-    // Ensure pill-indicator realigns cleanly whenever main app becomes visible
+    // Ensure login modal opens immediately whenever login view is shown
+    if (typeof showLoginView === 'function') {
+      const _origShowLoginView = showLoginView;
+      showLoginView = function() {
+        _origShowLoginView.apply(this, arguments);
+        openModal('modal-login', 'sheet-login');
+      };
+      window.showLoginView = showLoginView;
+    }
+
+    // Ensure pill-indicator realigns cleanly & login modal closes whenever main app becomes visible
     if (typeof showMainAppView === 'function') {
       const _origShowMainAppView = showMainAppView;
       showMainAppView = function() {
         _origShowMainAppView.apply(this, arguments);
+        const loginModal = document.getElementById('modal-login');
+        if (loginModal) {
+          if (loginModal._closeTimer) clearTimeout(loginModal._closeTimer);
+          loginModal.classList.remove('flex', 'open', 'opacity-100');
+          loginModal.classList.add('hidden', 'opacity-0');
+          loginModal.style.display = 'none';
+          const sheetLogin = document.getElementById('sheet-login');
+          if (sheetLogin) {
+            sheetLogin.classList.remove('translate-y-0');
+            sheetLogin.classList.add('translate-y-full');
+          }
+        }
         requestAnimationFrame(() => {
           const isAdm = (typeof currentUser !== 'undefined' && currentUser && currentUser.isAdmin !== undefined) ? currentUser.isAdmin : true;
           setRole(isAdm ? 'admin' : 'member', true);
@@ -7058,8 +7095,10 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       const iptP = document.getElementById('iptPass');
       if (uEl && iptU && !iptU.value) iptU.value = uEl.value;
       if (pEl && iptP && !iptP.value) iptP.value = pEl.value;
-      closeModal('modal-login', 'sheet-login');
       if (typeof handleLoginSubmit === 'function') handleLoginSubmit();
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        closeModal('modal-login', 'sheet-login');
+      }
     }
     window.performLogin = performLogin;
 
