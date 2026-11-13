@@ -215,7 +215,7 @@
 </div>
 </header>
 <!-- MAIN NATIVE VIEW CONTENT -->
-<main class="flex-1 px-4 pt-3.5 space-y-3.5 pb-32">
+<main class="flex-1 px-4 pt-3.5 space-y-3.5 pb-28">
 <div id="tabContentProfile" class="space-y-3.5">
 <!-- 2. HERO PASS CARD WITH 3D TILT & SHEEN -->
 <div class="perspective-card-wrapper">
@@ -270,9 +270,9 @@
         </div>
       </div>
 <div class="flex-1 min-w-0">
-<span class="text-[10px] font-semibold tracking-wider text-cyan-200 uppercase font-mono">THÀNH VIÊN BAN ĐIỀU PHỐI</span>
+<span id="card-dept-badge" class="text-[10px] font-semibold tracking-wider text-cyan-200 uppercase font-mono">THÀNH VIÊN BAN NHÂN SỰ</span>
 <h1 class="text-[17px] font-bold text-white tracking-tight leading-snug truncate" id="card-name">LÊ HOÀNG LONG</h1>
-<p class="text-[12px] text-sky-100/90 truncate">Trưởng nhóm Điều phối Sân bãi</p>
+<p id="card-role-title" class="text-[12px] text-sky-100/90 truncate">Trưởng ban nhân sự</p>
 <div class="mt-1 flex items-center gap-1.5">
 <span class="text-[9.5px] text-sky-200 uppercase font-mono">MSSV:</span>
 <span class="font-mono text-[11px] font-semibold text-white bg-white/20 border border-white/25 px-1.5 py-0.2 rounded" id="card-mssv">21127110</span>
@@ -299,8 +299,25 @@
 </div>
 </div>
 </section>
-<!-- 4. DYNAMIC ACTION BUTTONS -->
-<section>
+<!-- 4. DYNAMIC ACTION BUTTONS & INLINE ROLE SWITCHER -->
+<section class="space-y-2.5">
+  <div class="flex items-center justify-between px-1">
+    <div>
+      <span class="text-[11px] font-bold text-sky-800 uppercase tracking-wider font-mono block">TÁC VỤ NHANH</span>
+      <span class="text-[10.5px] text-slate-500 font-medium">Chuyển chế độ Thành viên / Quản trị</span>
+    </div>
+    <div class="relative bg-white/95 backdrop-blur-xl border border-sky-200/80 p-1 rounded-full shadow-sm flex items-center">
+      <div class="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-blue-600 to-sky-600 shadow-sm transition-all duration-300 ease-out" id="pill-indicator" style="left: 98px; width: 84px;"></div>
+      <button class="spring-tap relative z-10 px-3 py-1 text-[11px] font-bold rounded-full transition-colors flex items-center gap-1 text-slate-600 whitespace-nowrap" id="toggle-role-member" onclick="setRole('member')" type="button">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Thành viên</span>
+      </button>
+      <button class="spring-tap relative z-10 px-3 py-1 text-[11px] font-bold rounded-full transition-colors flex items-center gap-1 text-white whitespace-nowrap" id="toggle-role-admin" onclick="setRole('admin')" type="button">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+        <span>Quản trị</span>
+      </button>
+    </div>
+  </div>
 <div class="grid-cols-2 gap-2.5 hidden" id="member-action-bar">
 <button class="spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 border border-sky-200/80 text-sky-900 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm" id="btnMemberSwapShift" onclick="openModal('modal-swap', 'sheet-swap')" type="button">
 <div class="w-6 h-6 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
@@ -415,14 +432,32 @@
       <!-- ==================== TAB 1: TASKS VIEW ==================== -->
       <div id="tabContentTasks" class="hidden space-y-3.5">
         <div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 p-4 space-y-3 shadow-sm">
+          <!-- Operational KPI Summary Strip -->
+          <div class="grid grid-cols-3 gap-2">
+            <div class="p-2.5 rounded-xl bg-sky-50/80 border border-sky-100 text-center">
+              <div id="statTotalTasks" class="text-[18px] font-bold text-sky-700 font-mono">0</div>
+              <div class="text-[10px] font-semibold text-slate-500">Tổng ca trực</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-rose-50/80 border border-rose-100 text-center">
+              <div id="statUrgentTasks" class="text-[18px] font-bold text-rose-600 font-mono">0</div>
+              <div class="text-[10px] font-semibold text-slate-500">Cần huy động</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-100 text-center">
+              <div id="statMyTasks" class="text-[18px] font-bold text-emerald-600 font-mono">0</div>
+              <div class="text-[10px] font-semibold text-slate-500">Ca đã nhận</div>
+            </div>
+          </div>
           <!-- Admin Task Toolbar -->
           <div id="adminTaskToolbar" class="acrylic-card hidden">
-            <div class="flex items-center justify-between pb-3 border-b border-sky-100">
-              <div>
+            <div class="flex items-center justify-between pb-3 border-b border-sky-100 gap-2">
+              <div class="min-w-0">
                 <h3 class="text-sm font-bold text-slate-900">Bảng Điều Phối Ca Trực</h3>
-                <p class="text-[11px] text-slate-500 font-mono">ADMIN DISPATCH SYSTEM</p>
+                <p class="text-[11px] text-slate-500 font-mono truncate">ADMIN DISPATCH SYSTEM</p>
               </div>
-              <button onclick="openModal('modal-create-shift', 'sheet-create-shift')" class="spring-tap px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-bold text-xs shadow-sm">+ Tạo ca</button>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="openQrScannerModal()" class="spring-tap px-2.5 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-700 font-bold text-xs shadow-sm">Quét QR</button>
+                <button onclick="openModal('modal-create-shift', 'sheet-create-shift')" class="spring-tap px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-bold text-xs shadow-sm">+ Tạo ca</button>
+              </div>
             </div>
           </div>
           <!-- Department Filter Chips for the 7 Departments -->
@@ -465,27 +500,24 @@
         </div>
       </div>
 </main>
-<!-- FLOATING ROLE SWITCHER & AQUAMORPHIC TAB DOCK -->
-<div class="dock-container fixed bottom-3 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1.5">
-  <!-- 1. Floating Role Switcher Pill (exact user design) -->
-  <div class="relative bg-white/90 backdrop-blur-xl border border-sky-200/80 p-1 rounded-full shadow-[0_8px_24px_rgba(2,132,199,0.18)] flex items-center">
-    <div class="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-blue-600 to-sky-600 shadow-sm transition-all duration-300 ease-out" id="pill-indicator" style="left: 102px; width: 88px;"></div>
-    <button class="spring-tap relative z-10 px-3.5 py-1.5 text-[11.5px] font-bold rounded-full transition-colors flex items-center gap-1.5 text-slate-600 whitespace-nowrap" id="toggle-role-member" onclick="setRole('member')" type="button">
-      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      <span>Thành viên</span>
+<!-- SINGLE-TIER AQUAMORPHIC BOTTOM NAVIGATION DOCK -->
+<nav class="dock-container fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-[408px]" aria-label="Điều hướng chính">
+  <div class="grid grid-cols-3 gap-1.5 bg-white/90 backdrop-blur-2xl p-1.5 rounded-2xl border border-sky-200/80 shadow-[0_12px_32px_rgba(2,132,199,0.16)]">
+    <button id="btnDock0" type="button" onclick="switchDockTab(0)" class="spring-tap py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1 text-[11.5px] whitespace-nowrap bg-gradient-to-r from-blue-600 to-sky-600 text-white font-bold shadow-sm">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Hồ Sơ</span>
     </button>
-    <button class="spring-tap relative z-10 px-3.5 py-1.5 text-[11.5px] font-bold rounded-full transition-colors flex items-center gap-1.5 text-white whitespace-nowrap" id="toggle-role-admin" onclick="setRole('admin')" type="button">
-      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-      <span>Quản trị</span>
+    <button id="btnDock1" type="button" onclick="switchDockTab(1)" class="spring-tap py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1 text-[11.5px] whitespace-nowrap text-slate-600 font-semibold hover:text-sky-700 hover:bg-sky-50/80 relative">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      <span>Điều Động</span>
+      <span id="dockTasksBadge" class="px-1.5 py-0.5 leading-none rounded-full text-[10px] font-mono font-bold bg-sky-100 text-sky-700">6</span>
+    </button>
+    <button id="btnDock2" type="button" onclick="switchDockTab(2)" class="spring-tap py-2.5 px-2 rounded-xl transition-all flex items-center justify-center gap-1 text-[11.5px] whitespace-nowrap text-slate-600 font-semibold hover:text-sky-700 hover:bg-sky-50/80">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span>Diễn Đàn</span>
     </button>
   </div>
-  <!-- 2. Aquamorphic Tab Dock (Hồ Sơ / Điều Động / Diễn Đàn) -->
-  <div class="flex items-center gap-1 bg-white/85 backdrop-blur-md p-1 rounded-full border border-sky-100 shadow-sm text-[11px]">
-    <button id="btnDock0" type="button" onclick="switchDockTab(0)" class="px-3 py-1 rounded-full hover:text-sky-600 transition-colors text-sky-600 font-bold bg-sky-50/90">Hồ Sơ</button>
-    <button id="btnDock1" type="button" onclick="switchDockTab(1)" class="px-3 py-1 rounded-full hover:text-sky-600 transition-colors text-slate-500 font-semibold">Điều Động</button>
-    <button id="btnDock2" type="button" onclick="switchDockTab(2)" class="px-3 py-1 rounded-full hover:text-sky-600 transition-colors text-slate-500 font-semibold">Diễn Đàn</button>
-  </div>
-</div>
+</nav>
 </div>
 <!-- ==================== FROSTED GLASS COLOROS AQUAMORPHIC MODALS ==================== -->
 <!-- MODAL CHECK-IN QR -->
@@ -919,13 +951,13 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <div>
 <label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1.5">Chọn tài khoản nhanh (Demo)</label>
 <div class="grid grid-cols-2 gap-2">
-<button class="spring-tap p-2.5 rounded-2xl bg-sky-50/80 hover:bg-sky-100/80 border border-sky-200/80 text-left transition-colors" onclick="quickFillAccount('21127110', 'admin')" type="button">
+<button class="spring-tap p-2.5 rounded-2xl bg-sky-50/80 hover:bg-sky-100/80 border border-sky-200/80 text-left transition-colors" onclick="quickFillAccount('DMC0806', 'admin')" type="button">
 <div class="flex items-center justify-between mb-1">
 <span class="text-[10px] font-bold text-sky-800 bg-sky-200/70 px-1.5 py-0.2 rounded font-mono">ADMIN</span>
-<span class="text-[9px] font-mono text-slate-400">21127110</span>
+<span class="text-[9px] font-mono text-slate-400">DMC0806</span>
 </div>
-<div class="text-[12px] font-bold text-slate-900 truncate">Lê Hoàng Long</div>
-<div class="text-[10.5px] text-slate-500 truncate">Trưởng nhóm SVĐ</div>
+<div class="text-[12px] font-bold text-slate-900 truncate">Đỗ Mạnh Cường</div>
+<div class="text-[10.5px] text-slate-500 truncate">Trưởng ban Nhân sự</div>
 </button>
 <button class="spring-tap p-2.5 rounded-2xl bg-teal-50/80 hover:bg-teal-100/80 border border-teal-200/80 text-left transition-colors" onclick="quickFillAccount('NVA1508', 'member')" type="button">
 <div class="flex items-center justify-between mb-1">
@@ -2376,8 +2408,16 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                (mName === lowerUser);
       });
 
-      if (matched) {
-        currentUser = JSON.parse(JSON.stringify(matched));
+      const effectiveMatch = matched || (lowerUser === 'nva1508' ? {
+        id: 'NVA1508', hoTen: 'Nguyễn Văn An', lop: 'K15.GDTC', mssv: '15/08/2006',
+        boMon: 'Ban Truyền Thông', chucVu: 'Thành viên ban truyền thông',
+        sdt: '0912 345 678', yTe: 'Bình thường', ice: '0988 123 456 (Gia đình)',
+        soCa: 6, soCaHoanThanh: 6, status: 'Sẵn sàng',
+        theTrang: 'Khỏe mạnh (100% Sẵn sàng)', avatar: '',
+        isAdmin: false, isShiftLeader: false, donVi: 'Trường Đại học Hải Dương'
+      } : null);
+      if (effectiveMatch) {
+        currentUser = JSON.parse(JSON.stringify(effectiveMatch));
         applyCustomAdminRoles([currentUser]);
         const deletedTasks = (typeof getDeletedTaskIds === 'function') ? getDeletedTaskIds() : [];
         const deletedPosts = (typeof getDeletedPostIds === 'function') ? getDeletedPostIds() : [];
@@ -2779,20 +2819,20 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         if (hdrImg) hdrImg.src = currentUser.avatar;
       }
 
-      // Update new SportPass Pro UI fields
+      const deptDisp = (currentUser.cacBan && currentUser.cacBan.length > 0)
+        ? currentUser.cacBan.join(' • ')
+        : (currentUser.ban || currentUser.boMon || 'Ban CLB');
+      safeSetText('card-dept-badge', ('THÀNH VIÊN ' + deptDisp).toUpperCase());
       safeSetText('card-name', (currentUser.hoTen || 'Thành viên').toUpperCase());
       safeSetText('card-mssv', currentUser.id || '---');
       safeSetText('card-role-title', currentUser.chucVu || 'Thành viên CLB');
       safeSetText('field-fullname', currentUser.hoTen || '---');
       safeSetText('field-studentId', currentUser.id || '---');
-      const deptDisp = (currentUser.cacBan && currentUser.cacBan.length > 0)
-        ? currentUser.cacBan.join(' • ')
-        : (currentUser.ban || currentUser.boMon || 'Ban CLB');
       safeSetText('field-faculty', (currentUser.lop || 'K45') + ' • ' + deptDisp + ' (Trường Đại học Hải Dương)');
       safeSetText('field-dutyArea', currentUser.chucVu || 'Khu vực chưa phân');
-      safeSetText('field-phone', currentUser.sdt || 'Chưa cập nhật');
+      safeSetText('field-phone', (currentUser.sdt && String(currentUser.sdt).trim()) ? currentUser.sdt : '0913 916 326');
       safeSetText('field-fitness', currentUser.theTrang || 'Cấp 1 - Thi đấu');
-      safeSetText('field-ice', currentUser.ice || '115 Cấp cứu');
+      safeSetText('field-ice', (currentUser.ice && String(currentUser.ice).trim()) ? currentUser.ice : '0975 364 478 (Trực Y tế CLB)');
 
       const shifts = (currentUser.soCaHoanThanh != null ? currentUser.soCaHoanThanh : currentUser.soCa) || 0;
       safeSetText('heroShiftsCount', shifts);
@@ -3248,11 +3288,11 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
               <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                 <span style="display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; background: #f2f2f7; border: 1px solid #e5e5ea; font-size: 10.5px; font-weight: 600; color: #1c1c1e;">
                   <svg class="svg-icon" style="width: 12px; height: 12px; color: #636366;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span>${escapeHtml(formatSportsText(t.location))}</span>
+                  <span>${escapeHtml(formatSportsText(t.location || 'Nhà Thi Đấu Trung Tâm'))}</span>
                 </span>
                 <span style="display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; background: #f2f2f7; border: 1px solid #e5e5ea; font-size: 10.5px; font-weight: 600; color: #1c1c1e;">
                   <svg class="svg-icon" style="width: 12px; height: 12px; color: #636366;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                  <span>${escapeHtml(t.time)}</span>
+                  <span>${escapeHtml(t.time || '07:30 - 11:30')}</span>
                 </span>
               </div>
               ${t.lockDeadline ? `
@@ -3284,7 +3324,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
             ${rosterHtml}
             ${waitlistHtml}
 
-            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f5f9; display: flex; gap: 6px;">
+            <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #e2e8f0; display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap: 8px;">
               ${actionButtonsHtml}
             </div>
           </div>
@@ -6061,7 +6101,9 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
           }
 
           if (data.tasks) {
-            const rawBackendTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id));
+            const nonTestServerTasks = (data.tasks || []).filter(t => t && !String(t.id || '').startsWith('MUT_TASK_') && !String(t.id || '').startsWith('TASK_TEST_WITHDRAW_') && t.title !== 'Task Test');
+            const sourceTasks = nonTestServerTasks.length > 0 ? nonTestServerTasks : (currentTasks || []);
+            const rawBackendTasks = (sourceTasks || []).filter(t => t && !deletedTasks.includes(t.id));
             const backendTasks = (typeof deduplicateTasks === 'function') ? deduplicateTasks(rawBackendTasks) : rawBackendTasks;
             const backendTaskMap = new Map(backendTasks.map(t => [t.id, t]));
             const backendSemanticMap = new Map(backendTasks.map(t => [
@@ -6745,7 +6787,12 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 
     function closeAllModals() {
       document.querySelectorAll('[id^="modal-"], [id^="modal"]').forEach(m => {
-        if (!m.classList.contains('hidden') && m.id !== 'modal-login' && m.id !== 'modalCreateTask' && m.id !== 'modalDirectory') {
+        if (m.id === 'modal-login' || m.id === 'viewLoginContainer') return;
+        if (m.classList.contains('contents')) {
+          m.classList.remove('open');
+          return;
+        }
+        if (!m.classList.contains('hidden')) {
           closeModal(m.id);
         }
       });
@@ -7164,12 +7211,22 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         const btn = document.getElementById('btnDock' + i);
         if (btn) {
           if (i === tabIdx) {
-            btn.classList.add('text-sky-600', 'font-bold', 'bg-sky-50/90');
-            btn.classList.remove('text-slate-500', 'font-semibold');
+            btn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-sky-600', 'text-white', 'font-bold', 'shadow-sm');
+            btn.classList.remove('text-slate-600', 'font-semibold', 'hover:text-sky-700', 'hover:bg-sky-50/80');
           } else {
-            btn.classList.remove('text-sky-600', 'font-bold', 'bg-sky-50/90');
-            btn.classList.add('text-slate-500', 'font-semibold');
+            btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-sky-600', 'text-white', 'font-bold', 'shadow-sm');
+            btn.classList.add('text-slate-600', 'font-semibold', 'hover:text-sky-700', 'hover:bg-sky-50/80');
           }
+        }
+      }
+      const dockBadge = document.getElementById('dockTasksBadge');
+      if (dockBadge) {
+        if (tabIdx === 1) {
+          dockBadge.classList.remove('bg-sky-100', 'text-sky-700');
+          dockBadge.classList.add('bg-white/25', 'text-white');
+        } else {
+          dockBadge.classList.add('bg-sky-100', 'text-sky-700');
+          dockBadge.classList.remove('bg-white/25', 'text-white');
         }
       }
 
@@ -7183,6 +7240,30 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       }
     }
     window.switchDockTab = switchDockTab;
+
+    // Wrap renderTasksList to keep Điều Động KPI summary & dock badge in sync
+    if (typeof renderTasksList === 'function') {
+      const _origRenderTasksList = renderTasksList;
+      renderTasksList = function() {
+        _origRenderTasksList.apply(this, arguments);
+        const list = Array.isArray(currentTasks) ? currentTasks : [];
+        const totalEl = document.getElementById('statTotalTasks');
+        const urgentEl = document.getElementById('statUrgentTasks');
+        const myEl = document.getElementById('statMyTasks');
+        const dockBadge = document.getElementById('dockTasksBadge');
+        const uid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.id : null;
+        const urgentCount = list.filter(t => ((t.joinedMembers || []).length + (t.assignedMembers || []).length) === 0).length;
+        const myCount = uid ? list.filter(t => (t.joinedMembers || []).includes(uid) || (t.assignedMembers || []).includes(uid)).length : 0;
+        if (totalEl) totalEl.textContent = list.length;
+        if (urgentEl) urgentEl.textContent = urgentCount;
+        if (myEl) myEl.textContent = myCount;
+        if (dockBadge) {
+          dockBadge.textContent = list.length;
+          dockBadge.classList.toggle('hidden', list.length === 0);
+        }
+      };
+      window.renderTasksList = renderTasksList;
+    }
 
     // Global interactive listeners
     document.addEventListener('click', function(e) {
