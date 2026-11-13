@@ -91,6 +91,86 @@
       0%, 100% { transform: translateY(0); opacity: 0.8; }
       50% { transform: translateY(215px); opacity: 1; }
     }
+    /* Crisp SVG Icon & Clean Athletic Card Primitives */
+    .svg-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .acrylic-card {
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+    .acrylic-card:hover {
+      border-color: #8e8e93;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    .avatar-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(0, 122, 255, 0.12);
+      color: #007aff;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .glow-indigo {
+      background: #007aff;
+      color: #ffffff;
+      border-radius: 12px;
+      transition: transform 150ms ease, background-color 150ms ease;
+    }
+    .glow-indigo:hover { background: #0058bc; }
+    .glow-teal {
+      background: #0d9488;
+      color: #ffffff;
+      border-radius: 12px;
+      transition: transform 150ms ease, background-color 150ms ease;
+    }
+    .glow-amber {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+    }
+    .glow-red {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+    }
+    .waitlist-badge {
+      background: #f2f2f7;
+      color: #636366;
+      border: 1px solid #e5e5ea;
+      border-radius: 10px;
+    }
+    .focus-ring:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid #007aff;
+      outline-offset: 2px;
+    }
+    .reaction-bar-dock {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
   </style>
 </head>
@@ -106,7 +186,7 @@
   </div>
 
 <!-- Ambient Glow Background -->
-<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="fixed inset-0 pointer-events-none z-0 overflow-clip [overflow-clip-margin:4px]">
 <div class="absolute -top-12 -right-12 w-72 h-72 rounded-full bg-cyan-400/20 blur-[54px]"></div>
 <div class="absolute top-64 -left-16 w-64 h-64 rounded-full bg-sky-400/15 blur-[54px]"></div>
 </div>
@@ -124,21 +204,33 @@
 </div>
 </div>
 <div class="flex items-center gap-1.5">
-<button class="spring-tap w-9 h-9 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-sky-600 relative" onclick="openModal('modal-noti', 'sheet-noti')" title="Thông báo" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-9 h-9 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-sky-600 relative" onclick="openModal('modal-noti', 'sheet-noti')" title="Thông báo" type="button">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
 <span class="w-2 h-2 rounded-full bg-rose-500 absolute top-2 right-2 ring-2 ring-white"></span>
 </button>
-<button class="spring-tap w-9 h-9 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-sky-600" onclick="openModal('modal-members', 'sheet-members')" title="Danh sách thành viên CLB" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-9 h-9 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-sky-600" onclick="openModal('modal-members', 'sheet-members')" title="Danh sách thành viên CLB" type="button">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
 </button>
-<button class="spring-tap w-9 h-9 rounded-full ring-2 ring-sky-400 shadow-sm overflow-hidden border border-white hover:ring-sky-500 transition-all" onclick="openModal('modal-settings', 'sheet-settings')" title="Cài đặt tài khoản" type="button">
-<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARAWC9GeZBx0afFbfDG2A1TSnklAFeBMgy-xSI5U0mmtOT8zznuLTVP8wi04Fy6GXsSb5m0VscqPnBXmfmMp4kvblNmF3iBNhqr9Mua8Owfl8o6rCW65hbgR7L9XcIQlHP7Qdv8PuQGJcokBJ2tqjVP6xxgg5mLZ31oYoeEUbAIgSEIL-pkk9z9qG6xKBMBAsbigiYeFLmbNmI82zG-XcGRe5xRsptRae22B36xCOs">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-9 h-9 rounded-full ring-2 ring-sky-400 shadow-sm overflow-clip [overflow-clip-margin:4px] border border-white hover:ring-sky-500 transition-[background-color,transform,box-shadow,opacity,border-color,color]" onclick="openModal('modal-settings', 'sheet-settings')" title="Cài đặt tài khoản" type="button">
+<img id="headerAvatarImg" alt="Avatar" class="w-full h-full object-cover hidden" src=""><span id="headerAvatarMonogram" class="w-full h-full flex items-center justify-center bg-[#007aff] text-white font-bold text-[11px] tracking-tight">ĐC</span>
 </button>
 </div>
 </div>
 </header>
 <!-- MAIN NATIVE VIEW CONTENT -->
-<main class="flex-1 px-4 pt-3.5 space-y-3.5 pb-24">
+<main class="flex-1 px-4 pt-3.5 space-y-3.5 pb-28">
+<!-- iOS Segmented Role Control (2-Column Grid) -->
+<div class="grid grid-cols-2 bg-[#e5e5ea]/80 p-1 rounded-2xl relative border border-[#e5e5ea]" id="roleSegmentedControl">
+  <div id="pill-indicator" class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-xl bg-white shadow-sm transition-transform duration-300 ease-out" style="transform: translateX(100%);"></div>
+  <button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap relative z-10 py-2 text-[12px] font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 text-[#636366]" id="toggle-role-member" onclick="setRole('member')" type="button">
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+    <span>Thành viên</span>
+  </button>
+  <button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap relative z-10 py-2 text-[12px] font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5 text-[#1c1c1e]" id="toggle-role-admin" onclick="setRole('admin')" type="button">
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+    <span>Quản trị</span>
+  </button>
+</div>
 <div id="tabContentProfile" class="space-y-3.5">
 <!-- 2. HERO PASS CARD WITH 3D TILT & SHEEN -->
 <div class="perspective-card-wrapper">
@@ -150,30 +242,30 @@
 <span class="font-mono text-[10px] text-sky-100 bg-white/15 px-2 py-0.5 rounded-full border border-white/20">2024–25</span>
 <!-- Direct Interactive Status Pill & Micro-Popover -->
 <div class="relative inline-block text-left" id="status-toggle-wrapper">
-<button class="spring-tap inline-flex items-center gap-1.5 pl-2.5 pr-2 py-1 rounded-full bg-emerald-500/25 border border-emerald-300/50 shadow-[0_2px_10px_rgba(16,185,129,0.25)] hover:bg-emerald-500/35 backdrop-blur-md transition-all duration-200 cursor-pointer group" id="hero-status-pill" onclick="toggleStatusDropdown(event)" title="Nhấn để đổi trạng thái" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap inline-flex items-center gap-1.5 pl-2.5 pr-2 py-1 rounded-full bg-emerald-500/25 border border-emerald-300/50 shadow-[0_2px_10px_rgba(16,185,129,0.25)] hover:bg-emerald-500/35 backdrop-blur-md transition-[background-color,transform,box-shadow,opacity,border-color,color] duration-200 cursor-pointer group" id="hero-status-pill" onclick="toggleStatusDropdown(event)" title="Nhấn để đổi trạng thái" type="button">
 <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] animate-pulse" id="hero-status-dot"></span>
 <span class="text-[11px] font-semibold text-emerald-100 tracking-tight" id="hero-status-text">Sẵn sàng</span>
 <svg class="w-3 h-3 text-emerald-200 transition-transform duration-200 group-hover:translate-y-0.5" fill="none" id="hero-status-chevron" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
 </button>
 <!-- Status Micro-Popover / Dropdown (Frosted Glass) -->
-<div class="hidden opacity-0 translate-y-1 transition-all duration-200 absolute right-0 mt-1.5 w-52 rounded-2xl bg-slate-900/90 backdrop-blur-2xl border border-white/20 shadow-2xl p-1.5 z-50 divide-y divide-white/10" id="status-dropdown">
+<div class="hidden opacity-0 translate-y-1 transition-[background-color,transform,box-shadow,opacity,border-color,color] duration-200 absolute right-0 mt-1.5 w-52 rounded-2xl bg-slate-900/90 backdrop-blur-2xl border border-white/20 shadow-2xl p-1.5 z-50 divide-y divide-white/10" id="status-dropdown">
 <div class="px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-wider text-sky-300/80">Chọn trạng thái</div>
 <div class="py-1 space-y-0.5">
-<button class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('ready', event)" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('ready', event)" type="button">
 <div class="flex items-center gap-2">
 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] animate-pulse"></span>
 <span class="text-[12px] font-semibold text-white">Sẵn sàng nhận ca</span>
 </div>
 <span class="text-[10px] text-emerald-300 font-mono">Nhận ca</span>
 </button>
-<button class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('busy', event)" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('busy', event)" type="button">
 <div class="flex items-center gap-2">
 <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.9)] animate-pulse"></span>
 <span class="text-[12px] font-semibold text-white">Đang trực ca</span>
 </div>
 <span class="text-[10px] text-amber-300 font-mono">Bận rộn</span>
 </button>
-<button class="w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('off', event)" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-full flex items-center justify-between px-2.5 py-2 rounded-xl hover:bg-white/10 transition-colors text-left group spring-tap" onclick="selectCardStatus('off', event)" type="button">
 <div class="flex items-center gap-2">
 <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shadow-[0_0_6px_rgba(148,163,184,0.6)]"></span>
 <span class="text-[12px] font-semibold text-slate-200">Nghỉ ngơi</span>
@@ -186,8 +278,9 @@
 </div>
 </div>
 <div class="mt-3.5 flex items-center gap-3.5 relative z-10">
-<div class="relative">
-        <img alt="Lê Hoàng Long" id="memAvatarImg" class="w-16 h-16 rounded-2xl object-cover ring-2 ring-white/50 shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARAWC9GeZBx0afFbfDG2A1TSnklAFeBMgy-xSI5U0mmtOT8zznuLTVP8wi04Fy6GXsSb5m0VscqPnBXmfmMp4kvblNmF3iBNhqr9Mua8Owfl8o6rCW65hbgR7L9XcIQlHP7Qdv8PuQGJcokBJ2tqjVP6xxgg5mLZ31oYoeEUbAIgSEIL-pkk9z9qG6xKBMBAsbigiYeFLmbNmI82zG-XcGRe5xRsptRae22B36xCOs">
+<div class="relative shrink-0">
+        <img alt="Lê Hoàng Long" id="memAvatarImg" class="w-16 h-16 rounded-2xl object-cover ring-2 ring-white/50 shadow-md hidden" src="">
+        <div id="memAvatarMonogram" class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md ring-2 ring-white/40 shadow-md flex items-center justify-center text-white font-bold text-xl tracking-tight">ĐC</div>
         <div class="avatar-cam-badge absolute -bottom-1 -right-1 bg-white text-slate-700 rounded-full flex items-center justify-center shadow-md border border-slate-100 cursor-pointer" style="width: 22px; height: 22px;" title="Cập nhật ảnh thẻ">
           <svg style="width: 11px; height: 11px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
         </div>
@@ -225,13 +318,13 @@
 <!-- 4. DYNAMIC ACTION BUTTONS -->
 <section>
 <div class="grid-cols-2 gap-2.5 hidden" id="member-action-bar">
-<button class="spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 border border-sky-200/80 text-sky-900 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm" id="btnMemberSwapShift" onclick="openModal('modal-swap', 'sheet-swap')" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 border border-sky-200/80 text-sky-900 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm" id="btnMemberSwapShift" onclick="openModal('modal-swap', 'sheet-swap')" type="button">
 <div class="w-6 h-6 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3L4 7l4 4"></path><path d="M4 7h16"></path><path d="M16 21l4-4-4-4"></path><path d="M20 17H4"></path></svg>
 </div>
 <span>Yêu cầu đổi ca</span>
 </button>
-<button class="spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 border border-sky-200/80 text-sky-900 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm" id="btnTabQrPass" onclick="openModal('modal-checkin-qr', 'sheet-checkin-qr')" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 border border-sky-200/80 text-sky-900 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm" id="btnTabQrPass" onclick="openModal('modal-checkin-qr', 'sheet-checkin-qr')" type="button">
 <div class="w-6 h-6 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center">
 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="5" rx="1" width="5" x="3" y="3"></rect><rect height="5" rx="1" width="5" x="16" y="3"></rect><rect height="5" rx="1" width="5" x="3" y="16"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M12 12v5"></path></svg>
 </div>
@@ -239,13 +332,13 @@
 </button>
 </div>
 <div class="grid-cols-2 gap-2.5 grid" id="admin-action-bar">
-<button class="spring-tap h-11 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white text-[13px] font-semibold flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(2,132,199,0.3)]" id="btnAdminCreateTaskAction" onclick="openModal('modal-create-shift', 'sheet-create-shift')" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap h-11 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white text-[13px] font-semibold flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(2,132,199,0.3)]" id="btnAdminCreateTaskAction" onclick="openModal('modal-create-shift', 'sheet-create-shift')" type="button">
 <div class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center font-bold">
 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
 </div>
-<span>+ Tạo ca trực</span>
+<span>Tạo ca trực</span>
 </button>
-<button class="spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 text-sky-900 border border-sky-300 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm relative" id="btnAdminApproveAction" onclick="openModal('modal-approve', 'sheet-approve')" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap h-11 rounded-xl bg-white hover:bg-sky-50 text-sky-900 border border-sky-300 text-[13px] font-semibold flex items-center justify-center gap-2 shadow-sm relative" id="btnAdminApproveAction" onclick="openModal('modal-approve', 'sheet-approve')" type="button">
 <div class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center">
 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
 </div>
@@ -258,12 +351,12 @@
 <section class="space-y-2">
 <div class="px-1 flex items-center justify-between">
 <h2 class="text-[11px] font-bold text-sky-800 uppercase tracking-wider font-mono">THÔNG TIN HỒ SƠ</h2>
-<button class="spring-tap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-sky-700 text-[11px] font-semibold border border-sky-200 shadow-sm hover:bg-sky-50" onclick="openModal('modal-edit', 'sheet-edit')" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-sky-700 text-[11px] font-semibold border border-sky-200 shadow-sm hover:bg-sky-50" onclick="openModal('modal-edit', 'sheet-edit')" type="button">
 <svg class="w-3 h-3 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
 <span>Chỉnh sửa</span>
 </button>
 </div>
-<div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 divide-y divide-slate-100 overflow-hidden shadow-sm">
+<div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 divide-y divide-slate-100 overflow-clip [overflow-clip-margin:4px] shadow-sm">
 <div class="profile-row-item flex items-center justify-between px-4 py-3">
 <div class="flex items-center gap-3">
 <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
@@ -337,97 +430,82 @@
 
       <!-- ==================== TAB 1: TASKS VIEW ==================== -->
       <div id="tabContentTasks" class="hidden space-y-3.5">
-        <div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 p-4 space-y-3 shadow-sm">
+        <div class="bg-white rounded-[20px] border border-[#e5e5ea] p-4 space-y-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
           <!-- Admin Task Toolbar -->
           <div id="adminTaskToolbar" class="acrylic-card hidden">
-            <div class="flex items-center justify-between pb-3 border-b border-sky-100">
+            <div class="flex items-center justify-between">
               <div>
-                <h3 class="text-sm font-bold text-slate-900">Bảng Điều Phối Ca Trực</h3>
-                <p class="text-[11px] text-slate-500 font-mono">ADMIN DISPATCH SYSTEM</p>
+                <h3 class="text-sm font-bold text-[#1c1c1e]">Bảng Điều Phối Ca Trực</h3>
+                <p class="text-[11px] text-[#636366] font-mono">ADMIN DISPATCH SYSTEM</p>
               </div>
-              <button onclick="openModal('modal-create-shift', 'sheet-create-shift')" class="spring-tap px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-bold text-xs shadow-sm">+ Tạo ca</button>
+              <button onclick="openModal('modal-create-shift', 'sheet-create-shift')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap px-3 py-1.5 rounded-xl bg-[#007aff] text-white font-bold text-xs shadow-sm">Tạo ca</button>
             </div>
           </div>
           <!-- Department Filter Chips for the 7 Departments -->
           <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-            <button onclick="setTaskDeptFilter('ALL')" class="px-3 py-1 rounded-full bg-slate-900 text-white font-bold whitespace-nowrap">Tất cả</button>
-            <button onclick="setTaskDeptFilter('Ban Chủ Nhiệm')" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap">Chủ Nhiệm</button>
-            <button onclick="setTaskDeptFilter('Ban Nhân Sự')" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap">Nhân Sự</button>
-            <button onclick="setTaskDeptFilter('Ban Bóng Chuyền')" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap">Bóng Chuyền</button>
-            <button onclick="setTaskDeptFilter('Ban Bóng Đá Nam')" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap">Bóng Đá Nam</button>
-            <button onclick="setTaskDeptFilter('Ban Bóng Đá Nữ')" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap">Bóng Đá Nữ</button>
-            <button onclick="setTaskDeptFilter('Ban Cầu Lông')" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap">Cầu Lông</button>
-            <button onclick="setTaskDeptFilter('Ban Truyền Thông')" class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200 whitespace-nowrap">Truyền Thông</button>
+            <button onclick="setTaskDeptFilter('ALL')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#1c1c1e] text-white font-bold whitespace-nowrap">Tất cả</button>
+            <button onclick="setTaskDeptFilter('Ban Chủ Nhiệm')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold hover:bg-[#e5e5ea] whitespace-nowrap">Chủ Nhiệm</button>
+            <button onclick="setTaskDeptFilter('Ban Nhân Sự')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold hover:bg-[#e5e5ea] whitespace-nowrap">Nhân Sự</button>
+            <button onclick="setTaskDeptFilter('Ban Bóng Chuyền')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold hover:bg-[#e5e5ea] whitespace-nowrap">Bóng Chuyền</button>
+            <button onclick="setTaskDeptFilter('Ban Bóng Đá Nam')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold hover:bg-[#e5e5ea] whitespace-nowrap">Bóng Đá Nam</button>
+            <button onclick="setTaskDeptFilter('Ban Bóng Đá Nữ')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold hover:bg-[#e5e5ea] whitespace-nowrap">Bóng Đá Nữ</button>
+            <button onclick="setTaskDeptFilter('Ban Cầu Lông')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold hover:bg-[#e5e5ea] whitespace-nowrap">Cầu Lông</button>
+            <button onclick="setTaskDeptFilter('Ban Truyền Thông')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-3 py-1.5 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold hover:bg-[#e5e5ea] whitespace-nowrap">Truyền Thông</button>
           </div>
           <!-- Tasks List Container -->
           <div id="tasksListContainer" class="space-y-3 pt-1">
-            <div class="p-6 text-center text-slate-400 text-xs font-semibold">Đang tải danh sách ca trực...</div>
+            <div class="p-6 text-center text-[#8e8e93] text-xs font-semibold">Đang tải danh sách ca trực...</div>
           </div>
         </div>
       </div>
 
       <!-- ==================== TAB 2: FORUM VIEW ==================== -->
       <div id="tabContentForum" class="hidden space-y-3.5">
-        <div class="bg-white/90 backdrop-blur-xl rounded-2xl border border-sky-100 p-4 space-y-3 shadow-sm">
+        <div class="bg-white rounded-[20px] border border-[#e5e5ea] p-4 space-y-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-slate-900">Diễn Đàn Thể Thao</h3>
-            <span class="text-[10px] text-slate-400 font-bold uppercase font-mono">VARSITY FEED</span>
+            <h3 class="text-sm font-bold text-[#1c1c1e]">Diễn Đàn Thể Thao</h3>
+            <span class="text-[10px] text-[#8e8e93] font-bold uppercase font-mono">VARSITY FEED</span>
           </div>
           <!-- Post Composer Box -->
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-            <textarea id="iptPostContent" rows="2" placeholder="Chia sẻ thông báo hoặc khoảnh khắc giải đấu..." class="w-full bg-transparent text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none"></textarea>
-            <div class="flex items-center justify-between pt-2 border-t border-slate-200/60">
-              <span class="text-[10px] text-slate-400 font-semibold">Chế độ công khai</span>
-              <button onclick="submitNewForumPost()" class="spring-tap px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-bold text-xs shadow-sm">Đăng bài</button>
+          <div class="p-3 rounded-2xl bg-[#f2f2f7] border border-[#e5e5ea] space-y-2">
+            <textarea id="iptPostContent" rows="2" placeholder="Chia sẻ thông báo hoặc khoảnh khắc giải đấu..." class="w-full bg-transparent text-xs font-medium text-[#1c1c1e] placeholder-[#8e8e93] focus:outline-none"></textarea>
+            <div class="flex items-center justify-between pt-2 border-t border-[#e5e5ea]">
+              <span class="text-[10px] text-[#636366] font-semibold">Chế độ công khai</span>
+              <button onclick="submitNewForumPost()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap px-3.5 py-1.5 rounded-xl bg-[#007aff] text-white font-bold text-xs shadow-sm">Đăng bài</button>
             </div>
           </div>
           <!-- Forum Feed Container -->
-          <div id="forumFeedContainer" class="space-y-3 pt-1">
-            <div class="p-6 text-center text-slate-400 text-xs font-semibold">Chưa có bài viết mới trên diễn đàn</div>
+          <div id="postsListContainer" class="space-y-3 pt-1">
+            <div class="p-6 text-center text-[#8e8e93] text-xs font-semibold">Chưa có bài viết mới trên diễn đàn</div>
           </div>
         </div>
       </div>
 </main>
-<!-- FLOATING ROLE SWITCHER & BOTTOM DOCK -->
-<div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-1.5">
-  <!-- 1. Floating Role Switcher Pill -->
-  <div class="bg-white/90 backdrop-blur-xl border border-sky-200/80 p-1 rounded-full shadow-[0_8px_24px_rgba(2,132,199,0.18)] flex items-center relative">
-    <div class="absolute top-1 bottom-1 rounded-full bg-gradient-to-r from-blue-600 to-sky-600 shadow-sm transition-all duration-300 ease-out" id="pill-indicator" style="left: 88px; width: 70px;"></div>
-    <button class="spring-tap relative z-10 px-3.5 py-1.5 text-[11.5px] font-bold rounded-full transition-colors flex items-center gap-1.5 text-slate-600" id="toggle-role-member" onclick="setRole('member')" type="button">
-      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      <span>Thành viên</span>
+<!-- FLOATING APPLE GLASS TAB DOCK -->
+<nav aria-label="Điều hướng chính" class="fixed inset-x-0 bottom-3 z-40 flex justify-center pointer-events-none px-4">
+  <div class="pointer-events-auto flex items-center gap-1 bg-white/85 backdrop-blur-xl p-1.5 rounded-full border border-[#e5e5ea] shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
+    <button id="btnDock0" type="button" onclick="switchDockTab(0)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-bold bg-[#007aff]/10 text-[#007aff] transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Hồ Sơ</span>
     </button>
-    <button class="spring-tap relative z-10 px-3.5 py-1.5 text-[11.5px] font-bold rounded-full transition-colors flex items-center gap-1.5 text-white" id="toggle-role-admin" onclick="setRole('admin')" type="button">
-      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-      <span>Quản trị</span>
+    <button id="btnDock1" type="button" onclick="switchDockTab(1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-semibold text-[#636366] hover:text-[#1c1c1e] transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      <span>Điều Động</span>
+    </button>
+    <button id="btnDock2" type="button" onclick="switchDockTab(2)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-semibold text-[#636366] hover:text-[#1c1c1e] transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span>Diễn Đàn</span>
     </button>
   </div>
-  <!-- 2. Apple Glass Dock (Hồ Sơ / Điều Động / Diễn Đàn) -->
-  <div class="flex items-center space-x-3 bg-white/85 backdrop-blur-md px-4 py-1.5 rounded-full border border-sky-100 shadow-sm text-[11px] font-bold text-slate-500">
-    <button id="btnDock0" onclick="switchDockTab(0)" class="hover:text-sky-600 transition-colors text-sky-600 font-bold">Hồ Sơ</button>
-    <span class="text-slate-300">•</span>
-    <button id="btnDock1" onclick="switchDockTab(1)" class="hover:text-sky-600 transition-colors">Điều Động</button>
-    <span class="text-slate-300">•</span>
-    <button id="btnDock2" onclick="switchDockTab(2)" class="hover:text-sky-600 transition-colors">Diễn Đàn</button>
-  </div>
-</div>
+</nav>
 </div>
 <!-- ==================== FROSTED GLASS COLOROS AQUAMORPHIC MODALS ==================== -->
 <!-- MODAL CHECK-IN QR -->
 <div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-checkin-qr">
 <div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-checkin-qr">
 <div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div>
-<div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70">
-  <div id="directoryDeptFilterBar" class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs hidden">
-    <button onclick="setDirectoryDeptFilter('ALL')">ALL</button>
-    <button onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')">Chủ Nhiệm</button>
-    <button onclick="setDirectoryDeptFilter('Ban Nhân Sự')">Nhân Sự</button>
-    <button onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')">Bóng Chuyền</button>
-    <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')">Bóng Đá Nam</button>
-    <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')">Bóng Đá Nữ</button>
-    <button onclick="setDirectoryDeptFilter('Ban Cầu Lông')">Cầu Lông</button>
-    <button onclick="setDirectoryDeptFilter('Ban Truyền Thông')">Truyền Thông</button>
-  </div>
+<div class="flex flex-col gap-2.5 pb-3.5 border-b border-[#e5e5ea]">
+  <div class="flex items-center justify-between w-full">
 <div class="flex items-center gap-2.5">
 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="5" rx="1" width="5" x="3" y="3"></rect><rect height="5" rx="1" width="5" x="16" y="3"></rect><rect height="5" rx="1" width="5" x="3" y="16"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path></svg>
@@ -437,11 +515,11 @@
 <p class="text-[11px] text-slate-500 font-mono">VARSITY PASS IDENTITY</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-checkin-qr', 'sheet-checkin-qr')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-checkin-qr', 'sheet-checkin-qr')">✕</button>
 </div>
 <div class="py-4 space-y-4 text-center">
 <div class="p-4 bg-gradient-to-b from-sky-50/80 to-blue-50/40 rounded-3xl border border-sky-200/60 inline-block mx-auto shadow-inner">
-<div class="w-44 h-44 bg-white p-3 rounded-2xl shadow-sm border border-sky-100 flex flex-col items-center justify-center relative overflow-hidden">
+<div class="w-44 h-44 bg-white p-3 rounded-2xl shadow-sm border border-sky-100 flex flex-col items-center justify-center relative overflow-clip [overflow-clip-margin:4px]">
 <div class="absolute -top-10 -right-10 w-24 h-24 bg-cyan-400/10 rounded-full blur-xl"></div>
 <svg class="w-36 h-36 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm13-2h3v2h-3zm-5 0h2v5h-2zm2 2h3v2h-3zm0 3h3v2h-3zm3 0h3v2h-3z"></path></svg>
 </div>
@@ -481,7 +559,7 @@
 <p class="text-[11px] text-slate-500 font-mono">SHIFT SWAP REQUEST</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-swap', 'sheet-swap')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-swap', 'sheet-swap')">✕</button>
 </div>
 <div class="py-3.5 space-y-3">
 <div class="hero-gradient p-4 rounded-2xl text-white shadow-md border border-sky-300/30">
@@ -510,13 +588,13 @@
 <input class="w-full px-3.5 py-2.5 bg-slate-50/90 rounded-2xl border border-sky-200/80 text-[13px] focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 placeholder-slate-400" placeholder="Nhập lý do..." value="Trùng lịch thi giải đấu trường">
 </div>
 </div>
-<button class="spring-tap mt-3 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="closeModal('modal-swap', 'sheet-swap'); triggerToast('Đã gửi yêu cầu đổi ca trực!');" type="button">Gửi Yêu Cầu Phê Duyệt</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap mt-3 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="closeModal('modal-swap', 'sheet-swap'); triggerToast('Đã gửi yêu cầu đổi ca trực!');" type="button">Gửi Yêu Cầu Phê Duyệt</button>
 </div>
 </div>
 <!-- MODAL SETTINGS -->
 <div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300 items-end justify-center opacity-0 hidden" id="modal-settings">
-<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-settings"><div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div><div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Cài Đặt &amp; Tài Khoản</h3><p class="text-[11px] text-slate-500 font-mono">SYSTEM PREFERENCES</p></div></div><button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-settings', 'sheet-settings')">✕</button></div><div class="py-3.5 space-y-4 overflow-y-auto max-h-[64vh] pr-1"><div class="space-y-1.5"><div class="px-1 text-[10.5px] font-bold font-mono text-sky-700 uppercase tracking-wider">Tài khoản &amp; Bảo mật</div><div class="bg-white/80 rounded-2xl border border-sky-100/80 divide-y divide-slate-100 shadow-sm overflow-hidden"><div class="spring-tap flex items-center justify-between p-3.5 cursor-pointer hover:bg-sky-50/50" onclick="togglePasswordDrawer()"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Đổi mật khẩu tài khoản</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Chạm để nhập mật khẩu mới</span></div></div><svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div><div class="hidden p-3 bg-sky-50/70 border-t border-sky-100 space-y-2" id="settings-pwd-drawer"><input class="w-full px-3 py-2 bg-white rounded-xl border border-sky-200 text-[12px] text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-new-password" placeholder="Nhập mật khẩu mới..." type="password"><button class="spring-tap w-full h-8 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-semibold text-[11.5px] shadow-sm" onclick="handleSaveNewPassword()" type="button">Cập nhật mật khẩu</button></div><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0 0 8 11a4 4 0 1 1 8 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0 0 15.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 0 0 4 11m0 0a8 8 0 0 0 .528 2.86m0 0a21.88 21.88 0 0 0 2.225 4.88"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Xác thực Face ID / Sinh trắc học</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Mở khóa thẻ nhanh khi kiểm ca</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input checked="" class="sr-only peer" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div></div></div><div class="space-y-1.5"><div class="px-1 text-[10.5px] font-bold font-mono text-sky-700 uppercase tracking-wider">Hệ thống &amp; Thông báo</div><div class="bg-white/80 rounded-2xl border border-sky-100/80 divide-y divide-slate-100 shadow-sm overflow-hidden"><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Nhắc nhở trước ca 30 phút</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Báo thức và rung thông báo</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input checked="" class="sr-only peer" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Giao diện tối (Dark Mode)</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Tối ưu hiển thị ban đêm</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input class="sr-only peer" onchange="triggerToast('Đã đổi chế độ sáng/tối')" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div></div></div><div class="space-y-2 pt-2"><button class="spring-tap w-full h-11 rounded-2xl bg-sky-50 text-sky-800 border border-sky-200/80 font-semibold text-[13px] flex items-center justify-center gap-2 hover:bg-sky-100 transition-colors shadow-sm" <button id="btnMenuRoleManagement" class="spring-touch hidden" onclick="openAdminRoleManagementModal()">Phân Quyền Admin</button>
-onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg><span>Đăng nhập tài khoản khác</span></button><button class="spring-tap w-full h-11 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200/80 font-semibold text-[13px] flex items-center justify-center gap-2 hover:bg-rose-100 transition-colors shadow-sm" onclick="handleLogout()" type="button"><svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg><span>Đăng xuất khỏi thiết bị</span></button></div></div></div>
+<div class="glass-sheet w-full max-w-[440px] rounded-t-[32px] p-5 sheet-transition relative max-h-[88vh] flex flex-col translate-y-full" id="sheet-settings"><div class="w-12 h-1.5 bg-slate-300/80 rounded-full mx-auto mb-3"></div><div class="flex items-center justify-between pb-3.5 border-b border-sky-100/70"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white flex items-center justify-center shadow-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div><div><h3 class="text-[16px] font-bold text-slate-900 tracking-tight">Cài Đặt &amp; Tài Khoản</h3><p class="text-[11px] text-slate-500 font-mono">SYSTEM PREFERENCES</p></div></div><button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-settings', 'sheet-settings')">✕</button></div><div class="py-3.5 space-y-4 overflow-y-auto max-h-[64vh] pr-1"><div class="space-y-1.5"><div class="px-1 text-[10.5px] font-bold font-mono text-sky-700 uppercase tracking-wider">Tài khoản &amp; Bảo mật</div><div class="bg-white/80 rounded-2xl border border-sky-100/80 divide-y divide-slate-100 shadow-sm overflow-clip [overflow-clip-margin:4px]"><div class="spring-tap flex items-center justify-between p-3.5 cursor-pointer hover:bg-sky-50/50" onclick="togglePasswordDrawer()"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Đổi mật khẩu tài khoản</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Chạm để nhập mật khẩu mới</span></div></div><svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div><div class="hidden p-3 bg-sky-50/70 border-t border-sky-100 space-y-2" id="settings-pwd-drawer"><input class="w-full px-3 py-2 bg-white rounded-xl border border-sky-200 text-[12px] text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-new-password" placeholder="Nhập mật khẩu mới..." type="password"><button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-full h-8 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-semibold text-[11.5px] shadow-sm" onclick="handleSaveNewPassword()" type="button">Cập nhật mật khẩu</button></div><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0 0 8 11a4 4 0 1 1 8 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0 0 15.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 0 0 4 11m0 0a8 8 0 0 0 .528 2.86m0 0a21.88 21.88 0 0 0 2.225 4.88"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Xác thực Face ID / Sinh trắc học</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Mở khóa thẻ nhanh khi kiểm ca</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input checked="" class="sr-only peer" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-[background-color,transform,box-shadow,opacity,border-color,color] peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div></div></div><div class="space-y-1.5"><div class="px-1 text-[10.5px] font-bold font-mono text-sky-700 uppercase tracking-wider">Hệ thống &amp; Thông báo</div><div class="bg-white/80 rounded-2xl border border-sky-100/80 divide-y divide-slate-100 shadow-sm overflow-clip [overflow-clip-margin:4px]"><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Nhắc nhở trước ca 30 phút</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Báo thức và rung thông báo</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input checked="" class="sr-only peer" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-[background-color,transform,box-shadow,opacity,border-color,color] peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div><div class="flex items-center justify-between p-3.5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></div><div><span class="text-[13px] font-semibold text-slate-800 block leading-tight">Giao diện tối (Dark Mode)</span><span class="text-[10.5px] text-slate-500 mt-0.5 block">Tối ưu hiển thị ban đêm</span></div></div><label class="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-3"><input class="sr-only peer" onchange="triggerToast('Đã đổi chế độ sáng/tối')" type="checkbox"><div class="w-11 h-6 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-[background-color,transform,box-shadow,opacity,border-color,color] peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-500"></div></label></div></div></div><div class="space-y-2 pt-2"><button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-full h-11 rounded-2xl bg-sky-50 text-sky-800 border border-sky-200/80 font-semibold text-[13px] flex items-center justify-center gap-2 hover:bg-sky-100 transition-colors shadow-sm" <button id="btnMenuRoleManagement" class="spring-touch hidden" onclick="openAdminRoleManagementModal()">Phân Quyền Admin</button>
+onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" x2="3" y1="12" y2="12"></line></svg><span>Đăng nhập tài khoản khác</span></button><button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-full h-11 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200/80 font-semibold text-[13px] flex items-center justify-center gap-2 hover:bg-rose-100 transition-colors shadow-sm" onclick="handleLogout()" type="button"><svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg><span>Đăng xuất khỏi thiết bị</span></button></div></div></div>
 </div>
 <!-- MODAL ICE -->
 <div class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-md hidden opacity-0 transition-opacity duration-300 items-end justify-center" id="modal-ice">
@@ -532,7 +610,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11px] text-rose-600 font-mono font-semibold">EMERGENCY FIRST RESPONSE</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-ice', 'sheet-ice')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-ice', 'sheet-ice')">✕</button>
 </div>
 <div class="py-3.5 space-y-2.5">
 <div class="p-4 rounded-2xl bg-gradient-to-r from-rose-500/10 via-rose-50/70 to-white border border-rose-200/70 flex items-center justify-between shadow-sm">
@@ -582,7 +660,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11px] text-slate-500 font-mono">ADMIN SHIFT SCHEDULER</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-create-shift', 'sheet-create-shift')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-create-shift', 'sheet-create-shift')">✕</button>
 </div>
 <div class="py-3.5 space-y-3 overflow-y-auto max-h-[58vh]">
 <div>
@@ -639,7 +717,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 </div>
 </div>
 </div>
-<button class="spring-tap mt-2 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="executeCreateTaskSubmit();" type="button">+ Phát Hành Ca Trực</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap mt-2 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="executeCreateTaskSubmit();" type="button">+ Phát Hành Ca Trực</button>
 </div>
 </div>
 </div>
@@ -657,7 +735,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11px] text-slate-500 font-mono">APPROVAL QUEUE (2)</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-approve', 'sheet-approve')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-approve', 'sheet-approve')">✕</button>
 </div>
 <div class="py-3.5 space-y-3">
 <!-- Requisition Card 1 -->
@@ -671,8 +749,8 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11.5px] text-slate-500 mt-0.5">Đổi ca: SVĐ Zone A3 (Thứ Bảy 15/03 • 07:30 - 11:30)</p>
 </div>
 <div class="flex gap-2 pt-1">
-<button class="spring-tap flex-1 h-9 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 text-white font-semibold text-[12px] shadow-sm" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã phê duyệt ca!');" type="button">Phê duyệt</button>
-<button class="spring-tap flex-1 h-9 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[12px]" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã từ chối đơn.');" type="button">Từ chối</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap flex-1 h-9 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 text-white font-semibold text-[12px] shadow-sm" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã phê duyệt ca!');" type="button">Phê duyệt</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap flex-1 h-9 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[12px]" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã từ chối đơn.');" type="button">Từ chối</button>
 </div>
 </div>
 <!-- Requisition Card 2 -->
@@ -686,8 +764,8 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11.5px] text-slate-500 mt-0.5">Xin nhận thêm: Trực Trạm Y Tế SVĐ Chủ Nhật</p>
 </div>
 <div class="flex gap-2 pt-1">
-<button class="spring-tap flex-1 h-9 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 text-white font-semibold text-[12px] shadow-sm" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã duyệt nhận ca!');" type="button">Phê duyệt</button>
-<button class="spring-tap flex-1 h-9 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[12px]" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã hủy yêu cầu.');" type="button">Bỏ qua</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap flex-1 h-9 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 text-white font-semibold text-[12px] shadow-sm" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã duyệt nhận ca!');" type="button">Phê duyệt</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap flex-1 h-9 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold text-[12px]" onclick="closeModal('modal-approve', 'sheet-approve'); triggerToast('Đã hủy yêu cầu.');" type="button">Bỏ qua</button>
 </div>
 </div>
 </div>
@@ -708,7 +786,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11px] text-slate-500 font-mono">UPDATE PROFILE INFO</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-edit', 'sheet-edit')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-edit', 'sheet-edit')">✕</button>
 </div>
 <div class="py-3.5 space-y-2.5 overflow-y-auto max-h-[55vh]">
 <div>
@@ -728,7 +806,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <input class="w-full px-3.5 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-mono font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" id="input-phone" value="+84 908 419 283">
 </div>
 </div>
-<button class="spring-tap mt-3 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="saveProfile(); if (typeof saveMemberProfileEdit === 'function') saveMemberProfileEdit();" type="button">Lưu Thay Đổi Hồ Sơ</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap mt-3 w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)]" onclick="saveProfile(); if (typeof saveMemberProfileEdit === 'function') saveMemberProfileEdit();" type="button">Lưu Thay Đổi Hồ Sơ</button>
 </div>
 </div>
 <!-- MODAL NOTIFICATIONS -->
@@ -745,7 +823,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11px] text-slate-500 font-mono">CLUB DISPATCH FEED</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-noti', 'sheet-noti')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-noti', 'sheet-noti')">✕</button>
 </div>
 <div class="py-3.5 space-y-2.5 overflow-y-auto max-h-[55vh]">
 <!-- Thông báo điều phối (xanh pastel) -->
@@ -797,38 +875,26 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11px] text-slate-500 font-mono">CLUB DIRECTORY • 42 THÀNH VIÊN</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-members', 'sheet-members')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-members', 'sheet-members')">✕</button>
+  </div>
+  <div id="directoryDeptFilterBar" class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+    <button onclick="setDirectoryDeptFilter('ALL')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#1c1c1e] text-white font-bold whitespace-nowrap">Tất cả</button>
+    <button onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold whitespace-nowrap">Chủ Nhiệm</button>
+    <button onclick="setDirectoryDeptFilter('Ban Nhân Sự')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold whitespace-nowrap">Nhân Sự</button>
+    <button onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold whitespace-nowrap">Bóng Chuyền</button>
+    <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold whitespace-nowrap">Bóng Đá Nam</button>
+    <button onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold whitespace-nowrap">Bóng Đá Nữ</button>
+    <button onclick="setDirectoryDeptFilter('Ban Cầu Lông')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold whitespace-nowrap">Cầu Lông</button>
+    <button onclick="setDirectoryDeptFilter('Ban Truyền Thông')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] px-2.5 py-1 rounded-full bg-[#f2f2f7] text-[#636366] font-semibold whitespace-nowrap">Truyền Thông</button>
+  </div>
 </div>
 <div class="py-3.5 space-y-2.5 overflow-y-auto max-h-[55vh]">
-<!-- Member 1: User -->
-<div class="flex items-center justify-between p-3 rounded-2xl border border-sky-200/80 bg-white/90 shadow-sm">
-<div class="flex items-center gap-2.5">
-<div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-600 to-cyan-400 text-white font-bold flex items-center justify-center text-[13px] shadow-sm">HL</div>
-<div>
-<span class="text-[13px] font-bold text-slate-900 block">Lê Hoàng Long (Bạn)</span>
-<span class="text-[11px] text-sky-700">Trưởng nhóm Điều Phối • K21</span>
-</div>
-</div>
-<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full font-mono">Sẵn sàng</span>
-</div>
-<!-- Member 2 -->
-<div class="flex items-center justify-between p-3 rounded-2xl border border-sky-100 bg-white/70 shadow-sm">
-<div class="flex items-center gap-2.5">
-<div class="w-10 h-10 rounded-2xl bg-teal-600 text-white font-bold flex items-center justify-center text-[13px]">NĐ</div>
-<div>
-<span class="text-[13px] font-bold text-slate-900 block">Nguyễn Văn Đạt</span>
-<span class="text-[11px] text-slate-500">Ban Y Tế Sơ Cứu • K22</span>
-</div>
-</div>
-<span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full font-mono">Sẵn sàng</span>
-</div>
-
-<div id="directoryListContainer" class="hidden"></div>
+<div id="directoryListContainer" class="space-y-2.5"></div>
 <div id="adminShiftAdjustRow" class="flex items-center justify-between p-2.5 bg-sky-50/50 rounded-xl border border-sky-100 mt-2">
   <div class="text-[11px] font-bold text-sky-900 font-mono">ĐIỀU CHỈNH CA (ADMIN)</div>
   <div class="flex items-center gap-2">
-    <button onclick="promptAdjustSelectedMemberShifts(-1)" class="w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-50">-1</button>
-    <button onclick="promptAdjustSelectedMemberShifts(1)" class="w-7 h-7 rounded-lg bg-sky-600 text-white font-bold hover:bg-sky-700">+1</button>
+    <button onclick="promptAdjustSelectedMemberShifts(-1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-7 h-7 rounded-lg bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-50">-1</button>
+    <button onclick="promptAdjustSelectedMemberShifts(1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-7 h-7 rounded-lg bg-sky-600 text-white font-bold hover:bg-sky-700">+1</button>
   </div>
 </div>
 <div class="hidden">
@@ -841,24 +907,12 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
   <span id="otherPhone">0912345678</span>
   <span id="otherIce">0988123456</span>
 </div>
-
-<!-- Member 3 -->
-<div class="flex items-center justify-between p-3 rounded-2xl border border-sky-100 bg-white/70 shadow-sm">
-<div class="flex items-center gap-2.5">
-<div class="w-10 h-10 rounded-2xl bg-amber-500 text-white font-bold flex items-center justify-center text-[13px]">BN</div>
-<div>
-<span class="text-[13px] font-bold text-slate-900 block">Trần Bảo Ngọc</span>
-<span class="text-[11px] text-slate-500">Ban Hậu Cần • K22</span>
-</div>
-</div>
-<span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full font-mono">Đang trực ca</span>
-</div>
 </div>
 
 </div>
 </div>
 <!-- TOAST NOTIFICATION -->
-<div class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-900/95 backdrop-blur-xl text-white shadow-xl max-w-[90vw] opacity-0 -translate-y-4" id="toast">
+<div class="fixed top-5 inset-x-0 mx-auto w-fit z-50 pointer-events-none transition-[background-color,transform,box-shadow,opacity,border-color,color] duration-300 flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-900/95 backdrop-blur-xl text-white shadow-xl max-w-[90vw] opacity-0 -translate-y-4" id="toast">
 <div class="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[10px]">✓</div>
 <span class="text-[12.5px] font-medium tracking-tight truncate" id="toast-msg">Giao diện Quản trị Admin</span>
 </div><!-- MODAL LOGIN -->
@@ -877,7 +931,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <p class="text-[11px] text-slate-500 font-mono">VARSITY PASS AUTHENTICATION</p>
 </div>
 </div>
-<button class="spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-login', 'sheet-login')">✕</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-8 h-8 rounded-full bg-slate-100/80 border border-slate-200/60 flex items-center justify-center text-slate-600 hover:text-slate-900 text-sm" onclick="closeModal('modal-login', 'sheet-login')">✕</button>
 </div>
 <div class="py-3.5 space-y-3.5 overflow-y-auto max-h-[60vh]">
 <!-- Transparent Guidance Panel -->
@@ -889,7 +943,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <div>
 <label class="block text-[11px] font-semibold text-slate-500 uppercase font-mono mb-1.5">Chọn tài khoản nhanh (Demo)</label>
 <div class="grid grid-cols-2 gap-2">
-<button class="spring-tap p-2.5 rounded-2xl bg-sky-50/80 hover:bg-sky-100/80 border border-sky-200/80 text-left transition-colors" onclick="quickFillAccount('DMC0806', 'admin')" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap p-2.5 rounded-2xl bg-sky-50/80 hover:bg-sky-100/80 border border-sky-200/80 text-left transition-colors" onclick="quickFillAccount('DMC0806', 'admin')" type="button">
 <div class="flex items-center justify-between mb-1">
 <span class="text-[10px] font-bold text-sky-800 bg-sky-200/70 px-1.5 py-0.2 rounded font-mono">ADMIN</span>
 <span class="text-[9px] font-mono text-slate-400">DMC0806</span>
@@ -897,7 +951,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <div class="text-[12px] font-bold text-slate-900 truncate">Đỗ Mạnh Cường</div>
 <div class="text-[10.5px] text-slate-500 truncate">Chủ Nhiệm CLB</div>
 </button>
-<button class="spring-tap p-2.5 rounded-2xl bg-teal-50/80 hover:bg-teal-100/80 border border-teal-200/80 text-left transition-colors" onclick="quickFillAccount('NVA1508', 'member')" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap p-2.5 rounded-2xl bg-teal-50/80 hover:bg-teal-100/80 border border-teal-200/80 text-left transition-colors" onclick="quickFillAccount('NVA1508', 'member')" type="button">
 <div class="flex items-center justify-between mb-1">
 <span class="text-[10px] font-bold text-teal-800 bg-teal-200/70 px-1.5 py-0.2 rounded font-mono">MEMBER</span>
 <span class="text-[9px] font-mono text-slate-400">NVA1508</span>
@@ -921,14 +975,14 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 <div>
 <div class="flex items-center justify-between mb-1">
 <label class="text-[11px] font-semibold text-slate-500 uppercase font-mono">Mật khẩu</label>
-<button class="text-[11px] font-semibold text-sky-600 hover:text-sky-700" onclick="triggerToast('Mật khẩu demo mặc định là 123456')" type="button">Quên mật khẩu?</button>
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] text-[11px] font-semibold text-sky-600 hover:text-sky-700" onclick="triggerToast('Mật khẩu demo mặc định là 123456')" type="button">Quên mật khẩu?</button>
 </div>
 <div class="relative flex items-center">
 <div class="absolute left-3.5 text-slate-400">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
 </div>
 <input type="password" id="iptPass" value="" class="w-full pl-10 pr-10 py-2.5 bg-white/80 rounded-2xl border border-sky-200/80 text-[13px] font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="••••••••">
-<button id="btnTogglePass" onclick="togglePasswordVisibility()" class="absolute right-3.5 text-slate-400 hover:text-slate-600" type="button">
+<button id="btnTogglePass" onclick="togglePasswordVisibility()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] absolute right-3.5 text-slate-400 hover:text-slate-600" type="button">
 <svg class="w-4 h-4" fill="none" id="icon-eye-login" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 </button>
 </div>
@@ -940,11 +994,11 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 </label>
 <!-- Action Login Buttons -->
 <div class="space-y-2 pt-1">
-<button class="spring-tap w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)] flex items-center justify-center gap-2" onclick="executeLoginSubmit()" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-full h-11 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-600 to-cyan-500 hover:from-blue-700 hover:to-sky-700 text-white font-semibold text-[13px] shadow-[0_6px_20px_rgba(2,132,199,0.35)] flex items-center justify-center gap-2" onclick="executeLoginSubmit()" type="button">
 <span>Đăng Nhập Ngay</span>
 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
 </button>
-<button class="spring-tap w-full h-11 rounded-2xl bg-white/90 hover:bg-sky-50 border border-sky-200/80 text-sky-900 font-semibold text-[13px] flex items-center justify-center gap-2 shadow-sm" onclick="performBiometricLogin()" type="button">
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] spring-tap w-full h-11 rounded-2xl bg-white/90 hover:bg-sky-50 border border-sky-200/80 text-sky-900 font-semibold text-[13px] flex items-center justify-center gap-2 shadow-sm" onclick="performBiometricLogin()" type="button">
 <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0 0 8 11a4 4 0 1 1 8 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0 0 15.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 0 0 4 11m0 0a8 8 0 0 0 .528 2.86m0 0a21.88 21.88 0 0 0 2.225 4.88"></path></svg>
 <span>Đăng nhập nhanh bằng Face ID / Vân tay</span>
 </button>
@@ -959,7 +1013,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
     <div class="w-full max-w-[440px] bg-white rounded-t-3xl p-5 space-y-3" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between pb-2 border-b border-slate-100">
         <h3 class="text-sm font-bold text-slate-900">Trung Tâm Cấp Quyền &amp; Phân Vai</h3>
-        <button onclick="closeAdminRoleManagementModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-600">✕</button>
+        <button onclick="closeAdminRoleManagementModal()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-7 h-7 rounded-full bg-slate-100 text-slate-600">✕</button>
       </div>
       <input id="iptRoleMemberSearch" type="text" placeholder="Tìm thành viên..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
       <div id="roleDeptFilterBar" class="flex gap-1 overflow-x-auto text-xs py-1"></div>
@@ -978,12 +1032,12 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       <div id="adjustShiftsMemberInfo" class="text-xs text-slate-600"></div>
       <div id="adjustShiftsMemberName" class="text-xs text-slate-600"></div>
       <div class="flex items-center justify-center gap-4 py-2">
-        <button onclick="changeAdjustDelta(-1)" class="w-8 h-8 rounded-full bg-slate-100 font-bold">-</button>
+        <button onclick="changeAdjustDelta(-1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-8 h-8 rounded-full bg-slate-100 font-bold">-</button>
         <span id="adjustDeltaDisplay" class="font-mono text-lg font-bold">+1 ca</span>
-        <button onclick="changeAdjustDelta(1)" class="w-8 h-8 rounded-full bg-slate-100 font-bold">+</button>
+        <button onclick="changeAdjustDelta(1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-8 h-8 rounded-full bg-slate-100 font-bold">+</button>
       </div>
       <textarea id="iptAdjustShiftsReason" placeholder="Lý do điều chỉnh (bắt buộc)..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs"></textarea>
-      <button onclick="executeAdjustShiftsSubmit()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Xác nhận điều chỉnh</button>
+      <button onclick="executeAdjustShiftsSubmit()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Xác nhận điều chỉnh</button>
     </div>
   </div>
   <div id="modalOtherMemberDetails" class="hidden"></div>
@@ -993,7 +1047,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
     <div class="w-full max-w-[440px] bg-white rounded-t-3xl p-5 space-y-3" onclick="event.stopPropagation()">
       <h3 class="text-sm font-bold text-slate-900">Điều Phối Thông Minh (Smart Rotation)</h3>
       <div id="smartRotationResultsContainer" class="space-y-2"></div>
-      <button onclick="applySmartRotationCandidates()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Áp dụng phân bổ</button>
+      <button onclick="applySmartRotationCandidates()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Áp dụng phân bổ</button>
     </div>
   </div>
 
@@ -1003,7 +1057,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       <input id="iptCurrentPassword" type="password" placeholder="Mật khẩu hiện tại..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
       <input id="iptNewPassword" type="password" placeholder="Mật khẩu mới..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
       <input id="iptConfirmPassword" type="password" placeholder="Xác nhận mật khẩu mới..." class="w-full p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-      <button onclick="submitChangePassword()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Lưu mật khẩu mới</button>
+      <button onclick="submitChangePassword()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Lưu mật khẩu mới</button>
     </div>
   </div>
 
@@ -1016,7 +1070,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         <option value="Cấp 3 - Bình thường">Cấp 3 - Bình thường</option>
         <option value="Cấp 4 - Hồi phục sau chấn thương">Cấp 4 - Hồi phục sau chấn thương</option>
       </select>
-      <button onclick="submitTheTrangUpdate()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Lưu thể trạng</button>
+      <button onclick="submitTheTrangUpdate()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs">Lưu thể trạng</button>
     </div>
   </div>
 
@@ -2091,13 +2145,13 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
             <!-- 2 Nút Toggle cấp quyền -->
             <div style="display: flex; gap: 7px; border-top: 1px dashed rgba(226, 232, 240, 0.9); padding-top: 8px;">
               <!-- Nút Admin -->
-              <button type="button" onclick="toggleMemberRole('${m.id}', 'isAdmin')" class="focus-ring spring-touch role-toggle-btn ${isAdmin ? 'active-admin' : ''}" style="flex: 1; justify-content: center;">
+              <button type="button" onclick="toggleMemberRole('${m.id}', 'isAdmin')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch role-toggle-btn ${isAdmin ? 'active-admin' : ''}" style="flex: 1; justify-content: center;">
                 <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 <span>${isAdmin ? 'Quản Trị Viên ✓' : 'Cấp Admin'}</span>
               </button>
 
               <!-- Nút Trưởng Ca -->
-              <button type="button" onclick="toggleMemberRole('${m.id}', 'isShiftLeader')" class="focus-ring spring-touch role-toggle-btn ${isLeader ? 'active-leader' : ''}" style="flex: 1; justify-content: center;">
+              <button type="button" onclick="toggleMemberRole('${m.id}', 'isShiftLeader')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch role-toggle-btn ${isLeader ? 'active-leader' : ''}" style="flex: 1; justify-content: center;">
                 <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 <span>${isLeader ? 'Trưởng Ca ✓' : 'Cấp Trưởng Ca'}</span>
               </button>
@@ -2542,11 +2596,11 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       if (!container) return;
       if (isAdmin) {
         container.innerHTML = `
-          <button onclick="openCreateTaskModal()" id="btnAdminCreateTaskAction" class="focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 750; font-size: 11.5px; background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); color: #ffffff; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
+          <button onclick="openCreateTaskModal()" id="btnAdminCreateTaskAction" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 750; font-size: 11.5px; background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); color: #ffffff; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
             <svg class="svg-icon" style="width: 13px; height: 13px; stroke: #ffffff;" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>➕ Tạo ca</span>
           </button>
-          <button onclick="openDispatchHubModal()" id="btnAdminApproveAction" class="focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 750; font-size: 11.5px; background: rgba(2, 132, 199, 0.08); color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.35); display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <button onclick="openDispatchHubModal()" id="btnAdminApproveAction" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 750; font-size: 11.5px; background: rgba(2, 132, 199, 0.08); color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.35); display: flex; align-items: center; justify-content: center; gap: 6px;">
             <svg class="svg-icon" style="width: 13px; height: 13px; stroke: #0284c7;" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
             <span>📋 Duyệt ca</span>
             <span style="background: #0284c7; color: #ffffff; border-radius: 6px; padding: 1px 5px; font-size: 8.5px; font-weight: 800;">3</span>
@@ -2558,11 +2612,11 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         if (heroBtnText) heroBtnText.innerText = 'Mã QR Điều Phối Quản Trị';
       } else {
         container.innerHTML = `
-          <button onclick="switchTab(1)" id="btnMemberRegisterShift" class="focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 700; font-size: 11.5px; background: #ffffff; color: #003865; border: 1px solid #e5e5ea; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 1px 2px rgba(15,23,42,0.04);">
+          <button onclick="switchTab(1)" id="btnMemberRegisterShift" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 700; font-size: 11.5px; background: #ffffff; color: #003865; border: 1px solid #e5e5ea; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 1px 2px rgba(15,23,42,0.04);">
             <svg class="svg-icon" style="width: 13px; height: 13px; color: #0284c7;" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             <span>📅 Đăng ký ca trực</span>
           </button>
-          <button onclick="openDispatchHubModal()" id="btnMemberSwapShift" class="focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 700; font-size: 11.5px; background: #ffffff; color: #003865; border: 1px solid #e5e5ea; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 1px 2px rgba(15,23,42,0.04);">
+          <button onclick="openDispatchHubModal()" id="btnMemberSwapShift" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 10px 12px; border-radius: 12px; font-weight: 700; font-size: 11.5px; background: #ffffff; color: #003865; border: 1px solid #e5e5ea; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 1px 2px rgba(15,23,42,0.04);">
             <svg class="svg-icon" style="width: 13px; height: 13px; color: #0284c7;" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
             <span>🔄 Xin đổi ca</span>
           </button>
@@ -2592,11 +2646,11 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
           </div>
           <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
             <div style="display: flex; align-items: center; gap: 4px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1px 4px;">
-              <button type="button" onclick="adjustDeptQuotaAtIndex(${index}, -1)" class="focus-ring spring-touch" style="border: none; background: transparent; font-weight: 800; cursor: pointer; width: 18px; height: 18px; color: #003865;">-</button>
+              <button type="button" onclick="adjustDeptQuotaAtIndex(${index}, -1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="border: none; background: transparent; font-weight: 800; cursor: pointer; width: 18px; height: 18px; color: #003865;">-</button>
               <input type="number" class="dept-quota" value="${item.quota}" readonly style="width: 20px; text-align: center; border: none; background: transparent; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 800; color: #003865;">
-              <button type="button" onclick="adjustDeptQuotaAtIndex(${index}, 1)" class="focus-ring spring-touch" style="border: none; background: transparent; font-weight: 800; color: #0284c7; cursor: pointer; width: 18px; height: 18px;">+</button>
+              <button type="button" onclick="adjustDeptQuotaAtIndex(${index}, 1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="border: none; background: transparent; font-weight: 800; color: #0284c7; cursor: pointer; width: 18px; height: 18px;">+</button>
             </div>
-            <button type="button" onclick="promptDeleteDeptAtIndex(${index})" class="focus-ring spring-touch" title="Xóa ban" style="border: none; background: #fff1f2; color: #e11d48; border-radius: 6px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <button type="button" onclick="promptDeleteDeptAtIndex(${index})" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Xóa ban" style="border: none; background: #fff1f2; color: #e11d48; border-radius: 6px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
               <svg class="svg-icon" style="width: 11px; height: 11px; stroke: #e11d48;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </button>
           </div>
@@ -2731,8 +2785,44 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       initAquamorphicWaterRipple();
     }
 
+    function getSportPassInitials(name) {
+      const parts = (name || 'TV').trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
+
     function renderProfileData() {
       if (!currentUser) return;
+
+      // Update avatar image vs monogram fallback
+      const initials = getSportPassInitials(currentUser.hoTen);
+      const hasAvatar = Boolean(currentUser.avatar && currentUser.avatar.trim());
+      const memImg = document.getElementById('memAvatarImg');
+      const memMono = document.getElementById('memAvatarMonogram');
+      const hdrImg = document.getElementById('headerAvatarImg');
+      const hdrMono = document.getElementById('headerAvatarMonogram');
+      if (memImg && memMono) {
+        if (hasAvatar) {
+          memImg.src = currentUser.avatar;
+          memImg.classList.remove('hidden');
+          memMono.classList.add('hidden');
+        } else {
+          memImg.classList.add('hidden');
+          memMono.textContent = initials;
+          memMono.classList.remove('hidden');
+        }
+      }
+      if (hdrImg && hdrMono) {
+        if (hasAvatar) {
+          hdrImg.src = currentUser.avatar;
+          hdrImg.classList.remove('hidden');
+          hdrMono.classList.add('hidden');
+        } else {
+          hdrImg.classList.add('hidden');
+          hdrMono.textContent = initials;
+          hdrMono.classList.remove('hidden');
+        }
+      }
 
       // Update new SportPass Pro UI fields
       safeSetText('card-name', (currentUser.hoTen || 'Thành viên').toUpperCase());
@@ -2742,10 +2832,10 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       safeSetText('field-studentId', currentUser.id || '---');
       const deptDisp = (currentUser.cacBan && currentUser.cacBan.length > 0)
         ? currentUser.cacBan.join(' • ')
-        : (currentUser.ban || 'Ban CLB');
+        : (currentUser.ban || currentUser.boMon || 'Ban CLB');
       safeSetText('field-faculty', (currentUser.lop || 'K45') + ' • ' + deptDisp + ' (Trường Đại học Hải Dương)');
       safeSetText('field-dutyArea', currentUser.chucVu || 'Khu vực chưa phân');
-      safeSetText('field-phone', currentUser.sdt || '---');
+      safeSetText('field-phone', currentUser.sdt || 'Chưa cập nhật');
       safeSetText('field-fitness', currentUser.theTrang || 'Cấp 1 - Thi đấu');
       safeSetText('field-ice', currentUser.ice || '115 Cấp cứu');
 
@@ -3048,7 +3138,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                   const displayName = memObj ? memObj.hoTen : mId;
                   const isCheckedInMem = (t.checkedInMembers || []).includes(mId);
                   return `
-                    <button onclick="openOtherMemberInspector('${escapeHtml(mId)}')" class="focus-ring spring-touch" style="border: 1px solid ${isCheckedInMem ? '#6ee7b7' : '#e2e8f0'}; background: ${isCheckedInMem ? '#ecfdf5' : '#f8fafc'}; color: ${isCheckedInMem ? '#065f46' : '#1c1c1e'}; padding: 2.5px 8px; border-radius: 8px; font-size: 9.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                    <button onclick="openOtherMemberInspector('${escapeHtml(mId)}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="border: 1px solid ${isCheckedInMem ? '#6ee7b7' : '#e2e8f0'}; background: ${isCheckedInMem ? '#ecfdf5' : '#f8fafc'}; color: ${isCheckedInMem ? '#065f46' : '#1c1c1e'}; padding: 2.5px 8px; border-radius: 8px; font-size: 9.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
                       <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                       <span>${escapeHtml(displayName)}</span>
                       ${isCheckedInMem ? '<span style="color:#047857;font-weight: 700;font-size:9px;" title="Đã điểm danh hiện trường">✓</span>' : ''}
@@ -3085,18 +3175,18 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 
         const adminActionsHtml = currentUser?.isAdmin ? `
           <div style="display: flex; align-items: center; gap: 5px;">
-            <button onclick="openSmartRotationModal('${t.id}')" class="focus-ring spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #e5e5ea; background: #ffffff; color: #007aff; display: inline-flex; align-items: center; justify-content: center;">
+            <button onclick="openSmartRotationModal('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #e5e5ea; background: #ffffff; color: #007aff; display: inline-flex; align-items: center; justify-content: center;">
               <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             </button>
-            <button onclick="openEditTaskModal('${t.id}')" class="focus-ring spring-touch" title="Chỉnh sửa lệnh điều động" aria-label="Chỉnh sửa lệnh điều động" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #e5e5ea; background: #ffffff; color: #007aff; display: inline-flex; align-items: center; justify-content: center;">
+            <button onclick="openEditTaskModal('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Chỉnh sửa lệnh điều động" aria-label="Chỉnh sửa lệnh điều động" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #e5e5ea; background: #ffffff; color: #007aff; display: inline-flex; align-items: center; justify-content: center;">
               <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </button>
-            <button onclick="confirmDeleteTask('${t.id}')" class="focus-ring spring-touch" title="Xóa lệnh điều động" aria-label="Xóa lệnh điều động" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #fca5a5; background: #ffffff; color: #b91c1c; display: inline-flex; align-items: center; justify-content: center;">
+            <button onclick="confirmDeleteTask('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Xóa lệnh điều động" aria-label="Xóa lệnh điều động" style="width: 28px; height: 28px; border-radius: 8px; border: 1px solid #fca5a5; background: #ffffff; color: #b91c1c; display: inline-flex; align-items: center; justify-content: center;">
               <svg class="svg-icon" style="width: 13px; height: 13px;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             </button>
           </div>
         ` : (currentUser?.isShiftLeader ? `
-          <button onclick="openSmartRotationModal('${t.id}')" class="focus-ring spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #e5e5ea; background: #eff6ff; color: #007aff; display: inline-flex; align-items: center; justify-content: center;">
+          <button onclick="openSmartRotationModal('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Xoay tua điều phối thông minh" aria-label="Xoay tua điều phối thông minh" style="width: 28px; height: 28px; border-radius: 9px; border: 1px solid #e5e5ea; background: #eff6ff; color: #007aff; display: inline-flex; align-items: center; justify-content: center;">
             <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           </button>
         ` : '');
@@ -3108,29 +3198,29 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         if (isJoined) {
           if (hasPendingLeave) {
             actionButtonsHtml = `
-              <button onclick="cancelPendingLeave('${t.id}')" class="focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11px; background: #fff1f2; color: #be123c; border: 1.2px solid #fda4af; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <button onclick="cancelPendingLeave('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11px; background: #fff1f2; color: #be123c; border: 1.2px solid #fda4af; display: flex; align-items: center; justify-content: center; gap: 6px;">
                 <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 <span>Đang Chờ Duyệt Rút &bull; Chạm để hủy đơn</span>
               </button>
             `;
           } else if (hasPendingSwap) {
             actionButtonsHtml = `
-              <button onclick="cancelPendingSwap('${t.id}')" class="focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11px; background: #fffbeb; color: #b45309; border: 1.2px solid #fde68a; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <button onclick="cancelPendingSwap('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11px; background: #fffbeb; color: #b45309; border: 1.2px solid #fde68a; display: flex; align-items: center; justify-content: center; gap: 6px;">
                 <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 <span>Đang Chờ Duyệt Đổi &bull; Chạm để hủy đơn</span>
               </button>
             `;
           } else {
             actionButtonsHtml = `
-              <button onclick="openFieldCheckinQrModal('${t.id}')" class="focus-ring spring-touch ${isCheckedInSelf ? 'glow-teal' : 'glow-indigo'}" style="flex: 1.4; padding: 9px 8px; border-radius: 14px; font-weight: 600; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+              <button onclick="openFieldCheckinQrModal('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch ${isCheckedInSelf ? 'glow-teal' : 'glow-indigo'}" style="flex: 1.4; padding: 9px 8px; border-radius: 14px; font-weight: 600; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px;">
                 <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                 <span>${isCheckedInSelf ? 'Thẻ QR (Đã nhận ca)' : 'Xuất Trình QR Nhận Ca'}</span>
               </button>
-              <button onclick="openSwapRequestModal('${t.id}')" class="focus-ring spring-touch glow-amber" style="flex: 1; padding: 9px 6px; border-radius: 14px; font-weight: 600; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <button onclick="openSwapRequestModal('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-amber" style="flex: 1; padding: 9px 6px; border-radius: 14px; font-weight: 600; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 4px;">
                 <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
                 <span>Đổi Ca</span>
               </button>
-              <button onclick="openLeaveTaskModal('${t.id}')" class="focus-ring spring-touch glow-red" style="flex: 1; padding: 9px 6px; border-radius: 14px; font-weight: 600; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 4px; animation: none;">
+              <button onclick="openLeaveTaskModal('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-red" style="flex: 1; padding: 9px 6px; border-radius: 14px; font-weight: 600; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 4px; animation: none;">
                 <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 <span>Rút Ca</span>
               </button>
@@ -3138,21 +3228,21 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
           }
         } else if (isWaitlisted) {
           actionButtonsHtml = `
-            <button onclick="leaveTaskWaitlist('${t.id}')" class="focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11.5px; background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <button onclick="leaveTaskWaitlist('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11.5px; background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; display: flex; align-items: center; justify-content: center; gap: 6px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               <span>Đang Trong Hàng Đợi (Waitlist #${waitlistIndex}) &bull; Chạm để rời</span>
             </button>
           `;
         } else if (isFull) {
           actionButtonsHtml = `
-            <button onclick="handleJoinWaitlist('${t.id}')" class="focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11.5px; background: #fffbeb; color: #b45309; border: 1.2px solid #fde68a; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <button onclick="handleJoinWaitlist('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 11.5px; background: #fffbeb; color: #b45309; border: 1.2px solid #fde68a; display: flex; align-items: center; justify-content: center; gap: 6px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               <span>Đã Đủ Quân Số &bull; Gia Nhập Hàng Đợi (Waitlist)</span>
             </button>
           `;
         } else {
           actionButtonsHtml = `
-            <button onclick="handleClaimTask('${t.id}')" class="focus-ring spring-touch glow-indigo" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <button onclick="handleClaimTask('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-indigo" style="flex: 1; padding: 9px; border-radius: 14px; font-weight: 600; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
               <span>Nhận Ca Trực</span>
             </button>
@@ -3162,7 +3252,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         // Nếu người dùng hiện tại là Admin hoặc Trưởng ca trực: bổ sung nút Quét Điểm Danh Ca Này
         if (isAuthorizedScanner(currentUser)) {
           actionButtonsHtml += `
-            <button onclick="openQrScannerModal('${t.id}')" class="focus-ring spring-touch glow-teal" style="flex: 1.2; padding: 9px 8px; border-radius: 14px; font-weight: 600; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 5px;">
+            <button onclick="openQrScannerModal('${t.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-teal" style="flex: 1.2; padding: 9px 8px; border-radius: 14px; font-weight: 600; font-size: 10.5px; display: flex; align-items: center; justify-content: center; gap: 5px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               <span>Quét Ca Này</span>
             </button>
@@ -3769,11 +3859,11 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
           <p style="margin-top: 3px;"><b>Lý do:</b> ${escapeHtml(s.reason)}</p>
           <p style="margin-top: 3px;"><b>Chỉ định thay thế:</b> ${escapeHtml(s.toMemberId)}</p>
           <div style="display: flex; gap: 6px; margin-top: 9px;">
-            <button onclick="resolveSwapAction('${s.id}', true)" class="focus-ring spring-touch glow-green" style="flex: 1; padding: 7px; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+            <button onclick="resolveSwapAction('${s.id}', true)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-green" style="flex: 1; padding: 7px; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
               <span>Duyệt Đổi Ca</span>
             </button>
-            <button onclick="resolveSwapAction('${s.id}', false)" class="focus-ring spring-touch" style="flex: 1; padding: 7px; border: 1px solid #fecdd3; background: #fff1f2; color: #9f1239; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+            <button onclick="resolveSwapAction('${s.id}', false)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 7px; border: 1px solid #fecdd3; background: #fff1f2; color: #9f1239; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               <span>Bác Bỏ</span>
             </button>
@@ -3836,7 +3926,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                 <div onclick="openLightboxModal('${escapeHtml(l.proofImage)}')" class="spring-touch" style="width: 52px; height: 52px; border-radius: 10px; overflow: hidden; border: 1.5px solid #fda4af; cursor: pointer;">
                   <img src="${escapeHtml(l.proofImage)}" alt="Proof" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <button onclick="openLightboxModal('${escapeHtml(l.proofImage)}')" class="focus-ring spring-touch" style="font-size: 10px; font-weight: 600; color: #be123c; background: #ffe4e6; border: 1px solid #fecdd3; padding: 4px 8px; border-radius: 8px;">
+                <button onclick="openLightboxModal('${escapeHtml(l.proofImage)}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="font-size: 10px; font-weight: 600; color: #be123c; background: #ffe4e6; border: 1px solid #fecdd3; padding: 4px 8px; border-radius: 8px;">
                   Phóng to ảnh minh chứng
                 </button>
               </div>
@@ -3856,15 +3946,15 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
             <!-- Các hành động duyệt dành cho Admin -->
             <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 9px;">
               <div style="display: flex; gap: 6px;">
-                <button onclick="resolveLeaveAction('${l.id}', 'approve_exempt', '${candidateId || ''}')" class="focus-ring spring-touch glow-green" style="flex: 1.2; padding: 7px; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <button onclick="resolveLeaveAction('${l.id}', 'approve_exempt', '${candidateId || ''}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-green" style="flex: 1.2; padding: 7px; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
                   <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
                   <span>${hasWaitlistCandidate ? 'Duyệt & Đôn Waitlist' : 'Duyệt & Mở Slot'} (Miễn Phạt)</span>
                 </button>
-                <button onclick="resolveLeaveAction('${l.id}', 'approve_penalty', '${candidateId || ''}')" class="focus-ring spring-touch glow-amber" style="flex: 1; padding: 7px; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <button onclick="resolveLeaveAction('${l.id}', 'approve_penalty', '${candidateId || ''}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-amber" style="flex: 1; padding: 7px; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
                   <span>Duyệt Kỷ Luật</span>
                 </button>
               </div>
-              <button onclick="resolveLeaveAction('${l.id}', 'reject', '')" class="focus-ring spring-touch" style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; background: #f2f2f7; color: #636366; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <button onclick="resolveLeaveAction('${l.id}', 'reject', '')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; background: #f2f2f7; color: #636366; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
                 <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 <span>Bác Bỏ Đơn Xin Rút Ca</span>
               </button>
@@ -4105,10 +4195,10 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 
               ${canManagePost ? `
                 <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
-                  <button onclick="openEditPostModal('${p.id}')" class="focus-ring spring-touch" title="Chỉnh sửa bài viết" style="width: 29px; height: 29px; border-radius: 10px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #007aff; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <button onclick="openEditPostModal('${p.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Chỉnh sửa bài viết" style="width: 29px; height: 29px; border-radius: 10px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #007aff; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                     <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                   </button>
-                  <button onclick="confirmDeletePost('${p.id}')" class="focus-ring spring-touch" title="Xóa bài đăng" style="width: 29px; height: 29px; border-radius: 10px; background: #fff1f2; border: 1px solid #fecdd3; color: #be123c; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <button onclick="confirmDeletePost('${p.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Xóa bài đăng" style="width: 29px; height: 29px; border-radius: 10px; background: #fff1f2; border: 1px solid #fecdd3; color: #be123c; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                     <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                   </button>
                 </div>
@@ -4124,13 +4214,13 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
               <div style="position: relative;">
                 <div id="reactionDock_${p.id}" class="reaction-bar-dock">
                   ${Object.keys(REACTION_SVGS).map(rKey => `
-                    <button onclick="setReaction('${p.id}', '${rKey}')" class="focus-ring reaction-emoji-btn" style="background: ${reactionBg[rKey]};" title="${reactionLabels[rKey]}">
+                    <button onclick="setReaction('${p.id}', '${rKey}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring reaction-emoji-btn" style="background: ${reactionBg[rKey]};" title="${reactionLabels[rKey]}">
                       ${REACTION_SVGS[rKey]}
                     </button>
                   `).join('')}
                 </div>
 
-                <button data-reaction-trigger="true" onclick="toggleReactionDock('${p.id}')" oncontextmenu="event.preventDefault(); toggleReactionDock('${p.id}');" class="focus-ring spring-touch" style="border: 1px solid ${userReaction ? '#e2e8f0' : '#e2e8f0'}; background: ${userReaction ? '#f8fafc' : '#f8fafc'}; padding: 5px 11px; border-radius: 12px; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: ${userReaction ? '#1e3a8a' : '#475569'}; -webkit-touch-callout: none;">
+                <button data-reaction-trigger="true" onclick="toggleReactionDock('${p.id}')" oncontextmenu="event.preventDefault(); toggleReactionDock('${p.id}');" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="border: 1px solid ${userReaction ? '#e2e8f0' : '#e2e8f0'}; background: ${userReaction ? '#f8fafc' : '#f8fafc'}; padding: 5px 11px; border-radius: 12px; display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: ${userReaction ? '#1e3a8a' : '#475569'}; -webkit-touch-callout: none;">
                   ${activeReactionIcon}
                   <span>${activeReactionText}</span>
                   <span>(${totalReactionCount})</span>
@@ -4156,12 +4246,12 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                           <span style="font-size: 9px; color: #94a3b8; font-weight: 600;">&bull; ${escapeHtml(c.time || 'Vừa xong')}</span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 7px; flex-shrink: 0;">
-                          <button onclick="prepareReplyComment('${p.id}', '${c.id}', '${escapeHtml(c.authorName).replace(/'/g, "\\'")}')" class="focus-ring spring-touch" style="border: none; background: transparent; color: #007aff; font-size: 10px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; cursor: pointer;">
+                          <button onclick="prepareReplyComment('${p.id}', '${c.id}', '${escapeHtml(c.authorName).replace(/'/g, "\\'")}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="border: none; background: transparent; color: #007aff; font-size: 10px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; cursor: pointer;">
                             <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
                             <span>Trả lời</span>
                           </button>
                           ${canDeleteCmt ? `
-                            <button onclick="confirmDeleteComment('${p.id}', '${c.id}', null)" class="focus-ring spring-touch" title="Xóa bình luận" style="border: none; background: transparent; color: #e11d48; font-size: 10px; font-weight: 600; display: inline-flex; align-items: center; cursor: pointer;">
+                            <button onclick="confirmDeleteComment('${p.id}', '${c.id}', null)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Xóa bình luận" style="border: none; background: transparent; color: #e11d48; font-size: 10px; font-weight: 600; display: inline-flex; align-items: center; cursor: pointer;">
                               <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                             </button>
                           ` : ''}
@@ -4182,12 +4272,12 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                                 <span style="font-size: 8.5px; color: #94a3b8; font-weight: 600;">&bull; ${escapeHtml(r.time || 'Vừa xong')}</span>
                               </div>
                               <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
-                                <button onclick="prepareReplyComment('${p.id}', '${c.id}', '${escapeHtml(r.authorName).replace(/'/g, "\\'")}')" class="focus-ring spring-touch" style="border: none; background: transparent; color: #007aff; font-size: 9.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 2px; cursor: pointer;">
+                                <button onclick="prepareReplyComment('${p.id}', '${c.id}', '${escapeHtml(r.authorName).replace(/'/g, "\\'")}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="border: none; background: transparent; color: #007aff; font-size: 9.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 2px; cursor: pointer;">
                                   <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
                                   <span>Trả lời</span>
                                 </button>
                                 ${canDeleteReply ? `
-                                  <button onclick="confirmDeleteComment('${p.id}', '${c.id}', '${r.id}')" class="focus-ring spring-touch" title="Xóa phản hồi" style="border: none; background: transparent; color: #e11d48; font-size: 9.5px; font-weight: 600; display: inline-flex; align-items: center; cursor: pointer;">
+                                  <button onclick="confirmDeleteComment('${p.id}', '${c.id}', '${r.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Xóa phản hồi" style="border: none; background: transparent; color: #e11d48; font-size: 9.5px; font-weight: 600; display: inline-flex; align-items: center; cursor: pointer;">
                                     <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                                   </button>
                                 ` : ''}
@@ -4208,12 +4298,12 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                   <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
                   <span id="replyBannerText_${p.id}">Đang trả lời <b>${escapeHtml(replyState?.targetName || '')}</b></span>
                 </span>
-                <button onclick="cancelReplyComment('${p.id}')" class="focus-ring spring-touch" style="border: none; background: #f2f2f7; color: #1e3a8a; border-radius: 6px; padding: 2px 6px; font-size: 9.5px; font-weight: 600; cursor: pointer;">Hủy ✕</button>
+                <button onclick="cancelReplyComment('${p.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="border: none; background: #f2f2f7; color: #1e3a8a; border-radius: 6px; padding: 2px 6px; font-size: 9.5px; font-weight: 600; cursor: pointer;">Hủy ✕</button>
               </div>
 
               <div style="display: flex; gap: 6px; margin-top: 3px;">
                 <input type="text" id="iptComment_${p.id}" onkeydown="if(event.key==='Enter') submitCommentAction('${p.id}')" placeholder="${replyState ? `Trả lời ${escapeHtml(replyState.targetName)}...` : 'Viết bình luận công khai...'}" class="input-box" style="padding: 7px 11px; font-size: 11px; border-radius: 13px;">
-                <button onclick="submitCommentAction('${p.id}')" class="focus-ring spring-touch glow-indigo" style="padding: 7px 12px; font-size: 10.5px; border-radius: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                <button onclick="submitCommentAction('${p.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-indigo" style="padding: 7px 12px; font-size: 10.5px; border-radius: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
                   <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                   <span>Gửi</span>
                 </button>
@@ -4504,7 +4594,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       reel.innerHTML = currentComposerMedia.map((m, idx) => `
         <div style="position: relative; width: 62px; height: 62px; flex-shrink: 0; border-radius: 13px; overflow: hidden; border: 1px solid #e5e5ea;">
           <img src="${m.url}" alt="Preview ${idx + 1}" style="width: 100%; height: 100%; object-fit: cover;">
-          <button class="focus-ring" onclick="removeComposerMediaItem(${idx})" style="position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255, 241, 242, 0.92); color: #be123c; border: 1px solid #fda4af; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+          <button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring" onclick="removeComposerMediaItem(${idx})" style="position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255, 241, 242, 0.92); color: #be123c; border: 1px solid #fda4af; display: flex; align-items: center; justify-content: center; cursor: pointer;">
             <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -4650,19 +4740,19 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 
             <!-- Action buttons: Chi tiết, Gọi điện, và Admin điều chỉnh ca -->
             <div style="display: flex; gap: 6px; margin-top: 8px; align-items: center;">
-              <button onclick="openOtherMemberInspector('${m.id}')" class="focus-ring spring-touch" style="flex: 1; padding: 6px 8px; border-radius: 10px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #1e3a8a; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <button onclick="openOtherMemberInspector('${m.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="flex: 1; padding: 6px 8px; border-radius: 10px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #1e3a8a; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
                 <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 <span>Hồ Sơ Chi Tiết</span>
               </button>
               ${m.sdt ? `
-                <button onclick="makePhoneCall('${escapeHtml(m.sdt)}')" class="focus-ring spring-touch" style="padding: 6px 10px; border-radius: 10px; background: #ffffff; border: 1px solid #e5e5ea; color: #1c1c1e; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                <button onclick="makePhoneCall('${escapeHtml(m.sdt)}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" style="padding: 6px 10px; border-radius: 10px; background: #ffffff; border: 1px solid #e5e5ea; color: #1c1c1e; font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
                   <svg class="svg-icon" style="width: 11px; height: 11px;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                   <span>Gọi</span>
                 </button>
               ` : ''}
               ${currentUser?.isAdmin ? `
-                <button onclick="openAdjustShiftsModal('${m.id}', -1)" class="focus-ring spring-touch" title="Trừ 1 ca" style="padding: 6px 8px; border-radius: 9px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #636366; font-size: 9.5px; font-weight: 700;">-1 Ca</button>
-                <button onclick="openAdjustShiftsModal('${m.id}', 1)" class="focus-ring spring-touch" title="Cộng 1 ca" style="padding: 6px 8px; border-radius: 9px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #1c1c1e; font-size: 9.5px; font-weight: 700;">+1 Ca</button>
+                <button onclick="openAdjustShiftsModal('${m.id}', -1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Trừ 1 ca" style="padding: 6px 8px; border-radius: 9px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #636366; font-size: 9.5px; font-weight: 700;">-1 Ca</button>
+                <button onclick="openAdjustShiftsModal('${m.id}', 1)" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch" title="Cộng 1 ca" style="padding: 6px 8px; border-radius: 9px; background: #f2f2f7; border: 1px solid #e5e5ea; color: #1c1c1e; font-size: 9.5px; font-weight: 700;">+1 Ca</button>
               ` : ''}
             </div>
           </div>
@@ -5056,7 +5146,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       div.innerHTML = `
         <input type="text" value="${escapeHtml(name)}" placeholder="Tên ban..." class="input-box dept-name" style="padding: 6px 10px; font-size: 11px; flex: 2;">
         <input type="number" value="${quota}" min="1" max="50" oninput="calculateTotalQuota()" class="input-box dept-quota" style="padding: 6px 10px; font-size: 11px; flex: 1; text-align: center;">
-        <button class="focus-ring" type="button" onclick="this.parentElement.remove(); calculateTotalQuota();" style="border: 1px solid #fecdd3; background: #fff1f2; color: #be123c; border-radius: 9px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+        <button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring" type="button" onclick="this.parentElement.remove(); calculateTotalQuota();" style="border: 1px solid #fecdd3; background: #fff1f2; color: #be123c; border-radius: 9px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
           <svg class="svg-icon" style="width: 12px; height: 12px;" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       `;
@@ -5748,7 +5838,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                   <p style="font-size:10.5px;color:#991b1b;background:#fee2e2;padding:6px 10px;border-radius:10px;border:1px solid #fca5a5;">
                     ⚠️ Thành viên chưa đăng ký hoặc chưa được phân công vào ca trực nào hôm nay.
                   </p>
-                  <button onclick="resumeQrScanning()" class="focus-ring spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight: 600;display:flex;align-items:center;justify-content:center;gap:6px;">
+                  <button onclick="resumeQrScanning()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight: 600;display:flex;align-items:center;justify-content:center;gap:6px;">
                     <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     <span>Quét Tiếp Mã Khác</span>
                   </button>
@@ -5762,14 +5852,14 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
                       ${isChecked ? `
                         <span style="font-size:9.5px;font-weight: 600;color:#047857;background:#d1fae5;padding:3px 7px;border-radius:6px;">Đã điểm danh</span>
                       ` : `
-                        <button onclick="performFieldCheckin('${mt.id}', '${member.id}')" class="focus-ring spring-touch glow-green" style="padding:4px 9px;border-radius:8px;font-size:9.5px;font-weight: 700;">
+                        <button onclick="performFieldCheckin('${mt.id}', '${member.id}')" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-green" style="padding:4px 9px;border-radius:8px;font-size:9.5px;font-weight: 700;">
                           Điểm Danh
                         </button>
                       `}
                     </div>
                   `;
                 }).join('') + `
-                  <button onclick="resumeQrScanning()" class="focus-ring spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight: 600;display:flex;align-items:center;justify-content:center;gap:6px;">
+                  <button onclick="resumeQrScanning()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight: 600;display:flex;align-items:center;justify-content:center;gap:6px;">
                     <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     <span>Quét Tiếp Thành Viên Khác</span>
                   </button>
@@ -5872,7 +5962,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
               <b>Đã điểm danh vào ca:</b> ${escapeHtml(task.title)}<br>
               <span style="font-size:9.5px;color:#047857;">Tổng số ca cống hiến: <b>${member.soCaHoanThanh} ca</b> &bull; Quét bởi: <b>${currentUser.hoTen}</b></span>
             </div>
-            <button onclick="resumeQrScanning()" class="focus-ring spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight: 600;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <button onclick="resumeQrScanning()" class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#007aff] focus-ring spring-touch glow-indigo" style="margin-top:6px;width:100%;padding:8px 12px;border-radius:10px;font-size:11px;font-weight: 600;display:flex;align-items:center;justify-content:center;gap:6px;">
               <svg class="svg-icon" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               <span>Quét Tiếp Thành Viên Khác</span>
             </button>
@@ -6634,6 +6724,10 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
 
       const modal = document.getElementById(targetId);
       if (!modal) return;
+      if (modal._closeTimer) {
+        clearTimeout(modal._closeTimer);
+        modal._closeTimer = null;
+      }
       modal.classList.add('open');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
@@ -6674,7 +6768,8 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         sheet.classList.remove('translate-y-0');
         sheet.classList.add('translate-y-full');
       }
-      setTimeout(() => {
+      if (modal._closeTimer) clearTimeout(modal._closeTimer);
+      modal._closeTimer = setTimeout(() => {
         modal.classList.remove('flex');
         modal.classList.add('hidden');
         modal.style.display = 'none';
@@ -6843,7 +6938,7 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       initModalBackdropListeners();
     }
 
-    // Role switcher logic
+    // Role switcher logic (Grid 2-column Apple Segmented Control)
     function setRole(role) {
       const pill = document.getElementById('pill-indicator');
       const btnMem = document.getElementById('toggle-role-member');
@@ -6853,23 +6948,23 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
       const adminBar = document.getElementById('admin-action-bar');
 
       if (role === 'member') {
-        if (pill) { pill.style.left = '4px'; pill.style.width = '84px'; }
-        if (btnMem) { btnMem.classList.remove('text-slate-600'); btnMem.classList.add('text-white'); }
-        if (btnAdm) { btnAdm.classList.remove('text-white'); btnAdm.classList.add('text-slate-600'); }
+        if (pill) { pill.style.transform = 'translateX(0%)'; }
+        if (btnMem) { btnMem.classList.remove('text-[#636366]'); btnMem.classList.add('text-[#1c1c1e]'); }
+        if (btnAdm) { btnAdm.classList.remove('text-[#1c1c1e]'); btnAdm.classList.add('text-[#636366]'); }
         if (roleBadge) {
           roleBadge.textContent = 'MEMBER';
-          roleBadge.className = 'text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded uppercase font-mono border border-emerald-200/60';
+          roleBadge.className = 'text-[10px] font-bold text-[#047857] bg-[#ecfdf5] px-1.5 py-0.5 rounded uppercase font-mono border border-[#6ee7b7]/60';
         }
         if (adminBar) { adminBar.classList.add('hidden'); adminBar.classList.remove('grid'); }
         if (memberBar) { memberBar.classList.remove('hidden'); memberBar.classList.add('grid'); }
         triggerToast('Giao diện Thành viên');
       } else {
-        if (pill) { pill.style.left = '88px'; pill.style.width = '70px'; }
-        if (btnAdm) { btnAdm.classList.remove('text-slate-600'); btnAdm.classList.add('text-white'); }
-        if (btnMem) { btnMem.classList.remove('text-white'); btnMem.classList.add('text-slate-600'); }
+        if (pill) { pill.style.transform = 'translateX(100%)'; }
+        if (btnAdm) { btnAdm.classList.remove('text-[#636366]'); btnAdm.classList.add('text-[#1c1c1e]'); }
+        if (btnMem) { btnMem.classList.remove('text-[#1c1c1e]'); btnMem.classList.add('text-[#636366]'); }
         if (roleBadge) {
           roleBadge.textContent = 'ADMIN';
-          roleBadge.className = 'text-[10px] font-bold text-sky-700 bg-sky-100 px-1.5 py-0.5 rounded uppercase font-mono border border-sky-200/60';
+          roleBadge.className = 'text-[10px] font-bold text-[#0058bc] bg-[#e0f2fe] px-1.5 py-0.5 rounded uppercase font-mono border border-[#38bdf8]/40';
         }
         if (memberBar) { memberBar.classList.add('hidden'); memberBar.classList.remove('grid'); }
         if (adminBar) { adminBar.classList.remove('hidden'); adminBar.classList.add('grid'); }
@@ -6979,11 +7074,11 @@ onclick="openLoginFromSettings()" type="button"><svg class="w-4 h-4 text-sky-600
         const btn = document.getElementById('btnDock' + i);
         if (btn) {
           if (i === tabIdx) {
-            btn.classList.add('text-sky-600', 'font-bold');
-            btn.classList.remove('text-slate-500');
+            btn.classList.add('bg-[#007aff]/10', 'text-[#007aff]', 'font-bold');
+            btn.classList.remove('text-[#636366]', 'font-semibold');
           } else {
-            btn.classList.remove('text-sky-600', 'font-bold');
-            btn.classList.add('text-slate-500');
+            btn.classList.remove('bg-[#007aff]/10', 'text-[#007aff]', 'font-bold');
+            btn.classList.add('text-[#636366]', 'font-semibold');
           }
         }
       }

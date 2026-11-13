@@ -156,3 +156,6 @@
 - #022340 : Approved Design Token (Hero Pass Deep Navy)
 - #e2eaf4 : Approved Design Token (Varsity Background Gradient End)
 - #f0f4f9 : Approved Design Token (Varsity Background Gradient Start)
+- `#f4f6fb` : Approved Design Token (Native Mobile Canvas Light)
+- `#0070eb` : Approved Design Token (Primary Container Blue)
+- `#0058bc` : Approved Design Token (Primary Varsity Blue)
