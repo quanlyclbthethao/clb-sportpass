@@ -26,7 +26,7 @@ function renderProfileData() {
 
   const roleBadge = document.getElementById('role-badge');
   if (roleBadge) {
-    roleBadge.textContent = isAdmin ? 'ADMIN' : (currentUser.isShiftLeader ? 'TRƯỞNG CA' : 'HỘI VIÊN');
+    roleBadge.textContent = isAdmin ? 'ADMIN' : (currentUser.isShiftLeader ? 'Trưởng ca' : 'Hội viên');
   }
 
   const avatarBox = document.getElementById('profileAvatarBox');
@@ -73,10 +73,9 @@ function applyStatusBadgeStyle() {
 
 function applyTheTrangBadgeStyle(theTrang) {
   const theme = getTheTrangTheme(theTrang);
-  const pill = document.getElementById('profileFitnessToneBadge');
-  if (pill) {
-    pill.className = `sp-badge sp-badge-${theme.tone}`;
-    pill.textContent = theme.exempt ? 'Miễn trực' : 'Sẵn sàng';
+  const dot = document.getElementById('profileFitnessDot');
+  if (dot) {
+    dot.style.background = theme.tone === 'danger' ? 'var(--sp-danger)' : (theme.tone === 'warning' ? 'var(--sp-warning)' : 'var(--sp-success)');
   }
 }
 

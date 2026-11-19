@@ -143,7 +143,7 @@ function updatePendingSwapsBadge() {
   const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending').length;
   const total = pendingSwaps + pendingLeaves;
   safeSetText('pendingDispatchBadgeCount', String(total));
-  safeSetText('txtApproveBtnCount', `Duyệt ca (${total})`);
+  safeSetText('txtApproveBtnCount', `Duyệt (${total})`);
 }
 
 function openAdminDispatchModal(initialTab = 0) {

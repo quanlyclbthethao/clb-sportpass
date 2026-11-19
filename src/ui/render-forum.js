@@ -65,9 +65,9 @@ function renderForumFeed() {
         ${mediaHtml}
 
         <div class="reaction-bar">
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'like' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'like')">Thích • <span class="mono-num">${Number(rx.like || 0)}</span></button>
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'love' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'love')">Yêu thích • <span class="mono-num">${Number(rx.love || 0)}</span></button>
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'wow' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'wow')">Ấn tượng • <span class="mono-num">${Number(rx.wow || 0)}</span></button>
+          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'like' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'like')">${spIcon('thumbs-up', 13)}<span>Thích</span><span class="mono-num">${Number(rx.like || 0)}</span></button>
+          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'love' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'love')">${spIcon('heart', 13)}<span>Yêu thích</span><span class="mono-num">${Number(rx.love || 0)}</span></button>
+          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'wow' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'wow')">${spIcon('sparkles', 13)}<span>Ấn tượng</span><span class="mono-num">${Number(rx.wow || 0)}</span></button>
         </div>
 
         <div class="comment-box">

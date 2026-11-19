@@ -60,9 +60,9 @@ function getTheTrangTheme(theTrang) {
 function formatShortTheTrang(theTrang) {
   const raw = String(theTrang || 'Khỏe mạnh');
   const lower = raw.toLowerCase();
-  if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Tạm miễn trực';
-  if (lower.includes('hồi phục')) return 'Hồi phục nhẹ';
-  return 'Khỏe mạnh (100%)';
+  if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Miễn trực';
+  if (lower.includes('hồi phục')) return 'Hồi phục';
+  return 'Khỏe mạnh';
 }
 
 function applyAvatarElement(boxEl, initEl, nameStr, avatarUrl) {

@@ -76,21 +76,17 @@ function renderTasksList() {
     const isChecked = uid && checkedIn.includes(uid);
     const onWaitlist = uid && waitlist.includes(uid);
 
-    const quotaBadges = Object.entries(t.departmentQuotas || {})
+    const quotaListText = Object.entries(t.departmentQuotas || {})
       .filter(([, q]) => Number(q) > 0)
-      .map(([dept, q]) => `<span class="sp-badge sp-badge-muted">${escapeHtml(dept)}: 0/${Number(q)}</span>`)
-      .join('');
+      .map(([dept, q]) => `${escapeHtml(dept)} 0/${Number(q)}`)
+      .join(' · ');
+
+    const progressPct = Math.min(100, Math.round((occupied.length / quota) * 100));
 
     const adminBtns = isAdmin ? `
-      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Điều phối xoay tua" aria-label="Điều phối xoay tua" onclick="openSmartRotationModal('${escapeHtml(t.id)}')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-      </button>
-      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Sửa ca" aria-label="Sửa ca" onclick="openEditTaskModal('${escapeHtml(t.id)}')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-      </button>
-      <button type="button" class="focus-ring spring-touch mini-icon-btn danger" title="Xóa ca" aria-label="Xóa ca" onclick="confirmDeleteTask('${escapeHtml(t.id)}')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-      </button>
+      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Điều phối xoay tua" aria-label="Điều phối xoay tua" onclick="openSmartRotationModal('${escapeHtml(t.id)}')">${spIcon('rotate', 14)}</button>
+      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Sửa ca" aria-label="Sửa ca" onclick="openEditTaskModal('${escapeHtml(t.id)}')">${spIcon('edit', 14)}</button>
+      <button type="button" class="focus-ring spring-touch mini-icon-btn danger" title="Xóa ca" aria-label="Xóa ca" onclick="confirmDeleteTask('${escapeHtml(t.id)}')">${spIcon('trash', 14)}</button>
     ` : '';
 
     let primaryBtn = '';
@@ -98,12 +94,12 @@ function renderTasksList() {
       primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success" disabled>Đã điểm danh</button>`;
     } else if (isMine) {
       primaryBtn = `
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openFieldCheckinQrModal('${escapeHtml(t.id)}')">QR Nhận Ca</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openFieldCheckinQrModal('${escapeHtml(t.id)}')">QR nhận ca</button>
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-warning" onclick="openSwapRequestModal('${escapeHtml(t.id)}')">Xin đổi ca</button>
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="openLeaveTaskModal('${escapeHtml(t.id)}')">Xin rút ca</button>
       `;
     } else if (occupied.length < quota) {
-      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="handleClaimTask('${escapeHtml(t.id)}')">Nhận Ca Trực</button>`;
+      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="handleClaimTask('${escapeHtml(t.id)}')">Nhận ca trực</button>`;
     } else if (onWaitlist) {
       primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="leaveTaskWaitlist('${escapeHtml(t.id)}')">Rời hàng chờ</button>`;
     } else {
@@ -111,33 +107,37 @@ function renderTasksList() {
     }
 
     const scanAction = canScan
-      ? `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success-solid" onclick="openQrScannerModal('${escapeHtml(t.id)}')">Quét Ca Này</button>`
+      ? `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success" onclick="openQrScannerModal('${escapeHtml(t.id)}')">Quét ca này</button>`
       : '';
 
     return `
-      <article class="acrylic-card task-card stagger-item ${urgency.isUrgent ? 'is-urgent' : ''}">
+      <article class="acrylic-card task-card stagger-item">
         <div class="task-head">
-          <div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-              <span class="sp-badge sp-badge-muted mono-num">${escapeHtml(t.id)}</span>
-              <span class="sp-badge ${occupied.length >= quota ? 'sp-badge-success' : 'sp-badge-accent'} mono-num">${occupied.length} / ${quota} bạn</span>
+          <div style="min-width:0;flex:1;">
+            <div class="task-code-line">
+              <span>${escapeHtml(t.id)}</span>
+              <span>·</span>
+              <span style="color:var(--sp-brand);font-weight:600;">${occupied.length}/${quota} người</span>
             </div>
             <h3 class="task-title">${escapeHtml(t.title)}</h3>
           </div>
           <div class="task-tools">${adminBtns}</div>
         </div>
 
-        <div class="task-meta-chips">
-          <span class="meta-chip">${escapeHtml(t.location || 'Nhà Thi Đấu ĐH Hải Dương')}</span>
-          <span class="meta-chip mono-num">${escapeHtml(t.time || '07:30 - 11:30')}</span>
-          ${t.lockDeadline ? `<span class="meta-chip mono-num">Chốt: ${escapeHtml(String(t.lockDeadline).replace('T', ' '))}</span>` : ''}
+        <div class="task-progress-track" aria-hidden="true">
+          <div class="task-progress-fill" style="width:${progressPct}%;"></div>
         </div>
 
-        ${urgency.isUrgent ? '<div class="sp-badge sp-badge-danger" style="align-self:flex-start;">Cần huy động khẩn cấp • Chưa có thành viên nhận ca</div>' : ''}
+        <div class="task-meta-list">
+          <div class="task-meta-item">${spIcon('map-pin', 14)}<span>${escapeHtml(t.location || 'Nhà Thi Đấu ĐH Hải Dương')}</span></div>
+          <div class="task-meta-item">${spIcon('clock', 14)}<span class="mono-num">${escapeHtml(t.time || '07:30 - 11:30')}${t.lockDeadline ? ` · Chốt ${escapeHtml(String(t.lockDeadline).replace('T', ' '))}` : ''}</span></div>
+        </div>
+
+        ${urgency.isUrgent ? '<div class="task-urgent-line"><span class="task-urgent-dot" aria-hidden="true"></span><span>Cần huy động · Chưa có thành viên nhận ca</span></div>' : ''}
 
         ${t.notes ? `<div class="task-notes-box"><strong>Ghi chú nhiệm vụ:</strong> ${escapeHtml(t.notes)}</div>` : ''}
 
-        ${quotaBadges ? `<div style="display:flex;flex-wrap:wrap;gap:6px;">${quotaBadges}</div>` : ''}
+        ${quotaListText ? `<div class="task-dept-summary">${quotaListText}</div>` : ''}
 
         <div class="task-actions-grid">
           ${primaryBtn}

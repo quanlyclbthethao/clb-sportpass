@@ -1,4 +1,4 @@
-/* SportPass V6.0 — Base Layer, Layout Shell & Accessibility */
+/* SportPass V6.1 — Base Layout, Typographic Hierarchy & Controls */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -11,7 +11,7 @@ html, body {
   background-color: var(--sp-canvas);
   color: var(--sp-text);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -52,11 +52,14 @@ img, svg {
   border: 0;
 }
 
-/* Global & Component WCAG Focus Ring */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible,
 .focus-ring:focus-visible {
   outline: 2px solid var(--sp-accent);
-  outline-offset: 3px;
+  outline-offset: 2px;
+}
+
+.sp-sheet:focus {
+  outline: none;
 }
 
 .mono-num {
@@ -68,28 +71,24 @@ img, svg {
   position: relative;
   overflow: clip;
   overflow-clip-margin: 4px;
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
-              background-color 160ms ease-out,
-              border-color 160ms ease-out,
-              box-shadow 180ms ease-out,
-              color 160ms ease-out;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 150ms ease-out,
+              border-color 150ms ease-out,
+              box-shadow 160ms ease-out,
+              color 150ms ease-out;
 }
 
 .spring-touch:active {
   transform: translateY(-1px) scale(0.985);
 }
 
-/* Viewport Shell */
 .app-shell {
   width: 100%;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background:
-    radial-gradient(640px 360px at 15% -6%, rgba(0, 122, 255, 0.08), transparent 65%),
-    radial-gradient(520px 320px at 90% 4%, rgba(56, 189, 248, 0.07), transparent 60%),
-    var(--sp-canvas);
+  background-color: var(--sp-canvas);
 }
 
 .app-frame {
@@ -104,10 +103,10 @@ img, svg {
 
 @media (min-width: 500px) {
   .app-shell {
-    padding: 18px 12px;
+    padding: 20px 16px;
   }
   .app-frame {
-    min-height: calc(100dvh - 36px);
+    min-height: calc(100dvh - 40px);
     border-radius: 32px;
     border: 1px solid var(--sp-border);
     box-shadow: var(--sp-shadow-float);
@@ -117,22 +116,23 @@ img, svg {
 
 .app-main {
   flex: 1;
-  padding: 12px 16px calc(104px + env(safe-area-inset-bottom));
+  padding: 12px 16px calc(96px + env(safe-area-inset-bottom));
 }
 
 .tab-stage {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .tab-panel {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  min-width: 0;
 }
 
-/* Solid Card Surface */
 .sp-card,
 .acrylic-card {
   background-color: var(--sp-surface);
@@ -145,26 +145,25 @@ img, svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding-inline: 2px;
+  gap: 12px;
+  padding-inline: 4px;
 }
 
 .sp-section-title {
   margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--sp-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--sp-text);
 }
 
 .sp-section-sub {
   margin: 2px 0 0;
   font-size: 12px;
-  color: var(--sp-text2);
+  color: var(--sp-muted);
 }
 
-/* Form Controls */
+/* Forms */
 .sp-field {
   display: flex;
   flex-direction: column;
@@ -172,10 +171,9 @@ img, svg {
 }
 
 .sp-label {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 500;
   color: var(--sp-text2);
-  letter-spacing: 0.01em;
 }
 
 .sp-input,
@@ -193,7 +191,7 @@ img, svg {
 }
 
 .sp-textarea {
-  min-height: 92px;
+  min-height: 88px;
   resize: vertical;
   line-height: 1.5;
 }
@@ -212,7 +210,7 @@ img, svg {
   color: var(--sp-muted);
 }
 
-/* Buttons */
+/* Buttons (500-600 weight discipline) */
 .sp-btn {
   display: inline-flex;
   align-items: center;
@@ -228,8 +226,8 @@ img, svg {
 }
 
 .sp-btn-sm {
-  min-height: 38px;
-  padding: 8px 12px;
+  min-height: 36px;
+  padding: 7px 12px;
   font-size: 12.5px;
   border-radius: var(--radius-sm);
 }
@@ -237,7 +235,7 @@ img, svg {
 .sp-btn-primary {
   background-color: #0058bc;
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 88, 188, 0.25);
+  box-shadow: 0 1px 2px rgba(0, 88, 188, 0.22);
 }
 
 .sp-btn-primary:hover {
@@ -245,13 +243,13 @@ img, svg {
 }
 
 .sp-btn-secondary {
-  background-color: var(--sp-elevated);
+  background-color: var(--sp-surface);
   color: var(--sp-text);
   border: 1px solid var(--sp-border-strong);
 }
 
 .sp-btn-secondary:hover {
-  background-color: var(--sp-subtle);
+  background-color: var(--sp-elevated);
 }
 
 .sp-btn-soft {
@@ -263,7 +261,7 @@ img, svg {
 .sp-btn-danger {
   background-color: var(--sp-danger-bg);
   color: var(--sp-danger-ink);
-  border: 1px solid var(--sp-danger);
+  border: 1px solid rgba(220, 38, 38, 0.35);
 }
 
 .sp-btn-danger-solid {
@@ -274,7 +272,7 @@ img, svg {
 .sp-btn-success {
   background-color: var(--sp-success-bg);
   color: var(--sp-success-ink);
-  border: 1px solid var(--sp-success);
+  border: 1px solid rgba(5, 150, 105, 0.35);
 }
 
 .sp-btn-success-solid {
@@ -285,18 +283,18 @@ img, svg {
 .sp-btn-warning {
   background-color: var(--sp-warning-bg);
   color: var(--sp-warning-ink);
-  border: 1px solid var(--sp-warning);
+  border: 1px solid rgba(217, 119, 6, 0.35);
 }
 
 .sp-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 10px;
+  padding: 3px 9px;
   border-radius: var(--radius-pill);
   font-size: 11px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .sp-badge-accent { background: var(--sp-accent-soft); color: var(--sp-brand); }
@@ -306,10 +304,10 @@ img, svg {
 .sp-badge-muted { background: var(--sp-subtle); color: var(--sp-text2); }
 
 .sp-empty {
-  padding: 32px 20px;
+  padding: 28px 20px;
   text-align: center;
   color: var(--sp-muted);
-  font-size: 13.5px;
+  font-size: 13px;
   background-color: var(--sp-surface);
   border: 1px dashed var(--sp-border-strong);
   border-radius: var(--radius-card);

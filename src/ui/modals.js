@@ -29,6 +29,10 @@ function openGenericModal(id) {
   if (typeof dlg.showModal === 'function' && !dlg.open) {
     try { dlg.showModal(); } catch (e) {}
   }
+  const sheet = dlg.querySelector('.sp-sheet');
+  if (sheet && !dlg.querySelector('[autofocus]')) {
+    try { sheet.focus({ preventScroll: true }); } catch (e) {}
+  }
   triggerHaptic('light');
 }
 

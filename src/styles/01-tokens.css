@@ -1,43 +1,41 @@
-/* SportPass V6.0 — Design Tokens & Dual-Mode Color Scheme Architecture */
+/* SportPass V6.1 — Boutique Dual-Mode Design Tokens (4px/8px Grid) */
 
 :root {
   color-scheme: light dark;
 
-  /* Typography */
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Be Vietnam Pro", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Layout & Geometry */
   --viewport-max: 440px;
   --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-card: 18px;
+  --radius-md: 12px;
+  --radius-card: 20px;
   --radius-sheet: 24px;
   --radius-pill: 9999px;
 
-  /* Raw Light Tokens */
-  --sp-canvas-light: #f2f2f7;
+  /* Light Mode (Collegiate Athletic Precision) */
+  --sp-canvas-light: #f5f6f8;
   --sp-surface-light: #ffffff;
   --sp-elevated-light: #f8fafc;
-  --sp-subtle-light: #eef2f7;
-  --sp-border-light: #e5e5ea;
+  --sp-subtle-light: #f1f5f9;
+  --sp-border-light: #e2e8f0;
   --sp-border-strong-light: #cbd5e1;
-  --sp-text-light: #1c1c1e;
+  --sp-text-light: #0b1220;
   --sp-text2-light: #475569;
-  --sp-muted-light: #636366;
+  --sp-muted-light: #64748b;
   --sp-brand-light: #0058bc;
-  --sp-accent-light: #007aff;
+  --sp-accent-light: #0066dc;
   --sp-accent-soft-light: #e8f2ff;
   --sp-accent-hover-light: #004494;
-  --sp-header-glass-light: rgba(242, 242, 247, 0.84);
-  --sp-dock-glass-light: rgba(255, 255, 255, 0.86);
-  --sp-scroll-thumb-light: #94a3b8;
-  --sp-scroll-track-light: #eef2f7;
+  --sp-header-glass-light: rgba(245, 246, 248, 0.86);
+  --sp-dock-glass-light: rgba(255, 255, 255, 0.88);
+  --sp-scroll-thumb-light: #cbd5e1;
+  --sp-scroll-track-light: #f5f6f8;
 
-  /* Raw Dark Tokens (Stadium Night) */
+  /* Dark Mode (Stadium Night) */
   --sp-canvas-dark: #0b0f17;
   --sp-surface-dark: #131a26;
-  --sp-elevated-dark: #1b2435;
+  --sp-elevated-dark: #1a2333;
   --sp-subtle-dark: #1e293b;
   --sp-border-dark: #253247;
   --sp-border-strong-dark: #334155;
@@ -48,12 +46,12 @@
   --sp-accent-dark: #0ea5e9;
   --sp-accent-soft-dark: #0c2944;
   --sp-accent-hover-dark: #7dd3fc;
-  --sp-header-glass-dark: rgba(11, 15, 23, 0.84);
+  --sp-header-glass-dark: rgba(11, 15, 23, 0.86);
   --sp-dock-glass-dark: rgba(19, 26, 38, 0.88);
-  --sp-scroll-thumb-dark: #475569;
-  --sp-scroll-track-dark: #131a26;
+  --sp-scroll-thumb-dark: #334155;
+  --sp-scroll-track-dark: #0b0f17;
 
-  /* Semantic Raw Pairs */
+  /* Semantic Status Pairs */
   --sp-success-light: #059669;
   --sp-success-dark: #34d399;
   --sp-success-bg-light: #ecfdf5;
@@ -75,7 +73,7 @@
   --sp-danger-ink-light: #b91c1c;
   --sp-danger-ink-dark: #fecaca;
 
-  /* Default resolved tokens (Light base) */
+  /* Resolved Base Tokens */
   --sp-canvas: var(--sp-canvas-light);
   --sp-surface: var(--sp-surface-light);
   --sp-elevated: var(--sp-elevated-light);
@@ -105,12 +103,11 @@
   --sp-danger-bg: var(--sp-danger-bg-light);
   --sp-danger-ink: var(--sp-danger-ink-light);
 
-  --sp-hero-grad: linear-gradient(135deg, #022340 0%, #003865 42%, #00529e 78%, #0070eb 100%);
-  --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.05), 0 6px 20px rgba(2, 35, 64, 0.04);
-  --sp-shadow-float: 0 12px 32px rgba(2, 35, 64, 0.14), 0 2px 6px rgba(11, 15, 23, 0.06);
-  --sp-shadow-hero: 0 16px 36px -6px rgba(0, 56, 101, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --sp-hero-grad: linear-gradient(145deg, #022340 0%, #003865 44%, #00529e 82%, #0066dc 100%);
+  --sp-shadow-card: 0 1px 2px rgba(11, 18, 32, 0.04), 0 4px 12px rgba(11, 18, 32, 0.03);
+  --sp-shadow-float: 0 12px 32px rgba(11, 18, 32, 0.10), 0 2px 6px rgba(11, 18, 32, 0.05);
+  --sp-shadow-hero: 0 14px 28px -8px rgba(0, 56, 101, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 
-  /* Fallback dark tokens for pre-light-dark engines */
   @media (prefers-color-scheme: dark) {
     --sp-canvas: var(--sp-canvas-dark);
     --sp-surface: var(--sp-surface-dark);
@@ -140,12 +137,11 @@
     --sp-danger-bg: var(--sp-danger-bg-dark);
     --sp-danger-ink: var(--sp-danger-ink-dark);
 
-    --sp-hero-grad: linear-gradient(135deg, #051326 0%, #0a2540 44%, #004c97 80%, #0284c7 100%);
-    --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.45), 0 8px 24px rgba(11, 15, 23, 0.35);
-    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.65);
+    --sp-hero-grad: linear-gradient(145deg, #051326 0%, #0a2540 48%, #004c97 86%, #0284c7 100%);
+    --sp-shadow-card: 0 1px 2px rgba(11, 15, 23, 0.36), 0 6px 18px rgba(11, 15, 23, 0.24);
+    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.56);
   }
 
-  /* Native light-dark() cascade when supported */
   @supports (color: light-dark(white, black)) {
     --sp-canvas: light-dark(var(--sp-canvas-light), var(--sp-canvas-dark));
     --sp-surface: light-dark(var(--sp-surface-light), var(--sp-surface-dark));
@@ -176,19 +172,18 @@
     --sp-danger-ink: light-dark(var(--sp-danger-ink-light), var(--sp-danger-ink-dark));
   }
 
-  /* Override primary CTA background in dark mode so white ink passes WCAG AAA/AA cleanly */
   &:has(> head > meta[name="color-scheme"][content="dark"]) {
     color-scheme: dark;
-    --sp-accent-hover: #0070eb;
-    --sp-hero-grad: linear-gradient(135deg, #051326 0%, #0a2540 44%, #004c97 80%, #0284c7 100%);
-    --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.45), 0 8px 24px rgba(11, 15, 23, 0.35);
-    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.65);
+    --sp-hero-grad: linear-gradient(145deg, #051326 0%, #0a2540 48%, #004c97 86%, #0284c7 100%);
+    --sp-shadow-card: 0 1px 2px rgba(11, 15, 23, 0.36), 0 6px 18px rgba(11, 15, 23, 0.24);
+    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.56);
   }
+
   &:has(> head > meta[name="color-scheme"][content="light"]) {
     color-scheme: light;
-    --sp-hero-grad: linear-gradient(135deg, #022340 0%, #003865 42%, #00529e 78%, #0070eb 100%);
-    --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.05), 0 6px 20px rgba(2, 35, 64, 0.04);
-    --sp-shadow-float: 0 12px 32px rgba(2, 35, 64, 0.14), 0 2px 6px rgba(11, 15, 23, 0.06);
+    --sp-hero-grad: linear-gradient(145deg, #022340 0%, #003865 44%, #00529e 82%, #0066dc 100%);
+    --sp-shadow-card: 0 1px 2px rgba(11, 18, 32, 0.04), 0 4px 12px rgba(11, 18, 32, 0.03);
+    --sp-shadow-float: 0 12px 32px rgba(11, 18, 32, 0.10), 0 2px 6px rgba(11, 18, 32, 0.05);
   }
 }
 

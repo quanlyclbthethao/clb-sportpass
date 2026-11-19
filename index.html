@@ -21,46 +21,44 @@
   <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <style>
 /* === 01-tokens.css === */
-/* SportPass V6.0 — Design Tokens & Dual-Mode Color Scheme Architecture */
+/* SportPass V6.1 — Boutique Dual-Mode Design Tokens (4px/8px Grid) */
 
 :root {
   color-scheme: light dark;
 
-  /* Typography */
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Be Vietnam Pro", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Layout & Geometry */
   --viewport-max: 440px;
   --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-card: 18px;
+  --radius-md: 12px;
+  --radius-card: 20px;
   --radius-sheet: 24px;
   --radius-pill: 9999px;
 
-  /* Raw Light Tokens */
-  --sp-canvas-light: #f2f2f7;
+  /* Light Mode (Collegiate Athletic Precision) */
+  --sp-canvas-light: #f5f6f8;
   --sp-surface-light: #ffffff;
   --sp-elevated-light: #f8fafc;
-  --sp-subtle-light: #eef2f7;
-  --sp-border-light: #e5e5ea;
+  --sp-subtle-light: #f1f5f9;
+  --sp-border-light: #e2e8f0;
   --sp-border-strong-light: #cbd5e1;
-  --sp-text-light: #1c1c1e;
+  --sp-text-light: #0b1220;
   --sp-text2-light: #475569;
-  --sp-muted-light: #636366;
+  --sp-muted-light: #64748b;
   --sp-brand-light: #0058bc;
-  --sp-accent-light: #007aff;
+  --sp-accent-light: #0066dc;
   --sp-accent-soft-light: #e8f2ff;
   --sp-accent-hover-light: #004494;
-  --sp-header-glass-light: rgba(242, 242, 247, 0.84);
-  --sp-dock-glass-light: rgba(255, 255, 255, 0.86);
-  --sp-scroll-thumb-light: #94a3b8;
-  --sp-scroll-track-light: #eef2f7;
+  --sp-header-glass-light: rgba(245, 246, 248, 0.86);
+  --sp-dock-glass-light: rgba(255, 255, 255, 0.88);
+  --sp-scroll-thumb-light: #cbd5e1;
+  --sp-scroll-track-light: #f5f6f8;
 
-  /* Raw Dark Tokens (Stadium Night) */
+  /* Dark Mode (Stadium Night) */
   --sp-canvas-dark: #0b0f17;
   --sp-surface-dark: #131a26;
-  --sp-elevated-dark: #1b2435;
+  --sp-elevated-dark: #1a2333;
   --sp-subtle-dark: #1e293b;
   --sp-border-dark: #253247;
   --sp-border-strong-dark: #334155;
@@ -71,12 +69,12 @@
   --sp-accent-dark: #0ea5e9;
   --sp-accent-soft-dark: #0c2944;
   --sp-accent-hover-dark: #7dd3fc;
-  --sp-header-glass-dark: rgba(11, 15, 23, 0.84);
+  --sp-header-glass-dark: rgba(11, 15, 23, 0.86);
   --sp-dock-glass-dark: rgba(19, 26, 38, 0.88);
-  --sp-scroll-thumb-dark: #475569;
-  --sp-scroll-track-dark: #131a26;
+  --sp-scroll-thumb-dark: #334155;
+  --sp-scroll-track-dark: #0b0f17;
 
-  /* Semantic Raw Pairs */
+  /* Semantic Status Pairs */
   --sp-success-light: #059669;
   --sp-success-dark: #34d399;
   --sp-success-bg-light: #ecfdf5;
@@ -98,7 +96,7 @@
   --sp-danger-ink-light: #b91c1c;
   --sp-danger-ink-dark: #fecaca;
 
-  /* Default resolved tokens (Light base) */
+  /* Resolved Base Tokens */
   --sp-canvas: var(--sp-canvas-light);
   --sp-surface: var(--sp-surface-light);
   --sp-elevated: var(--sp-elevated-light);
@@ -128,12 +126,11 @@
   --sp-danger-bg: var(--sp-danger-bg-light);
   --sp-danger-ink: var(--sp-danger-ink-light);
 
-  --sp-hero-grad: linear-gradient(135deg, #022340 0%, #003865 42%, #00529e 78%, #0070eb 100%);
-  --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.05), 0 6px 20px rgba(2, 35, 64, 0.04);
-  --sp-shadow-float: 0 12px 32px rgba(2, 35, 64, 0.14), 0 2px 6px rgba(11, 15, 23, 0.06);
-  --sp-shadow-hero: 0 16px 36px -6px rgba(0, 56, 101, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --sp-hero-grad: linear-gradient(145deg, #022340 0%, #003865 44%, #00529e 82%, #0066dc 100%);
+  --sp-shadow-card: 0 1px 2px rgba(11, 18, 32, 0.04), 0 4px 12px rgba(11, 18, 32, 0.03);
+  --sp-shadow-float: 0 12px 32px rgba(11, 18, 32, 0.10), 0 2px 6px rgba(11, 18, 32, 0.05);
+  --sp-shadow-hero: 0 14px 28px -8px rgba(0, 56, 101, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 
-  /* Fallback dark tokens for pre-light-dark engines */
   @media (prefers-color-scheme: dark) {
     --sp-canvas: var(--sp-canvas-dark);
     --sp-surface: var(--sp-surface-dark);
@@ -163,12 +160,11 @@
     --sp-danger-bg: var(--sp-danger-bg-dark);
     --sp-danger-ink: var(--sp-danger-ink-dark);
 
-    --sp-hero-grad: linear-gradient(135deg, #051326 0%, #0a2540 44%, #004c97 80%, #0284c7 100%);
-    --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.45), 0 8px 24px rgba(11, 15, 23, 0.35);
-    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.65);
+    --sp-hero-grad: linear-gradient(145deg, #051326 0%, #0a2540 48%, #004c97 86%, #0284c7 100%);
+    --sp-shadow-card: 0 1px 2px rgba(11, 15, 23, 0.36), 0 6px 18px rgba(11, 15, 23, 0.24);
+    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.56);
   }
 
-  /* Native light-dark() cascade when supported */
   @supports (color: light-dark(white, black)) {
     --sp-canvas: light-dark(var(--sp-canvas-light), var(--sp-canvas-dark));
     --sp-surface: light-dark(var(--sp-surface-light), var(--sp-surface-dark));
@@ -199,19 +195,18 @@
     --sp-danger-ink: light-dark(var(--sp-danger-ink-light), var(--sp-danger-ink-dark));
   }
 
-  /* Override primary CTA background in dark mode so white ink passes WCAG AAA/AA cleanly */
   &:has(> head > meta[name="color-scheme"][content="dark"]) {
     color-scheme: dark;
-    --sp-accent-hover: #0070eb;
-    --sp-hero-grad: linear-gradient(135deg, #051326 0%, #0a2540 44%, #004c97 80%, #0284c7 100%);
-    --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.45), 0 8px 24px rgba(11, 15, 23, 0.35);
-    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.65);
+    --sp-hero-grad: linear-gradient(145deg, #051326 0%, #0a2540 48%, #004c97 86%, #0284c7 100%);
+    --sp-shadow-card: 0 1px 2px rgba(11, 15, 23, 0.36), 0 6px 18px rgba(11, 15, 23, 0.24);
+    --sp-shadow-float: 0 16px 36px rgba(11, 15, 23, 0.56);
   }
+
   &:has(> head > meta[name="color-scheme"][content="light"]) {
     color-scheme: light;
-    --sp-hero-grad: linear-gradient(135deg, #022340 0%, #003865 42%, #00529e 78%, #0070eb 100%);
-    --sp-shadow-card: 0 1px 3px rgba(11, 15, 23, 0.05), 0 6px 20px rgba(2, 35, 64, 0.04);
-    --sp-shadow-float: 0 12px 32px rgba(2, 35, 64, 0.14), 0 2px 6px rgba(11, 15, 23, 0.06);
+    --sp-hero-grad: linear-gradient(145deg, #022340 0%, #003865 44%, #00529e 82%, #0066dc 100%);
+    --sp-shadow-card: 0 1px 2px rgba(11, 18, 32, 0.04), 0 4px 12px rgba(11, 18, 32, 0.03);
+    --sp-shadow-float: 0 12px 32px rgba(11, 18, 32, 0.10), 0 2px 6px rgba(11, 18, 32, 0.05);
   }
 }
 
@@ -242,7 +237,7 @@ html {
 }
 
 /* === 02-base.css === */
-/* SportPass V6.0 — Base Layer, Layout Shell & Accessibility */
+/* SportPass V6.1 — Base Layout, Typographic Hierarchy & Controls */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -255,7 +250,7 @@ html, body {
   background-color: var(--sp-canvas);
   color: var(--sp-text);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -296,11 +291,14 @@ img, svg {
   border: 0;
 }
 
-/* Global & Component WCAG Focus Ring */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible,
 .focus-ring:focus-visible {
   outline: 2px solid var(--sp-accent);
-  outline-offset: 3px;
+  outline-offset: 2px;
+}
+
+.sp-sheet:focus {
+  outline: none;
 }
 
 .mono-num {
@@ -312,28 +310,24 @@ img, svg {
   position: relative;
   overflow: clip;
   overflow-clip-margin: 4px;
-  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
-              background-color 160ms ease-out,
-              border-color 160ms ease-out,
-              box-shadow 180ms ease-out,
-              color 160ms ease-out;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 150ms ease-out,
+              border-color 150ms ease-out,
+              box-shadow 160ms ease-out,
+              color 150ms ease-out;
 }
 
 .spring-touch:active {
   transform: translateY(-1px) scale(0.985);
 }
 
-/* Viewport Shell */
 .app-shell {
   width: 100%;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background:
-    radial-gradient(640px 360px at 15% -6%, rgba(0, 122, 255, 0.08), transparent 65%),
-    radial-gradient(520px 320px at 90% 4%, rgba(56, 189, 248, 0.07), transparent 60%),
-    var(--sp-canvas);
+  background-color: var(--sp-canvas);
 }
 
 .app-frame {
@@ -348,10 +342,10 @@ img, svg {
 
 @media (min-width: 500px) {
   .app-shell {
-    padding: 18px 12px;
+    padding: 20px 16px;
   }
   .app-frame {
-    min-height: calc(100dvh - 36px);
+    min-height: calc(100dvh - 40px);
     border-radius: 32px;
     border: 1px solid var(--sp-border);
     box-shadow: var(--sp-shadow-float);
@@ -361,22 +355,23 @@ img, svg {
 
 .app-main {
   flex: 1;
-  padding: 12px 16px calc(104px + env(safe-area-inset-bottom));
+  padding: 12px 16px calc(96px + env(safe-area-inset-bottom));
 }
 
 .tab-stage {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .tab-panel {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  min-width: 0;
 }
 
-/* Solid Card Surface */
 .sp-card,
 .acrylic-card {
   background-color: var(--sp-surface);
@@ -389,26 +384,25 @@ img, svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding-inline: 2px;
+  gap: 12px;
+  padding-inline: 4px;
 }
 
 .sp-section-title {
   margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--sp-muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--sp-text);
 }
 
 .sp-section-sub {
   margin: 2px 0 0;
   font-size: 12px;
-  color: var(--sp-text2);
+  color: var(--sp-muted);
 }
 
-/* Form Controls */
+/* Forms */
 .sp-field {
   display: flex;
   flex-direction: column;
@@ -416,10 +410,9 @@ img, svg {
 }
 
 .sp-label {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 500;
   color: var(--sp-text2);
-  letter-spacing: 0.01em;
 }
 
 .sp-input,
@@ -437,7 +430,7 @@ img, svg {
 }
 
 .sp-textarea {
-  min-height: 92px;
+  min-height: 88px;
   resize: vertical;
   line-height: 1.5;
 }
@@ -456,7 +449,7 @@ img, svg {
   color: var(--sp-muted);
 }
 
-/* Buttons */
+/* Buttons (500-600 weight discipline) */
 .sp-btn {
   display: inline-flex;
   align-items: center;
@@ -472,8 +465,8 @@ img, svg {
 }
 
 .sp-btn-sm {
-  min-height: 38px;
-  padding: 8px 12px;
+  min-height: 36px;
+  padding: 7px 12px;
   font-size: 12.5px;
   border-radius: var(--radius-sm);
 }
@@ -481,7 +474,7 @@ img, svg {
 .sp-btn-primary {
   background-color: #0058bc;
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 88, 188, 0.25);
+  box-shadow: 0 1px 2px rgba(0, 88, 188, 0.22);
 }
 
 .sp-btn-primary:hover {
@@ -489,13 +482,13 @@ img, svg {
 }
 
 .sp-btn-secondary {
-  background-color: var(--sp-elevated);
+  background-color: var(--sp-surface);
   color: var(--sp-text);
   border: 1px solid var(--sp-border-strong);
 }
 
 .sp-btn-secondary:hover {
-  background-color: var(--sp-subtle);
+  background-color: var(--sp-elevated);
 }
 
 .sp-btn-soft {
@@ -507,7 +500,7 @@ img, svg {
 .sp-btn-danger {
   background-color: var(--sp-danger-bg);
   color: var(--sp-danger-ink);
-  border: 1px solid var(--sp-danger);
+  border: 1px solid rgba(220, 38, 38, 0.35);
 }
 
 .sp-btn-danger-solid {
@@ -518,7 +511,7 @@ img, svg {
 .sp-btn-success {
   background-color: var(--sp-success-bg);
   color: var(--sp-success-ink);
-  border: 1px solid var(--sp-success);
+  border: 1px solid rgba(5, 150, 105, 0.35);
 }
 
 .sp-btn-success-solid {
@@ -529,18 +522,18 @@ img, svg {
 .sp-btn-warning {
   background-color: var(--sp-warning-bg);
   color: var(--sp-warning-ink);
-  border: 1px solid var(--sp-warning);
+  border: 1px solid rgba(217, 119, 6, 0.35);
 }
 
 .sp-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 10px;
+  padding: 3px 9px;
   border-radius: var(--radius-pill);
   font-size: 11px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .sp-badge-accent { background: var(--sp-accent-soft); color: var(--sp-brand); }
@@ -550,17 +543,17 @@ img, svg {
 .sp-badge-muted { background: var(--sp-subtle); color: var(--sp-text2); }
 
 .sp-empty {
-  padding: 32px 20px;
+  padding: 28px 20px;
   text-align: center;
   color: var(--sp-muted);
-  font-size: 13.5px;
+  font-size: 13px;
   background-color: var(--sp-surface);
   border: 1px dashed var(--sp-border-strong);
   border-radius: var(--radius-card);
 }
 
 /* === 03-components.css === */
-/* SportPass V6.0 — Component Styling & Selective Glass Surfaces */
+/* SportPass V6.1 — Boutique Components, Apple Wallet Hero, Hairline Telemetry & Top-Layer Dialogs */
 
 /* Layer-3 Dynamic Aqua Island */
 .aqua-island {
@@ -573,18 +566,18 @@ img, svg {
   z-index: 120;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 8px;
+  padding: 9px 14px;
   border-radius: var(--radius-pill);
-  background: rgba(28, 28, 30, 0.90);
+  background: rgba(11, 18, 32, 0.92);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 12px 32px rgba(11, 15, 23, 0.28);
+  box-shadow: 0 12px 28px rgba(11, 15, 23, 0.28);
   pointer-events: none;
   opacity: 0;
-  transform: translateY(-20px) scale(0.92);
+  transform: translateY(-20px) scale(0.94);
 }
 
 .aqua-island.active {
@@ -594,14 +587,16 @@ img, svg {
 }
 
 .aqua-island-icon {
-  font-size: 15px;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
   flex-shrink: 0;
 }
 
 .aqua-island-msg {
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.3;
 }
 
@@ -613,7 +608,7 @@ img, svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   padding: 12px 16px;
   background: var(--sp-header-glass);
   backdrop-filter: blur(20px);
@@ -631,13 +626,12 @@ img, svg {
 .brand-emblem {
   width: 36px;
   height: 36px;
-  border-radius: 11px;
+  border-radius: 10px;
   background: var(--sp-hero-grad);
   display: grid;
   place-items: center;
   color: #ffffff;
   flex-shrink: 0;
-  box-shadow: 0 3px 10px rgba(0, 88, 188, 0.28);
 }
 
 .brand-meta {
@@ -649,13 +643,13 @@ img, svg {
 .brand-title-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .brand-name {
   margin: 0;
-  font-size: 15.5px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--sp-text);
 }
@@ -669,8 +663,8 @@ img, svg {
 }
 
 .live-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 9999px;
   background-color: var(--sp-success);
   flex-shrink: 0;
@@ -679,20 +673,19 @@ img, svg {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .icon-circle-btn {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-pill);
   background-color: var(--sp-surface);
   border: 1px solid var(--sp-border);
-  color: var(--sp-text);
+  color: var(--sp-text2);
   display: grid;
   place-items: center;
-  position: relative;
 }
 
 .icon-circle-btn:hover {
@@ -702,15 +695,15 @@ img, svg {
 }
 
 .avatar-header-btn {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-pill);
-  border: 2px solid var(--sp-accent);
+  border: 1.5px solid var(--sp-accent);
   overflow: clip;
   overflow-clip-margin: 3px;
   background-color: var(--sp-accent-soft);
   color: var(--sp-brand);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   display: grid;
   place-items: center;
@@ -722,63 +715,62 @@ img, svg {
   object-fit: cover;
 }
 
-/* Login View Gateway */
+/* Open-Canvas Editorial Login Gateway */
 .login-gateway {
   min-height: 100dvh;
-  padding: 28px 18px 40px;
+  padding: 28px 18px 36px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 18px;
 }
 
-.login-hero-band {
+.login-editorial-head {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
-  padding: 20px;
-  border-radius: 22px;
-  background: var(--sp-hero-grad);
-  color: #ffffff;
-  box-shadow: var(--sp-shadow-hero);
-  position: relative;
-  overflow: clip;
+  gap: 8px;
+  padding-inline: 2px;
 }
 
-.login-hero-crest {
-  display: inline-flex;
+.login-crest-row {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.14);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  gap: 12px;
+}
+
+.login-crest-tile {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--sp-hero-grad);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 16px rgba(0, 56, 101, 0.24);
+  flex-shrink: 0;
 }
 
 .login-hero-title {
   margin: 0;
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 23px;
+  font-weight: 600;
   letter-spacing: -0.025em;
-  line-height: 1.2;
+  line-height: 1.15;
+  color: var(--sp-text);
 }
 
 .login-hero-sub {
-  margin: 0;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
-  max-width: 42ch;
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--sp-muted);
 }
 
 .login-card {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .password-wrap {
@@ -793,10 +785,10 @@ img, svg {
 
 .password-eye-btn {
   position: absolute;
-  right: 6px;
+  right: 4px;
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: 9px;
   display: grid;
   place-items: center;
   color: var(--sp-muted);
@@ -811,20 +803,20 @@ img, svg {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 36px;
+  min-height: 32px;
   font-size: 13px;
   color: var(--sp-text2);
   cursor: pointer;
 }
 
 .remember-row input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   margin: 0;
 }
 
 .guidance-panel {
-  padding: 16px;
+  padding: 14px 16px;
   border-radius: var(--radius-card);
   background-color: var(--sp-elevated);
   border: 1px solid var(--sp-border);
@@ -833,12 +825,13 @@ img, svg {
   gap: 8px;
   font-size: 12.5px;
   color: var(--sp-text2);
+  line-height: 1.5;
 }
 
 .guidance-panel-title {
   margin: 0;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--sp-brand);
   display: flex;
   align-items: center;
@@ -856,15 +849,15 @@ img, svg {
   font-weight: 600;
 }
 
-/* 3D Holographic Varsity SportPass Hero Card */
+/* Compact Wallet-Grade 3D Varsity SportPass Hero Card */
 .perspective-stage {
   perspective: 1100px;
 }
 
 .hero-pass-card {
   position: relative;
-  border-radius: 22px;
-  padding: 18px;
+  border-radius: 20px;
+  padding: 16px;
   background: var(--sp-hero-grad);
   color: #ffffff;
   box-shadow: var(--sp-shadow-hero);
@@ -873,21 +866,21 @@ img, svg {
   overflow-clip-margin: 4px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .hero-court-watermark {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.14;
+  opacity: 0.12;
 }
 
 .tilt-sheen {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(280px circle at var(--mouse-x, 50%) var(--mouse-y, 35%), rgba(255, 255, 255, 0.28), transparent 72%);
+  background: radial-gradient(280px circle at var(--mouse-x, 50%) var(--mouse-y, 35%), rgba(255, 255, 255, 0.22), transparent 70%);
   opacity: 0;
   transition: opacity 220ms ease-out;
 }
@@ -906,11 +899,9 @@ img, svg {
 }
 
 .hero-unit-tag {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.88);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.84);
   white-space: nowrap;
 }
 
@@ -922,11 +913,11 @@ img, svg {
 }
 
 .hero-season-pill {
-  padding: 4px 8px;
+  padding: 3px 8px;
   border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.14);
   font-size: 10.5px;
-  font-weight: 600;
+  font-weight: 500;
   font-family: var(--font-mono);
   white-space: nowrap;
 }
@@ -936,10 +927,10 @@ img, svg {
 }
 
 .hero-status-pill {
-  min-height: 28px;
-  padding: 4px 9px;
+  min-height: 26px;
+  padding: 3px 9px;
   border-radius: var(--radius-pill);
-  background: rgba(5, 150, 105, 0.26);
+  background: rgba(5, 150, 105, 0.28);
   border: 1px solid rgba(167, 243, 208, 0.45);
   color: #ecfdf5;
   display: inline-flex;
@@ -966,7 +957,7 @@ img, svg {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  min-width: 165px;
+  min-width: 170px;
   padding: 6px;
   border-radius: 14px;
   background-color: var(--sp-surface);
@@ -980,14 +971,14 @@ img, svg {
 
 .status-option-btn {
   width: 100%;
-  min-height: 38px;
+  min-height: 36px;
   padding: 6px 10px;
-  border-radius: 10px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--sp-text);
   text-align: left;
 }
@@ -1007,22 +998,22 @@ img, svg {
 
 .avatar-squircle-wrap {
   position: relative;
-  width: 68px;
-  height: 68px;
+  width: 58px;
+  height: 58px;
   flex-shrink: 0;
 }
 
 .avatar-squircle-btn {
-  width: 68px;
-  height: 68px;
-  border-radius: 18px;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.16);
-  border: 2px solid rgba(255, 255, 255, 0.36);
+  border: 1.5px solid rgba(255, 255, 255, 0.34);
   overflow: hidden;
   display: grid;
   place-items: center;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   color: #ffffff;
 }
 
@@ -1045,7 +1036,7 @@ img, svg {
   border: 1.5px solid var(--sp-accent);
   display: grid;
   place-items: center;
-  box-shadow: 0 2px 6px rgba(11, 15, 23, 0.25);
+  box-shadow: 0 2px 6px rgba(11, 15, 23, 0.22);
   pointer-events: none;
 }
 
@@ -1054,21 +1045,20 @@ img, svg {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
-.hero-dept-line {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #7dd3fc;
+.hero-name-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .hero-name {
   margin: 0;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: #ffffff;
@@ -1076,44 +1066,47 @@ img, svg {
 
 .hero-role {
   margin: 0;
-  font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .compact-id-badge {
   align-self: flex-start;
   margin-top: 4px;
-  min-height: 28px;
-  padding: 4px 10px;
+  min-height: 26px;
+  padding: 3px 9px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.26);
   color: #ffffff;
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .compact-id-badge:hover {
   background: rgba(255, 255, 255, 0.24);
 }
 
-.hero-cta-grid {
+.hero-cta-row {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
 .hero-cta-primary {
-  grid-column: 1 / -1;
+  flex: 1;
+  min-height: 40px;
+  border-radius: var(--radius-md);
   background-color: #ffffff;
   color: #022340;
-  box-shadow: 0 4px 14px rgba(2, 35, 64, 0.28);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .hero-cta-primary:hover {
@@ -1121,74 +1114,94 @@ img, svg {
 }
 
 .hero-cta-ghost {
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.13);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.26);
   color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
 }
 
 .hero-cta-ghost:hover {
   background: rgba(255, 255, 255, 0.22);
 }
 
-/* Asymmetric Readiness Telemetry Grid */
-.readiness-grid {
+/* Unified Single-Row 3-Column Readiness Strip */
+.telemetry-bar {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  border-radius: 16px;
+  box-shadow: var(--sp-shadow-card);
+  overflow: clip;
 }
 
-.readiness-featured {
-  padding: 14px 16px;
+.telemetry-cell {
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 8px;
-  background: linear-gradient(155deg, var(--sp-surface) 0%, var(--sp-accent-soft) 100%);
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-align: center;
+  border-right: 1px solid var(--sp-border);
+  min-width: 0;
 }
 
-.readiness-big-num {
+.telemetry-cell:last-child {
+  border-right: 0;
+}
+
+.telemetry-cell-btn:hover {
+  background-color: var(--sp-elevated);
+}
+
+.telemetry-label {
+  font-size: 11px;
+  color: var(--sp-muted);
+  white-space: nowrap;
+}
+
+.telemetry-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sp-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.telemetry-value.big-mono {
   font-family: var(--font-mono);
-  font-size: 30px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  font-size: 18px;
   color: var(--sp-brand);
 }
 
-.readiness-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.readiness-tile {
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  text-align: left;
-  width: 100%;
-}
-
-.readiness-tile:hover {
-  border-color: var(--sp-accent);
-}
-
-.ice-tile {
-  border-color: rgba(220, 38, 38, 0.35);
-  background-color: var(--sp-danger-bg);
-  color: var(--sp-danger-ink);
-}
-
-/* Quick Actions Row */
+/* Compact Utility Row */
 .quick-action-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
-/* Grouped Profile List (iOS Settings style) */
+.admin-inline-bar {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-btn-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+/* Grouped Profile List */
 .grouped-list {
   display: flex;
   flex-direction: column;
@@ -1200,7 +1213,7 @@ img, svg {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 11px 14px;
   border-bottom: 1px solid var(--sp-border);
 }
 
@@ -1216,14 +1229,19 @@ img, svg {
 }
 
 .row-icon-box {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background-color: var(--sp-accent-soft);
-  color: var(--sp-brand);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background-color: var(--sp-subtle);
+  color: var(--sp-text2);
   display: grid;
   place-items: center;
   flex-shrink: 0;
+}
+
+.row-icon-box.accent {
+  background-color: var(--sp-accent-soft);
+  color: var(--sp-brand);
 }
 
 .row-icon-box.danger {
@@ -1244,51 +1262,10 @@ img, svg {
 
 .row-val {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--sp-text);
   text-align: right;
   word-break: break-word;
-}
-
-/* KPI Dispatch Strip */
-.dispatch-kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.kpi-pill-card {
-  padding: 12px 10px;
-  border-radius: 16px;
-  background-color: var(--sp-surface);
-  border: 1px solid var(--sp-border);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.kpi-pill-card.urgent {
-  background-color: var(--sp-danger-bg);
-  border-color: rgba(220, 38, 38, 0.25);
-}
-
-.kpi-pill-card.mine {
-  background-color: var(--sp-success-bg);
-  border-color: rgba(5, 150, 105, 0.25);
-}
-
-.kpi-val {
-  font-family: var(--font-mono);
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.kpi-lbl {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--sp-text2);
 }
 
 /* Horizontal Filter Rail */
@@ -1310,33 +1287,30 @@ img, svg {
 .filter-chip {
   flex: 0 0 auto;
   scroll-snap-align: start;
-  min-height: 36px;
-  padding: 6px 14px;
+  min-height: 34px;
+  padding: 6px 12px;
   border-radius: var(--radius-pill);
   background-color: var(--sp-surface);
   border: 1px solid var(--sp-border-strong);
   color: var(--sp-text2);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   white-space: nowrap;
 }
 
 .filter-chip.active {
   background-color: #0058bc;
-  border-color: #007aff;
+  border-color: #0066dc;
   color: #ffffff;
+  font-weight: 600;
 }
 
-/* Task Dispatch Card */
+/* Calm Editorial Task Dispatch Card */
 .task-card {
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.task-card.is-urgent {
-  border-color: rgba(220, 38, 38, 0.35);
 }
 
 .task-head {
@@ -1346,74 +1320,123 @@ img, svg {
   gap: 10px;
 }
 
+.task-code-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--sp-muted);
+}
+
 .task-title {
   margin: 4px 0 0;
-  font-size: 15.5px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   line-height: 1.3;
   color: var(--sp-text);
+}
+
+.task-progress-track {
+  width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+  background-color: var(--sp-subtle);
+  overflow: hidden;
+}
+
+.task-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: var(--sp-accent);
+  transition: width 260ms ease-out;
 }
 
 .task-tools {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   flex-shrink: 0;
 }
 
 .mini-icon-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background-color: var(--sp-elevated);
-  border: 1px solid var(--sp-border);
-  color: var(--sp-text2);
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: var(--sp-muted);
   display: grid;
   place-items: center;
 }
 
 .mini-icon-btn:hover {
-  border-color: var(--sp-accent);
+  background-color: var(--sp-elevated);
   color: var(--sp-brand);
 }
 
 .mini-icon-btn.danger:hover {
-  border-color: var(--sp-danger);
+  background-color: var(--sp-danger-bg);
   color: var(--sp-danger);
 }
 
-.task-meta-chips {
+.task-meta-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 6px;
+  font-size: 12.5px;
+  color: var(--sp-text2);
 }
 
-.meta-chip {
-  display: inline-flex;
+.task-meta-item {
+  display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 9px;
-  background-color: var(--sp-elevated);
-  border: 1px solid var(--sp-border);
+  gap: 8px;
+}
+
+.task-meta-item svg {
+  color: var(--sp-muted);
+  flex-shrink: 0;
+}
+
+.task-urgent-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
-  color: var(--sp-text2);
+  font-weight: 500;
+  color: var(--sp-danger-ink);
+}
+
+.task-urgent-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--sp-danger);
+  flex-shrink: 0;
 }
 
 .task-notes-box {
-  padding: 10px 12px;
-  border-radius: 12px;
+  padding: 8px 12px;
+  border-left: 2px solid var(--sp-accent);
   background-color: var(--sp-elevated);
-  border: 1px solid var(--sp-border);
+  border-radius: 0 10px 10px 0;
   font-size: 12.5px;
   color: var(--sp-text2);
   line-height: 1.45;
+}
+
+.task-dept-summary {
+  font-size: 11.5px;
+  color: var(--sp-muted);
+  font-family: var(--font-mono);
+  line-height: 1.4;
 }
 
 .task-actions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
   gap: 8px;
+  padding-top: 2px;
 }
 
 /* Forum Cards */
@@ -1460,17 +1483,18 @@ img, svg {
   background-color: var(--sp-elevated);
   border: 1px solid var(--sp-border);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--sp-text2);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
 
 .react-pill.active {
   background-color: var(--sp-accent-soft);
   border-color: var(--sp-accent);
   color: var(--sp-brand);
+  font-weight: 600;
 }
 
 .comment-box {
@@ -1488,7 +1512,19 @@ img, svg {
   font-size: 12.5px;
 }
 
-/* Single-Tier Floating Bottom Dock (Inset Margin Centering) */
+/* Bottom Gradient Scrim + Single-Tier Floating Spring Dock */
+.dock-scrim {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  margin-inline: auto;
+  max-width: var(--viewport-max);
+  height: calc(84px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--sp-canvas) 36%, transparent);
+  pointer-events: none;
+  z-index: 45;
+}
+
 .dock-nav {
   position: fixed;
   bottom: max(12px, env(safe-area-inset-bottom));
@@ -1501,10 +1537,11 @@ img, svg {
 
 .dock-track {
   position: relative;
+  height: 56px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 4px;
-  padding: 6px;
+  padding: 4px;
   border-radius: 20px;
   background: var(--sp-dock-glass);
   backdrop-filter: blur(24px);
@@ -1517,13 +1554,13 @@ img, svg {
 
 .dock-indicator {
   position: absolute;
-  top: 6px;
-  bottom: 6px;
-  left: 6px;
-  width: calc((100% - 12px) / 3);
-  border-radius: 14px;
-  background: linear-gradient(135deg, #004c97 0%, #0070eb 100%);
-  box-shadow: 0 4px 14px rgba(0, 88, 188, 0.30);
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 3);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #004c97 0%, #0066dc 100%);
+  box-shadow: 0 3px 10px rgba(0, 88, 188, 0.25);
   pointer-events: none;
   z-index: 0;
 }
@@ -1533,20 +1570,20 @@ img, svg {
   z-index: 1;
   min-height: 44px;
   padding: 8px 6px;
-  border-radius: 14px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--sp-text2);
   white-space: nowrap;
 }
 
 .dock-tab-btn.active {
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .dock-badge {
@@ -1554,14 +1591,14 @@ img, svg {
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
   background-color: var(--sp-accent-soft);
   color: var(--sp-brand);
 }
 
 .dock-tab-btn.active .dock-badge {
-  background-color: rgba(255, 255, 255, 0.24);
+  background-color: rgba(255, 255, 255, 0.22);
   color: #ffffff;
 }
 
@@ -1598,7 +1635,9 @@ dialog.sp-dialog::backdrop {
 }
 
 .sp-sheet {
-  width: min(100%, 420px);
+  width: 100%;
+  max-width: 416px;
+  min-width: 0;
   max-height: calc(100dvh - 32px);
   border-radius: var(--radius-sheet);
   background-color: var(--sp-surface);
@@ -1624,15 +1663,15 @@ dialog.sp-dialog::backdrop {
 
 .sp-sheet-title {
   margin: 0;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 15.5px;
+  font-weight: 600;
   letter-spacing: -0.015em;
   color: var(--sp-text);
 }
 
 .sp-close-btn {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: var(--radius-pill);
   background-color: var(--sp-elevated);
   border: 1px solid var(--sp-border);
@@ -1649,7 +1688,9 @@ dialog.sp-dialog::backdrop {
 
 .sp-sheet-body {
   padding: 16px 18px 20px;
+  min-width: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
@@ -1663,7 +1704,7 @@ dialog.sp-dialog::backdrop {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
 }
 
 /* Segmented Theme Switch (3-State: System / Light / Dark) */
@@ -1682,7 +1723,7 @@ dialog.sp-dialog::backdrop {
   padding: 6px 8px;
   border-radius: 10px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--sp-text2);
   display: flex;
   flex-direction: column;
@@ -1694,7 +1735,8 @@ dialog.sp-dialog::backdrop {
 .theme-seg-btn[aria-pressed="true"] {
   background-color: var(--sp-surface);
   color: var(--sp-brand);
-  box-shadow: 0 1px 4px rgba(11, 15, 23, 0.08);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(11, 15, 23, 0.08);
   border: 1px solid var(--sp-border);
 }
 
@@ -1739,7 +1781,7 @@ dialog.sp-dialog::backdrop {
   padding: 14px;
   border-radius: 16px;
   background-color: #ffffff;
-  border: 1px solid #e5e5ea;
+  border: 1px solid #e2e8f0;
   display: grid;
   place-items: center;
   width: fit-content;
@@ -1747,17 +1789,16 @@ dialog.sp-dialog::backdrop {
 }
 
 .vip-pass-face {
-  padding: 20px;
-  border-radius: 20px;
+  padding: 18px;
+  border-radius: 16px;
   background: var(--sp-hero-grad);
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   box-shadow: var(--sp-shadow-hero);
 }
 
-/* Member Directory & Role Cards */
 .member-item-card {
   padding: 12px 14px;
   display: flex;
@@ -1786,10 +1827,10 @@ dialog.sp-dialog::backdrop {
 .stepper-btn {
   width: 32px;
   height: 32px;
-  border-radius: 9px;
+  border-radius: 8px;
   background-color: var(--sp-surface);
   border: 1px solid var(--sp-border-strong);
-  font-weight: 700;
+  font-weight: 600;
   display: grid;
   place-items: center;
 }
@@ -2015,38 +2056,41 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
 <body>
   <!-- DYNAMIC AQUA ISLAND -->
   <div id="aquaIsland" class="aqua-island" role="status" aria-live="polite">
-    <span id="aquaIslandIcon" class="aqua-island-icon" aria-hidden="true">⚡</span>
+    <span id="aquaIslandIcon" class="aqua-island-icon" aria-hidden="true"></span>
     <span id="aquaIslandMsg" class="aqua-island-msg">Sẵn sàng điều phối</span>
   </div>
 
   <div class="app-shell">
     <div class="app-frame">
 
-      <!-- ==================== VIEW 1: LOGIN GATEWAY ==================== -->
+      <!-- ==================== VIEW 1: OPEN-CANVAS EDITORIAL LOGIN ==================== -->
       <section id="viewLoginContainer" class="login-gateway" aria-label="Đăng nhập SportPass">
-        <div class="login-hero-band">
-          <div class="login-hero-crest">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
-            </svg>
-            <span>CLB Thể Thao • Trường Đại học Hải Dương</span>
+        <div class="login-editorial-head">
+          <div class="login-crest-row">
+            <div class="login-crest-tile" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+              </svg>
+            </div>
+            <div>
+              <h1 class="login-hero-title">Varsity SportPass</h1>
+              <p class="login-hero-sub">CLB Thể Thao · Trường Đại học Hải Dương</p>
+            </div>
           </div>
-          <h1 class="login-hero-title">Varsity SportPass</h1>
-          <p class="login-hero-sub">Hệ thống thẻ định danh số, điểm danh QR hiện trường và điều phối ca trực xoay tua theo ban chuyên môn.</p>
         </div>
 
         <form class="sp-card login-card" onsubmit="handleLoginSubmit(event)">
           <div class="sp-field">
-            <label for="iptUser" class="sp-label">Mã ID Thành Viên hoặc SĐT</label>
+            <label for="iptUser" class="sp-label">Mã ID thành viên hoặc số điện thoại</label>
             <input type="text" id="iptUser" value="" class="sp-input" placeholder="Ví dụ: NVA1508 hoặc 09xxxxxxxx" autocomplete="username" autocapitalize="characters">
           </div>
 
           <div class="sp-field">
             <label for="iptPass" class="sp-label">Mật khẩu xác thực</label>
             <div class="password-wrap">
-              <input type="password" id="iptPass" value="" class="sp-input" placeholder="Mật khẩu (mặc định 123456)" autocomplete="current-password">
+              <input type="password" id="iptPass" value="" class="sp-input" placeholder="Mật khẩu mặc định 123456" autocomplete="current-password">
               <button type="button" id="btnTogglePass" class="focus-ring password-eye-btn" onclick="togglePasswordVisibility()" aria-label="Hiện mật khẩu" aria-pressed="false">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
                   <circle cx="12" cy="12" r="3"/>
                 </svg>
@@ -2060,19 +2104,19 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
           </label>
 
           <button type="submit" class="focus-ring spring-touch sp-btn sp-btn-primary" style="width:100%;">
-            Đăng Nhập Hệ Thống
+            Đăng nhập hệ thống
           </button>
         </form>
 
         <div class="guidance-panel">
           <h2 class="guidance-panel-title">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
             </svg>
             <span>Hướng Dẫn Đăng Nhập Minh Bạch</span>
           </h2>
-          <div>• Quy tắc Mã ID cá nhân: <strong>[Chữ cái đầu Họ Tên] + [Ngày/Tháng sinh]</strong>. Ví dụ: <strong>Nguyễn Văn An</strong> sinh 15/08 nhập <span class="guidance-code">NVA1508</span>.</div>
-          <div>• Tài khoản Điều hành Ban Nhân sự: <span class="guidance-code">DMC0806</span> • Mật khẩu mặc định mọi thành viên: <span class="guidance-code">123456</span> (khuyến nghị đổi trong Cài đặt).</div>
+          <div>Quy tắc Mã ID: <strong>Chữ cái đầu Họ Tên + Ngày/Tháng sinh</strong>. Ví dụ <strong>Nguyễn Văn An</strong> sinh 15/08 nhập <span class="guidance-code">NVA1508</span>.</div>
+          <div>Điều hành Ban Nhân sự: <span class="guidance-code">DMC0806</span> · Mật khẩu mặc định: <span class="guidance-code">123456</span> (có thể đổi trong Cài đặt).</div>
         </div>
       </section>
 
@@ -2081,14 +2125,14 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
         <header class="app-header">
           <div class="brand-cluster">
             <div class="brand-emblem" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
               </svg>
             </div>
             <div class="brand-meta">
               <div class="brand-title-row">
                 <h1 class="brand-name">Varsity Pass</h1>
-                <span id="role-badge" class="sp-badge sp-badge-accent mono-num">HỘI VIÊN</span>
+                <span id="role-badge" class="sp-badge sp-badge-accent mono-num">Hội viên</span>
               </div>
               <div class="brand-status">
                 <span class="live-dot" aria-hidden="true"></span>
@@ -2099,12 +2143,12 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
 
           <div class="header-actions">
             <button type="button" id="btnHeaderScanner" class="focus-ring spring-touch icon-circle-btn" onclick="openQrScannerModal()" title="Quét QR Điểm Danh" aria-label="Quét QR Điểm Danh">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                 <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1"/>
               </svg>
             </button>
             <button type="button" id="btnHeaderDirectory" class="focus-ring spring-touch icon-circle-btn" onclick="openDirectoryModal()" title="Danh Bạ 125 Hội Viên" aria-label="Danh Bạ Hội Viên">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
             </button>
@@ -2121,26 +2165,35 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
             <section id="tabContentProfile" class="tab-panel" aria-label="Hồ Sơ Cá Nhân">
               <div class="perspective-stage">
                 <article id="hero-tilt-card" class="hero-pass-card tilt-card">
-                  <svg class="hero-court-watermark" viewBox="0 0 400 220" fill="none" aria-hidden="true">
-                    <circle cx="340" cy="40" r="95" stroke="#ffffff" stroke-width="1.2"/>
-                    <circle cx="340" cy="40" r="55" stroke="#ffffff" stroke-width="1"/>
-                    <path d="M-20 180 Q 160 110 420 190" stroke="#ffffff" stroke-width="1"/>
+                  <svg class="hero-court-watermark" viewBox="0 0 400 200" fill="none" aria-hidden="true">
+                    <circle cx="345" cy="36" r="90" stroke="#ffffff" stroke-width="1.1"/>
+                    <circle cx="345" cy="36" r="52" stroke="#ffffff" stroke-width="0.9"/>
+                    <path d="M-20 170 Q 165 100 420 180" stroke="#ffffff" stroke-width="0.9"/>
                   </svg>
                   <div class="tilt-sheen" aria-hidden="true"></div>
 
                   <div class="hero-top-row">
-                    <span class="hero-unit-tag">CLB THỂ THAO • ĐH HẢI DƯƠNG</span>
+                    <span class="hero-unit-tag">CLB Thể Thao · ĐH Hải Dương</span>
                     <div class="hero-badges-right">
-                      <span class="hero-season-pill">2025-26</span>
+                      <span class="hero-season-pill">2025–26</span>
                       <div id="status-toggle-wrapper" class="status-toggle-wrap">
                         <button type="button" id="hero-status-pill" class="focus-ring spring-touch hero-status-pill" onclick="toggleStatusDropdown(event)" aria-label="Đổi trạng thái hoạt động">
                           <span class="live-dot" aria-hidden="true"></span>
                           <span id="hero-status-text">Sẵn sàng</span>
                         </button>
                         <div id="status-dropdown" class="status-dropdown hidden" role="menu">
-                          <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Sẵn sàng', event)">🟢 Sẵn sàng trực</button>
-                          <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Đang bận', event)">🟡 Đang bận lịch</button>
-                          <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Tạm nghỉ', event)">🔴 Tạm nghỉ phép</button>
+                          <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Sẵn sàng', event)">
+                            <span style="width:8px;height:8px;border-radius:9999px;background:#059669;"></span>
+                            <span>Sẵn sàng trực</span>
+                          </button>
+                          <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Đang bận', event)">
+                            <span style="width:8px;height:8px;border-radius:9999px;background:#d97706;"></span>
+                            <span>Đang bận lịch</span>
+                          </button>
+                          <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Tạm nghỉ', event)">
+                            <span style="width:8px;height:8px;border-radius:9999px;background:#dc2626;"></span>
+                            <span>Tạm nghỉ phép</span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -2159,156 +2212,134 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
                     </div>
 
                     <div class="hero-identity-meta">
-                      <span id="card-dept-badge" class="hero-dept-line">Ban Nhân Sự</span>
                       <h2 id="card-name" class="hero-name">Đỗ Mạnh Cường</h2>
-                      <p id="card-role-title" class="hero-role">Trưởng ban nhân sự</p>
+                      <p class="hero-role"><span id="card-role-title">Trưởng ban nhân sự</span> · <span id="card-dept-badge">Ban Nhân Sự</span></p>
                       <button type="button" class="focus-ring spring-touch compact-id-badge" onclick="openDigitalSportPassModal()" aria-label="Mở thẻ VIP SportPass số">
-                        <span>ID:</span>
                         <span id="card-mssv">DMC0806</span>
-                        <span>•</span>
-                        <span>VIP PASS</span>
+                        <span style="opacity:0.65;">·</span>
+                        <span>Thẻ VIP Pass</span>
                       </button>
                     </div>
                   </div>
 
-                  <div class="hero-cta-grid">
-                    <button type="button" class="focus-ring spring-touch sp-btn hero-cta-primary" onclick="openFieldCheckinQrModal()">
-                      Xuất Trình QR Nhận Ca
+                  <div class="hero-cta-row">
+                    <button type="button" class="focus-ring spring-touch hero-cta-primary" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;" onclick="openFieldCheckinQrModal()">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M18 18h3v3h-3z"/></svg>
+                      <span>Xuất trình QR nhận ca</span>
                     </button>
-                    <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm hero-cta-ghost" onclick="openDigitalSportPassModal()">
-                      Xem Thẻ Hội Viên Số
-                    </button>
-                    <button type="button" id="btnHeroQrScanner" class="focus-ring spring-touch sp-btn sp-btn-sm hero-cta-ghost" onclick="openQrScannerModal()">
-                      Quét Điểm Danh
+                    <button type="button" id="btnHeroQrScanner" class="focus-ring spring-touch hero-cta-ghost" onclick="openQrScannerModal()">
+                      Quét QR
                     </button>
                   </div>
                 </article>
               </div>
 
-              <!-- Asymmetric Readiness Telemetry -->
-              <div class="readiness-grid">
-                <div class="sp-card readiness-featured">
-                  <div>
-                    <div class="sp-section-title" style="font-size:11px;">Ca Trực Hoàn Thành</div>
-                    <div id="heroShiftsCount" class="readiness-big-num" style="margin-top:8px;">0</div>
-                  </div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;">
-                    <span class="sp-badge sp-badge-success">Đồng bộ Sheet</span>
-                    <span style="font-size:11px;color:var(--sp-text2);">Học kỳ 2025-26</span>
-                  </div>
+              <!-- Unified Single-Row 3-Column Readiness Bar -->
+              <div class="telemetry-bar" role="region" aria-label="Tổng quan sẵn sàng">
+                <div class="telemetry-cell">
+                  <span class="telemetry-label">Ca hoàn thành</span>
+                  <span id="heroShiftsCount" class="telemetry-value big-mono">0</span>
                 </div>
-
-                <div class="readiness-stack">
-                  <button type="button" class="focus-ring spring-touch sp-card readiness-tile" onclick="openTheTrangModal()">
-                    <div>
-                      <div style="font-size:11px;color:var(--sp-muted);font-weight:600;">Thể Trạng</div>
-                      <div id="profileFitnessShort" style="font-size:13px;font-weight:700;margin-top:2px;">Khỏe mạnh (100%)</div>
-                    </div>
-                    <span id="profileFitnessToneBadge" class="sp-badge sp-badge-success">Sẵn sàng</span>
-                  </button>
-
-                  <button type="button" class="focus-ring spring-touch sp-card readiness-tile ice-tile" onclick="openEmergencyIceModal()">
-                    <div>
-                      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">Cấp Cứu Y Tế</div>
-                      <div style="font-size:13px;font-weight:700;margin-top:2px;">Kích Hoạt ICE</div>
-                    </div>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                  </button>
-                </div>
+                <button type="button" class="focus-ring spring-touch telemetry-cell telemetry-cell-btn" onclick="openTheTrangModal()">
+                  <span class="telemetry-label">Thể trạng</span>
+                  <span class="telemetry-value">
+                    <span id="profileFitnessDot" style="width:7px;height:7px;border-radius:9999px;background:var(--sp-success);"></span>
+                    <span id="profileFitnessShort">Khỏe mạnh</span>
+                  </span>
+                </button>
+                <button type="button" class="focus-ring spring-touch telemetry-cell telemetry-cell-btn" onclick="openEmergencyIceModal()">
+                  <span class="telemetry-label">Khẩn cấp y tế</span>
+                  <span class="telemetry-value" style="color:var(--sp-danger-ink);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>ICE</span>
+                  </span>
+                </button>
               </div>
 
-              <!-- Quick Operations & Admin Controls -->
+              <!-- Quick Operations & Compact Admin Bar -->
               <div class="quick-action-grid">
-                <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" onclick="callContactDirect()">
-                  Gọi Thành Viên
+                <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openDigitalSportPassModal()">
+                  Xem thẻ hội viên số
                 </button>
-                <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" onclick="openEditProfileModal()">
-                  Chỉnh Sửa Hồ Sơ
+                <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="callContactDirect()">
+                  Gọi thành viên
                 </button>
               </div>
 
-              <div id="adminQuickActionsCard" class="sp-card hidden" style="padding:14px;display:flex;flex-direction:column;gap:10px;">
+              <div id="adminQuickActionsCard" class="sp-card hidden admin-inline-bar">
                 <div class="sp-section-head">
-                  <span class="sp-section-title">Điều Hành Ban Nhân Sự</span>
-                  <span class="sp-badge sp-badge-accent">ADMIN</span>
+                  <span class="sp-section-title">Điều hành Ban Nhân Sự</span>
+                  <span class="sp-badge sp-badge-accent mono-num">Admin</span>
                 </div>
-                <div class="quick-action-grid">
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openCreateTaskModal()">
-                    + Tạo ca trực
-                  </button>
-                  <button type="button" id="txtApproveBtnCount" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openAdminDispatchModal(0)">
-                    Duyệt ca (0)
-                  </button>
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" style="grid-column:1 / -1;" onclick="openAdminRoleManagementModal()">
-                    Phân Quyền Admin &amp; Trưởng Ca
-                  </button>
+                <div class="admin-btn-strip">
+                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openCreateTaskModal()">+ Tạo ca</button>
+                  <button type="button" id="txtApproveBtnCount" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openAdminDispatchModal(0)">Duyệt (0)</button>
+                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openAdminRoleManagementModal()">Phân quyền</button>
                 </div>
               </div>
 
-              <!-- 8-Column Grouped Profile List (Unit: Trường Đại học Hải Dương) -->
+              <!-- 8-Column Grouped Profile List (Unified Stroke-1.75 SVG Icons, Zero Emojis) -->
               <div class="sp-section-head">
                 <div>
-                  <h3 class="sp-section-title">Hồ Sơ Định Danh 8 Trường</h3>
-                  <p class="sp-section-sub">Đơn vị chủ quản: Trường Đại học Hải Dương</p>
+                  <h3 class="sp-section-title">Thông tin hội viên</h3>
+                  <p class="sp-section-sub">Trường Đại học Hải Dương</p>
                 </div>
-                <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openEditProfileModal()">Sửa</button>
+                <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openEditProfileModal()">Chỉnh sửa</button>
               </div>
 
               <div class="sp-card grouped-list">
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box" aria-hidden="true">👤</span>
+                    <span class="row-icon-box accent" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     <span class="row-label">Họ và tên</span>
                   </div>
                   <span id="dFullName" class="row-val">Đỗ Mạnh Cường</span>
                 </div>
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box" aria-hidden="true">🪪</span>
+                    <span class="row-icon-box accent" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="10" x2="17" y2="10"/><line x1="7" y1="14" x2="13" y2="14"/></svg></span>
                     <span class="row-label">Mã ID SportPass</span>
                   </div>
                   <span id="dMemberId" class="row-val mono-num">DMC0806</span>
                 </div>
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box" aria-hidden="true">🎓</span>
+                    <span class="row-icon-box" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
                     <span class="row-label">Lớp sinh hoạt</span>
                   </div>
                   <span id="dClass" class="row-val mono-num">K13.GDTC</span>
                 </div>
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box" aria-hidden="true">🏅</span>
+                    <span class="row-icon-box" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
                     <span class="row-label">Ban chuyên môn</span>
                   </div>
                   <span id="dDept" class="row-val">Ban Nhân Sự</span>
                 </div>
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box" aria-hidden="true">⭐</span>
+                    <span class="row-icon-box" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
                     <span class="row-label">Chức vụ CLB</span>
                   </div>
                   <span id="dRole" class="row-val">Trưởng ban nhân sự</span>
                 </div>
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box success" aria-hidden="true">📞</span>
+                    <span class="row-icon-box success" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
                     <span class="row-label">Số điện thoại</span>
                   </div>
                   <span id="dPhone" class="row-val mono-num">0913916326</span>
                 </div>
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box danger" aria-hidden="true">🚨</span>
+                    <span class="row-icon-box danger" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
                     <span class="row-label">Liên hệ khẩn cấp ICE</span>
                   </div>
                   <span id="dIce" class="row-val mono-num">0975364478</span>
                 </div>
                 <div class="grouped-row">
                   <div class="grouped-row-left">
-                    <span class="row-icon-box success" aria-hidden="true">🩺</span>
+                    <span class="row-icon-box success" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
                     <span class="row-label">Lưu ý y tế</span>
                   </div>
                   <span id="dMed" class="row-val">Bình thường</span>
@@ -2318,35 +2349,33 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
 
             <!-- ========== TAB 1: ĐIỀU ĐỘNG CA TRỰC ========== -->
             <section id="tabContentTasks" class="tab-panel hidden" style="display:none;" aria-label="Điều Động Ca Trực">
-              <div class="dispatch-kpi-strip">
-                <div class="kpi-pill-card">
-                  <span id="statTotalTasks" class="kpi-val">2</span>
-                  <span class="kpi-lbl">Tổng ca trực</span>
+              <div class="telemetry-bar">
+                <div class="telemetry-cell">
+                  <span class="telemetry-label">Tổng ca trực</span>
+                  <span id="statTotalTasks" class="telemetry-value big-mono">2</span>
                 </div>
-                <div class="kpi-pill-card urgent">
-                  <span id="statUrgentTasks" class="kpi-val" style="color:var(--sp-danger-ink);">2</span>
-                  <span class="kpi-lbl">Cần huy động</span>
+                <div class="telemetry-cell">
+                  <span class="telemetry-label">Cần huy động</span>
+                  <span id="statUrgentTasks" class="telemetry-value big-mono" style="color:var(--sp-danger-ink);">2</span>
                 </div>
-                <div class="kpi-pill-card mine">
-                  <span id="statMyTasks" class="kpi-val" style="color:var(--sp-success-ink);">0</span>
-                  <span class="kpi-lbl">Ca đã nhận</span>
+                <div class="telemetry-cell">
+                  <span class="telemetry-label">Ca đã nhận</span>
+                  <span id="statMyTasks" class="telemetry-value big-mono" style="color:var(--sp-success-ink);">0</span>
                 </div>
               </div>
 
               <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding:14px;display:flex;flex-direction:column;gap:10px;">
                 <div class="sp-section-head">
                   <div>
-                    <h2 style="margin:0;font-size:15px;font-weight:700;">Bảng Điều Phối Ca Trực</h2>
-                    <p style="margin:2px 0 0;font-size:11px;color:var(--sp-muted);font-family:var(--font-mono);">ADMIN DISPATCH CONSOLE</p>
+                    <h2 style="margin:0;font-size:14.5px;font-weight:600;">Điều phối ca trực</h2>
+                    <p style="margin:2px 0 0;font-size:11.5px;color:var(--sp-muted);">Công cụ quản trị ban chuyên môn</p>
                   </div>
                   <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openQrScannerModal()">Quét QR</button>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                   <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openCreateTaskModal()">+ Tạo ca trực</button>
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openAdminDispatchModal(0)">Duyệt đơn (<span id="pendingDispatchBadgeCount" class="mono-num">0</span>)</button>
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" style="grid-column:1 / -1;" onclick="openAdminRoleManagementModal()">
-                    Phân Quyền Admin
-                  </button>
+                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openAdminDispatchModal(0)"><span>Duyệt (<span id="pendingDispatchBadgeCount" class="mono-num">0</span>)</span></button>
+                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" style="grid-column:1 / -1;" onclick="openAdminRoleManagementModal()">Phân Quyền Admin</button>
                 </div>
               </div>
 
@@ -2367,13 +2396,14 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
             <!-- ========== TAB 2: DIỄN ĐÀN CLB ========== -->
             <section id="tabContentForum" class="tab-panel hidden" style="display:none;" aria-label="Diễn Đàn Nội Bộ">
               <div class="sp-card forum-composer">
-                <div style="font-weight:700;font-size:14.5px;">Bảng Tin &amp; Hoạt Động CLB</div>
-                <textarea id="iptPostContent" class="sp-textarea" placeholder="Chia sẻ hình ảnh sân tập, thông báo giải đấu hoặc kinh nghiệm trực ban..."></textarea>
+                <div style="font-weight:600;font-size:14.5px;letter-spacing:-0.01em;">Bảng tin hoạt động CLB</div>
+                <textarea id="iptPostContent" class="sp-textarea" placeholder="Chia sẻ hình ảnh sân tập, lịch giao hữu hoặc lưu ý ca trực..."></textarea>
                 <div id="composerMediaReel" class="media-reel hidden"></div>
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
                   <div style="display:flex;align-items:center;gap:10px;">
                     <label class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" style="cursor:pointer;">
-                      Chọn Ảnh
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                      <span>Chọn ảnh</span>
                       <input type="file" accept="image/*" multiple class="sr-only" onchange="handlePostMediaSelect(event)">
                     </label>
                     <label class="remember-row" style="gap:6px;min-height:auto;">
@@ -2381,7 +2411,7 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
                       <span style="font-size:12px;">Ẩn danh</span>
                     </label>
                   </div>
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitNewPostAction()">Đăng Bài</button>
+                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitNewPostAction()">Đăng bài</button>
                 </div>
               </div>
 
@@ -2391,21 +2421,23 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
           </div>
         </main>
 
+        <div class="dock-scrim" aria-hidden="true"></div>
+
         <!-- SINGLE-TIER FLOATING SPRING NAVIGATION DOCK -->
         <nav class="dock-nav" aria-label="Điều hướng chính">
           <div class="dock-track">
             <div id="dockActiveIndicator" class="dock-indicator" aria-hidden="true"></div>
             <button id="btnDock0" type="button" class="focus-ring dock-tab-btn active" onclick="switchDockTab(0, event)" aria-selected="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               <span>Hồ Sơ</span>
             </button>
             <button id="btnDock1" type="button" class="focus-ring dock-tab-btn" onclick="switchDockTab(1, event)" aria-selected="false">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
               <span>Điều Động</span>
               <span id="dockTasksBadge" class="dock-badge">2</span>
             </button>
             <button id="btnDock2" type="button" class="focus-ring dock-tab-btn" onclick="switchDockTab(2, event)" aria-selected="false">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               <span>Diễn Đàn</span>
             </button>
           </div>
@@ -2417,27 +2449,26 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
 
   <!-- ==================== NATIVE TOP-LAYER DIALOG MODALS ==================== -->
 
-  <!-- 1. Digital VIP SportPass Card Modal -->
   <dialog id="modalDigitalSportPassCard" class="sp-dialog" closedby="any" aria-labelledby="titleVipCard">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleVipCard" class="sp-sheet-title">Thẻ Hội Viên Số SportPass</h2>
+        <h2 id="titleVipCard" class="sp-sheet-title">Thẻ hội viên số SportPass</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeDigitalSportPassModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div class="vip-pass-face">
           <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:11px;font-weight:700;letter-spacing:0.08em;">CLB THỂ THAO • ĐH HẢI DƯƠNG</span>
+            <span style="font-size:11px;font-weight:500;opacity:0.88;">CLB Thể Thao · ĐH Hải Dương</span>
             <span id="vipCardMemberId" class="sp-badge mono-num" style="background:rgba(255,255,255,0.2);color:#ffffff;">DMC0806</span>
           </div>
           <div>
-            <div id="vipCardMemberName" style="font-size:20px;font-weight:700;">Đỗ Mạnh Cường</div>
-            <div id="vipCardMemberRole" style="font-size:13px;opacity:0.9;">Trưởng ban nhân sự</div>
+            <div id="vipCardMemberName" style="font-size:19px;font-weight:600;letter-spacing:-0.015em;">Đỗ Mạnh Cường</div>
+            <div id="vipCardMemberRole" style="font-size:12.5px;opacity:0.88;">Trưởng ban nhân sự</div>
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;background:rgba(255,255,255,0.12);padding:10px;border-radius:12px;">
-            <div><div style="opacity:0.75;font-size:10px;">Lớp</div><div id="vipCardMemberClass" class="mono-num" style="font-weight:700;">K13.GDTC</div></div>
-            <div><div style="opacity:0.75;font-size:10px;">Ban</div><div id="vipCardMemberDept" style="font-weight:700;">Nhân Sự</div></div>
-            <div><div style="opacity:0.75;font-size:10px;">Số Ca</div><div id="vipCardMemberShifts" class="mono-num" style="font-weight:700;">0</div></div>
+            <div><div style="opacity:0.75;font-size:10.5px;">Lớp</div><div id="vipCardMemberClass" class="mono-num" style="font-weight:600;">K13.GDTC</div></div>
+            <div><div style="opacity:0.75;font-size:10.5px;">Ban</div><div id="vipCardMemberDept" style="font-weight:600;">Nhân Sự</div></div>
+            <div><div style="opacity:0.75;font-size:10.5px;">Số ca</div><div id="vipCardMemberShifts" class="mono-num" style="font-weight:600;">0</div></div>
           </div>
         </div>
         <div class="qr-paper-frame">
@@ -2447,16 +2478,15 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="refreshDynamicQrPass()">Làm mới QR</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeDigitalSportPassModal()" autofocus>Đóng</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeDigitalSportPassModal()">Đóng</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 2. Field Check-in QR Presentation Modal -->
   <dialog id="modalFieldCheckinQr" class="sp-dialog" closedby="any" aria-labelledby="titleFieldQr">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleFieldQr" class="sp-sheet-title">Xuất Trình QR Nhận Ca</h2>
+        <h2 id="titleFieldQr" class="sp-sheet-title">Xuất trình QR nhận ca</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeFieldCheckinQrModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
@@ -2479,11 +2509,10 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
     </div>
   </dialog>
 
-  <!-- 3. QR Scanner Camera Modal -->
   <dialog id="modalQrScanner" class="sp-dialog" closedby="any" aria-labelledby="titleQrScanner">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleQrScanner" class="sp-sheet-title">Quét QR Điểm Danh Hiện Trường</h2>
+        <h2 id="titleQrScanner" class="sp-sheet-title">Quét QR điểm danh hiện trường</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeQrScannerModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
@@ -2497,10 +2526,10 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
         </div>
         <div id="qrScannerStatus" style="font-size:12.5px;text-align:center;color:var(--sp-text2);">Đang khởi động camera...</div>
         <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="toggleCameraFacing()">Đổi Camera</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="toggleTorchFlash()">Đèn Pin</button>
+          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="toggleCameraFacing()">Đổi camera</button>
+          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="toggleTorchFlash()">Đèn pin</button>
           <label class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" style="cursor:pointer;">
-            Chọn Ảnh QR
+            Chọn ảnh QR
             <input type="file" id="iptQrImageFile" accept="image/*" class="sr-only" onchange="handleQrFileSelected(event)">
           </label>
         </div>
@@ -2508,25 +2537,24 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
     </div>
   </dialog>
 
-  <!-- 4. Create / Edit Shift Task Modal -->
   <dialog id="modalCreateTask" class="sp-dialog" closedby="any" aria-labelledby="modalCreateTaskTitle">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="modalCreateTaskTitle" class="sp-sheet-title">Tạo Lệnh Điều Động Mới</h2>
+        <h2 id="modalCreateTaskTitle" class="sp-sheet-title">Tạo lệnh điều động mới</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeCreateTaskModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div class="sp-field">
           <label for="iptTaskTitle" class="sp-label">Tên sự kiện / Ca trực</label>
-          <input type="text" id="iptTaskTitle" class="sp-input" placeholder="Ví dụ: Trực y tế & bàn trọng tài Giải Cầu Lông">
+          <input type="text" id="iptTaskTitle" class="sp-input" placeholder="Ví dụ: Trực y tế và bàn trọng tài Giải Cầu Lông">
         </div>
         <div class="sp-field">
           <label for="iptTaskLocation" class="sp-label">Địa điểm tập kết</label>
           <input type="text" id="iptTaskLocation" class="sp-input" value="Nhà Thi Đấu ĐH Hải Dương">
         </div>
-        <div style="display:grid;grid-template-columns:1fr 110px;gap:10px;">
+        <div style="display:grid;grid-template-columns:1fr 104px;gap:10px;">
           <div class="sp-field">
-            <label for="iptTaskTime" class="sp-label">Khung giờ &amp; Ngày</label>
+            <label for="iptTaskTime" class="sp-label">Khung giờ và ngày</label>
             <input type="text" id="iptTaskTime" class="sp-input mono-num" value="14:00 - 17:30 Thứ Bảy">
           </div>
           <div class="sp-field">
@@ -2539,7 +2567,7 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
           <input type="datetime-local" id="iptTaskDeadline" class="sp-input mono-num">
         </div>
         <div class="sp-field">
-          <span class="sp-label">Phân bổ chỉ tiêu 7 Ban chuyên môn</span>
+          <span class="sp-label">Phân bổ chỉ tiêu 7 ban chuyên môn</span>
           <div id="deptQuotaContainer" style="display:flex;flex-direction:column;gap:6px;"></div>
         </div>
         <div class="sp-field">
@@ -2549,17 +2577,16 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeCreateTaskModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitCreateTaskAction()">Phát Hành Lệnh</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitCreateTaskAction()">Phát hành lệnh</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 5. Member Directory Modal (125 Members + 7 Dept Filter Bar) -->
   <dialog id="modalDirectory" class="sp-dialog" closedby="any" aria-labelledby="titleDirectory">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
         <div>
-          <h2 id="titleDirectory" class="sp-sheet-title">Danh Bạ Thành Viên CLB</h2>
+          <h2 id="titleDirectory" class="sp-sheet-title">Danh bạ thành viên CLB</h2>
           <div id="directoryCountLabel" class="mono-num" style="font-size:11.5px;color:var(--sp-muted);">125 hồ sơ</div>
         </div>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeDirectoryModal()" aria-label="Đóng">✕</button>
@@ -2581,9 +2608,8 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
     </div>
   </dialog>
 
-  <!-- 6. Other Member 8-Column Inspector Modal -->
   <dialog id="modalOtherMemberDetails" class="sp-dialog" closedby="any" aria-labelledby="otherMemNameVal">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
         <div>
           <h2 id="otherMemNameVal" class="sp-sheet-title">Thành viên</h2>
@@ -2603,7 +2629,7 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
         </div>
 
         <div id="adminShiftAdjustRow" class="sp-card hidden" style="padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-          <span style="font-size:12.5px;font-weight:700;">Điều chỉnh số ca (Admin)</span>
+          <span style="font-size:12.5px;font-weight:600;">Điều chỉnh số ca</span>
           <div style="display:flex;gap:6px;">
             <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="promptAdjustSelectedMemberShifts(-1)">-1 Ca</button>
             <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success-solid" onclick="promptAdjustSelectedMemberShifts(1)">+1 Ca</button>
@@ -2611,27 +2637,26 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
         </div>
       </div>
       <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="callTargetMemberPhone()">Gọi Thành Viên</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="callTargetMemberPhone()">Gọi thành viên</button>
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="callTargetMemberIce()">Gọi ICE</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 7. Admin Manual Shift Adjustment Modal -->
   <dialog id="modalAdjustShifts" class="sp-dialog" closedby="any" aria-labelledby="titleAdjustShifts">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleAdjustShifts" class="sp-sheet-title">Điều Chỉnh Số Ca Trực</h2>
+        <h2 id="titleAdjustShifts" class="sp-sheet-title">Điều chỉnh số ca trực</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeAdjustShiftsModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div>
-          <div id="adjustShiftsMemberName" style="font-weight:700;font-size:15px;"></div>
+          <div id="adjustShiftsMemberName" style="font-weight:600;font-size:15px;"></div>
           <div id="adjustShiftsMemberInfo" class="mono-num" style="font-size:12px;color:var(--sp-text2);"></div>
         </div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 0;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding:8px 0;">
           <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary mono-num" onclick="changeAdjustDelta(-1)">-1</button>
-          <span id="adjustDeltaDisplay" class="mono-num" style="font-size:28px;font-weight:700;min-width:64px;text-align:center;color:var(--sp-brand);">+1</span>
+          <span id="adjustDeltaDisplay" class="mono-num" style="font-size:26px;font-weight:600;min-width:64px;text-align:center;color:var(--sp-brand);">+1</span>
           <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary mono-num" onclick="changeAdjustDelta(1)">+1</button>
         </div>
         <div class="sp-field">
@@ -2641,23 +2666,22 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeAdjustShiftsModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="executeAdjustShiftsSubmit()">Xác Nhận Cập Nhật</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="executeAdjustShiftsSubmit()">Xác nhận cập nhật</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 8. Admin Role Management Modal -->
   <dialog id="modalAdminRoleManagement" class="sp-dialog" closedby="any" aria-labelledby="titleAdminRoles">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
         <h2 id="titleAdminRoles" class="sp-sheet-title">Trung Tâm Cấp Quyền &amp; Phân Vai</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeAdminRoleManagementModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
-        <div class="dispatch-kpi-strip">
-          <div class="kpi-pill-card"><span id="roleCountTotal" class="kpi-val">0</span><span class="kpi-lbl">Hội viên</span></div>
-          <div class="kpi-pill-card"><span id="roleCountAdmin" class="kpi-val" style="color:var(--sp-brand);">1</span><span class="kpi-lbl">Admin</span></div>
-          <div class="kpi-pill-card"><span id="roleCountShiftLeader" class="kpi-val" style="color:var(--sp-success-ink);">0</span><span class="kpi-lbl">Trưởng ca</span></div>
+        <div class="telemetry-bar">
+          <div class="telemetry-cell"><span class="telemetry-label">Hội viên</span><span id="roleCountTotal" class="telemetry-value big-mono">0</span></div>
+          <div class="telemetry-cell"><span class="telemetry-label">Admin</span><span id="roleCountAdmin" class="telemetry-value big-mono">1</span></div>
+          <div class="telemetry-cell"><span class="telemetry-label">Trưởng ca</span><span id="roleCountShiftLeader" class="telemetry-value big-mono" style="color:var(--sp-success-ink);">0</span></div>
         </div>
         <div style="display:flex;gap:8px;">
           <input type="search" id="iptRoleMemberSearch" class="sp-input" placeholder="Tìm theo tên hoặc Mã ID..." oninput="filterRoleMemberList()">
@@ -2669,11 +2693,10 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
     </div>
   </dialog>
 
-  <!-- 9. Smart Shift Rotation Modal -->
   <dialog id="modalSmartRotation" class="sp-dialog" closedby="any" aria-labelledby="titleSmartRot">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleSmartRot" class="sp-sheet-title">Đề Xuất Xoay Tua Công Bằng</h2>
+        <h2 id="titleSmartRot" class="sp-sheet-title">Đề xuất xoay tua công bằng</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeSmartRotationModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
@@ -2682,22 +2705,21 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeSmartRotationModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="applySmartRotationCandidates()">Áp Dụng Điều Động</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="applySmartRotationCandidates()">Áp dụng điều động</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 10. Admin Dispatch Approvals Modal -->
   <dialog id="modalAdminDispatch" class="sp-dialog" closedby="any" aria-labelledby="titleAdminDispatch">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleAdminDispatch" class="sp-sheet-title">Phê Duyệt Đổi Ca &amp; Xin Rút</h2>
+        <h2 id="titleAdminDispatch" class="sp-sheet-title">Phê duyệt đổi ca và xin rút</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeAdminDispatchModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <button type="button" id="btnDispatchTab0" class="focus-ring spring-touch filter-chip active" onclick="switchAdminDispatchTab(0)">Yêu cầu Đổi ca</button>
-          <button type="button" id="btnDispatchTab1" class="focus-ring spring-touch filter-chip" onclick="switchAdminDispatchTab(1)">Đơn Xin Rút ca</button>
+          <button type="button" id="btnDispatchTab0" class="focus-ring spring-touch filter-chip active" onclick="switchAdminDispatchTab(0)">Yêu cầu đổi ca</button>
+          <button type="button" id="btnDispatchTab1" class="focus-ring spring-touch filter-chip" onclick="switchAdminDispatchTab(1)">Đơn xin rút ca</button>
         </div>
         <div id="adminSwapsPanel"><div id="adminSwapsListContainer" style="display:flex;flex-direction:column;gap:8px;"></div></div>
         <div id="adminLeavesPanel" class="hidden"><div id="adminLeavesListContainer" style="display:flex;flex-direction:column;gap:8px;"></div></div>
@@ -2705,30 +2727,40 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
     </div>
   </dialog>
 
-  <!-- 11. Health / Fitness Modal -->
   <dialog id="modalTheTrang" class="sp-dialog" closedby="any" aria-labelledby="titleTheTrang">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleTheTrang" class="sp-sheet-title">Cập Nhật Thể Trạng Sân Bãi</h2>
+        <h2 id="titleTheTrang" class="sp-sheet-title">Cập nhật thể trạng sân bãi</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeTheTrangModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div style="display:flex;flex-direction:column;gap:8px;">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-success" style="justify-content:flex-start;" onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')">🟢 Khỏe mạnh (100% Sẵn sàng)</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-warning" style="justify-content:flex-start;" onclick="selectTheTrang('Hồi phục nhẹ (Hỗ trợ bàn)')">🟡 Hồi phục nhẹ (Hỗ trợ bàn)</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="justify-content:flex-start;" onclick="selectTheTrang('Chấn thương nhẹ (Tạm miễn trực)')">🔴 Chấn thương nhẹ (Tạm miễn trực)</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="justify-content:flex-start;" onclick="selectTheTrang('Nghỉ ốm / Y tế')">🏥 Nghỉ ốm / Y tế</button>
+          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-success" style="justify-content:flex-start;" onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')">
+            <span style="width:8px;height:8px;border-radius:9999px;background:#059669;"></span>
+            <span>Khỏe mạnh (100% sẵn sàng)</span>
+          </button>
+          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-warning" style="justify-content:flex-start;" onclick="selectTheTrang('Hồi phục nhẹ (Hỗ trợ bàn)')">
+            <span style="width:8px;height:8px;border-radius:9999px;background:#d97706;"></span>
+            <span>Hồi phục nhẹ (hỗ trợ bàn)</span>
+          </button>
+          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="justify-content:flex-start;" onclick="selectTheTrang('Chấn thương nhẹ (Tạm miễn trực)')">
+            <span style="width:8px;height:8px;border-radius:9999px;background:#dc2626;"></span>
+            <span>Chấn thương nhẹ (tạm miễn trực)</span>
+          </button>
+          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="justify-content:flex-start;" onclick="selectTheTrang('Nghỉ ốm / Y tế')">
+            <span style="width:8px;height:8px;border-radius:9999px;background:#dc2626;"></span>
+            <span>Nghỉ ốm / theo dõi y tế</span>
+          </button>
         </div>
         <input type="hidden" id="selTheTrangLevel" value="Khỏe mạnh (100% Sẵn sàng)">
       </div>
     </div>
   </dialog>
 
-  <!-- 12. Edit Profile Modal -->
   <dialog id="modalEditProfile" class="sp-dialog" closedby="any" aria-labelledby="titleEditProfile">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleEditProfile" class="sp-sheet-title">Chỉnh Sửa Thông Tin Thành Viên</h2>
+        <h2 id="titleEditProfile" class="sp-sheet-title">Chỉnh sửa thông tin thành viên</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeEditProfileModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
@@ -2744,54 +2776,51 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
     </div>
   </dialog>
 
-  <!-- 13. Avatar Upload Modal -->
   <dialog id="modalAvatar" class="sp-dialog" closedby="any" aria-labelledby="titleAvatarModal">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleAvatarModal" class="sp-sheet-title">Ảnh Đại Diện SportPass</h2>
+        <h2 id="titleAvatarModal" class="sp-sheet-title">Ảnh đại diện SportPass</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeAvatarModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body" style="align-items:center;">
-        <img id="avatarPreviewImg" src="" alt="Xem trước ảnh đại diện" class="hidden" style="width:120px;height:120px;border-radius:24px;object-fit:cover;border:2px solid var(--sp-accent);">
+        <img id="avatarPreviewImg" src="" alt="Xem trước ảnh đại diện" class="hidden" style="width:112px;height:112px;border-radius:20px;object-fit:cover;border:2px solid var(--sp-accent);">
         <label class="focus-ring spring-touch sp-btn sp-btn-primary" style="width:100%;cursor:pointer;">
-          Chọn Ảnh Từ Thiết Bị
+          Chọn ảnh từ thiết bị
           <input type="file" accept="image/*" class="sr-only" onchange="handleAvatarFileSelect(event)">
         </label>
       </div>
     </div>
   </dialog>
 
-  <!-- 14. Emergency ICE Modal -->
   <dialog id="modalEmergencyIce" class="sp-dialog" closedby="any" aria-labelledby="titleIceModal">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleIceModal" class="sp-sheet-title" style="color:var(--sp-danger-ink);">Hồ Sơ Cấp Cứu Khẩn Cấp (ICE)</h2>
+        <h2 id="titleIceModal" class="sp-sheet-title" style="color:var(--sp-danger-ink);">Hồ sơ cấp cứu khẩn cấp (ICE)</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeEmergencyIceModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div class="sp-card grouped-list">
-          <div class="grouped-row"><span class="row-label">Số người thân / Trực Y tế</span><span id="iceContactNumber" class="row-val mono-num">0975364478</span></div>
+          <div class="grouped-row"><span class="row-label">Số người thân / trực y tế</span><span id="iceContactNumber" class="row-val mono-num">0975364478</span></div>
           <div class="grouped-row"><span class="row-label">Ghi chú y tế</span><span id="iceMemberMedNote" class="row-val">Bình thường</span></div>
         </div>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger-solid" style="width:100%;" onclick="executeIceDirectCall()">Gọi Khẩn Cấp ICE Ngay</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="shareSosLocationSms()">Gửi SMS Vị Trí Sân</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-soft" style="width:100%;" onclick="openNearestHospitalsMap()">Tìm Cơ Sở Y Tế Gần Nhất</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger-solid" style="width:100%;" onclick="executeIceDirectCall()">Gọi khẩn cấp ICE ngay</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="shareSosLocationSms()">Gửi SMS vị trí sân</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-soft" style="width:100%;" onclick="openNearestHospitalsMap()">Tìm cơ sở y tế gần nhất</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 15. Settings, Theme Switcher & Account Menu Sheet -->
   <dialog id="modalHeaderMore" class="sp-dialog" closedby="any" aria-labelledby="titleHeaderMore">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleHeaderMore" class="sp-sheet-title">Cài Đặt &amp; Tiện Ích Tài Khoản</h2>
+        <h2 id="titleHeaderMore" class="sp-sheet-title">Cài đặt tài khoản</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeHeaderMoreModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div class="sp-field">
-          <span class="sp-label">Chế độ giao diện (Dual-Mode Adaptive)</span>
+          <span class="sp-label">Giao diện hiển thị</span>
           <div class="theme-seg" role="group" aria-label="Chọn giao diện sáng hoặc tối">
-            <button type="button" id="btnThemeSystem" class="focus-ring spring-touch theme-seg-btn" aria-pressed="true" onclick="setColorScheme('system')" autofocus>
+            <button type="button" id="btnThemeSystem" class="focus-ring spring-touch theme-seg-btn" aria-pressed="true" onclick="setColorScheme('system')">
               <span>Hệ thống</span>
               <span id="themeSystemHint" style="font-size:10px;opacity:0.75;">Đang sáng</span>
             </button>
@@ -2808,28 +2837,27 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
 
         <div class="sp-card" style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
           <div>
-            <div style="font-size:13px;font-weight:700;">Cảnh báo điều động tự động</div>
-            <div style="font-size:11.5px;color:var(--sp-text2);">Tự đồng bộ ca mới &amp; lịch thi đấu</div>
+            <div style="font-size:13px;font-weight:600;">Cảnh báo điều động tự động</div>
+            <div style="font-size:11.5px;color:var(--sp-text2);">Tự đồng bộ ca mới và lịch thi đấu</div>
           </div>
           <span class="sp-badge sp-badge-success">Mặc định bật</span>
         </div>
 
-        <button type="button" id="btnMenuRoleManagement" class="spring-touch hidden" data-focus="ring" style="min-height:44px;padding:10px 14px;border-radius:14px;background:var(--sp-accent-soft);color:var(--sp-brand);font-weight:700;font-size:13.5px;" onclick="openAdminRoleManagementModal()">
+        <button type="button" id="btnMenuRoleManagement" class="spring-touch hidden" data-focus="ring" style="min-height:44px;padding:10px 14px;border-radius:12px;background:var(--sp-accent-soft);color:var(--sp-brand);font-weight:600;font-size:13.5px;" onclick="openAdminRoleManagementModal()">
           Phân Quyền Admin
         </button>
 
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="closeHeaderMoreModal(); openChangePasswordModal();">Đổi Mật Khẩu</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="closeHeaderMoreModal(); openHelpCenterModal();">Cẩm Nang Sử Dụng</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="width:100%;" onclick="executeLogoutAction()">Đăng Xuất Tài Khoản</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="closeHeaderMoreModal(); openChangePasswordModal();">Đổi mật khẩu</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="closeHeaderMoreModal(); openHelpCenterModal();">Cẩm nang sử dụng</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="width:100%;" onclick="executeLogoutAction()">Đăng xuất tài khoản</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 16. Change Password Modal -->
   <dialog id="modalChangePassword" class="sp-dialog" closedby="any" aria-labelledby="titleChangePwd">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleChangePwd" class="sp-sheet-title">Đổi Mật Khẩu Bảo Mật</h2>
+        <h2 id="titleChangePwd" class="sp-sheet-title">Đổi mật khẩu bảo mật</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeChangePasswordModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
@@ -2839,16 +2867,15 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeChangePasswordModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitChangePassword()">Lưu Mật Khẩu</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitChangePassword()">Lưu mật khẩu</button>
       </div>
     </div>
   </dialog>
 
-  <!-- 17. Swap / Leave / Edit Post / Confirm / Help / Lightbox Dialogs -->
   <dialog id="modalSwapRequest" class="sp-dialog" closedby="any" aria-labelledby="titleSwapReq">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleSwapReq" class="sp-sheet-title">Yêu Cầu Đổi Ca Trực</h2>
+        <h2 id="titleSwapReq" class="sp-sheet-title">Yêu cầu đổi ca trực</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeSwapRequestModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
@@ -2858,37 +2885,37 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeSwapRequestModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitSwapRequestAction()">Gửi Yêu Cầu</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitSwapRequestAction()">Gửi yêu cầu</button>
       </div>
     </div>
   </dialog>
 
   <dialog id="modalLeaveTask" class="sp-dialog" closedby="any" aria-labelledby="titleLeaveReq">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleLeaveReq" class="sp-sheet-title">Đơn Xin Rút Ca Trực</h2>
+        <h2 id="titleLeaveReq" class="sp-sheet-title">Đơn xin rút ca trực</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeLeaveTaskModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <input type="hidden" id="iptLeaveTaskId">
         <div class="sp-field"><label for="iptLeaveReason" class="sp-label">Lý do bất khả kháng</label><textarea id="iptLeaveReason" class="sp-textarea" style="min-height:80px;" placeholder="Trình bày rõ lý do để Ban Điều Phối duyệt..."></textarea></div>
         <label class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" style="cursor:pointer;">
-          Đính Kèm Minh Chứng (Tùy chọn)
+          Đính kèm minh chứng (tùy chọn)
           <input type="file" accept="image/*" class="sr-only" onchange="handleLeaveProofSelect(event)">
         </label>
         <img id="leaveProofPreview" src="" alt="Minh chứng xin rút ca" class="hidden media-thumb">
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeLeaveTaskModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger-solid" onclick="submitLeaveRequestAction()">Gửi Đơn Rút</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger-solid" onclick="submitLeaveRequestAction()">Gửi đơn rút</button>
       </div>
     </div>
   </dialog>
 
   <dialog id="modalEditPost" class="sp-dialog" closedby="any" aria-labelledby="titleEditPost">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleEditPost" class="sp-sheet-title">Chỉnh Sửa Bài Viết</h2>
+        <h2 id="titleEditPost" class="sp-sheet-title">Chỉnh sửa bài viết</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeEditPostModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
@@ -2897,33 +2924,33 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
       </div>
       <div class="sp-sheet-foot">
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeEditPostModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitEditPostAction()">Lưu Bài</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitEditPostAction()">Lưu bài</button>
       </div>
     </div>
   </dialog>
 
   <dialog id="modalHelpCenter" class="sp-dialog" closedby="any" aria-labelledby="titleHelpCenter">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
-        <h2 id="titleHelpCenter" class="sp-sheet-title">Cẩm Nang SportPass CLB Thể Thao</h2>
+        <h2 id="titleHelpCenter" class="sp-sheet-title">Cẩm nang SportPass CLB Thể Thao</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeHelpCenterModal()" aria-label="Đóng">✕</button>
       </div>
       <div class="sp-sheet-body">
         <div class="sp-card" style="padding:12px 14px;font-size:13px;line-height:1.55;">
-          <strong>1. Nhận ca &amp; Điểm danh QR:</strong> Vào tab <em>Điều Động</em> chọn ca, sau đó nhấn <em>Xuất Trình QR Nhận Ca</em> để Trưởng ban/Admin quét ghi nhận công trực.
+          <strong>1. Nhận ca và điểm danh QR:</strong> Vào tab <em>Điều Động</em> chọn ca, sau đó nhấn <em>Xuất trình QR nhận ca</em> để Trưởng ban hoặc Admin quét ghi nhận công trực.
         </div>
         <div class="sp-card" style="padding:12px 14px;font-size:13px;line-height:1.55;">
-          <strong>2. Xoay tua &amp; Thể trạng:</strong> Nếu chấn thương, cập nhật trong thẻ <em>Thể Trạng</em> để hệ thống tạm miễn phân công tự động.
+          <strong>2. Xoay tua và thể trạng:</strong> Nếu chấn thương, cập nhật trong thẻ <em>Thể trạng</em> để hệ thống tạm miễn phân công tự động.
         </div>
         <div class="sp-card" style="padding:12px 14px;font-size:13px;line-height:1.55;">
-          <strong>3. Dual-Mode Sân Bãi &amp; Ban Đêm:</strong> Mở Cài đặt tài khoản để chuyển đổi <em>Sáng sân tập</em> và <em>Stadium Night</em>.
+          <strong>3. Giao diện Sáng và Tối:</strong> Mở <em>Cài đặt tài khoản</em> để chọn chế độ <em>Hệ thống</em>, <em>Sáng (Sân tập)</em> hoặc <em>Tối (Ban đêm)</em>.
         </div>
       </div>
     </div>
   </dialog>
 
   <dialog id="modalLightbox" class="sp-dialog" closedby="any" aria-label="Xem ảnh phóng to">
-    <div class="sp-sheet" style="background:transparent;border:0;box-shadow:none;">
+    <div class="sp-sheet" tabindex="-1" style="background:transparent;border:0;box-shadow:none;">
       <div style="display:flex;justify-content:flex-end;padding-bottom:8px;">
         <button type="button" class="focus-ring sp-close-btn" onclick="closeLightboxModal()" aria-label="Đóng ảnh">✕</button>
       </div>
@@ -2936,7 +2963,7 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
   </dialog>
 
   <dialog id="modalConfirmDialog" class="sp-dialog" closedby="any" aria-labelledby="confirmDialogTitle">
-    <div class="sp-sheet">
+    <div class="sp-sheet" tabindex="-1">
       <div class="sp-sheet-head">
         <h2 id="confirmDialogTitle" class="sp-sheet-title">Xác nhận thao tác</h2>
         <button type="button" class="focus-ring sp-close-btn" onclick="closeConfirmDialog()" aria-label="Đóng">✕</button>
@@ -3121,9 +3148,9 @@ function getTheTrangTheme(theTrang) {
 function formatShortTheTrang(theTrang) {
   const raw = String(theTrang || 'Khỏe mạnh');
   const lower = raw.toLowerCase();
-  if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Tạm miễn trực';
-  if (lower.includes('hồi phục')) return 'Hồi phục nhẹ';
-  return 'Khỏe mạnh (100%)';
+  if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Miễn trực';
+  if (lower.includes('hồi phục')) return 'Hồi phục';
+  return 'Khỏe mạnh';
 }
 
 function applyAvatarElement(boxEl, initEl, nameStr, avatarUrl) {
@@ -4316,9 +4343,65 @@ function handleQrCheckinAction(taskId, memberId) {
 }
 
 // === notifications.js ===
-// SportPass V6.0 — Haptics, Dynamic Aqua Island & Background Web Push
+// SportPass V6.1 — Unified Monochrome SVG Iconography, Dynamic Aqua Island & Web Push
 
 let aquaTimer = null;
+
+function spIcon(name, size = 16) {
+  const s = Number(size) || 16;
+  const icons = {
+    zap: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+    check: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+    alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    lock: '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>',
+    refresh: '<path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>',
+    trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+    bell: '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+    edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    camera: '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+    'map-pin': '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+    clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    'thumbs-up': '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/>',
+    heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+    sparkles: '<path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>',
+    rotate: '<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>',
+    info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>',
+    cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>',
+    file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>'
+  };
+  const body = icons[name] || icons.zap;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+}
+
+function resolveIslandIconName(hint) {
+  const map = {
+    '⚡': 'zap',
+    '✅': 'check',
+    '⚠️': 'alert',
+    '🔒': 'lock',
+    '🔐': 'lock',
+    '🛡️': 'shield',
+    '🔄': 'refresh',
+    '↩️': 'refresh',
+    '🗑️': 'trash',
+    '📣': 'bell',
+    '📝': 'edit',
+    '✏️': 'edit',
+    '📸': 'camera',
+    '☁️': 'cloud',
+    '📋': 'file',
+    '⚖️': 'shield',
+    '✨': 'sparkles',
+    '🟢': 'check',
+    '💪': 'check',
+    '⏳': 'clock',
+    '📨': 'bell',
+    'ℹ️': 'info',
+    '👋': 'shield'
+  };
+  return map[hint] || (typeof hint === 'string' && /^[a-z-]+$/.test(hint) ? hint : 'zap');
+}
 
 function triggerHaptic(type = 'light') {
   try {
@@ -4329,14 +4412,14 @@ function triggerHaptic(type = 'light') {
   } catch (e) {}
 }
 
-function showAquaIsland(msg, icon = '⚡') {
+function showAquaIsland(msg, icon = 'zap') {
   const island = document.getElementById('aquaIsland');
   const msgEl = document.getElementById('aquaIslandMsg');
   const iconEl = document.getElementById('aquaIslandIcon');
   if (!island || !msgEl) return;
 
   msgEl.textContent = String(msg || '');
-  if (iconEl) iconEl.textContent = icon || '⚡';
+  if (iconEl) iconEl.innerHTML = spIcon(resolveIslandIconName(icon), 15);
   island.classList.add('active');
 
   if (aquaTimer) clearTimeout(aquaTimer);
@@ -4346,7 +4429,7 @@ function showAquaIsland(msg, icon = '⚡') {
 }
 
 function triggerToast(message) {
-  showAquaIsland(message, '✨');
+  showAquaIsland(message, 'sparkles');
 }
 
 function autoEnableBackgroundNotifications() {
@@ -4364,19 +4447,19 @@ function autoEnableBackgroundNotifications() {
 
 async function requestNotificationPermission() {
   if (!('Notification' in window)) {
-    showAquaIsland('Trình duyệt không hỗ trợ thông báo đẩy.', '⚠️');
+    showAquaIsland('Trình duyệt không hỗ trợ thông báo đẩy.', 'alert');
     return 'unsupported';
   }
   const perm = await Notification.requestPermission();
   if (perm === 'granted') {
     autoEnableBackgroundNotifications();
-    showAquaIsland('Đã kích hoạt thông báo điều động theo thời gian thực.', '🔔');
+    showAquaIsland('Đã kích hoạt thông báo điều động theo thời gian thực.', 'bell');
   }
   return perm;
 }
 
 function triggerTaskNotification(title, body) {
-  showAquaIsland(title, '📣');
+  showAquaIsland(title, 'bell');
   if ('serviceWorker' in navigator && 'Notification' in window && Notification.permission === 'granted') {
     navigator.serviceWorker.ready.then((reg) => {
       if (reg && reg.showNotification) {
@@ -4486,6 +4569,10 @@ function openGenericModal(id) {
   dlg.classList.add('open');
   if (typeof dlg.showModal === 'function' && !dlg.open) {
     try { dlg.showModal(); } catch (e) {}
+  }
+  const sheet = dlg.querySelector('.sp-sheet');
+  if (sheet && !dlg.querySelector('[autofocus]')) {
+    try { sheet.focus({ preventScroll: true }); } catch (e) {}
   }
   triggerHaptic('light');
 }
@@ -4784,7 +4871,7 @@ function renderProfileData() {
 
   const roleBadge = document.getElementById('role-badge');
   if (roleBadge) {
-    roleBadge.textContent = isAdmin ? 'ADMIN' : (currentUser.isShiftLeader ? 'TRƯỞNG CA' : 'HỘI VIÊN');
+    roleBadge.textContent = isAdmin ? 'ADMIN' : (currentUser.isShiftLeader ? 'Trưởng ca' : 'Hội viên');
   }
 
   const avatarBox = document.getElementById('profileAvatarBox');
@@ -4831,10 +4918,9 @@ function applyStatusBadgeStyle() {
 
 function applyTheTrangBadgeStyle(theTrang) {
   const theme = getTheTrangTheme(theTrang);
-  const pill = document.getElementById('profileFitnessToneBadge');
-  if (pill) {
-    pill.className = `sp-badge sp-badge-${theme.tone}`;
-    pill.textContent = theme.exempt ? 'Miễn trực' : 'Sẵn sàng';
+  const dot = document.getElementById('profileFitnessDot');
+  if (dot) {
+    dot.style.background = theme.tone === 'danger' ? 'var(--sp-danger)' : (theme.tone === 'warning' ? 'var(--sp-warning)' : 'var(--sp-success)');
   }
 }
 
@@ -5162,21 +5248,17 @@ function renderTasksList() {
     const isChecked = uid && checkedIn.includes(uid);
     const onWaitlist = uid && waitlist.includes(uid);
 
-    const quotaBadges = Object.entries(t.departmentQuotas || {})
+    const quotaListText = Object.entries(t.departmentQuotas || {})
       .filter(([, q]) => Number(q) > 0)
-      .map(([dept, q]) => `<span class="sp-badge sp-badge-muted">${escapeHtml(dept)}: 0/${Number(q)}</span>`)
-      .join('');
+      .map(([dept, q]) => `${escapeHtml(dept)} 0/${Number(q)}`)
+      .join(' · ');
+
+    const progressPct = Math.min(100, Math.round((occupied.length / quota) * 100));
 
     const adminBtns = isAdmin ? `
-      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Điều phối xoay tua" aria-label="Điều phối xoay tua" onclick="openSmartRotationModal('${escapeHtml(t.id)}')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-      </button>
-      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Sửa ca" aria-label="Sửa ca" onclick="openEditTaskModal('${escapeHtml(t.id)}')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-      </button>
-      <button type="button" class="focus-ring spring-touch mini-icon-btn danger" title="Xóa ca" aria-label="Xóa ca" onclick="confirmDeleteTask('${escapeHtml(t.id)}')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-      </button>
+      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Điều phối xoay tua" aria-label="Điều phối xoay tua" onclick="openSmartRotationModal('${escapeHtml(t.id)}')">${spIcon('rotate', 14)}</button>
+      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Sửa ca" aria-label="Sửa ca" onclick="openEditTaskModal('${escapeHtml(t.id)}')">${spIcon('edit', 14)}</button>
+      <button type="button" class="focus-ring spring-touch mini-icon-btn danger" title="Xóa ca" aria-label="Xóa ca" onclick="confirmDeleteTask('${escapeHtml(t.id)}')">${spIcon('trash', 14)}</button>
     ` : '';
 
     let primaryBtn = '';
@@ -5184,12 +5266,12 @@ function renderTasksList() {
       primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success" disabled>Đã điểm danh</button>`;
     } else if (isMine) {
       primaryBtn = `
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openFieldCheckinQrModal('${escapeHtml(t.id)}')">QR Nhận Ca</button>
+        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openFieldCheckinQrModal('${escapeHtml(t.id)}')">QR nhận ca</button>
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-warning" onclick="openSwapRequestModal('${escapeHtml(t.id)}')">Xin đổi ca</button>
         <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="openLeaveTaskModal('${escapeHtml(t.id)}')">Xin rút ca</button>
       `;
     } else if (occupied.length < quota) {
-      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="handleClaimTask('${escapeHtml(t.id)}')">Nhận Ca Trực</button>`;
+      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="handleClaimTask('${escapeHtml(t.id)}')">Nhận ca trực</button>`;
     } else if (onWaitlist) {
       primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="leaveTaskWaitlist('${escapeHtml(t.id)}')">Rời hàng chờ</button>`;
     } else {
@@ -5197,33 +5279,37 @@ function renderTasksList() {
     }
 
     const scanAction = canScan
-      ? `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success-solid" onclick="openQrScannerModal('${escapeHtml(t.id)}')">Quét Ca Này</button>`
+      ? `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success" onclick="openQrScannerModal('${escapeHtml(t.id)}')">Quét ca này</button>`
       : '';
 
     return `
-      <article class="acrylic-card task-card stagger-item ${urgency.isUrgent ? 'is-urgent' : ''}">
+      <article class="acrylic-card task-card stagger-item">
         <div class="task-head">
-          <div>
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-              <span class="sp-badge sp-badge-muted mono-num">${escapeHtml(t.id)}</span>
-              <span class="sp-badge ${occupied.length >= quota ? 'sp-badge-success' : 'sp-badge-accent'} mono-num">${occupied.length} / ${quota} bạn</span>
+          <div style="min-width:0;flex:1;">
+            <div class="task-code-line">
+              <span>${escapeHtml(t.id)}</span>
+              <span>·</span>
+              <span style="color:var(--sp-brand);font-weight:600;">${occupied.length}/${quota} người</span>
             </div>
             <h3 class="task-title">${escapeHtml(t.title)}</h3>
           </div>
           <div class="task-tools">${adminBtns}</div>
         </div>
 
-        <div class="task-meta-chips">
-          <span class="meta-chip">${escapeHtml(t.location || 'Nhà Thi Đấu ĐH Hải Dương')}</span>
-          <span class="meta-chip mono-num">${escapeHtml(t.time || '07:30 - 11:30')}</span>
-          ${t.lockDeadline ? `<span class="meta-chip mono-num">Chốt: ${escapeHtml(String(t.lockDeadline).replace('T', ' '))}</span>` : ''}
+        <div class="task-progress-track" aria-hidden="true">
+          <div class="task-progress-fill" style="width:${progressPct}%;"></div>
         </div>
 
-        ${urgency.isUrgent ? '<div class="sp-badge sp-badge-danger" style="align-self:flex-start;">Cần huy động khẩn cấp • Chưa có thành viên nhận ca</div>' : ''}
+        <div class="task-meta-list">
+          <div class="task-meta-item">${spIcon('map-pin', 14)}<span>${escapeHtml(t.location || 'Nhà Thi Đấu ĐH Hải Dương')}</span></div>
+          <div class="task-meta-item">${spIcon('clock', 14)}<span class="mono-num">${escapeHtml(t.time || '07:30 - 11:30')}${t.lockDeadline ? ` · Chốt ${escapeHtml(String(t.lockDeadline).replace('T', ' '))}` : ''}</span></div>
+        </div>
+
+        ${urgency.isUrgent ? '<div class="task-urgent-line"><span class="task-urgent-dot" aria-hidden="true"></span><span>Cần huy động · Chưa có thành viên nhận ca</span></div>' : ''}
 
         ${t.notes ? `<div class="task-notes-box"><strong>Ghi chú nhiệm vụ:</strong> ${escapeHtml(t.notes)}</div>` : ''}
 
-        ${quotaBadges ? `<div style="display:flex;flex-wrap:wrap;gap:6px;">${quotaBadges}</div>` : ''}
+        ${quotaListText ? `<div class="task-dept-summary">${quotaListText}</div>` : ''}
 
         <div class="task-actions-grid">
           ${primaryBtn}
@@ -5842,7 +5928,7 @@ function updatePendingSwapsBadge() {
   const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending').length;
   const total = pendingSwaps + pendingLeaves;
   safeSetText('pendingDispatchBadgeCount', String(total));
-  safeSetText('txtApproveBtnCount', `Duyệt ca (${total})`);
+  safeSetText('txtApproveBtnCount', `Duyệt (${total})`);
 }
 
 function openAdminDispatchModal(initialTab = 0) {
@@ -6052,9 +6138,9 @@ function renderForumFeed() {
         ${mediaHtml}
 
         <div class="reaction-bar">
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'like' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'like')">Thích • <span class="mono-num">${Number(rx.like || 0)}</span></button>
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'love' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'love')">Yêu thích • <span class="mono-num">${Number(rx.love || 0)}</span></button>
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'wow' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'wow')">Ấn tượng • <span class="mono-num">${Number(rx.wow || 0)}</span></button>
+          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'like' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'like')">${spIcon('thumbs-up', 13)}<span>Thích</span><span class="mono-num">${Number(rx.like || 0)}</span></button>
+          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'love' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'love')">${spIcon('heart', 13)}<span>Yêu thích</span><span class="mono-num">${Number(rx.love || 0)}</span></button>
+          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'wow' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'wow')">${spIcon('sparkles', 13)}<span>Ấn tượng</span><span class="mono-num">${Number(rx.wow || 0)}</span></button>
         </div>
 
         <div class="comment-box">
