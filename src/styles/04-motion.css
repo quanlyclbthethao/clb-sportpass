@@ -1,0 +1,215 @@
+/* SportPass V6.0 — 120fps Physics Springs, Top-Layer @starting-style & Directional View Transitions */
+
+/* 1. Natural Interaction States & Ripple */
+.ripple-wave {
+  position: absolute;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  transform: scale(0);
+  opacity: 0.9;
+  animation: spRipple 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes spRipple {
+  to {
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}
+
+/* 2. Dock Indicator Physics Spring (linear() with ease-out fallback) */
+.dock-indicator {
+  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-timing-function: linear(
+    0, 0.012, 0.048, 0.16, 0.34, 0.56, 0.77, 0.92,
+    1.01, 1.032, 1.028, 1.014, 1.003, 0.998, 0.999, 1
+  );
+}
+
+/* 3. Aqua Island Spring Transition */
+.aqua-island {
+  transition: opacity 220ms ease-out, transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-timing-function: ease-out, linear(
+    0, 0.014, 0.06, 0.19, 0.42, 0.68, 0.89, 1.015,
+    1.04, 1.025, 1.006, 0.998, 1
+  );
+}
+
+/* 4. Native Top-Layer <dialog> Entry & Exit (@starting-style + overlay + allow-discrete + Firefox/Safari fallback) */
+dialog.sp-dialog {
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.28s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-behavior: allow-discrete;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.sp-dialog {
+    transform: translateY(18px) scale(0.97);
+  }
+}
+
+dialog.sp-dialog::backdrop {
+  transition-property: background-color, backdrop-filter, display, overlay;
+  transition-duration: 0.28s;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
+}
+
+:is(dialog.sp-dialog[open], dialog.sp-dialog.open):where(:not([data-closing])) {
+  opacity: 1;
+
+  @starting-style {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(0) scale(1);
+
+    @starting-style {
+      transform: translateY(18px) scale(0.97);
+    }
+  }
+
+  &::backdrop {
+    background-color: rgba(11, 15, 23, 0.56);
+    backdrop-filter: blur(6px);
+
+    @starting-style {
+      background-color: rgba(11, 15, 23, 0);
+      backdrop-filter: blur(0px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.sp-dialog,
+  dialog.sp-dialog::backdrop {
+    transition-duration: 0.1s;
+  }
+}
+
+/* 5. Directional Tab View Transitions */
+.app-header {
+  view-transition-name: app-header;
+}
+
+.dock-nav {
+  view-transition-name: app-dock;
+}
+
+.tab-stage {
+  view-transition-name: tab-stage;
+}
+
+@keyframes vtSlideOutLeft {
+  to {
+    transform: translateX(-22%);
+    opacity: 0;
+  }
+}
+
+@keyframes vtSlideInRight {
+  from {
+    transform: translateX(22%);
+    opacity: 0;
+  }
+}
+
+@keyframes vtSlideOutRight {
+  to {
+    transform: translateX(22%);
+    opacity: 0;
+  }
+}
+
+@keyframes vtSlideInLeft {
+  from {
+    transform: translateX(-22%);
+    opacity: 0;
+  }
+}
+
+::view-transition-group(tab-stage) {
+  animation: 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html:active-view-transition-type(forward)::view-transition-old(tab-stage) {
+  animation-name: vtSlideOutLeft;
+}
+html:active-view-transition-type(forward)::view-transition-new(tab-stage) {
+  animation-name: vtSlideInRight;
+}
+
+html:active-view-transition-type(backward)::view-transition-old(tab-stage) {
+  animation-name: vtSlideOutRight;
+}
+html:active-view-transition-type(backward)::view-transition-new(tab-stage) {
+  animation-name: vtSlideInLeft;
+}
+
+html:active-view-transition-type(theme)::view-transition-group(root) {
+  animation-duration: 0.24s;
+  animation-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-group(tab-stage) {
+    animation: none !important;
+  }
+}
+
+/* 6. Staggered Card Choreography (sibling-index() with @supports guard & JS fallback) */
+@keyframes spCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stagger-list > .stagger-item {
+    --stagger-step: 36ms;
+    animation: spCardReveal 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(min(var(--sibling-index, 1), 10) * var(--stagger-step));
+  }
+
+  @supports (animation-delay: calc(sibling-index() * 0.1s)) {
+    .stagger-list > .stagger-item {
+      animation-delay: calc(min(sibling-index(), 10) * var(--stagger-step));
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger-list > .stagger-item {
+    animation: none;
+  }
+}
+
+/* 7. GPU-Accelerated QR Laser Sweep */
+@keyframes qrLaserSweep {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(224px); }
+  100% { transform: translateY(0px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .qr-laser-beam {
+    animation: qrLaserSweep 2.4s ease-in-out infinite;
+    will-change: transform;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-laser-beam {
+    transform: translateY(112px);
+  }
+}

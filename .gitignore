@@ -1,5 +1,5 @@
-__pycache__/
+﻿__pycache__/
 *.pyc
-temp_profile_interactive/
-
-temp_profile_dedup_test/
+temp_profile_*/
+.stitch/
+archive_legacy/
