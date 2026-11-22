@@ -1,4 +1,4 @@
-// SportPass V6.0 — Single Canonical Global Bridge & Bootstrapper
+// SportPass V7.0 — Single Canonical Global Bridge & Bootstrapper
 
 function exposeGlobalState() {
   window.DEFAULT_MEMBERS_DIRECTORY = DEFAULT_MEMBERS_DIRECTORY;
@@ -82,6 +82,16 @@ function exposeGlobalState() {
   window.cycleStatus = cycleStatus;
   window.openHelpCenterModal = openHelpCenterModal;
   window.closeHelpCenterModal = closeHelpCenterModal;
+
+  // VietQR Fund & CSKH FAQ
+  window.openVietQrFundModal = openVietQrFundModal;
+  window.closeVietQrFundModal = closeVietQrFundModal;
+  window.updateVietQrFundPreview = updateVietQrFundPreview;
+  window.setVietQrAmountPreset = setVietQrAmountPreset;
+  window.copyVietQrTransferInfo = copyVietQrTransferInfo;
+  window.searchClubFaq = searchClubFaq;
+  window.askClubFaqPreset = askClubFaqPreset;
+  window.renderClubFaqResults = renderClubFaqResults;
 
   // Tasks, Rotation, Approvals & Sync
   window.deduplicateTasks = deduplicateTasks;

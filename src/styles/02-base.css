@@ -1,4 +1,4 @@
-/* SportPass V6.1 — Base Layout, Typographic Hierarchy & Controls */
+/* SportPass V7.0 — Adaptive Multi-Viewport Foundation & Typographic Discipline */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -13,10 +13,19 @@ html, body {
   font-family: var(--font-sans);
   font-size: 14.5px;
   line-height: 1.5;
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
-  overflow-x: clip;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+p, li {
+  text-wrap: pretty;
 }
 
 button, input, select, textarea {
@@ -31,9 +40,10 @@ button {
   padding: 0;
 }
 
-img, svg {
+img, svg, video {
   display: block;
-  max-width: 100%;
+  max-inline-size: 100%;
+  block-size: auto;
 }
 
 .hidden {
@@ -71,17 +81,18 @@ img, svg {
   position: relative;
   overflow: clip;
   overflow-clip-margin: 4px;
-  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+  transition: transform 150ms cubic-bezier(0.2, 0, 0, 1),
               background-color 150ms ease-out,
               border-color 150ms ease-out,
-              box-shadow 160ms ease-out,
+              box-shadow 150ms ease-out,
               color 150ms ease-out;
 }
 
-.spring-touch:active {
-  transform: translateY(-1px) scale(0.985);
+.spring-touch:active:not(:disabled) {
+  transform: scale(0.96);
 }
 
+/* ==================== ADAPTIVE 3-VIEWPORT APP SHELL ==================== */
 .app-shell {
   width: 100%;
   min-height: 100dvh;
@@ -93,7 +104,7 @@ img, svg {
 
 .app-frame {
   width: 100%;
-  max-width: var(--viewport-max);
+  max-width: 100%;
   min-height: 100dvh;
   position: relative;
   display: flex;
@@ -101,25 +112,21 @@ img, svg {
   background-color: var(--sp-canvas);
 }
 
-@media (min-width: 500px) {
-  .app-shell {
-    padding: 20px 16px;
-  }
-  .app-frame {
-    min-height: calc(100dvh - 40px);
-    border-radius: 32px;
-    border: 1px solid var(--sp-border);
-    box-shadow: var(--sp-shadow-float);
-    overflow: clip;
-  }
+.app-workspace {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
 }
 
 .app-main {
   flex: 1;
-  padding: 12px 16px calc(96px + env(safe-area-inset-bottom));
+  min-width: 0;
+  padding: 14px 16px calc(98px + env(safe-area-inset-bottom, 0px));
 }
 
 .tab-stage {
+  container: tab-stage / inline-size;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -133,12 +140,57 @@ img, svg {
   min-width: 0;
 }
 
+@media (min-width: 768px) {
+  .app-shell {
+    padding: 18px 20px;
+  }
+  .app-frame {
+    max-width: 760px;
+    min-height: calc(100dvh - 36px);
+    border-radius: 28px;
+    border: 1px solid var(--sp-border);
+    box-shadow: var(--sp-shadow-float);
+    overflow: clip;
+  }
+  .app-workspace {
+    min-height: calc(100dvh - 36px);
+  }
+  .app-main {
+    padding: 20px 24px 104px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-shell {
+    padding: 22px 28px;
+  }
+  .app-frame {
+    max-width: 1320px;
+    min-height: calc(100dvh - 44px);
+    border-radius: 28px;
+  }
+  .app-workspace {
+    display: grid;
+    grid-template-columns: 268px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "rail header"
+      "rail main";
+    min-height: calc(100dvh - 44px);
+  }
+  .app-main {
+    grid-area: main;
+    padding: 24px 28px 36px;
+  }
+}
+
 .sp-card,
 .acrylic-card {
   background-color: var(--sp-surface);
   border: 1px solid var(--sp-border);
   border-radius: var(--radius-card);
   box-shadow: var(--sp-shadow-card);
+  min-width: 0;
 }
 
 .sp-section-head {
@@ -146,12 +198,13 @@ img, svg {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-inline: 4px;
+  margin-top: 4px;
+  padding-inline: 2px;
 }
 
 .sp-section-title {
   margin: 0;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--sp-text);
@@ -168,6 +221,7 @@ img, svg {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
 }
 
 .sp-label {
@@ -182,7 +236,7 @@ img, svg {
   width: 100%;
   min-height: 44px;
   padding: 10px 14px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-inner);
   border: 1px solid var(--sp-border-strong);
   background-color: var(--sp-elevated);
   color: var(--sp-text);
@@ -210,24 +264,30 @@ img, svg {
   color: var(--sp-muted);
 }
 
-/* Buttons (500-600 weight discipline) */
+/* Buttons (500-600 weight discipline, border for Forced Colors, >= 44px mobile touch targets) */
 .sp-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   min-height: 44px;
+  min-width: var(--target-size);
   padding: 10px 16px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-inner);
+  border: 1px solid transparent;
   font-size: 13.5px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
   white-space: nowrap;
 }
 
+.sp-btn:has(> svg:first-child) {
+  padding-inline-start: 14px;
+}
+
 .sp-btn-sm {
-  min-height: 36px;
-  padding: 7px 12px;
+  min-height: var(--target-size);
+  padding: 8px 13px;
   font-size: 12.5px;
   border-radius: var(--radius-sm);
 }
@@ -238,52 +298,56 @@ img, svg {
   box-shadow: 0 1px 2px rgba(0, 88, 188, 0.22);
 }
 
-.sp-btn-primary:hover {
-  background-color: #004494;
-}
-
 .sp-btn-secondary {
   background-color: var(--sp-surface);
   color: var(--sp-text);
-  border: 1px solid var(--sp-border-strong);
-}
-
-.sp-btn-secondary:hover {
-  background-color: var(--sp-elevated);
+  border-color: var(--sp-border-strong);
 }
 
 .sp-btn-soft {
   background-color: var(--sp-accent-soft);
   color: var(--sp-brand);
-  border: 1px solid transparent;
+  border-color: transparent;
 }
 
 .sp-btn-danger {
   background-color: var(--sp-danger-bg);
   color: var(--sp-danger-ink);
-  border: 1px solid rgba(220, 38, 38, 0.35);
+  border-color: rgba(220, 38, 38, 0.40);
 }
 
 .sp-btn-danger-solid {
-  background-color: var(--sp-danger);
+  background-color: var(--sp-danger-solid);
   color: #ffffff;
 }
 
 .sp-btn-success {
   background-color: var(--sp-success-bg);
   color: var(--sp-success-ink);
-  border: 1px solid rgba(5, 150, 105, 0.35);
+  border-color: rgba(4, 120, 87, 0.40);
 }
 
 .sp-btn-success-solid {
-  background-color: var(--sp-success);
+  background-color: var(--sp-success-solid);
   color: #ffffff;
 }
 
 .sp-btn-warning {
   background-color: var(--sp-warning-bg);
   color: var(--sp-warning-ink);
-  border: 1px solid rgba(217, 119, 6, 0.35);
+  border-color: rgba(180, 83, 9, 0.40);
+}
+
+@media (hover: hover) {
+  .sp-btn-primary:hover {
+    background-color: #003e85;
+  }
+  .sp-btn-secondary:hover {
+    background-color: var(--sp-elevated);
+  }
+  .sp-btn-soft:hover {
+    border-color: var(--sp-accent);
+  }
 }
 
 .sp-badge {

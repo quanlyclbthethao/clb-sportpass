@@ -1,4 +1,4 @@
-// SportPass V6.0 — Admin RBAC Permissions Center, Dispatch Approvals & Leave Decrement
+// SportPass V7.0 — Admin RBAC Permissions Center, Dispatch Approvals & Leave Decrement (Zero innerHTML)
 
 function openAdminRoleManagementModal() {
   if (!currentUser || !currentUser.isAdmin) {
@@ -25,14 +25,7 @@ function setRoleDeptFilter(dept) {
 function updateRoleDeptFilterButtons() {
   const bar = document.getElementById('roleDeptFilterBar');
   if (!bar) return;
-  const chips = [
-    `<button type="button" class="focus-ring spring-touch filter-chip ${currentRoleDeptFilter === 'ALL' ? 'active' : ''}" onclick="setRoleDeptFilter('ALL')">Tất cả</button>`
-  ];
-  for (const d of ALL_DEPARTMENTS) {
-    const shortName = d.replace(/^Ban\s+/i, '');
-    chips.push(`<button type="button" class="focus-ring spring-touch filter-chip ${currentRoleDeptFilter === d ? 'active' : ''}" onclick="setRoleDeptFilter('${escapeHtml(d)}')">${escapeHtml(shortName)}</button>`);
-  }
-  bar.innerHTML = chips.join('');
+  mount(bar, buildDeptFilterChips(currentRoleDeptFilter, setRoleDeptFilter));
 }
 
 function filterRoleMemberList() {
@@ -69,25 +62,37 @@ function renderRoleMemberList() {
   });
 
   if (visible.length === 0) {
-    container.innerHTML = '<div class="sp-empty">Không tìm thấy thành viên phù hợp.</div>';
+    mount(container, el('div', { className: 'sp-empty' }, 'Không tìm thấy thành viên phù hợp.'));
     return;
   }
 
-  container.innerHTML = visible.map(m => {
+  const cards = visible.map(m => {
     const isRoot = m.id === 'DMC0806';
-    return `
-      <div class="acrylic-card member-item-card">
-        <div style="min-width:0;">
-          <div style="font-weight:700;font-size:13.5px;">${escapeHtml(m.hoTen)} <span class="mono-num" style="color:var(--sp-brand);font-size:12px;">(${escapeHtml(m.id)})</span></div>
-          <div style="font-size:12px;color:var(--sp-text2);">${escapeHtml(m.boMon)} • ${escapeHtml(m.chucVu)}</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0;">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm ${m.isAdmin ? 'sp-btn-primary' : 'sp-btn-secondary'}" ${isRoot ? 'disabled' : ''} onclick="toggleMemberRole('${escapeHtml(m.id)}', 'admin')">Admin</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm ${m.isShiftLeader ? 'sp-btn-success-solid' : 'sp-btn-secondary'}" ${isRoot ? 'disabled' : ''} onclick="toggleMemberRole('${escapeHtml(m.id)}', 'leader')">Trưởng ca</button>
-        </div>
-      </div>
-    `;
-  }).join('');
+    return el('div', { className: 'acrylic-card member-item-card' },
+      el('div', { style: { minWidth: '0' } },
+        el('div', { style: { fontWeight: '600', fontSize: '13.5px' } },
+          `${m.hoTen} `,
+          el('span', { className: 'mono-num', style: { color: 'var(--sp-brand)', fontSize: '12px' } }, `(${m.id})`)
+        ),
+        el('div', { style: { fontSize: '12px', color: 'var(--sp-text2)' } }, `${m.boMon} • ${m.chucVu}`)
+      ),
+      el('div', { style: { display: 'flex', gap: '6px', flexShrink: '0' } },
+        el('button', {
+          type: 'button',
+          className: `focus-ring spring-touch sp-btn sp-btn-sm ${m.isAdmin ? 'sp-btn-primary' : 'sp-btn-secondary'}`,
+          disabled: isRoot,
+          onClick: () => toggleMemberRole(m.id, 'admin')
+        }, 'Admin'),
+        el('button', {
+          type: 'button',
+          className: `focus-ring spring-touch sp-btn sp-btn-sm ${m.isShiftLeader ? 'sp-btn-success-solid' : 'sp-btn-secondary'}`,
+          disabled: isRoot,
+          onClick: () => toggleMemberRole(m.id, 'leader')
+        }, 'Trưởng ca')
+      )
+    );
+  });
+  mount(container, cards);
 }
 
 function toggleMemberRole(memberId, roleType) {
@@ -109,7 +114,6 @@ function applyRoleChange(member, roleType, newVal) {
     ? (nextAdmin ? true : Boolean(member.isShiftLeader))
     : Boolean(newVal);
 
-  // Sync across all multi-department records of the same member
   for (const m of (membersDirectory || [])) {
     if (m.id === member.id) {
       m.isAdmin = nextAdmin;
@@ -181,19 +185,24 @@ function renderAdminSwapsList() {
   if (!box) return;
   const pending = (currentSwaps || []).filter(s => s.status === 'pending');
   if (pending.length === 0) {
-    box.innerHTML = '<div class="sp-empty">Không có yêu cầu đổi ca nào đang chờ duyệt.</div>';
+    mount(box, el('div', { className: 'sp-empty' }, 'Không có yêu cầu đổi ca nào đang chờ duyệt.'));
     return;
   }
-  box.innerHTML = pending.map(s => `
-    <div class="acrylic-card task-card">
-      <div style="font-weight:700;font-size:13.5px;">${escapeHtml(s.fromName)} -> ${escapeHtml(s.toName)}</div>
-      <div style="font-size:12px;color:var(--sp-text2);">Ca: <span class="mono-num">${escapeHtml(s.taskId)}</span> • Lý do: ${escapeHtml(s.reason)}</div>
-      <div style="display:flex;gap:8px;">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success-solid" onclick="resolveSwapAction('${escapeHtml(s.id)}', true)">Duyệt đổi</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="resolveSwapAction('${escapeHtml(s.id)}', false)">Từ chối</button>
-      </div>
-    </div>
-  `).join('');
+  const nodes = pending.map(s =>
+    el('div', { className: 'acrylic-card task-card' },
+      el('div', { style: { fontWeight: '600', fontSize: '13.5px' } }, `${s.fromName} -> ${s.toName}`),
+      el('div', { style: { fontSize: '12px', color: 'var(--sp-text2)' } },
+        'Ca: ',
+        el('span', { className: 'mono-num' }, s.taskId),
+        ` • Lý do: ${s.reason}`
+      ),
+      el('div', { style: { display: 'flex', gap: '8px' } },
+        el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success-solid', onClick: () => resolveSwapAction(s.id, true) }, 'Duyệt đổi'),
+        el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger', onClick: () => resolveSwapAction(s.id, false) }, 'Từ chối')
+      )
+    )
+  );
+  mount(box, nodes);
 }
 
 function renderAdminLeavesList() {
@@ -201,19 +210,28 @@ function renderAdminLeavesList() {
   if (!box) return;
   const pending = (currentLeaves || []).filter(l => l.status === 'pending');
   if (pending.length === 0) {
-    box.innerHTML = '<div class="sp-empty">Không có đơn xin rút ca nào đang chờ duyệt.</div>';
+    mount(box, el('div', { className: 'sp-empty' }, 'Không có đơn xin rút ca nào đang chờ duyệt.'));
     return;
   }
-  box.innerHTML = pending.map(l => `
-    <div class="acrylic-card task-card">
-      <div style="font-weight:700;font-size:13.5px;">${escapeHtml(l.memberName)} (<span class="mono-num">${escapeHtml(l.memberId)}</span>)</div>
-      <div style="font-size:12px;color:var(--sp-text2);">Ca: <span class="mono-num">${escapeHtml(l.taskId)}</span> • Lý do: ${escapeHtml(l.reason)}</div>
-      <div style="display:flex;gap:8px;">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="resolveLeaveAction('${escapeHtml(l.id)}', 'approve_exempt', '')">Duyệt rút ca</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="resolveLeaveAction('${escapeHtml(l.id)}', 'reject', '')">Từ chối</button>
-      </div>
-    </div>
-  `).join('');
+  const nodes = pending.map(l =>
+    el('div', { className: 'acrylic-card task-card' },
+      el('div', { style: { fontWeight: '600', fontSize: '13.5px' } },
+        `${l.memberName} (`,
+        el('span', { className: 'mono-num' }, l.memberId),
+        ')'
+      ),
+      el('div', { style: { fontSize: '12px', color: 'var(--sp-text2)' } },
+        'Ca: ',
+        el('span', { className: 'mono-num' }, l.taskId),
+        ` • Lý do: ${l.reason}`
+      ),
+      el('div', { style: { display: 'flex', gap: '8px' } },
+        el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary', onClick: () => resolveLeaveAction(l.id, 'approve_exempt', '') }, 'Duyệt rút ca'),
+        el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger', onClick: () => resolveLeaveAction(l.id, 'reject', '') }, 'Từ chối')
+      )
+    )
+  );
+  mount(box, nodes);
 }
 
 function resolveSwapAction(swapId, isApproved) {
@@ -247,7 +265,6 @@ function resolveLeaveAction(leaveId, decisionType, promoteWaitlistId) {
   if (isApproved) {
     const task = (currentTasks || []).find(t => t.id === leave.taskId);
     if (task) {
-      // Auto-decrement completed shifts if member withdrew after QR check-in
       if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(leave.memberId)) {
         task.checkedInMembers = task.checkedInMembers.filter(id => id !== leave.memberId);
         for (const targetMem of (membersDirectory || [])) {

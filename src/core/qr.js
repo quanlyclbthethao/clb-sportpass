@@ -1,4 +1,4 @@
-// SportPass V6.0 — Dynamic QR Pass Generator & Field Check-in Scanner
+// SportPass V7.0 — Dynamic QR Pass Generator & Field Check-in Scanner (Safe SVG DOM)
 
 let qrScannerStream = null;
 let qrScanAnimFrame = null;
@@ -9,7 +9,7 @@ let activeFieldQrTaskId = null;
 let qrCountdownTimer = null;
 let qrCountdownSeconds = 60;
 
-function generateOfflineSvgQr(data) {
+function generateOfflineSvgQrNode(data) {
   const str = String(data || 'SPORTPASS');
   let hash = 2166136261;
   for (let i = 0; i < str.length; i++) {
@@ -17,7 +17,16 @@ function generateOfflineSvgQr(data) {
     hash = Math.imul(hash, 16777619);
   }
   const size = 21;
-  const cells = [];
+  const dim = String(size * 6);
+  const svg = svgEl('svg', {
+    width: '156',
+    height: '156',
+    viewBox: `0 0 ${dim} ${dim}`,
+    role: 'img',
+    'aria-label': 'Mã QR SportPass'
+  });
+  svg.appendChild(svgEl('rect', { width: dim, height: dim, fill: '#ffffff' }));
+
   const isFinder = (r, c) =>
     (r < 7 && c < 7) || (r < 7 && c >= size - 7) || (r >= size - 7 && c < 7);
 
@@ -33,16 +42,22 @@ function generateOfflineSvgQr(data) {
         on = bit === 1;
       }
       if (on) {
-        cells.push(`<rect x="${c * 6}" y="${r * 6}" width="6" height="6" fill="#022340"/>`);
+        svg.appendChild(svgEl('rect', {
+          x: String(c * 6),
+          y: String(r * 6),
+          width: '6',
+          height: '6',
+          fill: '#022340'
+        }));
       }
     }
   }
-  return `<svg width="156" height="156" viewBox="0 0 ${size * 6} ${size * 6}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mã QR SportPass"><rect width="${size * 6}" height="${size * 6}" fill="#ffffff"/>${cells.join('')}</svg>`;
+  return svg;
 }
 
 function renderQrIntoContainer(container, payloadText, pixelSize = 156) {
   if (!container) return;
-  container.innerHTML = '';
+  container.replaceChildren();
   if (typeof window.QRCode === 'function') {
     try {
       new window.QRCode(container, {
@@ -53,10 +68,13 @@ function renderQrIntoContainer(container, payloadText, pixelSize = 156) {
         colorLight: '#ffffff',
         correctLevel: window.QRCode.CorrectLevel ? window.QRCode.CorrectLevel.M : 0
       });
+      container.querySelectorAll('img').forEach((img) => {
+        if (!img.getAttribute('alt')) img.setAttribute('alt', 'Mã QR SportPass');
+      });
       return;
     } catch (e) {}
   }
-  container.innerHTML = generateOfflineSvgQr(payloadText);
+  container.replaceChildren(generateOfflineSvgQrNode(payloadText));
 }
 
 function generateDynamicQrPass() {
@@ -77,9 +95,10 @@ function openFieldCheckinQrModal(taskId = null) {
   activeFieldQrTaskId = taskId || (currentTasks[0] ? currentTasks[0].id : 'GENERAL');
   const sel = document.getElementById('selFieldQrShift');
   if (sel) {
-    sel.innerHTML = (currentTasks || []).map(t =>
-      `<option value="${escapeHtml(t.id)}">${escapeHtml(t.id)} — ${escapeHtml(t.title)}</option>`
-    ).join('');
+    const opts = (currentTasks || []).map(t =>
+      el('option', { value: t.id }, `${t.id} — ${t.title}`)
+    );
+    mount(sel, opts);
     if (activeFieldQrTaskId) sel.value = activeFieldQrTaskId;
   }
   generateFieldCheckinQr(activeFieldQrTaskId);

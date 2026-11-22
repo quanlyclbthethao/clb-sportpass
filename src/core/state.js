@@ -1,9 +1,9 @@
-// SportPass V6.0 — Canonical Reactive State, Tombstones, Deduplication & RBAC
+// SportPass V7.0 — Canonical Reactive State, Tombstones, Deduplication & RBAC
 
 let currentUser = null;
 let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined') ? DEFAULT_MEMBERS_DIRECTORY.slice() : [];
-let currentTasks = DEFAULT_TASKS.map(t => JSON.parse(JSON.stringify(t)));
-let currentPosts = DEFAULT_COMMUNITY_POSTS.map(p => JSON.parse(JSON.stringify(p)));
+let currentTasks = DEFAULT_TASKS.map(t => structuredClone(t));
+let currentPosts = DEFAULT_COMMUNITY_POSTS.map(p => structuredClone(p));
 let currentSwaps = [];
 let currentLeaves = [];
 let auditLogs = [];
@@ -29,13 +29,13 @@ let currentCardStatus = 'Sẵn sàng';
 let currentSyncPollTimer = null;
 
 function safeSetText(id, text) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = (text === undefined || text === null) ? '' : String(text);
+  const node = document.getElementById(id);
+  if (node) node.textContent = (text === undefined || text === null) ? '' : String(text);
 }
 
 function safeSetValue(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.value = (val === undefined || val === null) ? '' : String(val);
+  const node = document.getElementById(id);
+  if (node) node.value = (val === undefined || val === null) ? '' : String(val);
 }
 
 function getSportPassInitials(name) {
@@ -177,7 +177,7 @@ function deduplicateTasks(tasks) {
     if (!raw || !raw.title) continue;
     if (deleted.includes(raw.id)) continue;
 
-    const copy = JSON.parse(JSON.stringify(raw));
+    const copy = structuredClone(raw);
     copy.joinedMembers = Array.isArray(copy.joinedMembers) ? copy.joinedMembers : [];
     copy.assignedMembers = Array.isArray(copy.assignedMembers) ? copy.assignedMembers : [];
     copy.waitlist = Array.isArray(copy.waitlist) ? copy.waitlist : [];
@@ -190,7 +190,6 @@ function deduplicateTasks(tasks) {
       map.set(semKey, copy);
     } else {
       const existing = map.get(semKey);
-      // Prefer canonical short ID (e.g. TASK_01 over TASK_DUP_...)
       if (/^TASK_\d+$/i.test(String(copy.id)) && !/^TASK_\d+$/i.test(String(existing.id))) {
         existing.id = copy.id;
       }

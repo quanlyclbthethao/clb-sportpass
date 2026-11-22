@@ -1,4 +1,4 @@
-/* SportPass V6.0 — 120fps Physics Springs, Top-Layer @starting-style & Directional View Transitions */
+/* SportPass V7.0 — 120fps Physics Springs, Top-Layer @starting-style & Directional View Transitions */
 
 /* 1. Natural Interaction States & Ripple */
 .ripple-wave {
@@ -18,9 +18,9 @@
   }
 }
 
-/* 2. Dock Indicator Physics Spring (linear() with ease-out fallback) */
+/* 2. Dock Indicator Physics Spring (linear() with crisp ease-out fallback) */
 .dock-indicator {
-  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 320ms cubic-bezier(0.2, 0, 0, 1);
   transition-timing-function: linear(
     0, 0.012, 0.048, 0.16, 0.34, 0.56, 0.77, 0.92,
     1.01, 1.032, 1.028, 1.014, 1.003, 0.998, 0.999, 1
@@ -29,14 +29,14 @@
 
 /* 3. Aqua Island Spring Transition */
 .aqua-island {
-  transition: opacity 220ms ease-out, transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 200ms ease-out, transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
   transition-timing-function: ease-out, linear(
     0, 0.014, 0.06, 0.19, 0.42, 0.68, 0.89, 1.015,
     1.04, 1.025, 1.006, 0.998, 1
   );
 }
 
-/* 4. Native Top-Layer <dialog> Entry & Exit (@starting-style + overlay + allow-discrete + Firefox/Safari fallback) */
+/* 4. Native Top-Layer <dialog> Entry & Exit (@starting-style + overlay + allow-discrete + fallback) */
 dialog.sp-dialog {
   opacity: 0;
   transition-property: opacity, transform, display, overlay;
@@ -47,13 +47,13 @@ dialog.sp-dialog {
 
 @media (prefers-reduced-motion: no-preference) {
   dialog.sp-dialog {
-    transform: translateY(18px) scale(0.97);
+    transform: translateY(16px) scale(0.97);
   }
 }
 
 dialog.sp-dialog::backdrop {
   transition-property: background-color, backdrop-filter, display, overlay;
-  transition-duration: 0.28s;
+  transition-duration: 0.24s;
   transition-timing-function: ease-out;
   transition-behavior: allow-discrete;
 }
@@ -69,12 +69,12 @@ dialog.sp-dialog::backdrop {
     transform: translateY(0) scale(1);
 
     @starting-style {
-      transform: translateY(18px) scale(0.97);
+      transform: translateY(16px) scale(0.97);
     }
   }
 
   &::backdrop {
-    background-color: rgba(11, 15, 23, 0.56);
+    background-color: rgba(11, 15, 23, 0.58);
     backdrop-filter: blur(6px);
 
     @starting-style {
@@ -87,7 +87,7 @@ dialog.sp-dialog::backdrop {
 @media (prefers-reduced-motion: reduce) {
   dialog.sp-dialog,
   dialog.sp-dialog::backdrop {
-    transition-duration: 0.1s;
+    transition-duration: 0.08s;
   }
 }
 
@@ -106,34 +106,34 @@ dialog.sp-dialog::backdrop {
 
 @keyframes vtSlideOutLeft {
   to {
-    transform: translateX(-22%);
+    transform: translateX(-18%);
     opacity: 0;
   }
 }
 
 @keyframes vtSlideInRight {
   from {
-    transform: translateX(22%);
+    transform: translateX(18%);
     opacity: 0;
   }
 }
 
 @keyframes vtSlideOutRight {
   to {
-    transform: translateX(22%);
+    transform: translateX(18%);
     opacity: 0;
   }
 }
 
 @keyframes vtSlideInLeft {
   from {
-    transform: translateX(-22%);
+    transform: translateX(-18%);
     opacity: 0;
   }
 }
 
 ::view-transition-group(tab-stage) {
-  animation: 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 html:active-view-transition-type(forward)::view-transition-old(tab-stage) {
@@ -151,7 +151,7 @@ html:active-view-transition-type(backward)::view-transition-new(tab-stage) {
 }
 
 html:active-view-transition-type(theme)::view-transition-group(root) {
-  animation-duration: 0.24s;
+  animation-duration: 0.22s;
   animation-timing-function: ease-out;
 }
 
@@ -177,7 +177,7 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
 @media (prefers-reduced-motion: no-preference) {
   .stagger-list > .stagger-item {
     --stagger-step: 36ms;
-    animation: spCardReveal 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: spCardReveal 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-delay: calc(min(var(--sibling-index, 1), 10) * var(--stagger-step));
   }
 

@@ -317,6 +317,8 @@ function openNearestHospitalsMap() {
 }
 
 function openHelpCenterModal() {
+  safeSetValue('iptFaqSearch', '');
+  if (typeof renderClubFaqResults === 'function') renderClubFaqResults('');
   openGenericModal('modalHelpCenter');
 }
 

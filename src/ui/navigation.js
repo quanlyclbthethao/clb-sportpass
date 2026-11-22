@@ -1,4 +1,4 @@
-// SportPass V6.0 — Directional View Transitions, Spring Dock, Touch Swipe & 3D Tilt
+// SportPass V7.0 — Directional View Transitions, Dual-Axis Spring Dock, Touch Swipe & 3D Tilt
 
 let isActionDebouncing = false;
 
@@ -23,14 +23,14 @@ function switchDockTab(tabIdx, triggerEvent = null) {
 
     const panels = ['tabContentProfile', 'tabContentTasks', 'tabContentForum'];
     panels.forEach((pId, idx) => {
-      const el = document.getElementById(pId);
-      if (!el) return;
+      const panel = document.getElementById(pId);
+      if (!panel) return;
       if (idx === normalized) {
-        el.classList.remove('hidden');
-        el.style.display = 'flex';
+        panel.classList.remove('hidden');
+        panel.style.display = 'flex';
       } else {
-        el.classList.add('hidden');
-        el.style.display = 'none';
+        panel.classList.add('hidden');
+        panel.style.display = 'none';
       }
     });
 
@@ -42,9 +42,9 @@ function switchDockTab(tabIdx, triggerEvent = null) {
       }
     }
 
-    const indicator = document.getElementById('dockActiveIndicator');
-    if (indicator) {
-      indicator.style.transform = `translateX(${normalized * 100}%)`;
+    const track = document.querySelector('.dock-track');
+    if (track) {
+      track.style.setProperty('--active-tab', String(normalized));
     }
 
     if (normalized === 1) renderTasksList();
@@ -151,7 +151,7 @@ function applyStaggerFallback(container) {
   if (!container || (window.CSS && CSS.supports && CSS.supports('animation-delay: calc(sibling-index() * 0.1s)'))) {
     return;
   }
-  Array.from(container.children).forEach((el, idx) => {
-    el.style.setProperty('--sibling-index', String(idx + 1));
+  Array.from(container.children).forEach((elNode, idx) => {
+    elNode.style.setProperty('--sibling-index', String(idx + 1));
   });
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-SportPass V6.0 Build Compiler & Deterministic Verification Gate
+SportPass V7.0 Build Compiler & Deterministic Verification Gate
 Assembles src/styles/* + src/data/* + src/core/* + src/ui/* into standalone index.html
 """
 
@@ -30,6 +30,7 @@ CSS_FILES = [
 JS_FILES = [
     os.path.join(SRC_DIR, 'data', 'members.js'),
     os.path.join(SRC_DIR, 'data', 'defaults.js'),
+    os.path.join(SRC_DIR, 'core', 'dom.js'),
     os.path.join(SRC_DIR, 'core', 'state.js'),
     os.path.join(SRC_DIR, 'core', 'security.js'),
     os.path.join(SRC_DIR, 'core', 'sync.js'),
@@ -44,6 +45,7 @@ JS_FILES = [
     os.path.join(SRC_DIR, 'ui', 'render-directory.js'),
     os.path.join(SRC_DIR, 'ui', 'render-admin.js'),
     os.path.join(SRC_DIR, 'ui', 'render-forum.js'),
+    os.path.join(SRC_DIR, 'ui', 'fund-cskh.js'),
     os.path.join(SRC_DIR, 'ui', 'app.js'),
 ]
 
@@ -113,7 +115,7 @@ def main():
 
     output = shell.replace('/* STYLES_BUNDLE */', css_bundle, 1).replace('/* APP_BUNDLE */', js_bundle, 1)
 
-    # Gate 3: HTML balance validation (on static shell outside template literals)
+    # Gate 3: HTML balance validation
     shell_check = shell.replace('/* STYLES_BUNDLE */', '').replace('/* APP_BUNDLE */', '')
     checker = TagBalanceChecker()
     checker.feed(shell_check)
@@ -121,18 +123,34 @@ def main():
         print(f'UNCLOSED HTML TAGS IN SHELL: {checker.stack}')
         sys.exit(1)
 
-    # Gate 4: Banned strings scan
-    banned = ['cdn.tailwindcss.com', 'transition-all', '#000000', 'Tây Bắc', 'quickFillLogin', 'btnOfflineSync']
+    # Gate 4: Banned legacy/XSS/anti-slop tokens scan
+    banned = [
+        'cdn.tailwindcss.com',
+        'transition-all',
+        '::-webkit-scrollbar',
+        'JSON.parse(JSON.stringify(',
+        '.innerHTML =',
+        '.innerHTML=',
+        '#000000',
+        'Tây Bắc',
+        'quickFillLogin',
+        'btnOfflineSync',
+    ]
     for b in banned:
         if b in output:
             print(f'BANNED TOKEN FOUND IN BUILD OUTPUT: {b}')
             sys.exit(1)
 
+    # Gate 5: SRI integrity enforcement on external HTTPS scripts
+    ext_scripts = re.findall(r'<script\b[^>]*src="https://[^"]+"[^>]*>', shell_check, re.I)
+    for tag in ext_scripts:
+        assert 'integrity="sha384-' in tag, f'Missing SRI hash on script tag: {tag}'
+
     with open(OUT_PATH, 'w', encoding='utf-8', newline='\n') as f:
         f.write(output)
 
     print(f'[BUILD OK] Assembled {len(CSS_FILES)} CSS + {len(JS_FILES)} JS modules -> {OUT_PATH}')
-    print(f'[METRICS] Output size: {len(output):,} bytes | Top-level functions: {len(fn_names)} (0 duplicates) | JS AST: VALID')
+    print(f'[METRICS] Output size: {len(output):,} bytes | Top-level functions: {len(fn_names)} (0 duplicates) | JS AST: VALID | External SRI: {len(ext_scripts)}/{len(ext_scripts)}')
 
 
 if __name__ == '__main__':

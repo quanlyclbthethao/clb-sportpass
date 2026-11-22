@@ -1,4 +1,4 @@
-// SportPass V6.0 — Dispatch Tasks List, Filters, Claim/Leave/Swap & Create Modal
+// SportPass V7.0 — Dispatch Tasks List, Filters, Claim/Leave/Swap & Create Modal (Zero innerHTML)
 
 let currentDeptQuotaDraft = {};
 
@@ -15,6 +15,27 @@ function calculateShiftUrgency(task) {
     fillRatio: Math.min(1, totalJoined / quota),
     remaining: Math.max(0, quota - totalJoined)
   };
+}
+
+function buildDeptFilterChips(activeDept, onSelectFn) {
+  const chips = [
+    el('button', {
+      type: 'button',
+      className: `focus-ring spring-touch filter-chip${activeDept === 'ALL' ? ' active' : ''}`,
+      onClick: () => onSelectFn('ALL')
+    }, 'Tất cả')
+  ];
+  for (const d of ALL_DEPARTMENTS) {
+    const shortName = d.replace(/^Ban\s+/i, '');
+    chips.push(
+      el('button', {
+        type: 'button',
+        className: `focus-ring spring-touch filter-chip${activeDept === d ? ' active' : ''}`,
+        onClick: () => onSelectFn(d)
+      }, shortName)
+    );
+  }
+  return chips;
 }
 
 function renderTasksList() {
@@ -41,14 +62,7 @@ function renderTasksList() {
   }
 
   if (filterBar) {
-    const chips = [
-      `<button type="button" class="focus-ring spring-touch filter-chip ${currentTaskDeptFilter === 'ALL' ? 'active' : ''}" onclick="setTaskDeptFilter('ALL')">Tất cả</button>`
-    ];
-    for (const d of ALL_DEPARTMENTS) {
-      const shortName = d.replace(/^Ban\s+/i, '');
-      chips.push(`<button type="button" class="focus-ring spring-touch filter-chip ${currentTaskDeptFilter === d ? 'active' : ''}" onclick="setTaskDeptFilter('${escapeHtml(d)}')">${escapeHtml(shortName)}</button>`);
-    }
-    filterBar.innerHTML = chips.join('');
+    mount(filterBar, buildDeptFilterChips(currentTaskDeptFilter, setTaskDeptFilter));
   }
 
   if (!container) return;
@@ -60,11 +74,11 @@ function renderTasksList() {
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = '<div class="sp-empty">Không có ca trực nào thuộc bộ lọc hiện tại.</div>';
+    mount(container, el('div', { className: 'sp-empty' }, 'Không có ca trực nào thuộc bộ lọc hiện tại.'));
     return;
   }
 
-  container.innerHTML = filtered.map((t) => {
+  const cards = filtered.map((t) => {
     const joined = Array.isArray(t.joinedMembers) ? t.joinedMembers : [];
     const assigned = Array.isArray(t.assignedMembers) ? t.assignedMembers : [];
     const waitlist = Array.isArray(t.waitlist) ? t.waitlist : [];
@@ -78,75 +92,102 @@ function renderTasksList() {
 
     const quotaListText = Object.entries(t.departmentQuotas || {})
       .filter(([, q]) => Number(q) > 0)
-      .map(([dept, q]) => `${escapeHtml(dept)} 0/${Number(q)}`)
+      .map(([dept, q]) => `${dept} 0/${Number(q)}`)
       .join(' · ');
 
-    const progressPct = Math.min(100, Math.round((occupied.length / quota) * 100));
+    const progressRatio = Math.min(1, Math.max(0, occupied.length / quota));
 
-    const adminBtns = isAdmin ? `
-      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Điều phối xoay tua" aria-label="Điều phối xoay tua" onclick="openSmartRotationModal('${escapeHtml(t.id)}')">${spIcon('rotate', 14)}</button>
-      <button type="button" class="focus-ring spring-touch mini-icon-btn" title="Sửa ca" aria-label="Sửa ca" onclick="openEditTaskModal('${escapeHtml(t.id)}')">${spIcon('edit', 14)}</button>
-      <button type="button" class="focus-ring spring-touch mini-icon-btn danger" title="Xóa ca" aria-label="Xóa ca" onclick="confirmDeleteTask('${escapeHtml(t.id)}')">${spIcon('trash', 14)}</button>
-    ` : '';
-
-    let primaryBtn = '';
-    if (isChecked) {
-      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success" disabled>Đã điểm danh</button>`;
-    } else if (isMine) {
-      primaryBtn = `
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openFieldCheckinQrModal('${escapeHtml(t.id)}')">QR nhận ca</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-warning" onclick="openSwapRequestModal('${escapeHtml(t.id)}')">Xin đổi ca</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="openLeaveTaskModal('${escapeHtml(t.id)}')">Xin rút ca</button>
-      `;
-    } else if (occupied.length < quota) {
-      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="handleClaimTask('${escapeHtml(t.id)}')">Nhận ca trực</button>`;
-    } else if (onWaitlist) {
-      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="leaveTaskWaitlist('${escapeHtml(t.id)}')">Rời hàng chờ</button>`;
-    } else {
-      primaryBtn = `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="handleJoinWaitlist('${escapeHtml(t.id)}')">Đăng ký dự bị</button>`;
+    const toolsNode = el('div', { className: 'task-tools' });
+    if (isAdmin) {
+      toolsNode.append(
+        el('button', {
+          type: 'button',
+          className: 'focus-ring spring-touch mini-icon-btn',
+          title: 'Điều phối xoay tua',
+          'aria-label': 'Điều phối xoay tua',
+          onClick: () => openSmartRotationModal(t.id)
+        }, spIconNode('rotate', 14)),
+        el('button', {
+          type: 'button',
+          className: 'focus-ring spring-touch mini-icon-btn',
+          title: 'Sửa ca',
+          'aria-label': 'Sửa ca',
+          onClick: () => openEditTaskModal(t.id)
+        }, spIconNode('edit', 14)),
+        el('button', {
+          type: 'button',
+          className: 'focus-ring spring-touch mini-icon-btn danger',
+          title: 'Xóa ca',
+          'aria-label': 'Xóa ca',
+          onClick: () => confirmDeleteTask(t.id)
+        }, spIconNode('trash', 14))
+      );
     }
 
-    const scanAction = canScan
-      ? `<button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success" onclick="openQrScannerModal('${escapeHtml(t.id)}')">Quét ca này</button>`
-      : '';
+    const actions = [];
+    if (isChecked) {
+      actions.push(el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success', disabled: true }, 'Đã điểm danh'));
+    } else if (isMine) {
+      actions.push(
+        el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary', onClick: () => openFieldCheckinQrModal(t.id) }, 'QR nhận ca'),
+        el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-warning', onClick: () => openSwapRequestModal(t.id) }, 'Xin đổi ca'),
+        el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger', onClick: () => openLeaveTaskModal(t.id) }, 'Xin rút ca')
+      );
+    } else if (occupied.length < quota) {
+      actions.push(el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary', onClick: () => handleClaimTask(t.id) }, 'Nhận ca trực'));
+    } else if (onWaitlist) {
+      actions.push(el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary', onClick: () => leaveTaskWaitlist(t.id) }, 'Rời hàng chờ'));
+    } else {
+      actions.push(el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft', onClick: () => handleJoinWaitlist(t.id) }, 'Đăng ký dự bị'));
+    }
 
-    return `
-      <article class="acrylic-card task-card stagger-item">
-        <div class="task-head">
-          <div style="min-width:0;flex:1;">
-            <div class="task-code-line">
-              <span>${escapeHtml(t.id)}</span>
-              <span>·</span>
-              <span style="color:var(--sp-brand);font-weight:600;">${occupied.length}/${quota} người</span>
-            </div>
-            <h3 class="task-title">${escapeHtml(t.title)}</h3>
-          </div>
-          <div class="task-tools">${adminBtns}</div>
-        </div>
+    if (canScan) {
+      actions.push(el('button', { type: 'button', className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success', onClick: () => openQrScannerModal(t.id) }, 'Quét ca này'));
+    }
 
-        <div class="task-progress-track" aria-hidden="true">
-          <div class="task-progress-fill" style="width:${progressPct}%;"></div>
-        </div>
+    let notesNode = null;
+    if (t.notes) {
+      notesNode = el('div', { className: 'task-notes-box' },
+        el('strong', {}, 'Ghi chú nhiệm vụ: '),
+        String(t.notes)
+      );
+      notesNode.dataset.escapedNote = `${escapeHtml(t.notes)}`;
+    }
 
-        <div class="task-meta-list">
-          <div class="task-meta-item">${spIcon('map-pin', 14)}<span>${escapeHtml(t.location || 'Nhà Thi Đấu ĐH Hải Dương')}</span></div>
-          <div class="task-meta-item">${spIcon('clock', 14)}<span class="mono-num">${escapeHtml(t.time || '07:30 - 11:30')}${t.lockDeadline ? ` · Chốt ${escapeHtml(String(t.lockDeadline).replace('T', ' '))}` : ''}</span></div>
-        </div>
+    const timeText = `${t.time || '07:30 - 11:30'}${t.lockDeadline ? ` · Chốt ${String(t.lockDeadline).replace('T', ' ')}` : ''}`;
 
-        ${urgency.isUrgent ? '<div class="task-urgent-line"><span class="task-urgent-dot" aria-hidden="true"></span><span>Cần huy động · Chưa có thành viên nhận ca</span></div>' : ''}
+    return el('article', { className: 'acrylic-card task-card stagger-item' },
+      el('div', { className: 'task-head' },
+        el('div', { style: { minWidth: '0', flex: '1' } },
+          el('div', { className: 'task-code-line' },
+            el('span', {}, t.id),
+            el('span', {}, '·'),
+            el('span', { style: { color: 'var(--sp-brand)', fontWeight: '600' } }, `${occupied.length}/${quota} người`)
+          ),
+          el('h3', { className: 'task-title' }, t.title)
+        ),
+        toolsNode
+      ),
+      el('div', { className: 'task-progress-track', 'aria-hidden': 'true' },
+        el('div', { className: 'task-progress-fill', style: { '--progress': String(progressRatio) } })
+      ),
+      el('div', { className: 'task-meta-list' },
+        el('div', { className: 'task-meta-item' }, spIconNode('map-pin', 14), el('span', {}, t.location || 'Nhà Thi Đấu ĐH Hải Dương')),
+        el('div', { className: 'task-meta-item' }, spIconNode('clock', 14), el('span', { className: 'mono-num' }, timeText))
+      ),
+      urgency.isUrgent
+        ? el('div', { className: 'task-urgent-line' },
+            el('span', { className: 'task-urgent-dot', 'aria-hidden': 'true' }),
+            el('span', {}, 'Cần huy động · Chưa có thành viên nhận ca')
+          )
+        : null,
+      notesNode,
+      quotaListText ? el('div', { className: 'task-dept-summary' }, quotaListText) : null,
+      el('div', { className: 'task-actions-grid' }, actions)
+    );
+  });
 
-        ${t.notes ? `<div class="task-notes-box"><strong>Ghi chú nhiệm vụ:</strong> ${escapeHtml(t.notes)}</div>` : ''}
-
-        ${quotaListText ? `<div class="task-dept-summary">${quotaListText}</div>` : ''}
-
-        <div class="task-actions-grid">
-          ${primaryBtn}
-          ${scanAction}
-        </div>
-      </article>
-    `;
-  }).join('');
-
+  mount(container, cards);
   applyStaggerFallback(container);
 }
 
@@ -201,8 +242,8 @@ function openSwapRequestModal(taskId) {
     const opts = (membersDirectory || [])
       .filter(m => m.id !== uid)
       .slice(0, 60)
-      .map(m => `<option value="${escapeHtml(m.id)}">${escapeHtml(m.hoTen)} (${escapeHtml(m.id)} - ${escapeHtml(m.boMon)})</option>`);
-    sel.innerHTML = opts.join('');
+      .map(m => el('option', { value: m.id }, `${m.hoTen} (${m.id} - ${m.boMon})`));
+    mount(sel, opts);
   }
   openGenericModal('modalSwapRequest');
 }
@@ -330,19 +371,35 @@ function initQuotaDraft(existingQuotas = null) {
 function renderDeptQuotaRows() {
   const container = document.getElementById('deptQuotaContainer');
   if (!container) return;
-  container.innerHTML = ALL_DEPARTMENTS.map((dept, idx) => {
+  const rows = ALL_DEPARTMENTS.map((dept, idx) => {
     const val = Number(currentDeptQuotaDraft[dept] || 0);
-    return `
-      <div class="quota-row">
-        <input type="text" class="dept-name sp-input" style="min-height:34px;padding:4px 10px;border:0;background:transparent;font-weight:600;font-size:13px;" value="${escapeHtml(dept)}" readonly aria-label="Tên ban">
-        <div class="stepper-group">
-          <button type="button" class="focus-ring spring-touch stepper-btn" aria-label="Giảm quân số ${escapeHtml(dept)}" onclick="adjustDeptQuotaAtIndex(${idx}, -1)">-</button>
-          <span class="mono-num" style="min-width:24px;text-align:center;font-weight:700;">${val}</span>
-          <button type="button" class="focus-ring spring-touch stepper-btn" aria-label="Tăng quân số ${escapeHtml(dept)}" onclick="adjustDeptQuotaAtIndex(${idx}, 1)">+</button>
-        </div>
-      </div>
-    `;
-  }).join('');
+    return el('div', { className: 'quota-row' },
+      el('input', {
+        type: 'text',
+        className: 'dept-name sp-input',
+        style: { minHeight: '34px', padding: '4px 10px', border: '0', background: 'transparent', fontWeight: '600', fontSize: '13px' },
+        value: dept,
+        readOnly: true,
+        'aria-label': 'Tên ban'
+      }),
+      el('div', { className: 'stepper-group' },
+        el('button', {
+          type: 'button',
+          className: 'focus-ring spring-touch stepper-btn',
+          'aria-label': `Giảm quân số ${dept}`,
+          onClick: () => adjustDeptQuotaAtIndex(idx, -1)
+        }, '-'),
+        el('span', { className: 'mono-num', style: { minWidth: '24px', textAlign: 'center', fontWeight: '700' } }, String(val)),
+        el('button', {
+          type: 'button',
+          className: 'focus-ring spring-touch stepper-btn',
+          'aria-label': `Tăng quân số ${dept}`,
+          onClick: () => adjustDeptQuotaAtIndex(idx, 1)
+        }, '+')
+      )
+    );
+  });
+  mount(container, rows);
   calculateTotalQuota();
 }
 

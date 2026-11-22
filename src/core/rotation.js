@@ -1,4 +1,4 @@
-// SportPass V6.0 — Fair Shift Rotation Algorithm & Schedule Conflict Detector
+// SportPass V7.0 — Fair Shift Rotation Algorithm & Schedule Conflict Detector
 
 function parseShiftTimeRange(timeStr) {
   if (!timeStr) return null;
@@ -43,15 +43,6 @@ function calculateSmartRotation(task) {
   const deptQuotas = (task.departmentQuotas && typeof task.departmentQuotas === 'object')
     ? Object.entries(task.departmentQuotas).filter(([, q]) => Number(q) > 0)
     : [];
-
-  // Deduplicate multi-department records per member ID for fair comparison
-  const uniqueMembers = [];
-  const seenMemIds = new Set();
-  for (const m of (membersDirectory || [])) {
-    if (!m || !m.id || seenMemIds.has(m.id)) continue;
-    seenMemIds.add(m.id);
-    uniqueMembers.push(m);
-  }
 
   const pickForBucket = (deptFilter, neededCount) => {
     const candidates = (membersDirectory || []).filter(m => {
@@ -108,17 +99,21 @@ function openSmartRotationModal(taskId) {
   const box = document.getElementById('smartRotationResultsContainer');
   if (box) {
     if (pendingSmartRotationCandidates.length === 0) {
-      box.innerHTML = '<div class="sp-empty">Không còn thành viên phù hợp (đã đủ quân số, đang miễn trực y tế hoặc trùng lịch ca khác).</div>';
+      mount(box, el('div', { className: 'sp-empty' }, 'Không còn thành viên phù hợp (đã đủ quân số, đang miễn trực y tế hoặc trùng lịch ca khác).'));
     } else {
-      box.innerHTML = pendingSmartRotationCandidates.map((item, idx) => `
-        <div class="member-item-card sp-card stagger-item">
-          <div>
-            <div style="font-weight:700;font-size:14px;">${idx + 1}. ${escapeHtml(item.member.hoTen)}</div>
-            <div style="font-size:12px;color:var(--sp-text2);">${escapeHtml(item.dept)} • <span class="mono-num">${escapeHtml(item.member.id)}</span></div>
-          </div>
-          <span class="sp-badge sp-badge-accent mono-num">${Number(item.member.soCaHoanThanh || item.member.soCa || 0)} ca</span>
-        </div>
-      `).join('');
+      const rows = pendingSmartRotationCandidates.map((item, idx) =>
+        el('div', { className: 'member-item-card sp-card stagger-item' },
+          el('div', {},
+            el('div', { style: { fontWeight: '600', fontSize: '14px' } }, `${idx + 1}. ${item.member.hoTen}`),
+            el('div', { style: { fontSize: '12px', color: 'var(--sp-text2)' } },
+              `${item.dept} • `,
+              el('span', { className: 'mono-num' }, item.member.id)
+            )
+          ),
+          el('span', { className: 'sp-badge sp-badge-accent mono-num' }, `${Number(item.member.soCaHoanThanh || item.member.soCa || 0)} ca`)
+        )
+      );
+      mount(box, rows);
     }
   }
 

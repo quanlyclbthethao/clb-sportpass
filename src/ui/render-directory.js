@@ -1,4 +1,4 @@
-// SportPass V6.0 — 125-Member Directory, 8-Column Inspector & Shift Adjustments
+// SportPass V7.0 — 125-Member Directory, 8-Column Inspector & Shift Adjustments (Zero innerHTML)
 
 function openDirectoryModal() {
   filterDirectoryMembers();
@@ -17,14 +17,7 @@ function setDirectoryDeptFilter(dept) {
 function filterDirectoryMembers() {
   const filterBar = document.getElementById('directoryDeptFilterBar');
   if (filterBar) {
-    const chips = [
-      `<button type="button" class="focus-ring spring-touch filter-chip ${currentDirDeptFilter === 'ALL' ? 'active' : ''}" onclick="setDirectoryDeptFilter('ALL')">Tất cả</button>`
-    ];
-    for (const d of ALL_DEPARTMENTS) {
-      const shortName = d.replace(/^Ban\s+/i, '');
-      chips.push(`<button type="button" class="focus-ring spring-touch filter-chip ${currentDirDeptFilter === d ? 'active' : ''}" onclick="setDirectoryDeptFilter('${escapeHtml(d)}')">${escapeHtml(shortName)}</button>`);
-    }
-    filterBar.innerHTML = chips.join('');
+    mount(filterBar, buildDeptFilterChips(currentDirDeptFilter, setDirectoryDeptFilter));
   }
 
   const q = (document.getElementById('iptSearchDirectory')?.value || '').trim().toLowerCase();
@@ -44,22 +37,28 @@ function filterDirectoryMembers() {
   if (!box) return;
 
   if (list.length === 0) {
-    box.innerHTML = '<div class="sp-empty">Không tìm thấy thành viên phù hợp.</div>';
+    mount(box, el('div', { className: 'sp-empty' }, 'Không tìm thấy thành viên phù hợp.'));
     return;
   }
 
-  box.innerHTML = list.map(m => `
-    <button type="button" class="focus-ring spring-touch acrylic-card member-item-card" style="width:100%;text-align:left;" onclick="openOtherMemberInspector('${escapeHtml(m.id)}')">
-      <div style="min-width:0;">
-        <div style="font-weight:700;font-size:14px;color:var(--sp-text);">${escapeHtml(m.hoTen)}</div>
-        <div style="font-size:12px;color:var(--sp-text2);">${escapeHtml(m.boMon)} • ${escapeHtml(m.chucVu)}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-        <span class="sp-badge sp-badge-accent mono-num">${escapeHtml(m.id)}</span>
-        <span class="sp-badge sp-badge-muted mono-num">${Number(m.soCaHoanThanh ?? m.soCa ?? 0)} ca</span>
-      </div>
-    </button>
-  `).join('');
+  const items = list.map(m =>
+    el('button', {
+      type: 'button',
+      className: 'focus-ring spring-touch acrylic-card member-item-card',
+      style: { width: '100%', textAlign: 'left' },
+      onClick: () => openOtherMemberInspector(m.id)
+    },
+      el('div', { style: { minWidth: '0' } },
+        el('div', { style: { fontWeight: '600', fontSize: '14px', color: 'var(--sp-text)' } }, m.hoTen),
+        el('div', { style: { fontSize: '12px', color: 'var(--sp-text2)' } }, `${m.boMon} • ${m.chucVu}`)
+      ),
+      el('div', { style: { display: 'flex', alignItems: 'center', gap: '6px', flexShrink: '0' } },
+        el('span', { className: 'sp-badge sp-badge-accent mono-num' }, m.id),
+        el('span', { className: 'sp-badge sp-badge-muted mono-num' }, `${Number(m.soCaHoanThanh ?? m.soCa ?? 0)} ca`)
+      )
+    )
+  );
+  mount(box, items);
 }
 
 function openOtherMemberInspector(memberId) {

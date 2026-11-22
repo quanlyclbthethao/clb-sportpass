@@ -1,4 +1,4 @@
-// SportPass V6.0 — Club Community Forum Feed, Media Lightbox & Reactions
+// SportPass V7.0 — Club Community Forum Feed, Media Lightbox & Reactions (Zero innerHTML)
 
 function renderForumFeed() {
   const container = document.getElementById('postsListContainer');
@@ -9,78 +9,113 @@ function renderForumFeed() {
   currentPosts = visible;
 
   if (visible.length === 0) {
-    container.innerHTML = '<div class="sp-empty">Chưa có bài viết nào trên diễn đàn CLB.</div>';
+    mount(container, el('div', { className: 'sp-empty' }, 'Chưa có bài viết nào trên diễn đàn CLB.'));
     return;
   }
 
   const uid = currentUser ? currentUser.id : '';
   const isAdmin = Boolean(currentUser && currentUser.isAdmin);
 
-  container.innerHTML = visible.map((post) => {
+  const postNodes = visible.map((post) => {
     const canEdit = isAdmin || (uid && post.authorId === uid);
     const rx = post.reactions || { like: 0, love: 0, wow: 0, userReactions: {} };
     const myReact = (rx.userReactions && uid) ? rx.userReactions[uid] : null;
-    const mediaHtml = Array.isArray(post.mediaList) && post.mediaList.length > 0
-      ? `<div class="media-reel">${post.mediaList.map((src, idx) => `<img src="${escapeHtml(src)}" alt="Ảnh bài viết" class="media-thumb" onclick="openLightboxByPost('${escapeHtml(post.id)}', ${idx})">`).join('')}</div>`
-      : '';
 
-    const commentsHtml = Array.isArray(post.comments) && post.comments.length > 0
-      ? post.comments.map(c => `
-        <div class="comment-item">
-          <div style="display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:12px;">
-            <span>${escapeHtml(c.authorName || c.authorId)}</span>
-            <span class="mono-num" style="color:var(--sp-muted);">${escapeHtml(c.createdAt || '')}</span>
-          </div>
-          <div style="margin-top:2px;color:var(--sp-text);">${escapeHtml(c.content)}</div>
-        </div>
-      `).join('')
-      : '';
+    const headerActions = canEdit
+      ? el('div', { style: { display: 'flex', gap: '6px' } },
+          el('button', {
+            type: 'button',
+            className: 'focus-ring spring-touch mini-icon-btn',
+            'aria-label': 'Sửa bài',
+            onClick: () => openEditPostModal(post.id)
+          }, spIconNode('edit', 14)),
+          el('button', {
+            type: 'button',
+            className: 'focus-ring spring-touch mini-icon-btn danger',
+            'aria-label': 'Xóa bài',
+            onClick: () => confirmDeletePost(post.id)
+          }, spIconNode('trash', 14))
+        )
+      : null;
 
-    return `
-      <article class="acrylic-card forum-post stagger-item">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:38px;height:38px;border-radius:12px;background:var(--sp-accent-soft);color:var(--sp-brand);font-weight:700;display:grid;place-items:center;font-size:13px;">
-              ${escapeHtml(post.isAnonymous ? 'ẨD' : getSportPassInitials(post.authorName))}
-            </div>
-            <div>
-              <div style="font-weight:700;font-size:14px;">${escapeHtml(post.isAnonymous ? 'Thành viên ẩn danh' : post.authorName)}</div>
-              <div class="mono-num" style="font-size:11px;color:var(--sp-muted);">${escapeHtml(post.createdAt || 'Vừa xong')}</div>
-            </div>
-          </div>
-          ${canEdit ? `
-            <div style="display:flex;gap:6px;">
-              <button type="button" class="focus-ring spring-touch mini-icon-btn" aria-label="Sửa bài" onclick="openEditPostModal('${escapeHtml(post.id)}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              </button>
-              <button type="button" class="focus-ring spring-touch mini-icon-btn danger" aria-label="Xóa bài" onclick="confirmDeletePost('${escapeHtml(post.id)}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-              </button>
-            </div>
-          ` : ''}
-        </div>
+    const mediaReel = (Array.isArray(post.mediaList) && post.mediaList.length > 0)
+      ? el('div', { className: 'media-reel' },
+          post.mediaList.map((src, idx) =>
+            el('img', {
+              src,
+              alt: `Ảnh hoạt động bài viết ${post.authorName || 'CLB'}`,
+              loading: 'lazy',
+              decoding: 'async',
+              className: 'media-thumb',
+              onClick: () => openLightboxByPost(post.id, idx)
+            })
+          )
+        )
+      : null;
 
-        <p style="margin:0;font-size:13.5px;line-height:1.55;color:var(--sp-text);white-space:pre-line;">${escapeHtml(post.content)}</p>
+    const commentNodes = (Array.isArray(post.comments) ? post.comments : []).map(c =>
+      el('div', { className: 'comment-item' },
+        el('div', { style: { display: 'flex', justifyContent: 'space-between', gap: '8px', fontWeight: '600', fontSize: '12px' } },
+          el('span', {}, c.authorName || c.authorId),
+          el('span', { className: 'mono-num', style: { color: 'var(--sp-muted)' } }, c.createdAt || '')
+        ),
+        el('div', { style: { marginTop: '2px', color: 'var(--sp-text)' } }, c.content)
+      )
+    );
 
-        ${mediaHtml}
+    const makeReactionPill = (type, iconName, label) =>
+      el('button', {
+        type: 'button',
+        className: `focus-ring spring-touch react-pill${myReact === type ? ' active' : ''}`,
+        onClick: () => setReaction(post.id, type)
+      },
+        spIconNode(iconName, 13),
+        el('span', {}, label),
+        el('span', { className: 'mono-num' }, String(Number(rx[type] || 0)))
+      );
 
-        <div class="reaction-bar">
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'like' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'like')">${spIcon('thumbs-up', 13)}<span>Thích</span><span class="mono-num">${Number(rx.like || 0)}</span></button>
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'love' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'love')">${spIcon('heart', 13)}<span>Yêu thích</span><span class="mono-num">${Number(rx.love || 0)}</span></button>
-          <button type="button" class="focus-ring spring-touch react-pill ${myReact === 'wow' ? 'active' : ''}" onclick="setReaction('${escapeHtml(post.id)}', 'wow')">${spIcon('sparkles', 13)}<span>Ấn tượng</span><span class="mono-num">${Number(rx.wow || 0)}</span></button>
-        </div>
+    return el('article', { className: 'acrylic-card forum-post stagger-item' },
+      el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' } },
+        el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+          el('div', { className: 'forum-author-avatar' },
+            post.isAnonymous ? 'ẨD' : getSportPassInitials(post.authorName)
+          ),
+          el('div', {},
+            el('div', { style: { fontWeight: '600', fontSize: '14px' } }, post.isAnonymous ? 'Thành viên ẩn danh' : post.authorName),
+            el('div', { className: 'mono-num', style: { fontSize: '11px', color: 'var(--sp-muted)' } }, post.createdAt || 'Vừa xong')
+          )
+        ),
+        headerActions
+      ),
+      el('p', { className: 'forum-post-body' }, post.content),
+      mediaReel,
+      el('div', { className: 'reaction-bar' },
+        makeReactionPill('like', 'thumbs-up', 'Thích'),
+        makeReactionPill('love', 'heart', 'Yêu thích'),
+        makeReactionPill('wow', 'sparkles', 'Ấn tượng')
+      ),
+      el('div', { className: 'comment-box' },
+        commentNodes,
+        el('div', { style: { display: 'flex', gap: '8px' } },
+          el('input', {
+            type: 'text',
+            id: `iptComment_${post.id}`,
+            className: 'sp-input',
+            style: { minHeight: '44px', padding: '8px 12px', fontSize: '13px' },
+            placeholder: 'Viết bình luận...',
+            'aria-label': `Viết bình luận cho bài của ${post.isAnonymous ? 'Thành viên ẩn danh' : post.authorName}`
+          }),
+          el('button', {
+            type: 'button',
+            className: 'focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary',
+            onClick: () => submitCommentAction(post.id)
+          }, 'Gửi')
+        )
+      )
+    );
+  });
 
-        <div class="comment-box">
-          ${commentsHtml}
-          <div style="display:flex;gap:8px;">
-            <input type="text" id="iptComment_${escapeHtml(post.id)}" class="sp-input" style="min-height:38px;padding:6px 12px;font-size:13px;" placeholder="Viết bình luận...">
-            <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitCommentAction('${escapeHtml(post.id)}')">Gửi</button>
-          </div>
-        </div>
-      </article>
-    `;
-  }).join('');
-
+  mount(container, postNodes);
   applyStaggerFallback(container);
 }
 
@@ -97,17 +132,23 @@ function renderComposerMediaReel() {
   const box = document.getElementById('composerMediaReel');
   if (!box) return;
   if (currentComposerMedia.length === 0) {
-    box.innerHTML = '';
+    box.replaceChildren();
     box.classList.add('hidden');
     return;
   }
   box.classList.remove('hidden');
-  box.innerHTML = currentComposerMedia.map((src, idx) => `
-    <div style="position:relative;">
-      <img src="${escapeHtml(src)}" alt="Ảnh đính kèm" class="media-thumb">
-      <button type="button" class="focus-ring spring-touch sp-close-btn" style="position:absolute;top:6px;right:6px;width:28px;height:28px;" onclick="removeComposerMediaItem(${idx})" aria-label="Gỡ ảnh">×</button>
-    </div>
-  `).join('');
+  const thumbs = currentComposerMedia.map((src, idx) =>
+    el('div', { style: { position: 'relative' } },
+      el('img', { src, alt: `Ảnh đính kèm ${idx + 1}`, className: 'media-thumb' }),
+      el('button', {
+        type: 'button',
+        className: 'focus-ring spring-touch sp-close-btn composer-remove-btn',
+        'aria-label': 'Gỡ ảnh',
+        onClick: () => removeComposerMediaItem(idx)
+      }, '×')
+    )
+  );
+  mount(box, thumbs);
 }
 
 function removeComposerMediaItem(idx) {
