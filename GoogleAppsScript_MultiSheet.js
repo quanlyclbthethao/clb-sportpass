@@ -1362,49 +1362,27 @@ function handleRequest(e) {
         var allMembers = getAllMembersFromDepartments(ss);
         var foundMember = null;
         var cleanIdentNum = identifier.replace(/[^0-9]/g, '');
+        var byIdMatch = null;
+        var byCodeMatch = null;
+        var byPhoneMatch = null;
+        var byNameMatch = null;
 
         for (var i = 0; i < allMembers.length; i++) {
           var m = allMembers[i];
           var mId = String(m.id || '').trim().toLowerCase();
           var mSdt = String(m.sdt || '').replace(/[^0-9]/g, '');
           var mName = String(m.hoTen || '').trim().toLowerCase();
-          var mMssv = String(m.mssv || '').trim().toLowerCase();
+          var mMssv = String(m.studentCode || m.mssv || '').trim().toLowerCase();
 
-          // Khớp theo ID, SĐT (từ 9 số trở lên), Họ Tên hoặc Mã dự phòng
-          var isMatch = (mId === identifier) ||
-                        (cleanIdentNum.length >= 9 && mSdt && mSdt === cleanIdentNum) ||
-                        (mName === identifier) ||
-                        (mMssv === identifier);
+          if (!byIdMatch && mId === identifier) byIdMatch = m;
+          if (!byCodeMatch && mMssv && mMssv === identifier) byCodeMatch = m;
+          if (!byPhoneMatch && cleanIdentNum.length >= 9 && mSdt && mSdt === cleanIdentNum) byPhoneMatch = m;
+          if (!byNameMatch && mName === identifier) byNameMatch = m;
+        }
 
-          if (isMatch) {
-            if (!foundMember) {
-              foundMember = JSON.parse(JSON.stringify(m));
-            } else {
-              // Hợp nhất quyền hạn cán sự từ các ban kiêm nhiệm
-              // Ưu tiên chức vụ và ban có thẩm quyền cao hơn
-              if (m.isAdmin && !foundMember.isAdmin) {
-                foundMember.isAdmin = true;
-                foundMember.isShiftLeader = true;
-                foundMember.chucVu = m.chucVu;
-                foundMember.boMon = m.boMon;
-              } else if (m.isShiftLeader && !foundMember.isShiftLeader) {
-                foundMember.isShiftLeader = true;
-                foundMember.chucVu = m.chucVu;
-                foundMember.boMon = m.boMon;
-              } else {
-                foundMember.isAdmin = foundMember.isAdmin || m.isAdmin;
-                foundMember.isShiftLeader = foundMember.isShiftLeader || m.isShiftLeader;
-              }
-              // Điền bổ sung SĐT và ICE nếu bản ghi trước đó để trống
-              if (!foundMember.sdt && m.sdt) {
-                foundMember.sdt = m.sdt;
-                foundMember.ice = m.sdt;
-              }
-              if (!foundMember.ice && m.ice) {
-                foundMember.ice = m.ice;
-              }
-            }
-          }
+        var chosen = byIdMatch || byCodeMatch || byPhoneMatch || byNameMatch;
+        if (chosen) {
+          foundMember = JSON.parse(JSON.stringify(chosen));
         }
 
         if (foundMember) {
@@ -1627,8 +1605,10 @@ function getAllMembersFromDepartments(ss) {
       var yTe = String(r[5] || 'Bình thường').trim();
       var sdt = cleanPhone(r[6]);
       var ice = cleanPhone(r[7]) || sdt;
-      var soCa = (r.length > 8 && !isNaN(Number(r[8]))) ? Number(r[8]) : 0;
-      var soCaSinhHoat = (r.length > 9 && !isNaN(Number(r[9]))) ? Number(r[9]) : 0;
+      var hasCol9 = (r.length > 8 && r[8] !== '' && r[8] !== null && r[8] !== undefined && !isNaN(Number(r[8])));
+      var hasCol10 = (r.length > 9 && r[9] !== '' && r[9] !== null && r[9] !== undefined && !isNaN(Number(r[9])));
+      var soCa = hasCol9 ? Math.max(0, Number(r[8])) : 0;
+      var soCaSinhHoat = hasCol10 ? Math.max(0, Number(r[9])) : 0;
       var studentCode = (r.length > 10 && String(r[10] || '').trim()) ? String(r[10]).trim() : '';
 
       var effectiveId = id || generateMemberIdFromInfo(hoTen, '');
@@ -1643,8 +1623,8 @@ function getAllMembersFromDepartments(ss) {
                           cvLower.indexOf('phó ban') !== -1;
 
       if (!membersMap[effectiveId]) {
-        var initialDone = Math.max(soCa, taskShiftCheckins[effectiveId] || 0);
-        var initialAct = Math.max(soCaSinhHoat, taskActivityCheckins[effectiveId] || 0);
+        var initialDone = hasCol9 ? soCa : (taskShiftCheckins[effectiveId] || 0);
+        var initialAct = hasCol10 ? soCaSinhHoat : (taskActivityCheckins[effectiveId] || 0);
         membersMap[effectiveId] = {
           id: effectiveId,
           hoTen: hoTen,
@@ -1660,6 +1640,8 @@ function getAllMembersFromDepartments(ss) {
           soCa: initialDone,
           soCaHoanThanh: initialDone,
           soCaSinhHoat: initialAct,
+          _hasCol9: hasCol9,
+          _hasCol10: hasCol10,
           status: 'Sẵn sàng',
           theTrang: 'Khỏe mạnh (100% Sẵn sàng)',
           avatar: '',
@@ -1696,12 +1678,14 @@ function getAllMembersFromDepartments(ss) {
           existing.studentCode = studentCode;
           existing.mssv = studentCode;
         }
-        if (soCa > existing.soCaHoanThanh) {
+        if (hasCol9 && (!existing._hasCol9 || soCa > existing.soCaHoanThanh)) {
           existing.soCa = soCa;
           existing.soCaHoanThanh = soCa;
+          existing._hasCol9 = true;
         }
-        if (soCaSinhHoat > existing.soCaSinhHoat) {
+        if (hasCol10 && (!existing._hasCol10 || soCaSinhHoat > existing.soCaSinhHoat)) {
           existing.soCaSinhHoat = soCaSinhHoat;
+          existing._hasCol10 = true;
         }
       }
     }
@@ -1732,7 +1716,10 @@ function getAllMembersFromDepartments(ss) {
 
   var mergedList = [];
   for (var k = 0; k < order.length; k++) {
-    mergedList.push(membersMap[order[k]]);
+    var item = membersMap[order[k]];
+    delete item._hasCol9;
+    delete item._hasCol10;
+    mergedList.push(item);
   }
   return mergedList;
 }
@@ -2029,55 +2016,85 @@ function handleCheckinMember(ss, taskId, memberId, adminId) {
   return { success: false, message: 'Không tìm thấy ca trực: ' + taskId };
 }
 
-/**
- * Tăng số ca trực hoàn thành trong sheet tương ứng (Cột 1 là Mã ID, Cột 9 là Số Ca)
- */
-function incrementMemberCompletedShifts(ss, memberId, metric) {
+function countTaskCheckinsForMember(ss, memberId, metric) {
+  var isActivity = (metric === 'activity');
+  var taskSheet = ss.getSheetByName('Tasks');
+  if (!taskSheet) return 0;
+  var count = 0;
+  try {
+    var tRows = taskSheet.getDataRange().getValues();
+    if (tRows.length > 1) {
+      var checkColIdx = tRows[0].indexOf('checkedInMembers');
+      var catColIdx = tRows[0].indexOf('category');
+      if (checkColIdx !== -1) {
+        for (var tr = 1; tr < tRows.length; tr++) {
+          var isAct = catColIdx !== -1 && String(tRows[tr][catColIdx] || '').trim() === 'activity';
+          if (isAct !== isActivity) continue;
+          var cList = parseJsonSafe(tRows[tr][checkColIdx], []);
+          for (var ci = 0; ci < cList.length; ci++) {
+            if (String(cList[ci]).trim() === String(memberId).trim()) {
+              count++;
+              break;
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {}
+  return count;
+}
+
+function updateMemberCounterAcrossSheets(ss, memberId, metric, delta, alreadyAppliedInTasks) {
   var isActivity = (metric === 'activity');
   var colIdx = isActivity ? 10 : 9;
   var headerLabel = isActivity ? 'Số ca sinh hoạt' : 'Số ca hoàn thành';
+  var targets = [];
+  var bestCur = null;
+
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
     var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
     if (!sheet) continue;
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
-      if (String(rows[i][0]).trim() === memberId) {
-        var cur = (rows[i].length >= colIdx && !isNaN(Number(rows[i][colIdx - 1]))) ? Number(rows[i][colIdx - 1]) : 0;
-        sheet.getRange(i + 1, colIdx).setValue(cur + 1);
-        if (rows[0].length < colIdx) {
-          sheet.getRange(1, colIdx).setValue(headerLabel).setFontWeight('bold');
+      if (String(rows[i][0]).trim() === String(memberId).trim()) {
+        var rawCell = rows[i].length >= colIdx ? rows[i][colIdx - 1] : '';
+        var hasVal = (rawCell !== '' && rawCell !== null && rawCell !== undefined && !isNaN(Number(rawCell)));
+        if (hasVal) {
+          var v = Math.max(0, Number(rawCell));
+          if (bestCur === null || v > bestCur) bestCur = v;
         }
-        return cur + 1;
+        targets.push({ sheet: sheet, rowNum: i + 1, needsHeader: (rows[0].length < colIdx || !rows[0][colIdx - 1]) });
       }
     }
   }
-  return 0;
+  if (targets.length === 0) return { found: false, nextVal: 0 };
+
+  var applied = Number(alreadyAppliedInTasks) || 0;
+  var cur = bestCur !== null ? bestCur : Math.max(0, countTaskCheckinsForMember(ss, memberId, metric) - applied);
+  var nextVal = Math.max(0, cur + delta);
+  for (var t = 0; t < targets.length; t++) {
+    if (targets[t].needsHeader) {
+      targets[t].sheet.getRange(1, colIdx).setValue(headerLabel).setFontWeight('bold');
+    }
+    targets[t].sheet.getRange(targets[t].rowNum, colIdx).setValue(nextVal);
+  }
+  return { found: true, nextVal: nextVal };
+}
+
+/**
+ * Tăng số ca trực hoàn thành trong sheet tương ứng (Cột 1 là Mã ID, Cột 9 là Số Ca, Cột 10 là Số SH)
+ */
+function incrementMemberCompletedShifts(ss, memberId, metric) {
+  var res = updateMemberCounterAcrossSheets(ss, memberId, metric, 1, 1);
+  return res.nextVal;
 }
 
 /**
  * Trừ số ca trực hoàn thành khi rút ca sau điểm danh hoặc khi Admin điều chỉnh
  */
 function decrementMemberCompletedShifts(ss, memberId, metric) {
-  var isActivity = (metric === 'activity');
-  var colIdx = isActivity ? 10 : 9;
-  var headerLabel = isActivity ? 'Số ca sinh hoạt' : 'Số ca hoàn thành';
-  for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
-    var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
-    if (!sheet) continue;
-    var rows = sheet.getDataRange().getValues();
-    for (var i = 1; i < rows.length; i++) {
-      if (String(rows[i][0]).trim() === memberId) {
-        var cur = (rows[i].length >= colIdx && !isNaN(Number(rows[i][colIdx - 1]))) ? Number(rows[i][colIdx - 1]) : 0;
-        var nextVal = Math.max(0, cur - 1);
-        sheet.getRange(i + 1, colIdx).setValue(nextVal);
-        if (rows[0].length < colIdx) {
-          sheet.getRange(1, colIdx).setValue(headerLabel).setFontWeight('bold');
-        }
-        return nextVal;
-      }
-    }
-  }
-  return 0;
+  var res = updateMemberCounterAcrossSheets(ss, memberId, metric, -1, -1);
+  return res.nextVal;
 }
 
 /**
@@ -2086,28 +2103,9 @@ function decrementMemberCompletedShifts(ss, memberId, metric) {
 function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId, metric) {
   if (!memberId) return { success: false, message: 'Thiếu mã thành viên' };
   var isActivity = (metric === 'activity');
-  var colIdx = isActivity ? 10 : 9;
-  var headerLabel = isActivity ? 'Số ca sinh hoạt' : 'Số ca hoàn thành';
-  var found = false;
-  var newCount = 0;
-  for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
-    var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
-    if (!sheet) continue;
-    var rows = sheet.getDataRange().getValues();
-    for (var i = 1; i < rows.length; i++) {
-      if (String(rows[i][0]).trim() === memberId) {
-        var cur = (rows[i].length >= colIdx && !isNaN(Number(rows[i][colIdx - 1]))) ? Number(rows[i][colIdx - 1]) : 0;
-        newCount = Math.max(0, cur + delta);
-        sheet.getRange(i + 1, colIdx).setValue(newCount);
-        if (rows[0].length < colIdx) {
-          sheet.getRange(1, colIdx).setValue(headerLabel).setFontWeight('bold');
-        }
-        found = true;
-        break;
-      }
-    }
-    if (found) break;
-  }
+  var res = updateMemberCounterAcrossSheets(ss, memberId, metric, delta, 0);
+  var found = res.found;
+  var newCount = res.nextVal;
 
   // Ghi nhật ký vào Swaps sheet
   var swapsSheet = ss.getSheetByName('Swaps');
@@ -2147,6 +2145,10 @@ function handleCreateTask(ss, taskObj) {
     sheet.getRange(1, 1, 1, taskHeaders.length).setBackground('#3b0764').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
     sheet.setFrozenRows(1);
     rows = [taskHeaders];
+  } else if (rows[0].indexOf('category') === -1) {
+    var newCatCol = rows[0].length + 1;
+    sheet.getRange(1, newCatCol).setValue('category').setBackground('#3b0764').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+    rows[0].push('category');
   }
 
   var id = (taskObj && taskObj.id) ? taskObj.id : ('TASK_' + Date.now());
@@ -2179,24 +2181,29 @@ function handleCreateTask(ss, taskObj) {
     }
   }
 
-  var rowData = [
-    id,
-    taskObj.title || 'Ca trực mới',
-    taskObj.location || 'Sân trường',
-    taskObj.time || '',
-    Number(taskObj.quota) || 6,
-    typeof taskObj.joinedMembers === 'string' ? taskObj.joinedMembers : JSON.stringify(taskObj.joinedMembers || []),
-    typeof taskObj.assignedMembers === 'string' ? taskObj.assignedMembers : JSON.stringify(taskObj.assignedMembers || []),
-    typeof taskObj.waitlist === 'string' ? taskObj.waitlist : JSON.stringify(taskObj.waitlist || []),
-    taskObj.leaderId || '',
-    typeof taskObj.checkedInMembers === 'string' ? taskObj.checkedInMembers : JSON.stringify(taskObj.checkedInMembers || []),
-    typeof taskObj.checkinLogs === 'string' ? taskObj.checkinLogs : JSON.stringify(taskObj.checkinLogs || []),
-    taskObj.lockDeadline || '',
-    taskObj.status || 'active',
-    typeof taskObj.departmentQuotas === 'string' ? taskObj.departmentQuotas : JSON.stringify(taskObj.departmentQuotas || {}),
-    taskObj.notes || '',
-    taskObj.category === 'activity' ? 'activity' : 'shift'
-  ];
+  var rowMap = {
+    id: id,
+    title: taskObj.title || 'Ca trực mới',
+    location: taskObj.location || 'Sân trường',
+    time: taskObj.time || '',
+    quota: Number(taskObj.quota) || 6,
+    joinedMembers: typeof taskObj.joinedMembers === 'string' ? taskObj.joinedMembers : JSON.stringify(taskObj.joinedMembers || []),
+    assignedMembers: typeof taskObj.assignedMembers === 'string' ? taskObj.assignedMembers : JSON.stringify(taskObj.assignedMembers || []),
+    waitlist: typeof taskObj.waitlist === 'string' ? taskObj.waitlist : JSON.stringify(taskObj.waitlist || []),
+    leaderId: taskObj.leaderId || '',
+    checkedInMembers: typeof taskObj.checkedInMembers === 'string' ? taskObj.checkedInMembers : JSON.stringify(taskObj.checkedInMembers || []),
+    checkinLogs: typeof taskObj.checkinLogs === 'string' ? taskObj.checkinLogs : JSON.stringify(taskObj.checkinLogs || []),
+    lockDeadline: taskObj.lockDeadline || '',
+    status: taskObj.status || 'active',
+    departmentQuotas: typeof taskObj.departmentQuotas === 'string' ? taskObj.departmentQuotas : JSON.stringify(taskObj.departmentQuotas || {}),
+    notes: taskObj.notes || '',
+    category: taskObj.category === 'activity' ? 'activity' : 'shift'
+  };
+  var rowData = [];
+  for (var h = 0; h < headers.length; h++) {
+    var hk = String(headers[h] || '').trim();
+    rowData.push(rowMap[hk] !== undefined ? rowMap[hk] : '');
+  }
 
   if (rowIndex !== -1) {
     sheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
@@ -2504,7 +2511,7 @@ function setupMultiSheetDatabase() {
   var taskSheet = ss.getSheetByName('Tasks');
   if (!taskSheet) taskSheet = ss.insertSheet('Tasks');
   taskSheet.clear();
-  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas', 'notes'];
+  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas', 'notes', 'category'];
   taskSheet.appendRow(taskHeaders);
   taskSheet.getRange(1, 1, 1, taskHeaders.length).setBackground('#3b0764').setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
   taskSheet.setFrozenRows(1);
@@ -2523,7 +2530,8 @@ function setupMultiSheetDatabase() {
     '2026-10-25T14:00',
     'active',
     JSON.stringify({ 'Ban Cầu Lông': 2, 'Ban Bóng Chuyền': 2, 'Ban Truyền Thông': 2 }),
-    'Trang phục CLB chỉnh tề, mang theo bảng điểm và còi'
+    'Trang phục CLB chỉnh tề, mang theo bảng điểm và còi',
+    'shift'
   ]);
   taskSheet.appendRow([
     'TASK_02',
@@ -2540,7 +2548,8 @@ function setupMultiSheetDatabase() {
     '2026-10-26T08:00',
     'active',
     JSON.stringify({ 'Ban Bóng Đá Nam': 2, 'Ban Truyền Thông': 2 }),
-    'Kiểm tra bóng thi đấu và nước uống cho 2 đội trước giờ bóng lăn'
+    'Kiểm tra bóng thi đấu và nước uống cho 2 đội trước giờ bóng lăn',
+    'shift'
   ]);
 
   var swapSheet = ss.getSheetByName('Swaps');

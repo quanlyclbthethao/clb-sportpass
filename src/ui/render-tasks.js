@@ -386,8 +386,10 @@ function renderDispatchHub() {
       mount(container, el('div', { className: 'empty-card' }, 'Hiện chưa có đơn đổi ca nào đang chờ duyệt.'));
       return;
     }
-    const cards = pendingSwaps.map((s) =>
-      el('article', { className: 'dispatch-card', dataset: { reqId: s.id } },
+    const cards = pendingSwaps.map((s) => {
+      const fromMember = (membersDirectory || []).find(m => m && m.id === s.fromId);
+      const fromCode = fromMember ? getDisplayStudentCode(fromMember) : s.fromId;
+      return el('article', { className: 'dispatch-card', dataset: { reqId: s.id } },
         el('div', { className: 'dispatch-head' },
           el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0', flex: '1' } },
             el('div', { className: 'avatar-initials-circle' }, getSportPassInitials(s.fromName)),
@@ -396,7 +398,7 @@ function renderDispatchHub() {
                 el('span', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, s.fromName),
                 s.fromClass ? el('span', { style: { fontSize: '10.5px', background: 'var(--surface-chip)', color: 'var(--text-secondary)', padding: '1px 6px', borderRadius: '5px', fontWeight: '600' } }, s.fromClass) : null
               ),
-              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, `MSSV: ${s.fromId}`)
+              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, `MSSV: ${fromCode}`)
             )
           ),
           el('span', { className: 'role-pill-badge' }, 'Đổi ca')
@@ -419,8 +421,8 @@ function renderDispatchHub() {
           el('button', { type: 'button', className: 'btn-card-reject', onClick: (ev) => animateAndResolveSwap(ev, s.id, false) }, 'Từ chối'),
           el('button', { type: 'button', className: 'btn-card-approve water-ripple-target', onClick: (ev) => animateAndResolveSwap(ev, s.id, true) }, '✓ Phê duyệt')
         )
-      )
-    );
+      );
+    });
     mount(container, cards);
     return;
   }
@@ -506,6 +508,10 @@ function applySwapApproval(swap) {
     task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
     task.assignedMembers = (task.assignedMembers || []).filter(id => id !== swap.fromId);
     task.waitlist = Array.isArray(task.waitlist) ? task.waitlist : [];
+    if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(swap.fromId)) {
+      task.checkedInMembers = task.checkedInMembers.filter(id => id !== swap.fromId);
+      adjustMemberCounter(swap.fromId, task.category === 'activity' ? 'activity' : 'shift', -1, 'task');
+    }
     if (swap.toId && !swap.toId.startsWith('CA_')) {
       const targetExists = (membersDirectory || []).some(m => m && m.id === swap.toId);
       if (targetExists && !task.joinedMembers.includes(swap.toId) && !task.assignedMembers.includes(swap.toId)) {
@@ -534,7 +540,7 @@ function applyLeaveApproval(leave) {
 
     if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(leave.memberId)) {
       task.checkedInMembers = task.checkedInMembers.filter(id => id !== leave.memberId);
-      adjustMemberCounter(leave.memberId, task.category === 'activity' ? 'activity' : 'shift', -1);
+      adjustMemberCounter(leave.memberId, task.category === 'activity' ? 'activity' : 'shift', -1, 'task');
     }
 
     const { occupied, quota } = getTaskOccupancy(task);
@@ -798,7 +804,10 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     mount(listBox, cards.length ? cards : el('div', { className: 'empty-card' }, 'Chưa có ca trực khả dụng.'));
   }
 
-  const myTasks = activeTasks.filter(t => getTaskOccupancy(t, uid).isMine);
+  const myTasks = activeTasks.filter(t => {
+    const occ = getTaskOccupancy(t, uid);
+    return occ.isMine && !occ.isChecked;
+  });
 
   const selTask = document.getElementById('selMissionTaskId');
   const btnSwap = document.getElementById('btnSubmitMemberSwap');
@@ -830,9 +839,19 @@ function renderMissionSheetPanels(preselectTaskId = null) {
 
   const reqBox = document.getElementById('memberMyRequestsList');
   if (reqBox && uid) {
+    const normalizeReqStatus = (raw) => {
+      const s = String(raw || 'pending').trim().toLowerCase();
+      if (s === 'approved' || s.startsWith('đã rút')) return 'approved';
+      if (s === 'rejected') return 'rejected';
+      return 'pending';
+    };
     const mine = [
-      ...(currentSwaps || []).filter(s => s.fromId === uid).map(s => ({ kind: 'swap', id: s.id, title: `Đổi ca: ${s.currentShift || s.taskId}`, sub: `${s.toName || 'Chờ điều phối'} · ${s.reason}`, status: s.status })),
-      ...(currentLeaves || []).filter(l => l.memberId === uid).map(l => ({ kind: 'leave', id: l.id, title: `Xin rút ca: ${l.taskId}`, sub: l.reason, status: l.status }))
+      ...(currentSwaps || [])
+        .filter(s => s.fromId === uid && s.taskId !== 'SHIFT_ADJUST')
+        .map(s => ({ kind: 'swap', id: s.id, title: `Đổi ca: ${s.currentShift || s.taskId}`, sub: `${s.toName || 'Chờ điều phối'} · ${s.reason}`, status: normalizeReqStatus(s.status) })),
+      ...(currentLeaves || [])
+        .filter(l => l.memberId === uid)
+        .map(l => ({ kind: 'leave', id: l.id, title: `Xin rút ca: ${l.taskId}`, sub: l.reason, status: normalizeReqStatus(l.status) }))
     ];
     if (mine.length === 0) {
       mount(reqBox, el('div', { className: 'empty-card', style: { padding: '12px' } }, 'Bạn chưa gửi yêu cầu đổi hoặc rút ca nào.'));

@@ -1,6 +1,4 @@
-// SportPass V8.6 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
-
-let syncDebounceTimer = null;
+// SportPass V8.7 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
 
 function enqueueOfflineMutation(type, payload) {
   offlineMutationQueue.push({
@@ -34,21 +32,39 @@ function dispatchBackendMutation(type, payload) {
   }
 }
 
-function syncOfflineMutations(isManual = false) {
-  if (!navigator.onLine || offlineMutationQueue.length === 0) return;
+async function syncOfflineMutations(isManual = false) {
+  if (!navigator.onLine || !Array.isArray(offlineMutationQueue) || offlineMutationQueue.length === 0) return;
   const batch = offlineMutationQueue.splice(0, offlineMutationQueue.length);
   saveLocalState();
 
+  const failed = [];
+  let pushedCount = 0;
+
   for (const mut of batch) {
-    const url = buildMutationUrl(mut);
-    if (!url) continue;
-    fetch(url).catch(() => {
-      offlineMutationQueue.push(mut);
-      saveLocalState();
-    });
+    try {
+      if (mut && mut.type === 'CREATE_TASK') {
+        await fetch(`${GAS_API_URL}?action=createTask`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'createTask', task: mut.payload })
+        });
+        pushedCount++;
+      } else {
+        const url = buildMutationUrl(mut);
+        if (!url) continue;
+        await fetch(url);
+        pushedCount++;
+      }
+    } catch (e) {
+      failed.push(mut);
+    }
   }
 
-  if (isManual) showToast(`Đã đẩy ${batch.length} thay đổi lên máy chủ.`);
+  if (failed.length > 0) {
+    offlineMutationQueue.push(...failed);
+    saveLocalState();
+  }
+  if (isManual && pushedCount > 0) showToast(`Đã đẩy ${pushedCount} thay đổi lên máy chủ.`);
 }
 
 async function syncTaskToBackend(task) {
@@ -71,6 +87,9 @@ async function syncTaskToBackend(task) {
 async function syncRealtimeData() {
   if (!currentUser || !navigator.onLine) return;
   try {
+    if (offlineMutationQueue.length > 0) {
+      await syncOfflineMutations(false);
+    }
     const res = await fetch(`${GAS_API_URL}?action=syncAll&memberId=${encodeURIComponent(currentUser.id)}`);
     const data = await res.json();
     if (!data || !data.success) return;
@@ -88,12 +107,15 @@ async function syncRealtimeData() {
       const preservedAvatar = currentUser.avatar || '';
       const preservedStudentCode = currentUser.studentCode || '';
       const preservedDob = currentUser.ngaySinh || '';
-      const preservedActivities = Number(currentUser.soCaSinhHoat) || 0;
+      const remoteStudentCode = String(data.member.studentCode || '').trim();
       currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
       if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
-      if (preservedStudentCode && preservedStudentCode !== currentUser.id) currentUser.studentCode = preservedStudentCode;
-      if (preservedDob) currentUser.ngaySinh = preservedDob;
-      currentUser.soCaSinhHoat = Math.max(currentUser.soCaSinhHoat || 0, preservedActivities);
+      if ((!remoteStudentCode || remoteStudentCode === currentUser.id) && preservedStudentCode && preservedStudentCode !== currentUser.id) {
+        currentUser.studentCode = preservedStudentCode;
+      }
+      if ((!data.member.ngaySinh || !DOB_REGEX.test(String(data.member.ngaySinh).trim())) && preservedDob) {
+        currentUser.ngaySinh = preservedDob;
+      }
       applyMemberOverrides(membersDirectory);
       window.currentUser = currentUser;
     }
@@ -128,11 +150,6 @@ async function syncRealtimeData() {
   }
 }
 
-function triggerInstantSync(delay = 80) {
-  if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
-  syncDebounceTimer = setTimeout(() => { syncRealtimeData(); }, delay);
-}
-
 function restartAdaptivePolling() {
   if (currentSyncPollTimer) {
     clearInterval(currentSyncPollTimer);
@@ -144,6 +161,10 @@ function restartAdaptivePolling() {
     }
   }, 20000);
 }
+
+window.addEventListener('online', () => {
+  if (currentUser) syncRealtimeData();
+});
 
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && currentUser && navigator.onLine) {

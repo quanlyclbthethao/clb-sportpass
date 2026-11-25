@@ -6,7 +6,7 @@ function parseShiftTimeRange(timeStr) {
   if (!m) return null;
   const start = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
   const end = parseInt(m[3], 10) * 60 + parseInt(m[4], 10);
-  const day = String(m[5] || '').trim().toLowerCase();
+  const day = String(m[5] || '').trim().replace(/^\((.*)\)$/, '$1').trim().toLowerCase();
   return { start, end, day };
 }
 
@@ -15,8 +15,9 @@ function checkShiftTimeConflict(taskA, taskB) {
   const rA = parseShiftTimeRange(taskA.time || taskA.timeRange);
   const rB = parseShiftTimeRange(taskB.time || taskB.timeRange);
   if (!rA || !rB) return false;
-  const dayA = String(taskA.date || rA.day || '').trim().toLowerCase();
-  const dayB = String(taskB.date || rB.day || '').trim().toLowerCase();
+  const normDay = (v) => String(v || '').trim().replace(/^\((.*)\)$/, '$1').trim().toLowerCase();
+  const dayA = normDay(taskA.date || rA.day);
+  const dayB = normDay(taskB.date || rB.day);
   if (dayA && dayB && dayA !== dayB) return false;
   return rA.start < rB.end && rB.start < rA.end;
 }
@@ -45,11 +46,23 @@ function calculateSmartRotation(task) {
     : [];
 
   const isActivity = task.category === 'activity';
+  const memberMatchesDept = (m, dept) => Boolean(m && (m.boMon === dept || (Array.isArray(m.cacBan) && m.cacBan.includes(dept))));
 
   const pickForBucket = (deptFilter, neededCount) => {
+    let remaining = Number(neededCount) || 0;
+    if (deptFilter) {
+      let alreadyInDept = 0;
+      for (const eid of existing) {
+        const em = (membersDirectory || []).find(x => x && x.id === eid);
+        if (memberMatchesDept(em, deptFilter)) alreadyInDept++;
+      }
+      remaining = Math.max(0, remaining - alreadyInDept);
+    }
+    if (remaining <= 0) return;
+
     const candidates = (membersDirectory || []).filter(m => {
       if (!m || !m.id || usedIds.has(m.id)) return false;
-      if (deptFilter && m.boMon !== deptFilter && !(Array.isArray(m.cacBan) && m.cacBan.includes(deptFilter))) return false;
+      if (deptFilter && !memberMatchesDept(m, deptFilter)) return false;
       const healthSource = (m.yTe && m.yTe !== 'Bình thường') ? m.yTe : m.theTrang;
       const theme = getTheTrangTheme(healthSource);
       if (theme.exempt) return false;
@@ -57,18 +70,22 @@ function calculateSmartRotation(task) {
       return true;
     });
 
-    candidates.sort((a, b) => {
-      const aVal = isActivity ? (Number(a.soCaSinhHoat) || 0) : (Number(a.soCaHoanThanh ?? a.soCa ?? 0) || 0);
-      const bVal = isActivity ? (Number(b.soCaSinhHoat) || 0) : (Number(b.soCaHoanThanh ?? b.soCa ?? 0) || 0);
-      return aVal - bVal;
-    });
+    const getSortScore = (m) => {
+      if (typeof computeMemberStats === 'function') {
+        const st = computeMemberStats(m);
+        return isActivity ? st.activitiesCount : st.shiftsCount;
+      }
+      return isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+    };
+
+    candidates.sort((a, b) => getSortScore(a) - getSortScore(b));
 
     for (const m of candidates) {
       if (picked.length + existing.size >= totalQuota) break;
-      if (neededCount <= 0) break;
+      if (remaining <= 0) break;
       usedIds.add(m.id);
       picked.push({ member: m, dept: deptFilter || m.boMon || 'CLB Thể Thao' });
-      neededCount--;
+      remaining--;
     }
   };
 

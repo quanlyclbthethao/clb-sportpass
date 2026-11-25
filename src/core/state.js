@@ -101,6 +101,8 @@ function normalizeMember(raw) {
   copy.soCaHoanThanh = shiftsDone;
   copy.soCa = shiftsDone;
   copy.soCaSinhHoat = activitiesDone;
+  copy.shiftOffset = Number(copy.shiftOffset) || 0;
+  copy.activityOffset = Number(copy.activityOffset) || 0;
   copy.isAdmin = id === 'DMC0806' ? true : Boolean(copy.isAdmin);
   copy.isShiftLeader = copy.isAdmin ? true : Boolean(copy.isShiftLeader);
   copy.donVi = copy.donVi || 'Trường Đại học Hải Dương';
@@ -135,6 +137,8 @@ function normalizeMembersDirectory(rawList) {
     prev.soCaHoanThanh = Math.max(prev.soCaHoanThanh, m.soCaHoanThanh);
     prev.soCa = prev.soCaHoanThanh;
     prev.soCaSinhHoat = Math.max(prev.soCaSinhHoat, m.soCaSinhHoat);
+    if (!prev.shiftOffset && m.shiftOffset) prev.shiftOffset = m.shiftOffset;
+    if (!prev.activityOffset && m.activityOffset) prev.activityOffset = m.activityOffset;
   }
   return Array.from(byId.values());
 }
@@ -143,12 +147,14 @@ function normalizeTask(raw) {
   if (!raw || !raw.title) return null;
   const copy = structuredClone(raw);
   const uniq = (arr) => Array.from(new Set((Array.isArray(arr) ? arr : []).map(x => String(x || '').trim()).filter(Boolean)));
+  const rawTime = String(copy.time || '').trim();
+  const dateMatch = rawTime.match(/\((\d{1,2}\/\d{1,2}\/\d{4})\)\s*$/);
   copy.id = String(copy.id || ('TASK_' + Date.now())).trim();
   copy.title = String(copy.title).trim();
   copy.location = String(copy.location || 'SVĐ Trung Tâm').trim();
-  copy.time = String(copy.time || '').trim();
-  copy.date = String(copy.date || '').trim();
-  copy.timeRange = String(copy.timeRange || copy.time.replace(/\s*\([^)]*\)\s*$/, '')).trim();
+  copy.time = rawTime;
+  copy.date = String(copy.date || (dateMatch ? dateMatch[1] : '')).trim();
+  copy.timeRange = String(copy.timeRange || rawTime.replace(/\s*\([^)]*\)\s*$/, '')).trim();
   copy.quota = Math.max(1, Number(copy.quota) || 4);
   copy.category = copy.category === 'activity' ? 'activity' : 'shift';
   copy.joinedMembers = uniq(copy.joinedMembers);
@@ -205,11 +211,10 @@ function getTaskOccupancy(task, uid = '') {
   };
 }
 
-function computeMemberStats(member) {
-  if (!member) return { shiftsCount: 0, activitiesCount: 0 };
-  const uid = String(member.id || '').trim();
+function getMemberTaskCheckinCounts(uid) {
   let shiftsCheckedIn = 0;
   let activitiesCheckedIn = 0;
+  if (!uid) return { shiftsCheckedIn, activitiesCheckedIn };
 
   for (const t of deduplicateTasks(currentTasks || [])) {
     if (!t) continue;
@@ -218,50 +223,92 @@ function computeMemberStats(member) {
       else shiftsCheckedIn++;
     }
   }
+  return { shiftsCheckedIn, activitiesCheckedIn };
+}
+
+function computeMemberStats(member) {
+  if (!member) return { shiftsCount: 0, activitiesCount: 0 };
+  const uid = String(member.id || '').trim();
+  const { shiftsCheckedIn, activitiesCheckedIn } = getMemberTaskCheckinCounts(uid);
+  const baseShifts = Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0) || 0, shiftsCheckedIn);
+  const baseActivities = Math.max(Number(member.soCaSinhHoat ?? 0) || 0, activitiesCheckedIn);
 
   return {
-    shiftsCount: Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0) || 0, shiftsCheckedIn),
-    activitiesCount: Math.max(Number(member.soCaSinhHoat ?? 0) || 0, activitiesCheckedIn)
+    shiftsCount: Math.max(0, baseShifts + (Number(member.shiftOffset) || 0)),
+    activitiesCount: Math.max(0, baseActivities + (Number(member.activityOffset) || 0))
   };
 }
 
-function adjustMemberCounter(memberId, metric, delta) {
+function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
   const targetId = String(memberId || '').trim();
   if (!targetId) return 0;
   const isActivity = metric === 'activity';
   const d = Number(delta) || 0;
+  const counts = getMemberTaskCheckinCounts(targetId);
+  const taskCount = isActivity ? counts.activitiesCheckedIn : counts.shiftsCheckedIn;
+
+  const applyToMember = (m) => {
+    if (source === 'task') {
+      const curRaw = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+      const nextRaw = Math.max(0, curRaw + d);
+      if (isActivity) {
+        m.soCaSinhHoat = nextRaw;
+        const nextBase = Math.max(nextRaw, taskCount);
+        m.activityOffset = Math.max(-nextBase, Number(m.activityOffset) || 0);
+        return {
+          nextDisplayed: Math.max(0, nextBase + m.activityOffset),
+          patch: { soCaSinhHoat: nextRaw, activityOffset: m.activityOffset }
+        };
+      }
+      m.soCaHoanThanh = nextRaw;
+      m.soCa = nextRaw;
+      const nextBase = Math.max(nextRaw, taskCount);
+      m.shiftOffset = Math.max(-nextBase, Number(m.shiftOffset) || 0);
+      return {
+        nextDisplayed: Math.max(0, nextBase + m.shiftOffset),
+        patch: { soCaHoanThanh: nextRaw, soCa: nextRaw, shiftOffset: m.shiftOffset }
+      };
+    }
+
+    const stats = computeMemberStats(m);
+    const curDisplayed = isActivity ? stats.activitiesCount : stats.shiftsCount;
+    const nextDisplayed = Math.max(0, curDisplayed + d);
+    const curRaw = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+    const baseVal = Math.max(curRaw, taskCount);
+    const nextOffset = nextDisplayed - baseVal;
+    if (isActivity) {
+      m.activityOffset = nextOffset;
+      return { nextDisplayed, patch: { activityOffset: nextOffset } };
+    }
+    m.shiftOffset = nextOffset;
+    return { nextDisplayed, patch: { shiftOffset: nextOffset } };
+  };
+
   let nextVal = 0;
   let found = false;
+  let savedPatch = null;
 
   for (const m of (membersDirectory || [])) {
     if (m && m.id === targetId) {
-      const cur = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
-      nextVal = Math.max(0, cur + d);
-      if (isActivity) {
-        m.soCaSinhHoat = nextVal;
-        saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
-      } else {
-        m.soCaHoanThanh = nextVal;
-        m.soCa = nextVal;
-        saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
-      }
+      const res = applyToMember(m);
+      nextVal = res.nextDisplayed;
+      savedPatch = res.patch;
       found = true;
     }
   }
 
   if (currentUser && currentUser.id === targetId) {
-    const curSelf = isActivity ? (Number(currentUser.soCaSinhHoat) || 0) : (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0) || 0);
-    if (!found) nextVal = Math.max(0, curSelf + d);
-    if (isActivity) {
-      currentUser.soCaSinhHoat = nextVal;
-      saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
+    if (found && savedPatch) {
+      Object.assign(currentUser, savedPatch);
     } else {
-      currentUser.soCaHoanThanh = nextVal;
-      currentUser.soCa = nextVal;
-      saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
+      const res = applyToMember(currentUser);
+      nextVal = res.nextDisplayed;
+      savedPatch = res.patch;
     }
     if (typeof persistUserSession === 'function') persistUserSession(currentUser);
   }
+
+  if (savedPatch) saveMemberOverride(targetId, savedPatch);
   return nextVal;
 }
 
@@ -289,11 +336,17 @@ function applyMemberOverrides(members) {
     for (const m of members) {
       if (m && m.id && all[m.id]) {
         Object.assign(m, all[m.id]);
+        if (m.boMon && Array.isArray(m.cacBan) && !m.cacBan.includes(m.boMon)) {
+          m.cacBan.push(m.boMon);
+        }
       }
     }
   }
   if (currentUser && currentUser.id && all[currentUser.id]) {
     Object.assign(currentUser, all[currentUser.id]);
+    if (currentUser.boMon && Array.isArray(currentUser.cacBan) && !currentUser.cacBan.includes(currentUser.boMon)) {
+      currentUser.cacBan.push(currentUser.boMon);
+    }
   }
   applyCustomAdminRoles(members);
 }
@@ -412,12 +465,12 @@ function hydrateLocalStateFromCache() {
     const raw = localStorage.getItem(DATA_CACHE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      const rawTasks = (Array.isArray(parsed.currentTasks) && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
+      const rawTasks = Array.isArray(parsed.currentTasks) ? parsed.currentTasks : DEFAULT_TASKS;
       currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
-      currentSwaps = (Array.isArray(parsed.currentSwaps) && parsed.currentSwaps.length)
+      currentSwaps = Array.isArray(parsed.currentSwaps)
         ? parsed.currentSwaps.map(normalizeSwap).filter(Boolean)
         : DEFAULT_SWAPS_SEED.map(normalizeSwap);
-      currentLeaves = (Array.isArray(parsed.currentLeaves) && parsed.currentLeaves.length)
+      currentLeaves = Array.isArray(parsed.currentLeaves)
         ? parsed.currentLeaves.map(normalizeLeave).filter(Boolean)
         : DEFAULT_LEAVES_SEED.map(normalizeLeave);
       offlineMutationQueue = Array.isArray(parsed.offlineMutationQueue) ? parsed.offlineMutationQueue : [];

@@ -278,7 +278,7 @@ function renderMembersModalList() {
           el('div', { className: `avatar-initials-circle${isMe ? ' solid' : ''}` }, getSportPassInitials(m.hoTen)),
           el('div', { style: { minWidth: '0', flex: '1' } },
             el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' }, className: 'truncate' }, `${m.hoTen}${isMe ? ' (Bạn)' : ''}`),
-            el('div', { style: { fontSize: '11.5px', color: '#0369a1' }, className: 'truncate' }, `${m.chucVu} • ${m.lop}`)
+            el('div', { style: { fontSize: '11.5px', color: '#0369a1' }, className: 'truncate' }, `${getDisplayStudentCode(m)} · ${m.chucVu} • ${m.lop}`)
           )
         ),
         el('span', { className: 'ready-badge-pill' }, m.status || 'Sẵn sàng')
@@ -321,17 +321,47 @@ async function saveEditProfileAction() {
   const newName = (document.getElementById('input-fullname')?.value || '').trim();
   const newStudentCode = (document.getElementById('input-studentId')?.value || '').trim();
   const newFaculty = (document.getElementById('input-faculty')?.value || '').trim();
-  const newDob = (document.getElementById('input-dob')?.value || '').trim();
+  let newDob = (document.getElementById('input-dob')?.value || '').trim();
   const newArea = (document.getElementById('input-dutyArea')?.value || '').trim();
   const newRole = (document.getElementById('input-role')?.value || '').trim();
   const newPhone = (document.getElementById('input-phone')?.value || '').trim();
   const newIce = (document.getElementById('input-ice')?.value || '').trim();
 
+  if (newStudentCode) {
+    const codeUpper = newStudentCode.toUpperCase();
+    const conflict = (membersDirectory || []).find(m =>
+      m && m.id !== currentUser.id && (
+        String(m.id || '').toUpperCase() === codeUpper ||
+        String(m.studentCode || '').toUpperCase() === codeUpper
+      )
+    );
+    if (conflict) {
+      showToast(`Mã số sinh viên ${newStudentCode} đã được dùng bởi ${conflict.hoTen}.`);
+      document.getElementById('input-studentId')?.focus();
+      return;
+    }
+  }
+
+  if (newDob) {
+    const dobParts = newDob.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (dobParts) {
+      newDob = `${dobParts[1].padStart(2, '0')}/${dobParts[2].padStart(2, '0')}/${dobParts[3]}`;
+    }
+    if (!DOB_REGEX.test(newDob)) {
+      showToast('Ngày sinh cần đúng định dạng DD/MM/YYYY (ví dụ: 08/06/2003).');
+      document.getElementById('input-dob')?.focus();
+      return;
+    }
+  }
+
   if (newName) currentUser.hoTen = newName;
   currentUser.studentCode = newStudentCode || currentUser.id;
   if (newFaculty) currentUser.lop = newFaculty;
   if (newDob) currentUser.ngaySinh = newDob;
-  if (newArea) currentUser.boMon = newArea;
+  if (newArea) {
+    currentUser.boMon = newArea;
+    currentUser.cacBan = Array.from(new Set([...(Array.isArray(currentUser.cacBan) ? currentUser.cacBan : []), newArea]));
+  }
   if (newRole) currentUser.chucVu = newRole;
   currentUser.sdt = newPhone;
   currentUser.ice = newIce;
@@ -342,6 +372,7 @@ async function saveEditProfileAction() {
     lop: currentUser.lop,
     ngaySinh: currentUser.ngaySinh,
     boMon: currentUser.boMon,
+    cacBan: Array.isArray(currentUser.cacBan) ? currentUser.cacBan.slice() : [currentUser.boMon],
     chucVu: currentUser.chucVu,
     sdt: currentUser.sdt,
     ice: currentUser.ice
@@ -350,9 +381,6 @@ async function saveEditProfileAction() {
   for (const m of (membersDirectory || [])) {
     if (m.id === currentUser.id) {
       Object.assign(m, patch);
-      if (newArea && Array.isArray(m.cacBan) && !m.cacBan.includes(newArea)) {
-        m.cacBan.push(newArea);
-      }
     }
   }
 

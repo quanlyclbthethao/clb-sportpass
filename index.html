@@ -159,7 +159,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--sp-sky-500);
+  outline: 2px solid var(--accent-sky, #0ea5e9);
   outline-offset: 2px;
 }
 
@@ -608,15 +608,13 @@ html[data-theme="dark"] .notif-dot {
 
 .hero-name-h1 {
   margin: 0;
-  padding: 4px 0 2px;
-  font-size: 18px;
+  padding: 5px 0 3px;
+  font-size: clamp(15px, 4.2vw, 18px);
   font-weight: 700;
   letter-spacing: -0.015em;
   color: #ffffff;
-  line-height: 1.42;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.4;
+  overflow-wrap: break-word;
 }
 
 .hero-role-sub {
@@ -728,11 +726,9 @@ html[data-theme="dark"] .stat-cell + .stat-cell {
 
 .stat-val-sky { color: #0284c7; }
 .stat-val-teal { color: #0d9488; }
-.stat-val-indigo { color: #6366f1; }
 
 html[data-theme="dark"] .stat-val-sky { color: #38bdf8; }
 html[data-theme="dark"] .stat-val-teal { color: #2dd4bf; }
-html[data-theme="dark"] .stat-val-indigo { color: #818cf8; }
 
 .stat-lbl {
   font-size: 12px;
@@ -936,7 +932,6 @@ html[data-theme="dark"] .edit-pill-btn {
 .tile-cyan { background-color: rgba(207, 250, 254, 0.85); color: #0891b2; }
 .tile-emerald { background-color: rgba(209, 250, 229, 0.85); color: #059669; }
 .tile-amber { background-color: rgba(254, 243, 199, 0.85); color: #d97706; }
-.tile-rose { background-color: rgba(255, 228, 230, 0.85); color: #e11d48; }
 
 html[data-theme="dark"] .tile-sky { background-color: rgba(14, 165, 233, 0.18); color: #38bdf8; }
 html[data-theme="dark"] .tile-blue { background-color: rgba(59, 130, 246, 0.18); color: #60a5fa; }
@@ -945,7 +940,6 @@ html[data-theme="dark"] .tile-teal { background-color: rgba(20, 184, 166, 0.18);
 html[data-theme="dark"] .tile-cyan { background-color: rgba(6, 182, 212, 0.18); color: #22d3ee; }
 html[data-theme="dark"] .tile-emerald { background-color: rgba(16, 185, 129, 0.18); color: #34d399; }
 html[data-theme="dark"] .tile-amber { background-color: rgba(245, 158, 11, 0.18); color: #fbbf24; }
-html[data-theme="dark"] .tile-rose { background-color: rgba(244, 63, 94, 0.18); color: #f43f5e; }
 
 .profile-row-label {
   font-size: 14px;
@@ -3739,13 +3733,6 @@ const DEFAULT_LEAVES_SEED = [
   }
 ];
 
-const THE_TRANG_OPTIONS = [
-  { label: 'Khỏe mạnh (100% Sẵn sàng)', short: 'Khỏe mạnh (100%)', tone: 'success', exempt: false },
-  { label: 'Hồi phục nhẹ (Hỗ trợ bàn)', short: 'Hồi phục nhẹ', tone: 'warning', exempt: false },
-  { label: 'Chấn thương nhẹ (Tạm miễn trực)', short: 'Miễn trực (Y tế)', tone: 'danger', exempt: true },
-  { label: 'Nghỉ ốm / Y tế', short: 'Nghỉ ốm (Miễn trực)', tone: 'danger', exempt: true }
-];
-
 // === dom.js ===
 // SportPass V8.6 — Zero-innerHTML Declarative DOM Builder, Smooth rAF 3D Parallax & Water Ripple Engine
 
@@ -4092,6 +4079,8 @@ function normalizeMember(raw) {
   copy.soCaHoanThanh = shiftsDone;
   copy.soCa = shiftsDone;
   copy.soCaSinhHoat = activitiesDone;
+  copy.shiftOffset = Number(copy.shiftOffset) || 0;
+  copy.activityOffset = Number(copy.activityOffset) || 0;
   copy.isAdmin = id === 'DMC0806' ? true : Boolean(copy.isAdmin);
   copy.isShiftLeader = copy.isAdmin ? true : Boolean(copy.isShiftLeader);
   copy.donVi = copy.donVi || 'Trường Đại học Hải Dương';
@@ -4126,6 +4115,8 @@ function normalizeMembersDirectory(rawList) {
     prev.soCaHoanThanh = Math.max(prev.soCaHoanThanh, m.soCaHoanThanh);
     prev.soCa = prev.soCaHoanThanh;
     prev.soCaSinhHoat = Math.max(prev.soCaSinhHoat, m.soCaSinhHoat);
+    if (!prev.shiftOffset && m.shiftOffset) prev.shiftOffset = m.shiftOffset;
+    if (!prev.activityOffset && m.activityOffset) prev.activityOffset = m.activityOffset;
   }
   return Array.from(byId.values());
 }
@@ -4134,12 +4125,14 @@ function normalizeTask(raw) {
   if (!raw || !raw.title) return null;
   const copy = structuredClone(raw);
   const uniq = (arr) => Array.from(new Set((Array.isArray(arr) ? arr : []).map(x => String(x || '').trim()).filter(Boolean)));
+  const rawTime = String(copy.time || '').trim();
+  const dateMatch = rawTime.match(/\((\d{1,2}\/\d{1,2}\/\d{4})\)\s*$/);
   copy.id = String(copy.id || ('TASK_' + Date.now())).trim();
   copy.title = String(copy.title).trim();
   copy.location = String(copy.location || 'SVĐ Trung Tâm').trim();
-  copy.time = String(copy.time || '').trim();
-  copy.date = String(copy.date || '').trim();
-  copy.timeRange = String(copy.timeRange || copy.time.replace(/\s*\([^)]*\)\s*$/, '')).trim();
+  copy.time = rawTime;
+  copy.date = String(copy.date || (dateMatch ? dateMatch[1] : '')).trim();
+  copy.timeRange = String(copy.timeRange || rawTime.replace(/\s*\([^)]*\)\s*$/, '')).trim();
   copy.quota = Math.max(1, Number(copy.quota) || 4);
   copy.category = copy.category === 'activity' ? 'activity' : 'shift';
   copy.joinedMembers = uniq(copy.joinedMembers);
@@ -4196,11 +4189,10 @@ function getTaskOccupancy(task, uid = '') {
   };
 }
 
-function computeMemberStats(member) {
-  if (!member) return { shiftsCount: 0, activitiesCount: 0 };
-  const uid = String(member.id || '').trim();
+function getMemberTaskCheckinCounts(uid) {
   let shiftsCheckedIn = 0;
   let activitiesCheckedIn = 0;
+  if (!uid) return { shiftsCheckedIn, activitiesCheckedIn };
 
   for (const t of deduplicateTasks(currentTasks || [])) {
     if (!t) continue;
@@ -4209,50 +4201,92 @@ function computeMemberStats(member) {
       else shiftsCheckedIn++;
     }
   }
+  return { shiftsCheckedIn, activitiesCheckedIn };
+}
+
+function computeMemberStats(member) {
+  if (!member) return { shiftsCount: 0, activitiesCount: 0 };
+  const uid = String(member.id || '').trim();
+  const { shiftsCheckedIn, activitiesCheckedIn } = getMemberTaskCheckinCounts(uid);
+  const baseShifts = Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0) || 0, shiftsCheckedIn);
+  const baseActivities = Math.max(Number(member.soCaSinhHoat ?? 0) || 0, activitiesCheckedIn);
 
   return {
-    shiftsCount: Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0) || 0, shiftsCheckedIn),
-    activitiesCount: Math.max(Number(member.soCaSinhHoat ?? 0) || 0, activitiesCheckedIn)
+    shiftsCount: Math.max(0, baseShifts + (Number(member.shiftOffset) || 0)),
+    activitiesCount: Math.max(0, baseActivities + (Number(member.activityOffset) || 0))
   };
 }
 
-function adjustMemberCounter(memberId, metric, delta) {
+function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
   const targetId = String(memberId || '').trim();
   if (!targetId) return 0;
   const isActivity = metric === 'activity';
   const d = Number(delta) || 0;
+  const counts = getMemberTaskCheckinCounts(targetId);
+  const taskCount = isActivity ? counts.activitiesCheckedIn : counts.shiftsCheckedIn;
+
+  const applyToMember = (m) => {
+    if (source === 'task') {
+      const curRaw = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+      const nextRaw = Math.max(0, curRaw + d);
+      if (isActivity) {
+        m.soCaSinhHoat = nextRaw;
+        const nextBase = Math.max(nextRaw, taskCount);
+        m.activityOffset = Math.max(-nextBase, Number(m.activityOffset) || 0);
+        return {
+          nextDisplayed: Math.max(0, nextBase + m.activityOffset),
+          patch: { soCaSinhHoat: nextRaw, activityOffset: m.activityOffset }
+        };
+      }
+      m.soCaHoanThanh = nextRaw;
+      m.soCa = nextRaw;
+      const nextBase = Math.max(nextRaw, taskCount);
+      m.shiftOffset = Math.max(-nextBase, Number(m.shiftOffset) || 0);
+      return {
+        nextDisplayed: Math.max(0, nextBase + m.shiftOffset),
+        patch: { soCaHoanThanh: nextRaw, soCa: nextRaw, shiftOffset: m.shiftOffset }
+      };
+    }
+
+    const stats = computeMemberStats(m);
+    const curDisplayed = isActivity ? stats.activitiesCount : stats.shiftsCount;
+    const nextDisplayed = Math.max(0, curDisplayed + d);
+    const curRaw = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+    const baseVal = Math.max(curRaw, taskCount);
+    const nextOffset = nextDisplayed - baseVal;
+    if (isActivity) {
+      m.activityOffset = nextOffset;
+      return { nextDisplayed, patch: { activityOffset: nextOffset } };
+    }
+    m.shiftOffset = nextOffset;
+    return { nextDisplayed, patch: { shiftOffset: nextOffset } };
+  };
+
   let nextVal = 0;
   let found = false;
+  let savedPatch = null;
 
   for (const m of (membersDirectory || [])) {
     if (m && m.id === targetId) {
-      const cur = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
-      nextVal = Math.max(0, cur + d);
-      if (isActivity) {
-        m.soCaSinhHoat = nextVal;
-        saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
-      } else {
-        m.soCaHoanThanh = nextVal;
-        m.soCa = nextVal;
-        saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
-      }
+      const res = applyToMember(m);
+      nextVal = res.nextDisplayed;
+      savedPatch = res.patch;
       found = true;
     }
   }
 
   if (currentUser && currentUser.id === targetId) {
-    const curSelf = isActivity ? (Number(currentUser.soCaSinhHoat) || 0) : (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0) || 0);
-    if (!found) nextVal = Math.max(0, curSelf + d);
-    if (isActivity) {
-      currentUser.soCaSinhHoat = nextVal;
-      saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
+    if (found && savedPatch) {
+      Object.assign(currentUser, savedPatch);
     } else {
-      currentUser.soCaHoanThanh = nextVal;
-      currentUser.soCa = nextVal;
-      saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
+      const res = applyToMember(currentUser);
+      nextVal = res.nextDisplayed;
+      savedPatch = res.patch;
     }
     if (typeof persistUserSession === 'function') persistUserSession(currentUser);
   }
+
+  if (savedPatch) saveMemberOverride(targetId, savedPatch);
   return nextVal;
 }
 
@@ -4280,11 +4314,17 @@ function applyMemberOverrides(members) {
     for (const m of members) {
       if (m && m.id && all[m.id]) {
         Object.assign(m, all[m.id]);
+        if (m.boMon && Array.isArray(m.cacBan) && !m.cacBan.includes(m.boMon)) {
+          m.cacBan.push(m.boMon);
+        }
       }
     }
   }
   if (currentUser && currentUser.id && all[currentUser.id]) {
     Object.assign(currentUser, all[currentUser.id]);
+    if (currentUser.boMon && Array.isArray(currentUser.cacBan) && !currentUser.cacBan.includes(currentUser.boMon)) {
+      currentUser.cacBan.push(currentUser.boMon);
+    }
   }
   applyCustomAdminRoles(members);
 }
@@ -4403,12 +4443,12 @@ function hydrateLocalStateFromCache() {
     const raw = localStorage.getItem(DATA_CACHE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      const rawTasks = (Array.isArray(parsed.currentTasks) && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
+      const rawTasks = Array.isArray(parsed.currentTasks) ? parsed.currentTasks : DEFAULT_TASKS;
       currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
-      currentSwaps = (Array.isArray(parsed.currentSwaps) && parsed.currentSwaps.length)
+      currentSwaps = Array.isArray(parsed.currentSwaps)
         ? parsed.currentSwaps.map(normalizeSwap).filter(Boolean)
         : DEFAULT_SWAPS_SEED.map(normalizeSwap);
-      currentLeaves = (Array.isArray(parsed.currentLeaves) && parsed.currentLeaves.length)
+      currentLeaves = Array.isArray(parsed.currentLeaves)
         ? parsed.currentLeaves.map(normalizeLeave).filter(Boolean)
         : DEFAULT_LEAVES_SEED.map(normalizeLeave);
       offlineMutationQueue = Array.isArray(parsed.offlineMutationQueue) ? parsed.offlineMutationQueue : [];
@@ -4480,18 +4520,21 @@ function findLocalMemberByIdentifier(identifier) {
   const cleanIdent = String(identifier || '').trim().toLowerCase();
   if (!cleanIdent) return null;
   const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
+  const list = Array.isArray(membersDirectory) ? membersDirectory : [];
 
-  for (const m of (membersDirectory || [])) {
-    if (!m) continue;
-    const mId = String(m.id || '').trim().toLowerCase();
-    const mStudentCode = String(m.studentCode || '').trim().toLowerCase();
-    const mName = String(m.hoTen || '').trim().toLowerCase();
-    const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
-    if (mId === cleanIdent || (mStudentCode && mStudentCode === cleanIdent) || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
-      return structuredClone(m);
-    }
+  const exactId = list.find(m => m && String(m.id || '').trim().toLowerCase() === cleanIdent);
+  if (exactId) return structuredClone(exactId);
+
+  const exactStudentCode = list.find(m => m && String(m.studentCode || '').trim().toLowerCase() === cleanIdent);
+  if (exactStudentCode) return structuredClone(exactStudentCode);
+
+  if (cleanPhone.length >= 9) {
+    const exactPhone = list.find(m => m && String(m.sdt || '').replace(/[^0-9]/g, '') === cleanPhone);
+    if (exactPhone) return structuredClone(exactPhone);
   }
-  return null;
+
+  const exactName = list.find(m => m && String(m.hoTen || '').trim().toLowerCase() === cleanIdent);
+  return exactName ? structuredClone(exactName) : null;
 }
 
 function togglePasswordVisibility() {
@@ -4760,9 +4803,7 @@ function executeLogoutAction() {
 }
 
 // === sync.js ===
-// SportPass V8.6 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
-
-let syncDebounceTimer = null;
+// SportPass V8.7 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
 
 function enqueueOfflineMutation(type, payload) {
   offlineMutationQueue.push({
@@ -4796,21 +4837,39 @@ function dispatchBackendMutation(type, payload) {
   }
 }
 
-function syncOfflineMutations(isManual = false) {
-  if (!navigator.onLine || offlineMutationQueue.length === 0) return;
+async function syncOfflineMutations(isManual = false) {
+  if (!navigator.onLine || !Array.isArray(offlineMutationQueue) || offlineMutationQueue.length === 0) return;
   const batch = offlineMutationQueue.splice(0, offlineMutationQueue.length);
   saveLocalState();
 
+  const failed = [];
+  let pushedCount = 0;
+
   for (const mut of batch) {
-    const url = buildMutationUrl(mut);
-    if (!url) continue;
-    fetch(url).catch(() => {
-      offlineMutationQueue.push(mut);
-      saveLocalState();
-    });
+    try {
+      if (mut && mut.type === 'CREATE_TASK') {
+        await fetch(`${GAS_API_URL}?action=createTask`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'createTask', task: mut.payload })
+        });
+        pushedCount++;
+      } else {
+        const url = buildMutationUrl(mut);
+        if (!url) continue;
+        await fetch(url);
+        pushedCount++;
+      }
+    } catch (e) {
+      failed.push(mut);
+    }
   }
 
-  if (isManual) showToast(`Đã đẩy ${batch.length} thay đổi lên máy chủ.`);
+  if (failed.length > 0) {
+    offlineMutationQueue.push(...failed);
+    saveLocalState();
+  }
+  if (isManual && pushedCount > 0) showToast(`Đã đẩy ${pushedCount} thay đổi lên máy chủ.`);
 }
 
 async function syncTaskToBackend(task) {
@@ -4833,6 +4892,9 @@ async function syncTaskToBackend(task) {
 async function syncRealtimeData() {
   if (!currentUser || !navigator.onLine) return;
   try {
+    if (offlineMutationQueue.length > 0) {
+      await syncOfflineMutations(false);
+    }
     const res = await fetch(`${GAS_API_URL}?action=syncAll&memberId=${encodeURIComponent(currentUser.id)}`);
     const data = await res.json();
     if (!data || !data.success) return;
@@ -4850,12 +4912,15 @@ async function syncRealtimeData() {
       const preservedAvatar = currentUser.avatar || '';
       const preservedStudentCode = currentUser.studentCode || '';
       const preservedDob = currentUser.ngaySinh || '';
-      const preservedActivities = Number(currentUser.soCaSinhHoat) || 0;
+      const remoteStudentCode = String(data.member.studentCode || '').trim();
       currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
       if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
-      if (preservedStudentCode && preservedStudentCode !== currentUser.id) currentUser.studentCode = preservedStudentCode;
-      if (preservedDob) currentUser.ngaySinh = preservedDob;
-      currentUser.soCaSinhHoat = Math.max(currentUser.soCaSinhHoat || 0, preservedActivities);
+      if ((!remoteStudentCode || remoteStudentCode === currentUser.id) && preservedStudentCode && preservedStudentCode !== currentUser.id) {
+        currentUser.studentCode = preservedStudentCode;
+      }
+      if ((!data.member.ngaySinh || !DOB_REGEX.test(String(data.member.ngaySinh).trim())) && preservedDob) {
+        currentUser.ngaySinh = preservedDob;
+      }
       applyMemberOverrides(membersDirectory);
       window.currentUser = currentUser;
     }
@@ -4890,11 +4955,6 @@ async function syncRealtimeData() {
   }
 }
 
-function triggerInstantSync(delay = 80) {
-  if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
-  syncDebounceTimer = setTimeout(() => { syncRealtimeData(); }, delay);
-}
-
 function restartAdaptivePolling() {
   if (currentSyncPollTimer) {
     clearInterval(currentSyncPollTimer);
@@ -4906,6 +4966,10 @@ function restartAdaptivePolling() {
     }
   }, 20000);
 }
+
+window.addEventListener('online', () => {
+  if (currentUser) syncRealtimeData();
+});
 
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && currentUser && navigator.onLine) {
@@ -4922,7 +4986,7 @@ function parseShiftTimeRange(timeStr) {
   if (!m) return null;
   const start = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
   const end = parseInt(m[3], 10) * 60 + parseInt(m[4], 10);
-  const day = String(m[5] || '').trim().toLowerCase();
+  const day = String(m[5] || '').trim().replace(/^\((.*)\)$/, '$1').trim().toLowerCase();
   return { start, end, day };
 }
 
@@ -4931,8 +4995,9 @@ function checkShiftTimeConflict(taskA, taskB) {
   const rA = parseShiftTimeRange(taskA.time || taskA.timeRange);
   const rB = parseShiftTimeRange(taskB.time || taskB.timeRange);
   if (!rA || !rB) return false;
-  const dayA = String(taskA.date || rA.day || '').trim().toLowerCase();
-  const dayB = String(taskB.date || rB.day || '').trim().toLowerCase();
+  const normDay = (v) => String(v || '').trim().replace(/^\((.*)\)$/, '$1').trim().toLowerCase();
+  const dayA = normDay(taskA.date || rA.day);
+  const dayB = normDay(taskB.date || rB.day);
   if (dayA && dayB && dayA !== dayB) return false;
   return rA.start < rB.end && rB.start < rA.end;
 }
@@ -4961,11 +5026,23 @@ function calculateSmartRotation(task) {
     : [];
 
   const isActivity = task.category === 'activity';
+  const memberMatchesDept = (m, dept) => Boolean(m && (m.boMon === dept || (Array.isArray(m.cacBan) && m.cacBan.includes(dept))));
 
   const pickForBucket = (deptFilter, neededCount) => {
+    let remaining = Number(neededCount) || 0;
+    if (deptFilter) {
+      let alreadyInDept = 0;
+      for (const eid of existing) {
+        const em = (membersDirectory || []).find(x => x && x.id === eid);
+        if (memberMatchesDept(em, deptFilter)) alreadyInDept++;
+      }
+      remaining = Math.max(0, remaining - alreadyInDept);
+    }
+    if (remaining <= 0) return;
+
     const candidates = (membersDirectory || []).filter(m => {
       if (!m || !m.id || usedIds.has(m.id)) return false;
-      if (deptFilter && m.boMon !== deptFilter && !(Array.isArray(m.cacBan) && m.cacBan.includes(deptFilter))) return false;
+      if (deptFilter && !memberMatchesDept(m, deptFilter)) return false;
       const healthSource = (m.yTe && m.yTe !== 'Bình thường') ? m.yTe : m.theTrang;
       const theme = getTheTrangTheme(healthSource);
       if (theme.exempt) return false;
@@ -4973,18 +5050,22 @@ function calculateSmartRotation(task) {
       return true;
     });
 
-    candidates.sort((a, b) => {
-      const aVal = isActivity ? (Number(a.soCaSinhHoat) || 0) : (Number(a.soCaHoanThanh ?? a.soCa ?? 0) || 0);
-      const bVal = isActivity ? (Number(b.soCaSinhHoat) || 0) : (Number(b.soCaHoanThanh ?? b.soCa ?? 0) || 0);
-      return aVal - bVal;
-    });
+    const getSortScore = (m) => {
+      if (typeof computeMemberStats === 'function') {
+        const st = computeMemberStats(m);
+        return isActivity ? st.activitiesCount : st.shiftsCount;
+      }
+      return isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+    };
+
+    candidates.sort((a, b) => getSortScore(a) - getSortScore(b));
 
     for (const m of candidates) {
       if (picked.length + existing.size >= totalQuota) break;
-      if (neededCount <= 0) break;
+      if (remaining <= 0) break;
       usedIds.add(m.id);
       picked.push({ member: m, dept: deptFilter || m.boMon || 'CLB Thể Thao' });
-      neededCount--;
+      remaining--;
     }
   };
 
@@ -5216,12 +5297,14 @@ function renderScannerCheckedInList() {
 
   const rows = checked.map((mid) => {
     const member = (membersDirectory || []).find(m => m && m.id === mid);
+    const displayCode = member ? getDisplayStudentCode(member) : mid;
+    const codeLabel = (member && displayCode !== mid) ? `${displayCode} (${mid})` : mid;
     return el('div', { className: 'member-pill-row', style: { padding: '8px 10px' } },
       el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', minWidth: '0', flex: '1' } },
         el('div', { className: 'avatar-initials-circle solid', style: { width: '30px', height: '30px', fontSize: '10.5px' } }, getSportPassInitials(member ? member.hoTen : mid)),
         el('div', { style: { minWidth: '0', flex: '1' } },
           el('div', { style: { fontSize: '12.5px', fontWeight: '700', color: 'var(--text-primary)' }, className: 'truncate' }, member ? member.hoTen : mid),
-          el('div', { className: 'font-mono', style: { fontSize: '10.5px', color: 'var(--text-muted)' } }, mid)
+          el('div', { className: 'font-mono', style: { fontSize: '10.5px', color: 'var(--text-muted)' } }, codeLabel)
         )
       ),
       el('span', { className: 'ready-badge-pill' }, 'Đã vào ca')
@@ -5345,7 +5428,7 @@ function handleScanQrPayload(rawCode) {
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
   } else if (trimmed.startsWith('#')) {
-    memberId = trimmed.slice(1).split(/[\s·-]+/)[0];
+    memberId = trimmed.slice(1).split(/[\s·]+/)[0];
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {
@@ -5371,21 +5454,22 @@ function handleQrCheckinAction(taskId, memberId) {
     return;
   }
   const cleanCode = String(memberId || '').trim().toUpperCase();
-  const targetMember = (membersDirectory || []).find(
-    m => m && (
-      String(m.id || '').toUpperCase() === cleanCode ||
-      String(m.studentCode || '').toUpperCase() === cleanCode
-    )
-  );
+  const dir = membersDirectory || [];
+  const targetMember =
+    dir.find(m => m && String(m.id || '').toUpperCase() === cleanCode) ||
+    dir.find(m => m && String(m.studentCode || '').toUpperCase() === cleanCode);
   if (!targetMember) {
     showToast(`Không tìm thấy hội viên với mã ${cleanCode || '(trống)'}.`);
     return;
   }
 
   const canonicalId = targetMember.id;
-  const task = (currentTasks || []).find(t => t.id === taskId) || currentTasks[0];
+  const tasksList = currentTasks || [];
+  const task = (taskId && taskId !== 'GENERAL')
+    ? tasksList.find(t => t && t.id === taskId)
+    : tasksList[0];
   if (!task) {
-    showToast('Chưa có ca trực để điểm danh.');
+    showToast(taskId && taskId !== 'GENERAL' ? `Không tìm thấy ca trực ${taskId} để điểm danh.` : 'Chưa có ca trực để điểm danh.');
     return;
   }
 
@@ -5402,7 +5486,7 @@ function handleQrCheckinAction(taskId, memberId) {
     });
 
     const metric = task.category === 'activity' ? 'activity' : 'shift';
-    adjustMemberCounter(canonicalId, metric, 1);
+    adjustMemberCounter(canonicalId, metric, 1, 'task');
     if (currentUser && currentUser.id === canonicalId) {
       renderProfileData();
     }
@@ -5450,7 +5534,7 @@ function triggerHaptic(type = 'light') {
 }
 
 function autoEnableBackgroundNotifications() {
-  if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+  if (navigator && navigator.serviceWorker && window.location.protocol !== 'file:') {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       if ('sync' in reg) reg.sync.register('check-tasks').catch(() => {});
     }).catch(() => {});
@@ -5726,6 +5810,7 @@ async function closeSheetDialog(id) {
 
   if (id === 'approve-shift-modal') stopQrCameraStream();
   if (id === 'qr-modal') stopQrCountdown();
+  if (id === 'create-shift-modal') editingTaskId = null;
   if (id === 'success-celebration-modal' && celebrationTimer) {
     clearInterval(celebrationTimer);
     celebrationTimer = null;
@@ -6135,7 +6220,7 @@ function renderMembersModalList() {
           el('div', { className: `avatar-initials-circle${isMe ? ' solid' : ''}` }, getSportPassInitials(m.hoTen)),
           el('div', { style: { minWidth: '0', flex: '1' } },
             el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' }, className: 'truncate' }, `${m.hoTen}${isMe ? ' (Bạn)' : ''}`),
-            el('div', { style: { fontSize: '11.5px', color: '#0369a1' }, className: 'truncate' }, `${m.chucVu} • ${m.lop}`)
+            el('div', { style: { fontSize: '11.5px', color: '#0369a1' }, className: 'truncate' }, `${getDisplayStudentCode(m)} · ${m.chucVu} • ${m.lop}`)
           )
         ),
         el('span', { className: 'ready-badge-pill' }, m.status || 'Sẵn sàng')
@@ -6178,17 +6263,47 @@ async function saveEditProfileAction() {
   const newName = (document.getElementById('input-fullname')?.value || '').trim();
   const newStudentCode = (document.getElementById('input-studentId')?.value || '').trim();
   const newFaculty = (document.getElementById('input-faculty')?.value || '').trim();
-  const newDob = (document.getElementById('input-dob')?.value || '').trim();
+  let newDob = (document.getElementById('input-dob')?.value || '').trim();
   const newArea = (document.getElementById('input-dutyArea')?.value || '').trim();
   const newRole = (document.getElementById('input-role')?.value || '').trim();
   const newPhone = (document.getElementById('input-phone')?.value || '').trim();
   const newIce = (document.getElementById('input-ice')?.value || '').trim();
 
+  if (newStudentCode) {
+    const codeUpper = newStudentCode.toUpperCase();
+    const conflict = (membersDirectory || []).find(m =>
+      m && m.id !== currentUser.id && (
+        String(m.id || '').toUpperCase() === codeUpper ||
+        String(m.studentCode || '').toUpperCase() === codeUpper
+      )
+    );
+    if (conflict) {
+      showToast(`Mã số sinh viên ${newStudentCode} đã được dùng bởi ${conflict.hoTen}.`);
+      document.getElementById('input-studentId')?.focus();
+      return;
+    }
+  }
+
+  if (newDob) {
+    const dobParts = newDob.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (dobParts) {
+      newDob = `${dobParts[1].padStart(2, '0')}/${dobParts[2].padStart(2, '0')}/${dobParts[3]}`;
+    }
+    if (!DOB_REGEX.test(newDob)) {
+      showToast('Ngày sinh cần đúng định dạng DD/MM/YYYY (ví dụ: 08/06/2003).');
+      document.getElementById('input-dob')?.focus();
+      return;
+    }
+  }
+
   if (newName) currentUser.hoTen = newName;
   currentUser.studentCode = newStudentCode || currentUser.id;
   if (newFaculty) currentUser.lop = newFaculty;
   if (newDob) currentUser.ngaySinh = newDob;
-  if (newArea) currentUser.boMon = newArea;
+  if (newArea) {
+    currentUser.boMon = newArea;
+    currentUser.cacBan = Array.from(new Set([...(Array.isArray(currentUser.cacBan) ? currentUser.cacBan : []), newArea]));
+  }
   if (newRole) currentUser.chucVu = newRole;
   currentUser.sdt = newPhone;
   currentUser.ice = newIce;
@@ -6199,6 +6314,7 @@ async function saveEditProfileAction() {
     lop: currentUser.lop,
     ngaySinh: currentUser.ngaySinh,
     boMon: currentUser.boMon,
+    cacBan: Array.isArray(currentUser.cacBan) ? currentUser.cacBan.slice() : [currentUser.boMon],
     chucVu: currentUser.chucVu,
     sdt: currentUser.sdt,
     ice: currentUser.ice
@@ -6207,9 +6323,6 @@ async function saveEditProfileAction() {
   for (const m of (membersDirectory || [])) {
     if (m.id === currentUser.id) {
       Object.assign(m, patch);
-      if (newArea && Array.isArray(m.cacBan) && !m.cacBan.includes(newArea)) {
-        m.cacBan.push(newArea);
-      }
     }
   }
 
@@ -6695,8 +6808,10 @@ function renderDispatchHub() {
       mount(container, el('div', { className: 'empty-card' }, 'Hiện chưa có đơn đổi ca nào đang chờ duyệt.'));
       return;
     }
-    const cards = pendingSwaps.map((s) =>
-      el('article', { className: 'dispatch-card', dataset: { reqId: s.id } },
+    const cards = pendingSwaps.map((s) => {
+      const fromMember = (membersDirectory || []).find(m => m && m.id === s.fromId);
+      const fromCode = fromMember ? getDisplayStudentCode(fromMember) : s.fromId;
+      return el('article', { className: 'dispatch-card', dataset: { reqId: s.id } },
         el('div', { className: 'dispatch-head' },
           el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0', flex: '1' } },
             el('div', { className: 'avatar-initials-circle' }, getSportPassInitials(s.fromName)),
@@ -6705,7 +6820,7 @@ function renderDispatchHub() {
                 el('span', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, s.fromName),
                 s.fromClass ? el('span', { style: { fontSize: '10.5px', background: 'var(--surface-chip)', color: 'var(--text-secondary)', padding: '1px 6px', borderRadius: '5px', fontWeight: '600' } }, s.fromClass) : null
               ),
-              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, `MSSV: ${s.fromId}`)
+              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, `MSSV: ${fromCode}`)
             )
           ),
           el('span', { className: 'role-pill-badge' }, 'Đổi ca')
@@ -6728,8 +6843,8 @@ function renderDispatchHub() {
           el('button', { type: 'button', className: 'btn-card-reject', onClick: (ev) => animateAndResolveSwap(ev, s.id, false) }, 'Từ chối'),
           el('button', { type: 'button', className: 'btn-card-approve water-ripple-target', onClick: (ev) => animateAndResolveSwap(ev, s.id, true) }, '✓ Phê duyệt')
         )
-      )
-    );
+      );
+    });
     mount(container, cards);
     return;
   }
@@ -6815,6 +6930,10 @@ function applySwapApproval(swap) {
     task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
     task.assignedMembers = (task.assignedMembers || []).filter(id => id !== swap.fromId);
     task.waitlist = Array.isArray(task.waitlist) ? task.waitlist : [];
+    if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(swap.fromId)) {
+      task.checkedInMembers = task.checkedInMembers.filter(id => id !== swap.fromId);
+      adjustMemberCounter(swap.fromId, task.category === 'activity' ? 'activity' : 'shift', -1, 'task');
+    }
     if (swap.toId && !swap.toId.startsWith('CA_')) {
       const targetExists = (membersDirectory || []).some(m => m && m.id === swap.toId);
       if (targetExists && !task.joinedMembers.includes(swap.toId) && !task.assignedMembers.includes(swap.toId)) {
@@ -6843,7 +6962,7 @@ function applyLeaveApproval(leave) {
 
     if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(leave.memberId)) {
       task.checkedInMembers = task.checkedInMembers.filter(id => id !== leave.memberId);
-      adjustMemberCounter(leave.memberId, task.category === 'activity' ? 'activity' : 'shift', -1);
+      adjustMemberCounter(leave.memberId, task.category === 'activity' ? 'activity' : 'shift', -1, 'task');
     }
 
     const { occupied, quota } = getTaskOccupancy(task);
@@ -7107,7 +7226,10 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     mount(listBox, cards.length ? cards : el('div', { className: 'empty-card' }, 'Chưa có ca trực khả dụng.'));
   }
 
-  const myTasks = activeTasks.filter(t => getTaskOccupancy(t, uid).isMine);
+  const myTasks = activeTasks.filter(t => {
+    const occ = getTaskOccupancy(t, uid);
+    return occ.isMine && !occ.isChecked;
+  });
 
   const selTask = document.getElementById('selMissionTaskId');
   const btnSwap = document.getElementById('btnSubmitMemberSwap');
@@ -7139,9 +7261,19 @@ function renderMissionSheetPanels(preselectTaskId = null) {
 
   const reqBox = document.getElementById('memberMyRequestsList');
   if (reqBox && uid) {
+    const normalizeReqStatus = (raw) => {
+      const s = String(raw || 'pending').trim().toLowerCase();
+      if (s === 'approved' || s.startsWith('đã rút')) return 'approved';
+      if (s === 'rejected') return 'rejected';
+      return 'pending';
+    };
     const mine = [
-      ...(currentSwaps || []).filter(s => s.fromId === uid).map(s => ({ kind: 'swap', id: s.id, title: `Đổi ca: ${s.currentShift || s.taskId}`, sub: `${s.toName || 'Chờ điều phối'} · ${s.reason}`, status: s.status })),
-      ...(currentLeaves || []).filter(l => l.memberId === uid).map(l => ({ kind: 'leave', id: l.id, title: `Xin rút ca: ${l.taskId}`, sub: l.reason, status: l.status }))
+      ...(currentSwaps || [])
+        .filter(s => s.fromId === uid && s.taskId !== 'SHIFT_ADJUST')
+        .map(s => ({ kind: 'swap', id: s.id, title: `Đổi ca: ${s.currentShift || s.taskId}`, sub: `${s.toName || 'Chờ điều phối'} · ${s.reason}`, status: normalizeReqStatus(s.status) })),
+      ...(currentLeaves || [])
+        .filter(l => l.memberId === uid)
+        .map(l => ({ kind: 'leave', id: l.id, title: `Xin rút ca: ${l.taskId}`, sub: l.reason, status: normalizeReqStatus(l.status) }))
     ];
     if (mine.length === 0) {
       mount(reqBox, el('div', { className: 'empty-card', style: { padding: '12px' } }, 'Bạn chưa gửi yêu cầu đổi hoặc rút ca nào.'));

@@ -190,12 +190,14 @@ function renderScannerCheckedInList() {
 
   const rows = checked.map((mid) => {
     const member = (membersDirectory || []).find(m => m && m.id === mid);
+    const displayCode = member ? getDisplayStudentCode(member) : mid;
+    const codeLabel = (member && displayCode !== mid) ? `${displayCode} (${mid})` : mid;
     return el('div', { className: 'member-pill-row', style: { padding: '8px 10px' } },
       el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', minWidth: '0', flex: '1' } },
         el('div', { className: 'avatar-initials-circle solid', style: { width: '30px', height: '30px', fontSize: '10.5px' } }, getSportPassInitials(member ? member.hoTen : mid)),
         el('div', { style: { minWidth: '0', flex: '1' } },
           el('div', { style: { fontSize: '12.5px', fontWeight: '700', color: 'var(--text-primary)' }, className: 'truncate' }, member ? member.hoTen : mid),
-          el('div', { className: 'font-mono', style: { fontSize: '10.5px', color: 'var(--text-muted)' } }, mid)
+          el('div', { className: 'font-mono', style: { fontSize: '10.5px', color: 'var(--text-muted)' } }, codeLabel)
         )
       ),
       el('span', { className: 'ready-badge-pill' }, 'Đã vào ca')
@@ -319,7 +321,7 @@ function handleScanQrPayload(rawCode) {
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
   } else if (trimmed.startsWith('#')) {
-    memberId = trimmed.slice(1).split(/[\s·-]+/)[0];
+    memberId = trimmed.slice(1).split(/[\s·]+/)[0];
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {
@@ -345,21 +347,22 @@ function handleQrCheckinAction(taskId, memberId) {
     return;
   }
   const cleanCode = String(memberId || '').trim().toUpperCase();
-  const targetMember = (membersDirectory || []).find(
-    m => m && (
-      String(m.id || '').toUpperCase() === cleanCode ||
-      String(m.studentCode || '').toUpperCase() === cleanCode
-    )
-  );
+  const dir = membersDirectory || [];
+  const targetMember =
+    dir.find(m => m && String(m.id || '').toUpperCase() === cleanCode) ||
+    dir.find(m => m && String(m.studentCode || '').toUpperCase() === cleanCode);
   if (!targetMember) {
     showToast(`Không tìm thấy hội viên với mã ${cleanCode || '(trống)'}.`);
     return;
   }
 
   const canonicalId = targetMember.id;
-  const task = (currentTasks || []).find(t => t.id === taskId) || currentTasks[0];
+  const tasksList = currentTasks || [];
+  const task = (taskId && taskId !== 'GENERAL')
+    ? tasksList.find(t => t && t.id === taskId)
+    : tasksList[0];
   if (!task) {
-    showToast('Chưa có ca trực để điểm danh.');
+    showToast(taskId && taskId !== 'GENERAL' ? `Không tìm thấy ca trực ${taskId} để điểm danh.` : 'Chưa có ca trực để điểm danh.');
     return;
   }
 
@@ -376,7 +379,7 @@ function handleQrCheckinAction(taskId, memberId) {
     });
 
     const metric = task.category === 'activity' ? 'activity' : 'shift';
-    adjustMemberCounter(canonicalId, metric, 1);
+    adjustMemberCounter(canonicalId, metric, 1, 'task');
     if (currentUser && currentUser.id === canonicalId) {
       renderProfileData();
     }

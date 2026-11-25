@@ -104,10 +104,3 @@ const DEFAULT_LEAVES_SEED = [
     status: 'pending'
   }
 ];
-
-const THE_TRANG_OPTIONS = [
-  { label: 'Khỏe mạnh (100% Sẵn sàng)', short: 'Khỏe mạnh (100%)', tone: 'success', exempt: false },
-  { label: 'Hồi phục nhẹ (Hỗ trợ bàn)', short: 'Hồi phục nhẹ', tone: 'warning', exempt: false },
-  { label: 'Chấn thương nhẹ (Tạm miễn trực)', short: 'Miễn trực (Y tế)', tone: 'danger', exempt: true },
-  { label: 'Nghỉ ốm / Y tế', short: 'Nghỉ ốm (Miễn trực)', tone: 'danger', exempt: true }
-];

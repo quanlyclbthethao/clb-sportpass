@@ -24,18 +24,21 @@ function findLocalMemberByIdentifier(identifier) {
   const cleanIdent = String(identifier || '').trim().toLowerCase();
   if (!cleanIdent) return null;
   const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
+  const list = Array.isArray(membersDirectory) ? membersDirectory : [];
 
-  for (const m of (membersDirectory || [])) {
-    if (!m) continue;
-    const mId = String(m.id || '').trim().toLowerCase();
-    const mStudentCode = String(m.studentCode || '').trim().toLowerCase();
-    const mName = String(m.hoTen || '').trim().toLowerCase();
-    const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
-    if (mId === cleanIdent || (mStudentCode && mStudentCode === cleanIdent) || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
-      return structuredClone(m);
-    }
+  const exactId = list.find(m => m && String(m.id || '').trim().toLowerCase() === cleanIdent);
+  if (exactId) return structuredClone(exactId);
+
+  const exactStudentCode = list.find(m => m && String(m.studentCode || '').trim().toLowerCase() === cleanIdent);
+  if (exactStudentCode) return structuredClone(exactStudentCode);
+
+  if (cleanPhone.length >= 9) {
+    const exactPhone = list.find(m => m && String(m.sdt || '').replace(/[^0-9]/g, '') === cleanPhone);
+    if (exactPhone) return structuredClone(exactPhone);
   }
-  return null;
+
+  const exactName = list.find(m => m && String(m.hoTen || '').trim().toLowerCase() === cleanIdent);
+  return exactName ? structuredClone(exactName) : null;
 }
 
 function togglePasswordVisibility() {

@@ -24,7 +24,7 @@ function triggerHaptic(type = 'light') {
 }
 
 function autoEnableBackgroundNotifications() {
-  if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+  if (navigator && navigator.serviceWorker && window.location.protocol !== 'file:') {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       if ('sync' in reg) reg.sync.register('check-tasks').catch(() => {});
     }).catch(() => {});

@@ -123,17 +123,23 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.wait_for_timeout(150)
         self.assertEqual(page.locator('dialog[open]').count(), 0)
 
-        # Verify hero card name has vertical padding so Vietnamese stacked diacritics are never clipped
+        # Verify hero card name has vertical padding & never truncates Vietnamese names at 375px
         h1_metrics = page.evaluate('''() => {
             const h1 = document.getElementById('card-heading');
             const cs = getComputedStyle(h1);
+            const orig = h1.textContent;
+            h1.textContent = 'NGUYỄN TRẦN HUYỀN HẠNH';
+            const longOverflow = h1.scrollWidth > h1.clientWidth + 1;
+            h1.textContent = orig;
             return {
                 paddingTop: parseFloat(cs.paddingTop),
-                lineHeightRatio: parseFloat(cs.lineHeight) / parseFloat(cs.fontSize)
+                lineHeightRatio: parseFloat(cs.lineHeight) / parseFloat(cs.fontSize),
+                longOverflow
             };
         }''')
         self.assertGreaterEqual(h1_metrics['paddingTop'], 3.0)
         self.assertGreaterEqual(h1_metrics['lineHeightRatio'], 1.38)
+        self.assertFalse(h1_metrics['longOverflow'], 'Long Vietnamese hero name truncated horizontally!')
 
         # 2. Members directory modal (merged 118 unique members + multi-dept filter + boundary counter test)
         page.click('#members-trigger')
@@ -154,11 +160,16 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.click('#members-modal-close')
         page.wait_for_timeout(320)
 
-        # 3. Edit profile (including editable MSSV) persists across full page reload & works for login/search
+        # 3. Edit profile (reject colliding MSSV, then save editable MSSV across reload & login)
         page.click('#edit-profile-trigger')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#edit-profile-modal', 'el => el.open'))
         self.assertFalse(page.eval_on_selector('#input-studentId', 'el => el.readOnly'))
+        page.fill('#input-studentId', 'NDA0407')
+        page.click('#edit-modal-save')
+        page.wait_for_timeout(200)
+        self.assertTrue(page.eval_on_selector('#edit-profile-modal', 'el => el.open'))
+        self.assertIn('đã được dùng', page.text_content('#toast-text'))
         page.fill('#input-studentId', '21103100806')
         page.fill('#input-faculty', 'K13.GDTC-PRO')
         page.fill('#input-phone', '0987654321')
@@ -244,6 +255,22 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         self.assertTrue(swapped_ok)
         page.screenshot(path=str(SHOTS_DIR / '07_celebration_dispatch_popup.png'))
         page.click('#celebration-confirm-btn')
+        page.wait_for_timeout(320)
+
+        # Verify Admin -1 SH -> +1 SH works even after QR check-in (1 -> 0 -> 1)
+        page.click('#members-trigger')
+        page.wait_for_timeout(340)
+        page.fill('#iptSearchMembers', 'NDA0407')
+        page.wait_for_timeout(150)
+        self.assertIn('+1 SH (1)', page.text_content('#membersModalList'))
+        page.locator('#membersModalList button:has-text("-1 SH")').first.click()
+        page.wait_for_timeout(120)
+        self.assertIn('+1 SH (0)', page.text_content('#membersModalList'))
+        page.locator('#membersModalList button:has-text("+1 SH")').first.click()
+        page.wait_for_timeout(120)
+        self.assertIn('+1 SH (1)', page.text_content('#membersModalList'))
+        page.fill('#iptSearchMembers', '')
+        page.click('#members-modal-close')
         page.wait_for_timeout(320)
 
         # 6. Slim Settings Modal (Theme + Password + Logout only) & Real Password Rejection
