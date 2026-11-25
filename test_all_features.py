@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-SportPass V8.5 (Aquamorphic Varsity Pass & Modal Suite) — Static & Domain Integrity Suite
-Verifies:
-1. Complete removal of Forum
-2. Ocean Login portal, 5-block main UI + Admin/Member switcher + 10 native <dialog closedby="any"> modals
-3. 125 official UHD SportPass members & sole root Admin DMC0806
-4. Production hygiene (zero cdn.tailwindcss.com, zero .innerHTML=, SHA-384 SRI, single <h1>)
-5. Google Apps Script MultiSheet backend integration preserved
+SportPass V8.6 (Real Account RBAC, Slim Settings & Top-Layer Motion) — Static & Domain Integrity Suite
 """
 
 import json
@@ -24,7 +18,7 @@ MEMBERS_JS_PATH = os.path.join(BASE_DIR, 'src', 'data', 'members.js')
 GAS_MULTI_PATH = os.path.join(BASE_DIR, 'GoogleAppsScript_MultiSheet.js')
 
 
-class TestSportPassV85Architecture(unittest.TestCase):
+class TestSportPassV86Architecture(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         with open(INDEX_PATH, 'r', encoding='utf-8') as f:
@@ -34,21 +28,29 @@ class TestSportPassV85Architecture(unittest.TestCase):
         with open(GAS_MULTI_PATH, 'r', encoding='utf-8') as f:
             cls.gas_multi = f.read()
 
-    def test_forum_completely_removed(self):
-        for forbidden in ('DEFAULT_COMMUNITY_POSTS', 'renderForumFeed', 'tabContentForum', 'deletePost', 'createPost'):
-            self.assertNotIn(forbidden, self.html, f'Forum artifact still present: {forbidden}')
+    def test_bloat_and_mock_role_switcher_removed(self):
+        removed_tokens = (
+            'DEFAULT_COMMUNITY_POSTS', 'renderForumFeed', 'tabContentForum',
+            'role-preview-dock', 'role-switch-member', 'role-switch-admin', 'setRolePreviewMode',
+            'switchFaceId', 'switchRemoteLock', 'switchTilt3d', 'switchUrgentNotifs', 'switchHaptics',
+            'lang-btn-vn', 'lang-btn-en', 'terms-privacy-row', 'qr-locked-notice'
+        )
+        for token in removed_tokens:
+            self.assertNotIn(token, self.html, f'Removed/bloated token still present: {token}')
 
-    def test_v85_modals_and_canonical_ids_present(self):
+    def test_v86_canonical_and_slim_ids_present(self):
         required_ids = [
             'viewLoginContainer', 'btnLoginSubmit', 'btnFaceIdLogin', 'btnTouchIdLogin', 'btnForgotPass',
-            'role-badge', 'notification-trigger', 'members-trigger', 'settings-trigger',
+            'role-badge', 'notification-trigger', 'notification-dot', 'members-trigger', 'settings-trigger',
             'hero-card-wrap', 'hero-interactive-card', 'card-pattern',
-            'hero-status-pill', 'hero-avatar-img', 'card-heading', 'card-mssv', 'qr-modal-trigger',
+            'hero-status-pill', 'hero-avatar-btn', 'card-heading', 'card-mssv', 'qr-modal-trigger',
+            'selQrPassTask', 'qr-checkin-status-pill',
             'stat-shifts', 'stat-efficiency', 'stat-rating',
             'admin-create-shift-btn', 'admin-approve-btn', 'member-register-btn', 'member-swap-btn',
-            'role-preview-dock', 'role-switch-member', 'role-switch-admin',
-            'edit-profile-trigger', 'display-fullname', 'display-studentId', 'display-faculty',
-            'display-dob', 'display-dutyArea', 'display-role', 'display-phone', 'display-ice',
+            'edit-profile-trigger', 'btnAvatarThumbTrigger', 'display-fullname', 'display-studentId',
+            'display-faculty', 'display-dob', 'display-dutyArea', 'display-role', 'display-phone', 'display-ice',
+            'theme-btn-light', 'theme-btn-dark', 'theme-btn-system', 'security-password-row', 'password-status-desc',
+            'selTaskLeader', 'scannerCheckedInList', 'memberMyRequestsList', 'password-form',
             'qr-modal', 'notification-modal', 'members-modal', 'settings-modal',
             'edit-profile-modal', 'create-shift-modal', 'approve-shift-modal', 'task-mission-modal',
             'password-modal', 'success-celebration-modal', 'logout-btn'
@@ -57,7 +59,7 @@ class TestSportPassV85Architecture(unittest.TestCase):
             self.assertIn(f'id="{eid}"', self.html, f'Missing element #{eid}')
 
     def test_single_h1_and_native_dialog_light_dismiss(self):
-        markup = re.sub(r'<script\b[^>]*>[\s\S]*?</script>', '', self.html, flags=re.I)
+        markup = re.sub(r'<(script|style)\b[^>]*>[\s\S]*?</\1>', '', self.html, flags=re.I)
         h1_matches = re.findall(r'<h1\b', markup, re.I)
         self.assertEqual(len(h1_matches), 1, f'Expected exactly 1 <h1>, found {len(h1_matches)}')
         dialogs = re.findall(r'<dialog\b[^>]*>', markup, re.I)
@@ -84,7 +86,7 @@ class TestSportPassV85Architecture(unittest.TestCase):
         self.assertEqual(len({x.get('boMon') for x in members}), 7)
 
     def test_gas_backend_sync_actions_present(self):
-        for action in ('login', 'syncAll', 'updateProfile', 'createTask', 'claimTask', 'withdrawTask', 'checkinMember', 'updateMemberRole'):
+        for action in ('login', 'syncAll', 'updateProfile', 'createTask', 'claimTask', 'withdrawTask', 'checkinMember', 'updateMemberRole', 'adjustMemberShifts'):
             self.assertIn(action, self.html)
             self.assertIn(action, self.gas_multi)
 

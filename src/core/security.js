@@ -1,4 +1,4 @@
-// SportPass V8.5 — Security, Auth Session Lifecycle, Biometric Quick Unlock & Sole Admin Protection
+// SportPass V8.6 — Security, Auth Session Lifecycle, WebAuthn Passkey & Strict Password Enforcement
 
 function escapeHtml(str) {
   if (str === undefined || str === null) return '';
@@ -22,6 +22,35 @@ function isAuthorizedScanner(user = currentUser) {
     cv.includes('ban chủ nhiệm') ||
     bm.includes('ban chủ nhiệm')
   );
+}
+
+function verifyMemberPassword(memberId, inputPass) {
+  const customPass = localStorage.getItem('CLB_USER_PASS_' + memberId);
+  const expectedPass = customPass !== null ? customPass : '123456';
+  return String(inputPass || '') === expectedPass;
+}
+
+function findLocalMemberByIdentifier(identifier) {
+  const cleanIdent = String(identifier || '').trim().toLowerCase();
+  if (!cleanIdent) return null;
+  const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
+
+  let matched = null;
+  for (const m of (membersDirectory || [])) {
+    if (!m) continue;
+    const mId = String(m.id || '').trim().toLowerCase();
+    const mName = String(m.hoTen || '').trim().toLowerCase();
+    const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
+    if (mId === cleanIdent || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
+      if (!matched) {
+        matched = structuredClone(m);
+      } else {
+        matched.isAdmin = matched.isAdmin || m.isAdmin;
+        matched.isShiftLeader = matched.isShiftLeader || m.isShiftLeader;
+      }
+    }
+  }
+  return matched;
 }
 
 function togglePasswordVisibility() {
@@ -61,7 +90,6 @@ function persistUserSession(userObj) {
 }
 
 function checkStoredLoginSession() {
-  loadAppPreferences();
   const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');
   const sessionCached = sessionStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const localCached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
@@ -92,8 +120,7 @@ function checkStoredLoginSession() {
         currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
       }
 
-      applyCustomAdminRoles(membersDirectory);
-      currentRolePreviewMode = currentUser.isAdmin ? 'admin' : 'member';
+      applyMemberOverrides(membersDirectory);
       showMainAppView();
       renderProfileData();
       renderDispatchHub();
@@ -111,33 +138,15 @@ function checkStoredLoginSession() {
 }
 
 function fallbackOfflineLogin(user, pass, remember) {
-  const cleanIdent = String(user || '').trim().toLowerCase();
-  const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
-
-  let matched = null;
-  for (const m of membersDirectory) {
-    const mId = String(m.id || '').trim().toLowerCase();
-    const mName = String(m.hoTen || '').trim().toLowerCase();
-    const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
-    if (mId === cleanIdent || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
-      if (!matched) {
-        matched = structuredClone(m);
-      } else {
-        matched.isAdmin = matched.isAdmin || m.isAdmin;
-        matched.isShiftLeader = matched.isShiftLeader || m.isShiftLeader;
-      }
-    }
-  }
-
+  const matched = findLocalMemberByIdentifier(user);
   if (!matched) {
     showToast('Không tìm thấy tài khoản hội viên. Kiểm tra Mã ID hoặc SĐT.');
     return false;
   }
 
-  const customPassKey = 'CLB_USER_PASS_' + matched.id;
-  const savedPass = localStorage.getItem(customPassKey) || '123456';
-  if (pass !== savedPass && pass !== '123456') {
-    showToast('Mật khẩu chưa chính xác. Mặc định là 123456.');
+  if (!verifyMemberPassword(matched.id, pass)) {
+    const hasCustom = localStorage.getItem('CLB_USER_PASS_' + matched.id) !== null;
+    showToast(hasCustom ? 'Mật khẩu chưa chính xác.' : 'Mật khẩu chưa chính xác. Mặc định là 123456.');
     return false;
   }
 
@@ -147,9 +156,8 @@ function fallbackOfflineLogin(user, pass, remember) {
 
 function completeUserLogin(memberObj, remember) {
   currentUser = structuredClone(memberObj);
-  applyCustomAdminRoles(membersDirectory);
+  applyMemberOverrides(membersDirectory);
   window.currentUser = currentUser;
-  currentRolePreviewMode = currentUser.isAdmin ? 'admin' : 'member';
 
   const sessionStr = JSON.stringify(currentUser);
   sessionStorage.setItem('CLB_SPORTPASS_AUTH_SESSION', sessionStr);
@@ -203,8 +211,7 @@ async function handleLoginSubmit(event) {
       const res = await fetch(`${GAS_API_URL}?action=login&identifier=${encodeURIComponent(ident)}`);
       const data = await res.json();
       if (data && data.success && data.member) {
-        const savedPass = localStorage.getItem('CLB_USER_PASS_' + data.member.id) || '123456';
-        if (pass === savedPass || pass === '123456') {
+        if (verifyMemberPassword(data.member.id, pass)) {
           completeUserLogin(data.member, remember);
           return;
         }
@@ -219,25 +226,95 @@ async function handleLoginSubmit(event) {
   fallbackOfflineLogin(ident, pass, remember);
 }
 
-function handleBiometricLogin(methodLabel) {
-  const lastId = localStorage.getItem('CLB_LAST_MEMBER_ID') || '';
-  if (!appPreferences.faceId) {
-    showToast('Tính năng đăng nhập sinh trắc học đang tắt trong Cài đặt.');
+function bufferToBase64Url(buf) {
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function base64UrlToUint8Array(b64u) {
+  const b64 = String(b64u || '').replace(/-/g, '+').replace(/_/g, '/');
+  const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+  const bin = atob(b64 + pad);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function handleBiometricLogin(methodLabel) {
+  if (!window.PublicKeyCredential || !window.isSecureContext || !navigator.credentials) {
+    showToast('Trình duyệt hoặc kết nối chưa hỗ trợ sinh trắc học WebAuthn. Vui lòng đăng nhập bằng mật khẩu.');
+    document.getElementById('iptUser')?.focus();
     return;
   }
-  if (!lastId) {
-    showToast(`Nhập MSSV và mật khẩu 1 lần đầu để liên kết ${methodLabel}.`);
-    const identEl = document.getElementById('iptUser');
-    if (identEl) identEl.focus();
-    return;
+
+  let binding = null;
+  try {
+    const raw = localStorage.getItem('CLB_PASSKEY_BINDING');
+    if (raw) binding = JSON.parse(raw);
+  } catch (e) {}
+
+  if (binding && binding.memberId && binding.credIdB64) {
+    const boundMember = findLocalMemberByIdentifier(binding.memberId);
+    if (boundMember) {
+      try {
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const assertion = await navigator.credentials.get({
+          publicKey: {
+            challenge,
+            allowCredentials: [{ id: base64UrlToUint8Array(binding.credIdB64), type: 'public-key' }],
+            userVerification: 'required',
+            timeout: 30000
+          }
+        });
+        if (assertion) {
+          completeUserLogin(boundMember, true);
+          showToast(`Xác thực ${methodLabel} thành công: ${boundMember.hoTen}`);
+          return;
+        }
+      } catch (err) {
+        showToast(`Xác thực ${methodLabel} đã hủy hoặc không khớp trên thiết bị.`);
+        return;
+      }
+    }
   }
-  const found = (membersDirectory || []).find(m => m && m.id === lastId);
-  if (found) {
-    completeUserLogin(found, true);
-    showToast(`Xác thực ${methodLabel} thành công: ${found.hoTen}`);
-  } else {
-    showToast(`Không tìm thấy hồ sơ ${lastId} cho ${methodLabel}.`);
+
+  const ident = (document.getElementById('iptUser')?.value || '').trim();
+  const pass = (document.getElementById('iptPass')?.value || '').trim();
+  const candidate = ident ? findLocalMemberByIdentifier(ident) : null;
+
+  if (candidate && pass && verifyMemberPassword(candidate.id, pass)) {
+    try {
+      const challenge = crypto.getRandomValues(new Uint8Array(32));
+      const userId = new TextEncoder().encode(candidate.id);
+      const cred = await navigator.credentials.create({
+        publicKey: {
+          challenge,
+          rp: { name: 'SportPass Pro UHD' },
+          user: { id: userId, name: candidate.id, displayName: candidate.hoTen },
+          pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
+          authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+          timeout: 30000
+        }
+      });
+      if (cred && cred.rawId) {
+        localStorage.setItem('CLB_PASSKEY_BINDING', JSON.stringify({
+          memberId: candidate.id,
+          credIdB64: bufferToBase64Url(cred.rawId)
+        }));
+        completeUserLogin(candidate, true);
+        showToast(`Đã liên kết ${methodLabel} & đăng nhập: ${candidate.hoTen}`);
+        return;
+      }
+    } catch (err) {
+      showToast(`Thiết bị chưa hoàn tất tạo khóa ${methodLabel}. Vui lòng đăng nhập bằng mật khẩu.`);
+      return;
+    }
   }
+
+  showToast(`Đăng nhập bằng MSSV & mật khẩu trước, sau đó nhấn ${methodLabel} để liên kết thiết bị.`);
+  document.getElementById('iptUser')?.focus();
 }
 
 function executeLogoutAction() {

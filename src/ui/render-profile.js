@@ -1,4 +1,4 @@
-// SportPass V8.5 — Profile Hero, 8-Row Profile, Role Preview Switcher, Members Modal & Settings Modal
+// SportPass V8.6 — Profile Hero, Real Account RBAC, 8-Row Interactive Profile, Members Directory & Slim Settings
 
 async function compressImage(fileOrDataUrl, maxWidth = 320, maxHeight = 320, quality = 0.8) {
   return new Promise((resolve) => {
@@ -27,57 +27,43 @@ async function compressImage(fileOrDataUrl, maxWidth = 320, maxHeight = 320, qua
   });
 }
 
-function applyRolePreviewMode() {
-  const isRealAdmin = Boolean(currentUser && currentUser.isAdmin);
-  const dock = document.getElementById('role-preview-dock');
-  if (dock) dock.classList.toggle('hidden', !isRealAdmin);
-
-  const effectiveAdmin = isRealAdmin && (currentRolePreviewMode === 'admin');
+function applyAccountRoleUI() {
+  const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const adminActions = document.getElementById('quick-actions-admin');
   const memberActions = document.getElementById('quick-actions-member');
-  if (adminActions) adminActions.classList.toggle('hidden', !effectiveAdmin && !(currentUser && currentUser.isShiftLeader && currentRolePreviewMode !== 'member'));
-  if (memberActions) memberActions.classList.toggle('hidden', effectiveAdmin || (currentUser && currentUser.isShiftLeader && currentRolePreviewMode !== 'member'));
-
-  const swMember = document.getElementById('role-switch-member');
-  const swAdmin = document.getElementById('role-switch-admin');
-  if (swMember) swMember.classList.toggle('active', currentRolePreviewMode === 'member');
-  if (swAdmin) swAdmin.classList.toggle('active', currentRolePreviewMode === 'admin');
+  if (adminActions) adminActions.classList.toggle('hidden', !isAdmin);
+  if (memberActions) memberActions.classList.toggle('hidden', isAdmin);
 
   const roleBadge = document.getElementById('role-badge');
   if (roleBadge && currentUser) {
-    if (currentRolePreviewMode === 'member') {
-      roleBadge.textContent = 'THÀNH VIÊN';
-    } else {
-      roleBadge.textContent = currentUser.isAdmin ? 'ADMIN' : (currentUser.isShiftLeader ? 'TRƯỞNG CA' : 'HỘI VIÊN');
-    }
+    roleBadge.textContent = isAdmin ? 'ADMIN' : 'THÀNH VIÊN';
+    roleBadge.classList.toggle('hidden', !isAdmin);
   }
 }
 
-function setRolePreviewMode(mode) {
-  if (!currentUser || !currentUser.isAdmin) return;
-  currentRolePreviewMode = mode === 'member' ? 'member' : 'admin';
-  applyRolePreviewMode();
-  showToast(currentRolePreviewMode === 'member' ? 'Đang xem ở chế độ Thành viên' : 'Đang xem ở chế độ Admin');
+function extractPhoneDigits(text) {
+  const match = String(text || '').match(/\+?\d[\d\s.-]{6,}\d/);
+  return match ? match[0].replace(/[^0-9+]/g, '') : '';
 }
 
 function renderProfileData() {
   if (!currentUser) return;
-  applyCustomAdminRoles(membersDirectory);
+  applyMemberOverrides(membersDirectory);
 
   const isAdmin = Boolean(currentUser.isAdmin);
-  const shiftsCount = Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0);
+  const stats = computeMemberStats(currentUser);
   const avatarSrc = resolveAvatarUrl(currentUser);
   const studentCode = getDisplayStudentCode(currentUser);
   const dobText = formatMemberDob(currentUser);
   const phoneText = currentUser.sdt && String(currentUser.sdt).trim() ? String(currentUser.sdt).trim() : 'Chưa cập nhật';
   const iceText = currentUser.ice && String(currentUser.ice).trim()
     ? String(currentUser.ice).trim()
-    : (currentUser.sdt ? `${currentUser.sdt} (Gia đình)` : '0988 123 456 (Trực CLB)');
+    : (currentUser.sdt && String(currentUser.sdt).trim() ? String(currentUser.sdt).trim() : 'Chưa cập nhật');
 
   const hdrImg = document.getElementById('settings-trigger-avatar');
   if (hdrImg) {
     hdrImg.src = avatarSrc;
-    hdrImg.alt = currentUser.hoTen || 'Cài đặt ứng dụng';
+    hdrImg.alt = currentUser.hoTen || 'Cài đặt tài khoản';
   }
 
   const heroImg = document.getElementById('hero-avatar-img');
@@ -95,9 +81,9 @@ function renderProfileData() {
   safeSetText('card-subtitle', currentUser.chucVu || 'Thành viên CLB Thể Thao');
   safeSetText('card-mssv', studentCode);
 
-  safeSetText('stat-shifts', String(shiftsCount));
-  safeSetText('stat-efficiency', currentUser.onTimeRate || '98%');
-  safeSetText('stat-rating', formatShortTheTrang(currentUser.theTrang));
+  safeSetText('stat-shifts', String(stats.shiftsCount));
+  safeSetText('stat-efficiency', stats.onTimeText);
+  safeSetText('stat-rating', stats.gradeText);
 
   safeSetText('display-fullname', currentUser.hoTen || '');
   safeSetText('display-studentId', studentCode);
@@ -105,13 +91,21 @@ function renderProfileData() {
   safeSetText('display-dob', dobText);
   safeSetText('display-dutyArea', currentUser.boMon || 'Ban Nhân Sự');
   safeSetText('display-role', currentUser.chucVu || 'Thành viên');
-  safeSetText('display-ice', iceText);
 
   const phoneEl = document.getElementById('display-phone');
   if (phoneEl) {
     phoneEl.textContent = phoneText;
-    const digits = phoneText.replace(/[^0-9+]/g, '');
-    phoneEl.setAttribute('href', digits ? `tel:${digits}` : '#display-phone');
+    const digits = extractPhoneDigits(phoneText);
+    phoneEl.setAttribute('href', digits ? `tel:${digits}` : '#edit-profile-modal');
+    phoneEl.dataset.needsEdit = digits ? '0' : '1';
+  }
+
+  const iceEl = document.getElementById('display-ice');
+  if (iceEl) {
+    iceEl.textContent = iceText;
+    const iceDigits = extractPhoneDigits(iceText);
+    iceEl.setAttribute('href', iceDigits ? `tel:${iceDigits}` : '#edit-profile-modal');
+    iceEl.dataset.needsEdit = iceDigits ? '0' : '1';
   }
 
   // Sync Settings Mini Hero Card
@@ -123,30 +117,14 @@ function renderProfileData() {
   safeSetText('settings-role-kicker', isAdmin ? 'ĐIỀU PHỐI VIÊN' : String(currentUser.boMon || 'HỘI VIÊN CLB').toUpperCase());
   safeSetText('settings-name', currentUser.hoTen || 'Thành viên CLB');
   safeSetText('settings-submeta', `MSSV: ${studentCode} • ${currentUser.lop || 'UHD'}`);
-  safeSetText('settings-grade-badge', formatShortTheTrang(currentUser.theTrang));
+  safeSetText('settings-grade-badge', stats.gradeText);
+
+  const hasCustomPass = localStorage.getItem('CLB_USER_PASS_' + currentUser.id) !== null;
+  safeSetText('password-status-desc', hasCustomPass ? 'Đã thiết lập mật khẩu riêng' : 'Đang dùng mật khẩu mặc định (123456)');
 
   applyStatusBadgeStyle();
-  applyRolePreviewMode();
+  applyAccountRoleUI();
   updateQrPassDisplay();
-  syncSettingsSwitchesUI();
-}
-
-function syncSettingsSwitchesUI() {
-  const swFace = document.getElementById('switchFaceId');
-  const swLock = document.getElementById('switchRemoteLock');
-  const swTilt = document.getElementById('switchTilt3d');
-  const swNotif = document.getElementById('switchUrgentNotifs');
-  const swHaptic = document.getElementById('switchHaptics');
-  if (swFace) swFace.checked = Boolean(appPreferences.faceId);
-  if (swLock) swLock.checked = Boolean(appPreferences.remoteLock);
-  if (swTilt) swTilt.checked = Boolean(appPreferences.tilt3d);
-  if (swNotif) swNotif.checked = Boolean(appPreferences.urgentNotifs);
-  if (swHaptic) swHaptic.checked = Boolean(appPreferences.haptics);
-
-  const btnVn = document.getElementById('lang-btn-vn');
-  const btnEn = document.getElementById('lang-btn-en');
-  if (btnVn) btnVn.classList.toggle('active', appPreferences.lang !== 'EN');
-  if (btnEn) btnEn.classList.toggle('active', appPreferences.lang === 'EN');
 }
 
 function applyStatusBadgeStyle() {
@@ -163,30 +141,16 @@ function applyStatusBadgeStyle() {
 
 function cycleStatus(ev) {
   if (ev && ev.stopPropagation) ev.stopPropagation();
+  if (!currentUser) return;
   const states = ['Sẵn sàng', 'Đang bận', 'Tạm nghỉ'];
-  const cur = (currentUser && currentUser.status) ? currentUser.status : 'Sẵn sàng';
+  const cur = currentUser.status || 'Sẵn sàng';
   const next = states[(states.indexOf(cur) + 1) % states.length];
-  if (currentUser) {
-    currentUser.status = next;
-    persistUserSession(currentUser);
-  }
+  currentUser.status = next;
+  saveMemberOverride(currentUser.id, { status: next });
+  persistUserSession(currentUser);
   applyStatusBadgeStyle();
   renderMembersModalList();
   showToast(`Trạng thái: ${next}`);
-}
-
-function cycleReadinessRating() {
-  if (!currentUser) return;
-  const curIdx = THE_TRANG_OPTIONS.findIndex(o => o.label === currentUser.theTrang);
-  const nextOpt = THE_TRANG_OPTIONS[(Math.max(0, curIdx) + 1) % THE_TRANG_OPTIONS.length];
-  currentUser.theTrang = nextOpt.label;
-  for (const m of (membersDirectory || [])) {
-    if (m.id === currentUser.id) m.theTrang = nextOpt.label;
-  }
-  persistUserSession(currentUser);
-  saveLocalState();
-  renderProfileData();
-  showToast(`Thể trạng: ${nextOpt.short}`);
 }
 
 async function handleAvatarFileSelect(event) {
@@ -198,6 +162,7 @@ async function handleAvatarFileSelect(event) {
   for (const m of (membersDirectory || [])) {
     if (m.id === currentUser.id) m.avatar = compressed;
   }
+  saveMemberOverride(currentUser.id, { avatar: compressed });
   persistUserSession(currentUser);
   saveLocalState();
   renderProfileData();
@@ -206,7 +171,7 @@ async function handleAvatarFileSelect(event) {
   showToast('Đã cập nhật ảnh đại diện thành viên!');
 }
 
-// ==================== MEMBERS MODAL ("THÀNH VIÊN CLB" - SCREENSHOT 1) ====================
+// ==================== MEMBERS MODAL ("THÀNH VIÊN CLB") ====================
 function openMembersModal() {
   renderMembersModalList();
   openSheetDialog('members-modal');
@@ -231,7 +196,7 @@ function renderMembersModalList() {
   for (const m of (membersDirectory || [])) {
     if (m && m.id && !uniqueMap.has(m.id)) uniqueMap.set(m.id, m);
   }
-  let uniqueList = Array.from(uniqueMap.values());
+  const uniqueList = Array.from(uniqueMap.values());
   if (currentUser) {
     const idx = uniqueList.findIndex(m => m.id === currentUser.id);
     if (idx > 0) {
@@ -307,8 +272,8 @@ function renderMembersModalList() {
   mount(container, cards);
 }
 
-// ==================== EDIT PROFILE MODAL ("CHỈNH SỬA THÔNG TIN HỒ SƠ" - SCREENSHOT 5) ====================
-function openEditProfileModal() {
+// ==================== EDIT PROFILE MODAL ====================
+function openEditProfileModal(focusFieldId = null) {
   if (!currentUser) return;
   const previewImg = document.getElementById('edit-avatar-preview');
   if (previewImg) {
@@ -324,13 +289,16 @@ function openEditProfileModal() {
   safeSetValue('input-phone', currentUser.sdt || '');
   safeSetValue('input-ice', currentUser.ice || currentUser.sdt || '');
   openSheetDialog('edit-profile-modal');
+  if (focusFieldId && typeof focusFieldId === 'string') {
+    setTimeout(() => document.getElementById(focusFieldId)?.focus(), 100);
+  }
 }
 
 function closeEditProfileModal() {
-  closeSheetDialog('edit-profile-modal');
+  return closeSheetDialog('edit-profile-modal');
 }
 
-function saveEditProfileAction() {
+async function saveEditProfileAction() {
   if (!currentUser) return;
   const newName = (document.getElementById('input-fullname')?.value || '').trim();
   const newFaculty = (document.getElementById('input-faculty')?.value || '').trim();
@@ -345,60 +313,49 @@ function saveEditProfileAction() {
   if (newDob) currentUser.ngaySinh = newDob;
   if (newArea) currentUser.boMon = newArea;
   if (newRole) currentUser.chucVu = newRole;
-  if (newPhone) currentUser.sdt = newPhone;
-  if (newIce) currentUser.ice = newIce;
+  currentUser.sdt = newPhone;
+  currentUser.ice = newIce;
+
+  const patch = {
+    hoTen: currentUser.hoTen,
+    lop: currentUser.lop,
+    ngaySinh: currentUser.ngaySinh,
+    boMon: currentUser.boMon,
+    chucVu: currentUser.chucVu,
+    sdt: currentUser.sdt,
+    ice: currentUser.ice
+  };
 
   for (const m of (membersDirectory || [])) {
-    if (m.id === currentUser.id) {
-      m.hoTen = currentUser.hoTen;
-      m.lop = currentUser.lop;
-      m.ngaySinh = currentUser.ngaySinh;
-      m.boMon = currentUser.boMon;
-      m.chucVu = currentUser.chucVu;
-      m.sdt = currentUser.sdt;
-      m.ice = currentUser.ice;
-    }
+    if (m.id === currentUser.id) Object.assign(m, patch);
   }
 
+  saveMemberOverride(currentUser.id, patch);
   persistUserSession(currentUser);
   saveLocalState();
   renderProfileData();
   renderMembersModalList();
-  closeEditProfileModal();
+  dispatchBackendMutation('UPDATE_PROFILE', {
+    memberId: currentUser.id,
+    lop: currentUser.lop || '',
+    sdt: currentUser.sdt || '',
+    ice: currentUser.ice || '',
+    yTe: currentUser.yTe || 'Bình thường'
+  });
 
-  const url = `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(currentUser.id)}&lop=${encodeURIComponent(currentUser.lop || '')}&sdt=${encodeURIComponent(currentUser.sdt || '')}&ice=${encodeURIComponent(currentUser.ice || '')}&yTe=${encodeURIComponent(currentUser.yTe || 'Bình thường')}`;
-  if (navigator.onLine) {
-    fetch(url).catch(() => enqueueOfflineMutation('UPDATE_PROFILE', {
-      memberId: currentUser.id,
-      lop: currentUser.lop || '',
-      sdt: currentUser.sdt || '',
-      ice: currentUser.ice || '',
-      yTe: currentUser.yTe || 'Bình thường'
-    }));
-  } else {
-    enqueueOfflineMutation('UPDATE_PROFILE', {
-      memberId: currentUser.id,
-      lop: currentUser.lop || '',
-      sdt: currentUser.sdt || '',
-      ice: currentUser.ice || '',
-      yTe: currentUser.yTe || 'Bình thường'
-    });
-  }
-
-  setTimeout(() => {
-    openSuccessCelebration({
-      kicker: '• SPORTPASS PRO CLOUD',
-      title: 'Cập nhật hồ sơ thành công!',
-      descNodes: [
-        'Thông tin hồ sơ 8 trường của ',
-        el('strong', {}, currentUser.hoTen),
-        ' đã được lưu và đồng bộ an toàn vào hệ thống SportPass Pro.'
-      ]
-    });
-  }, 240);
+  await closeEditProfileModal();
+  openSuccessCelebration({
+    kicker: '• SPORTPASS PRO CLOUD',
+    title: 'Cập nhật hồ sơ thành công!',
+    descNodes: [
+      'Thông tin hồ sơ của ',
+      el('strong', {}, currentUser.hoTen),
+      ' đã được lưu và đồng bộ vào hệ thống SportPass.'
+    ]
+  });
 }
 
-// ==================== SETTINGS MODAL CONTROLS ====================
+// ==================== SETTINGS & PASSWORD MODAL CONTROLS ====================
 function openSettingsModal() {
   renderProfileData();
   syncThemeControlUI();
@@ -406,38 +363,39 @@ function openSettingsModal() {
 }
 
 function closeSettingsModal() {
-  closeSheetDialog('settings-modal');
+  return closeSheetDialog('settings-modal');
 }
 
 function openNotificationModal() {
   renderNotificationsModalList();
+  markNotificationsRead();
   openSheetDialog('notification-modal');
 }
 
 function closeNotificationModal() {
-  closeSheetDialog('notification-modal');
+  return closeSheetDialog('notification-modal');
 }
 
 function openChangePasswordModal() {
-  closeSheetDialog('settings-modal');
-  safeSetValue('iptCurrentPassword', '');
-  safeSetValue('iptNewPassword', '');
-  safeSetValue('iptConfirmPassword', '');
-  setTimeout(() => openSheetDialog('password-modal'), 230);
+  switchSheetDialog('settings-modal', 'password-modal', () => {
+    safeSetValue('iptCurrentPassword', '');
+    safeSetValue('iptNewPassword', '');
+    safeSetValue('iptConfirmPassword', '');
+  });
 }
 
 function closeChangePasswordModal() {
-  closeSheetDialog('password-modal');
+  return closeSheetDialog('password-modal');
 }
 
-function submitChangePassword() {
+async function submitChangePassword(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
   if (!currentUser) return;
   const curPass = (document.getElementById('iptCurrentPassword')?.value || '').trim();
   const newPass = (document.getElementById('iptNewPassword')?.value || '').trim();
   const confirmPass = (document.getElementById('iptConfirmPassword')?.value || '').trim();
-  const savedPass = localStorage.getItem('CLB_USER_PASS_' + currentUser.id) || '123456';
 
-  if (curPass !== savedPass) {
+  if (!verifyMemberPassword(currentUser.id, curPass)) {
     showToast('Mật khẩu hiện tại chưa chính xác.');
     return;
   }
@@ -451,12 +409,11 @@ function submitChangePassword() {
   }
 
   localStorage.setItem('CLB_USER_PASS_' + currentUser.id, newPass);
-  closeChangePasswordModal();
-  setTimeout(() => {
-    openSuccessCelebration({
-      kicker: '• SPORTPASS PRO SECURITY',
-      title: 'Đổi mật khẩu thành công!',
-      descNodes: ['Mật khẩu tài khoản ', el('strong', {}, currentUser.id), ' đã được cập nhật trên thiết bị này.']
-    });
-  }, 240);
+  renderProfileData();
+  await closeChangePasswordModal();
+  openSuccessCelebration({
+    kicker: '• SPORTPASS PRO SECURITY',
+    title: 'Đổi mật khẩu thành công!',
+    descNodes: ['Mật khẩu tài khoản ', el('strong', {}, currentUser.id), ' đã được cập nhật và kích hoạt ngay.']
+  });
 }

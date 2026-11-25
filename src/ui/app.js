@@ -1,4 +1,4 @@
-// SportPass V8.5 — Global Event Binding, Public Bridge & App Bootstrapper
+// SportPass V8.6 — Global Event Binding, Public Bridge & App Bootstrapper
 
 function bindUiListeners() {
   const on = (id, ev, fn) => {
@@ -9,7 +9,7 @@ function bindUiListeners() {
   // Login Gateway
   on('login-form', 'submit', handleLoginSubmit);
   on('btnTogglePass', 'click', togglePasswordVisibility);
-  on('btnForgotPass', 'click', () => showToast('Mật khẩu mặc định là 123456. Liên hệ DMC0806 nếu quên mật khẩu mới.'));
+  on('btnForgotPass', 'click', () => showToast('Mật khẩu mặc định là 123456. Liên hệ Trưởng ban Nhân sự DMC0806 để cấp lại mật khẩu.'));
   on('btnFaceIdLogin', 'click', () => handleBiometricLogin('Face ID'));
   on('btnTouchIdLogin', 'click', () => handleBiometricLogin('Touch ID'));
 
@@ -25,26 +25,44 @@ function bindUiListeners() {
     document.getElementById('hero-avatar-input')?.click();
   });
   on('hero-avatar-input', 'change', handleAvatarFileSelect);
+  on('btnAvatarThumbTrigger', 'click', () => document.getElementById('edit-avatar-input')?.click());
   on('btnTriggerEditAvatar', 'click', () => document.getElementById('edit-avatar-input')?.click());
   on('edit-avatar-input', 'change', handleAvatarFileSelect);
-  on('qr-modal-trigger', 'click', openQrModal);
+  on('qr-modal-trigger', 'click', () => openQrModal());
   on('qr-modal-close', 'click', closeQrModal);
-
-  // Performance Stats interactive triggers
-  on('stat-shifts-btn', 'click', () => openApproveShiftModal('shifts'));
-  on('stat-efficiency-btn', 'click', () => {
-    openApproveShiftModal('shifts');
-    showToast('Tỷ lệ đúng giờ được tính từ lịch sử check-in QR.');
+  on('selQrPassTask', 'change', (e) => {
+    activeQrTaskId = e.target.value;
+    updateQrPassDisplay();
   });
-  on('stat-rating-btn', 'click', cycleReadinessRating);
 
-  // Role Preview Switcher ("Thành viên | Admin") & Quick Actions
-  on('role-switch-member', 'click', () => setRolePreviewMode('member'));
-  on('role-switch-admin', 'click', () => setRolePreviewMode('admin'));
+  // Performance Stats -> Role-accurate Triggers
+  const openShiftHubByRole = () => {
+    if (currentUser && currentUser.isAdmin) openApproveShiftModal('shifts');
+    else openTaskMissionModal('shifts');
+  };
+  on('stat-shifts-btn', 'click', openShiftHubByRole);
+  on('stat-efficiency-btn', 'click', openShiftHubByRole);
+  on('stat-rating-btn', 'click', () => openEditProfileModal());
+
+  // Role-Locked Quick Actions
   on('admin-create-shift-btn', 'click', () => openCreateShiftModal(null));
   on('admin-approve-btn', 'click', () => openApproveShiftModal('swap'));
   on('member-register-btn', 'click', () => openTaskMissionModal('shifts'));
   on('member-swap-btn', 'click', () => openTaskMissionModal('swap'));
+
+  // Profile Inline Quick Edit when Phone or ICE not yet set
+  on('display-phone', 'click', (e) => {
+    if (e.currentTarget && e.currentTarget.dataset.needsEdit === '1') {
+      e.preventDefault();
+      openEditProfileModal('input-phone');
+    }
+  });
+  on('display-ice', 'click', (e) => {
+    if (e.currentTarget && e.currentTarget.dataset.needsEdit === '1') {
+      e.preventDefault();
+      openEditProfileModal('input-ice');
+    }
+  });
 
   // Members Modal
   on('members-modal-close', 'click', closeMembersModal);
@@ -52,75 +70,44 @@ function bindUiListeners() {
   on('iptSearchMembers', 'input', renderMembersModalList);
 
   // Edit Profile Modal
-  on('edit-profile-trigger', 'click', openEditProfileModal);
+  on('edit-profile-trigger', 'click', () => openEditProfileModal());
   on('edit-modal-close', 'click', closeEditProfileModal);
   on('edit-modal-cancel', 'click', closeEditProfileModal);
   on('edit-modal-save', 'click', saveEditProfileAction);
 
-  // Notifications & Settings Modals
+  // Notifications & Slim Settings Modals
   on('notification-modal-close', 'click', closeNotificationModal);
   on('notification-dismiss-btn', 'click', closeNotificationModal);
   on('settings-modal-close', 'click', closeSettingsModal);
+  on('theme-btn-light', 'click', (e) => { e.stopPropagation(); setColorScheme('light', true); });
+  on('theme-btn-dark', 'click', (e) => { e.stopPropagation(); setColorScheme('dark', true); });
+  on('theme-btn-system', 'click', (e) => { e.stopPropagation(); setColorScheme('system', true); });
   on('theme-toggle-row', 'click', cycleThemeMode);
   on('security-password-row', 'click', openChangePasswordModal);
-  on('terms-privacy-row', 'click', () => showToast('Dữ liệu hội viên được bảo mật nội bộ CLB Thể Thao ĐH Hải Dương.'));
   on('logout-btn', 'click', executeLogoutAction);
-
-  // Settings Toggles & Language
-  on('switchFaceId', 'change', (e) => {
-    appPreferences.faceId = Boolean(e.target.checked);
-    saveAppPreferences();
-    showToast(appPreferences.faceId ? 'Đã bật xác thực Face ID / Touch ID' : 'Đã tắt đăng nhập sinh trắc học');
-  });
-  on('switchRemoteLock', 'change', (e) => {
-    appPreferences.remoteLock = Boolean(e.target.checked);
-    saveAppPreferences();
-    updateQrPassDisplay();
-    showToast(appPreferences.remoteLock ? 'Đã kích hoạt khóa thẻ QR từ xa' : 'Đã mở khóa thẻ QR');
-  });
-  on('switchTilt3d', 'change', (e) => {
-    appPreferences.tilt3d = Boolean(e.target.checked);
-    saveAppPreferences();
-    showToast(appPreferences.tilt3d ? 'Đã bật hiệu ứng 3D Tilt & Gợn sóng' : 'Đã tắt hiệu ứng 3D Tilt');
-  });
-  on('switchUrgentNotifs', 'change', (e) => {
-    appPreferences.urgentNotifs = Boolean(e.target.checked);
-    saveAppPreferences();
-    showToast(appPreferences.urgentNotifs ? 'Đã bật chuông cảnh báo ca khẩn cấp' : 'Đã tắt cảnh báo ca khẩn cấp');
-  });
-  on('switchHaptics', 'change', (e) => {
-    appPreferences.haptics = Boolean(e.target.checked);
-    saveAppPreferences();
-  });
-  on('lang-btn-vn', 'click', () => {
-    appPreferences.lang = 'VI';
-    saveAppPreferences();
-    syncSettingsSwitchesUI();
-    showToast('Ngôn ngữ: Tiếng Việt');
-  });
-  on('lang-btn-en', 'click', () => {
-    appPreferences.lang = 'EN';
-    saveAppPreferences();
-    syncSettingsSwitchesUI();
-    showToast('Language: English labels prioritized');
-  });
 
   // Change Password Modal
   on('password-modal-close', 'click', closeChangePasswordModal);
   on('password-modal-cancel', 'click', closeChangePasswordModal);
+  on('password-form', 'submit', submitChangePassword);
   on('btnSavePassword', 'click', submitChangePassword);
 
   // Create Shift Modal
   on('create-shift-close', 'click', closeCreateShiftModal);
   on('create-shift-cancel', 'click', closeCreateShiftModal);
   on('btnAddDeptQuotaRow', 'click', addDeptQuotaRow);
-  on('btnCycleLeader', 'click', cycleShiftLeader);
+  on('selTaskLeader', 'change', (e) => {
+    selectedShiftLeaderId = e.target.value;
+    updateSelectedLeaderCard();
+  });
+  on('iptTaskLocation', 'input', (e) => renderAreaPresetCards(e.target.value));
+  on('iptTaskTime', 'input', (e) => syncPresetTimeButtons(e.target.value));
   on('btnSubmitTask', 'click', submitCreateShiftAction);
   document.querySelectorAll('#preset-time-container .preset-time-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#preset-time-container .preset-time-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      safeSetValue('iptTaskTime', btn.dataset.time || '14:00 - 18:00');
+      safeSetValue('iptTaskTime', btn.dataset.time || '13:30 - 17:30');
     });
   });
 
@@ -131,11 +118,18 @@ function bindUiListeners() {
   on('approve-tab-shifts', 'click', () => switchApproveTab('shifts'));
   on('approve-tab-scanner', 'click', () => switchApproveTab('scanner'));
   on('btnApproveAllRequests', 'click', approveAllPendingRequests);
+  on('selScanTaskId', 'change', renderScannerCheckedInList);
   on('btnStartCameraScan', 'click', () => startQrScanner());
   on('btnSwitchCameraScan', 'click', toggleCameraFacing);
   on('btnTorchCameraScan', 'click', toggleTorchFlash);
   on('iptQrFileUpload', 'change', handleQrFileSelected);
   on('btnManualCheckin', 'click', () => handleScanQrPayload(document.getElementById('iptManualCheckinId')?.value || ''));
+  on('iptManualCheckinId', 'keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleScanQrPayload(document.getElementById('iptManualCheckinId')?.value || '');
+    }
+  });
 
   // Member Task Mission Modal
   on('task-mission-close', 'click', closeTaskMissionModal);
@@ -154,16 +148,17 @@ function exposeGlobalBridge() {
   window.DEFAULT_MEMBERS_DIRECTORY = DEFAULT_MEMBERS_DIRECTORY;
   window.ALL_DEPARTMENTS = ALL_DEPARTMENTS;
   window.DEFAULT_TASKS = DEFAULT_TASKS;
-  window.currentUser = currentUser;
-  window.membersDirectory = membersDirectory;
-  window.currentTasks = currentTasks;
-  window.currentSwaps = currentSwaps;
-  window.currentLeaves = currentLeaves;
+  Object.defineProperties(window, {
+    currentUser: { configurable: true, get: () => currentUser, set: (v) => { currentUser = v; } },
+    membersDirectory: { configurable: true, get: () => membersDirectory, set: (v) => { membersDirectory = v; } },
+    currentTasks: { configurable: true, get: () => currentTasks, set: (v) => { currentTasks = v; } },
+    currentSwaps: { configurable: true, get: () => currentSwaps, set: (v) => { currentSwaps = v; } },
+    currentLeaves: { configurable: true, get: () => currentLeaves, set: (v) => { currentLeaves = v; } }
+  });
 
   window.handleLoginSubmit = handleLoginSubmit;
   window.fallbackOfflineLogin = fallbackOfflineLogin;
   window.executeLogoutAction = executeLogoutAction;
-  window.setRolePreviewMode = setRolePreviewMode;
   window.renderProfileData = renderProfileData;
   window.openMembersModal = openMembersModal;
   window.openEditProfileModal = openEditProfileModal;

@@ -1,4 +1,4 @@
-// SportPass V8.5 — Canonical Reactive State, Preferences, Tombstones, Deduplication & RBAC
+// SportPass V8.6 — Canonical Reactive State, Member Overrides, Tombstones, Deduplication & RBAC
 
 let currentUser = null;
 let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined') ? DEFAULT_MEMBERS_DIRECTORY.slice() : [];
@@ -7,43 +7,14 @@ let currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
 let currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
 let offlineMutationQueue = [];
 
-let currentRolePreviewMode = 'admin'; // 'admin' or 'member' (visible only when currentUser.isAdmin)
+let activeQrTaskId = null;
+let unreadNotifSignature = '';
 let currentApproveSubTab = 'swap'; // 'swap' | 'leave' | 'shifts' | 'scanner'
-let currentMissionTab = 'create'; // 'approvals' | 'create' | 'swap'
+let currentMissionTab = 'shifts'; // 'shifts' | 'swap'
 let currentDirDeptFilter = 'ALL';
 let editingTaskId = null;
 let selectedShiftLeaderId = 'DMC0806';
-let pendingSmartRotationCandidates = [];
-let pendingSmartRotationTaskId = null;
 let currentSyncPollTimer = null;
-
-let appPreferences = {
-  tilt3d: true,
-  haptics: true,
-  urgentNotifs: true,
-  faceId: true,
-  remoteLock: false,
-  lang: 'VI'
-};
-
-function loadAppPreferences() {
-  try {
-    const raw = localStorage.getItem('CLB_SPORTPASS_PREFS');
-    if (raw) {
-      appPreferences = Object.assign({}, appPreferences, JSON.parse(raw));
-    }
-  } catch (e) {}
-  document.documentElement.dataset.tilt = appPreferences.tilt3d ? 'on' : 'off';
-  document.documentElement.lang = appPreferences.lang === 'EN' ? 'en' : 'vi';
-}
-
-function saveAppPreferences() {
-  try {
-    localStorage.setItem('CLB_SPORTPASS_PREFS', JSON.stringify(appPreferences));
-  } catch (e) {}
-  document.documentElement.dataset.tilt = appPreferences.tilt3d ? 'on' : 'off';
-  document.documentElement.lang = appPreferences.lang === 'EN' ? 'en' : 'vi';
-}
 
 function safeSetText(id, text) {
   const node = document.getElementById(id);
@@ -69,6 +40,14 @@ function resolveAvatarUrl(member) {
   return DEFAULT_VARSITY_AVATAR;
 }
 
+function formatTodayVN(offsetDays = 1) {
+  const d = new Date(Date.now() + Number(offsetDays || 0) * 86400000);
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
 function formatMemberDob(member) {
   if (!member) return '08/06/2003';
   if (member.ngaySinh && /\d{2}\/\d{2}\/\d{4}/.test(String(member.ngaySinh))) return String(member.ngaySinh).trim();
@@ -91,12 +70,6 @@ function getDisplayStudentCode(member) {
   return member.id || 'SP0000';
 }
 
-function getMemberEmail(member) {
-  if (!member) return 'member@uhd.sportpass.vn';
-  if (member.email && String(member.email).trim()) return String(member.email).trim();
-  return `${String(member.id || 'member').toLowerCase()}@uhd.sportpass.vn`;
-}
-
 function getTheTrangTheme(theTrang) {
   const raw = String(theTrang || '');
   const lower = raw.toLowerCase();
@@ -115,6 +88,76 @@ function formatShortTheTrang(theTrang) {
   if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Miễn trực';
   if (lower.includes('hồi phục')) return 'B';
   return 'A+';
+}
+
+function computeMemberStats(member) {
+  if (!member) return { shiftsCount: 0, onTimeText: '100%', gradeText: 'A+' };
+  const uid = String(member.id || '').trim();
+  let checkedInTotal = 0;
+  const completedOrLocked = [];
+  const now = Date.now();
+
+  for (const t of (currentTasks || [])) {
+    if (!t) continue;
+    const isChecked = Array.isArray(t.checkedInMembers) && t.checkedInMembers.includes(uid);
+    if (isChecked) checkedInTotal++;
+    const isAssignedOrJoined =
+      (Array.isArray(t.joinedMembers) && t.joinedMembers.includes(uid)) ||
+      (Array.isArray(t.assignedMembers) && t.assignedMembers.includes(uid));
+    if (isAssignedOrJoined) {
+      const deadlineMs = t.lockDeadline ? Date.parse(t.lockDeadline) : NaN;
+      const pastDeadline = Number.isFinite(deadlineMs) && deadlineMs < now;
+      if (isChecked || pastDeadline) completedOrLocked.push(isChecked);
+    }
+  }
+
+  const shiftsCount = Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0), checkedInTotal);
+  let onTimeText = '100%';
+  if (completedOrLocked.length > 0) {
+    const attended = completedOrLocked.filter(Boolean).length;
+    onTimeText = `${Math.round((attended / completedOrLocked.length) * 100)}%`;
+  } else if (shiftsCount === 0 && member.onTimeRate) {
+    onTimeText = String(member.onTimeRate);
+  }
+
+  return {
+    shiftsCount,
+    onTimeText,
+    gradeText: formatShortTheTrang(member.theTrang)
+  };
+}
+
+// ==================== PERSISTENT MEMBER OVERRIDES ====================
+function getMemberOverrides() {
+  try {
+    return JSON.parse(localStorage.getItem('CLB_MEMBER_OVERRIDES') || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveMemberOverride(memberId, patch) {
+  if (!memberId || !patch || typeof patch !== 'object') return;
+  const all = getMemberOverrides();
+  all[memberId] = Object.assign({}, all[memberId] || {}, patch);
+  try {
+    localStorage.setItem('CLB_MEMBER_OVERRIDES', JSON.stringify(all));
+  } catch (e) {}
+}
+
+function applyMemberOverrides(members) {
+  const all = getMemberOverrides();
+  if (Array.isArray(members)) {
+    for (const m of members) {
+      if (m && m.id && all[m.id]) {
+        Object.assign(m, all[m.id]);
+      }
+    }
+  }
+  if (currentUser && currentUser.id && all[currentUser.id]) {
+    Object.assign(currentUser, all[currentUser.id]);
+  }
+  applyCustomAdminRoles(members);
 }
 
 // ==================== TOMBSTONES ANTI-RESURRECTION ====================

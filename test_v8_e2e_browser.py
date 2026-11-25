@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-SportPass V8.5 — Full Browser E2E, 3-Viewport Logged-In Audit & V8.5 Modal Screenshots
+SportPass V8.6 — Real Account RBAC, Slim Settings, Accurate Triggers & End-to-End Browser Verification
 """
 
 import sys
@@ -14,13 +14,13 @@ if sys.platform == 'win32':
 BASE_DIR = Path(__file__).resolve().parent
 INDEX_URL = (BASE_DIR / 'index.html').as_uri()
 AUDITOR_DIR = Path(r'C:\Users\Admin\.gemini\config\skills\omni-app-studio\scripts')
-SHOTS_DIR = Path(r'C:\Users\Admin\.gemini\antigravity\brain\f504c5bf-4fbe-4426-a4f4-b601c663d25d\shots_v85')
+SHOTS_DIR = Path(r'C:\Users\Admin\.gemini\antigravity\brain\f504c5bf-4fbe-4426-a4f4-b601c663d25d\shots_v86')
 
 sys.path.insert(0, str(AUDITOR_DIR))
 from live_dom_auditor import DOM_PROBE_JS, VIEWPORTS  # noqa: E402
 
 
-class TestSportPassV85BrowserE2E(unittest.TestCase):
+class TestSportPassV86BrowserE2E(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         SHOTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -60,10 +60,10 @@ class TestSportPassV85BrowserE2E(unittest.TestCase):
             page.fill('#iptPass', '123456')
             page.click('#btnLoginSubmit')
             page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
-            page.wait_for_timeout(3250)
+            page.wait_for_timeout(1200)
 
             metrics = page.evaluate(DOM_PROBE_JS)
-            page.screenshot(path=str(SHOTS_DIR / f'01_main_{vp_name}_{width}x{height}.png'))
+            page.screenshot(path=str(SHOTS_DIR / f'01_main_admin_{vp_name}_{width}x{height}.png'))
 
             self.assertEqual(len(console_errors), 0, f'{vp_name} console errors: {console_errors}')
             self.assertEqual(len(page_errors), 0, f'{vp_name} page errors: {page_errors}')
@@ -71,9 +71,28 @@ class TestSportPassV85BrowserE2E(unittest.TestCase):
             self.assertEqual(metrics['brokenImages'], [], f'{vp_name} broken imgs: {metrics["brokenImages"]}')
             self.assertEqual(metrics['sub24Targets'], [], f'{vp_name} sub-24px targets: {metrics["sub24Targets"]}')
             self.assertEqual(metrics['contrastFailures'], [], f'{vp_name} contrast failures: {metrics["contrastFailures"]}')
+
+            if vp_name == 'mobile':
+                page.click('#settings-trigger')
+                page.wait_for_timeout(320)
+                page.click('#logout-btn')
+                page.wait_for_selector('#viewLoginContainer:not(.hidden)')
+                page.fill('#iptUser', 'NDA0407')
+                page.fill('#iptPass', '123456')
+                page.click('#btnLoginSubmit')
+                page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
+                page.wait_for_timeout(700)
+                self.assertFalse(page.is_visible('#role-badge'))
+                self.assertFalse(page.is_visible('#quick-actions-admin'))
+                self.assertTrue(page.is_visible('#quick-actions-member'))
+                m_metrics = page.evaluate(DOM_PROBE_JS)
+                self.assertEqual(m_metrics['overflowPx'], 0)
+                self.assertEqual(m_metrics['contrastFailures'], [])
+                page.screenshot(path=str(SHOTS_DIR / '10_member_main_mobile.png'))
+
             ctx.close()
 
-    def test_all_v85_modals_role_switch_and_celebration_popups(self):
+    def test_real_rbac_triggers_slim_settings_and_end_to_end_flows(self):
         ctx = self.browser.new_context(viewport={'width': 375, 'height': 812})
         self._attach_gas_mock(ctx)
         page = ctx.new_page()
@@ -82,97 +101,202 @@ class TestSportPassV85BrowserE2E(unittest.TestCase):
         page.on('console', lambda m: errors.append(m.text) if m.type == 'error' else None)
 
         page.goto(INDEX_URL, wait_until='domcontentloaded')
+
+        # 1. Login as real Admin DMC0806
         page.fill('#iptUser', 'DMC0806')
         page.fill('#iptPass', '123456')
         page.click('#btnLoginSubmit')
         page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
-        page.wait_for_timeout(500)
+        page.wait_for_timeout(450)
 
-        # Verify Admin mode badges and Members Modal (Screenshot 1)
+        self.assertEqual(page.locator('#role-preview-dock').count(), 0)
         self.assertEqual(page.text_content('#role-badge').strip(), 'ADMIN')
-        self.assertEqual(page.text_content('#approve-btn-label').strip(), 'Duyệt ca (3)')
+        self.assertTrue(page.is_visible('#quick-actions-admin'))
+        self.assertFalse(page.is_visible('#quick-actions-member'))
+
+        # 2. Members directory modal
         page.click('#members-trigger')
-        page.wait_for_timeout(360)
+        page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#members-modal', 'el => el.open'))
         self.assertIn('Đỗ Mạnh Cường (Bạn)', page.text_content('#membersModalList'))
         self.assertIn('/ 125', page.text_content('#membersCountBadge'))
         page.screenshot(path=str(SHOTS_DIR / '02_members_modal.png'))
         page.click('#members-modal-close')
-        page.wait_for_timeout(280)
+        page.wait_for_timeout(320)
 
-        # Toggle Member View Preview (Screenshot 10) & open Task Mission Modal (Screenshot 2)
-        page.click('#role-switch-member')
-        page.wait_for_timeout(250)
-        self.assertFalse(page.is_visible('#quick-actions-admin'))
-        self.assertTrue(page.is_visible('#quick-actions-member'))
-        page.screenshot(path=str(SHOTS_DIR / '03_member_mode_main.png'))
-        page.click('#member-register-btn')
-        page.wait_for_timeout(360)
-        self.assertTrue(page.eval_on_selector('#task-mission-modal', 'el => el.open'))
-        page.screenshot(path=str(SHOTS_DIR / '04_member_task_mission_modal.png'))
-        page.click('#task-mission-close')
-        page.wait_for_timeout(280)
-        page.click('#role-switch-admin')
-        page.wait_for_timeout(200)
-
-        # Edit Profile Modal (Screenshot 5) -> ReadOnly studentId + 8 numbered fields -> Celebration Popup (Screenshot 13)
+        # 3. Edit profile persists across full page reload
         page.click('#edit-profile-trigger')
-        page.wait_for_timeout(360)
+        page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#edit-profile-modal', 'el => el.open'))
         self.assertTrue(page.eval_on_selector('#input-studentId', 'el => el.readOnly'))
+        page.fill('#input-faculty', 'K13.GDTC-PRO')
         page.fill('#input-phone', '0987654321')
         page.fill('#input-ice', '0911222333 <img src=x onerror=alert(1)>')
-        page.screenshot(path=str(SHOTS_DIR / '05_edit_profile_modal.png'))
+        page.screenshot(path=str(SHOTS_DIR / '03_edit_profile_modal.png'))
         page.click('#edit-modal-save')
-        page.wait_for_timeout(560)
+        page.wait_for_timeout(520)
         self.assertTrue(page.eval_on_selector('#success-celebration-modal', 'el => el.open'))
-        self.assertEqual(page.text_content('#celebration-title').strip(), 'Cập nhật hồ sơ thành công!')
         self.assertIn('<img src=x', page.text_content('#display-ice'))
-        page.screenshot(path=str(SHOTS_DIR / '06_celebration_profile_popup.png'))
+        page.screenshot(path=str(SHOTS_DIR / '04_celebration_profile_popup.png'))
         page.click('#celebration-confirm-btn')
-        page.wait_for_timeout(280)
+        page.wait_for_timeout(320)
 
-        # Create Shift Modal (Screenshot 8) -> Submit -> Celebration Popup (Screenshot 3)
+        page.reload(wait_until='domcontentloaded')
+        page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
+        page.wait_for_timeout(350)
+        self.assertEqual(page.text_content('#display-phone').strip(), '0987654321')
+        self.assertEqual(page.text_content('#display-faculty').strip(), 'K13.GDTC-PRO')
+
+        # 4. Create shift modal (dept select + leader select + clean time on edit)
         page.click('#admin-create-shift-btn')
-        page.wait_for_timeout(360)
+        page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#create-shift-modal', 'el => el.open'))
+        self.assertEqual(page.input_value('#iptTaskLocation'), 'SVĐ Trung Tâm')
+        self.assertEqual(page.input_value('#iptTaskTime'), '13:30 - 17:30')
         page.fill('#iptTaskTitle', 'Giải Bóng Đá Tứ Hùng Sinh Viên UHD')
-        page.screenshot(path=str(SHOTS_DIR / '07_create_shift_modal.png'))
+        page.screenshot(path=str(SHOTS_DIR / '05_create_shift_modal.png'))
         page.click('#btnSubmitTask')
-        page.wait_for_timeout(560)
+        page.wait_for_timeout(520)
         self.assertTrue(page.eval_on_selector('#success-celebration-modal', 'el => el.open'))
-        self.assertEqual(page.text_content('#celebration-title').strip(), 'Tạo ca trực mới thành công!')
-        page.screenshot(path=str(SHOTS_DIR / '08_celebration_create_shift_popup.png'))
         page.click('#celebration-confirm-btn')
-        page.wait_for_timeout(280)
+        page.wait_for_timeout(320)
 
-        # Approve Dispatch Modal (Screenshot 14) -> Approve All -> Celebration Popup (Screenshot 4)
-        page.click('#admin-approve-btn')
-        page.wait_for_timeout(360)
+        # Verify #stat-shifts-btn opens #approve-shift-modal on Shifts tab for Admin
+        page.click('#stat-shifts-btn')
+        page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#approve-shift-modal', 'el => el.open'))
-        self.assertEqual(page.text_content('#approve-header-count').strip(), '3 đơn mới')
-        page.screenshot(path=str(SHOTS_DIR / '09_approve_dispatch_modal.png'))
-        page.click('#btnApproveAllRequests')
-        page.wait_for_timeout(560)
-        self.assertTrue(page.eval_on_selector('#success-celebration-modal', 'el => el.open'))
-        self.assertEqual(page.text_content('#celebration-title').strip(), 'Đã phê duyệt 3 yêu cầu điều động!')
-        self.assertEqual(page.text_content('#approve-btn-label').strip(), 'Duyệt ca (0)')
-        page.screenshot(path=str(SHOTS_DIR / '10_celebration_dispatch_popup.png'))
-        page.click('#celebration-confirm-btn')
-        page.wait_for_timeout(280)
-
-        # Settings & Account Modal (Screenshot 9) + 3D Tilt switch + Dark Login screenshot
-        page.click('#settings-trigger')
-        page.wait_for_timeout(360)
-        self.assertTrue(page.eval_on_selector('#settings-modal', 'el => el.open'))
-        page.screenshot(path=str(SHOTS_DIR / '11_settings_account_modal.png'))
-        page.click('#theme-toggle-row')
+        self.assertTrue(page.eval_on_selector('#approve-tab-shifts', 'el => el.classList.contains("active")'))
+        page.locator('#approve-cards-container button:has-text("Sửa")').first.click()
         page.wait_for_timeout(420)
+        self.assertTrue(page.eval_on_selector('#create-shift-modal', 'el => el.open'))
+        self.assertEqual(page.input_value('#iptTaskTime'), '13:30 - 17:30')
+        page.click('#create-shift-cancel')
+        page.wait_for_timeout(320)
+
+        # 5. Approve dispatch modal: QR check-in live list + Approve All mutating tasks
+        page.click('#admin-approve-btn')
+        page.wait_for_timeout(340)
+        self.assertEqual(page.text_content('#approve-header-count').strip(), '3 đơn mới')
+        page.screenshot(path=str(SHOTS_DIR / '06_approve_dispatch_modal.png'))
+
+        page.click('#approve-tab-scanner')
+        page.wait_for_timeout(220)
+        page.fill('#iptManualCheckinId', 'NDA0407')
+        page.click('#btnManualCheckin')
+        page.wait_for_timeout(200)
+        self.assertIn('NDA0407', page.text_content('#scannerCheckedInList'))
+
+        page.click('#approve-tab-swap')
+        page.wait_for_timeout(200)
+        page.click('#btnApproveAllRequests')
+        page.wait_for_timeout(520)
+        self.assertTrue(page.eval_on_selector('#success-celebration-modal', 'el => el.open'))
+        self.assertEqual(page.text_content('#approve-btn-label').strip(), 'Duyệt ca (0)')
+        swapped_ok = page.evaluate('window.currentTasks.find(t => t.id === "TASK_01")?.joinedMembers?.includes("DMC0806")')
+        self.assertTrue(swapped_ok)
+        page.screenshot(path=str(SHOTS_DIR / '07_celebration_dispatch_popup.png'))
+        page.click('#celebration-confirm-btn')
+        page.wait_for_timeout(320)
+
+        # 6. Slim Settings Modal (Theme + Password + Logout only) & Real Password Rejection
+        page.click('#settings-trigger')
+        page.wait_for_timeout(340)
+        self.assertTrue(page.eval_on_selector('#settings-modal', 'el => el.open'))
+        self.assertEqual(page.locator('#switchFaceId').count(), 0)
+        self.assertEqual(page.locator('#switchTilt3d').count(), 0)
+        self.assertEqual(page.locator('#lang-btn-en').count(), 0)
+        page.screenshot(path=str(SHOTS_DIR / '08_settings_slim_modal.png'))
+
+        page.click('#theme-btn-dark')
+        page.wait_for_timeout(250)
         self.assertEqual(page.evaluate('document.documentElement.dataset.theme'), 'dark')
+        page.click('#theme-btn-light')
+        page.wait_for_timeout(250)
+        self.assertEqual(page.evaluate('document.documentElement.dataset.theme'), 'light')
+
+        page.click('#security-password-row')
+        page.wait_for_timeout(420)
+        self.assertTrue(page.eval_on_selector('#password-modal', 'el => el.open'))
+        page.screenshot(path=str(SHOTS_DIR / '09_password_modal.png'))
+        page.fill('#iptCurrentPassword', '123456')
+        page.fill('#iptNewPassword', '654321')
+        page.fill('#iptConfirmPassword', '654321')
+        page.click('#btnSavePassword')
+        page.wait_for_timeout(520)
+        self.assertTrue(page.eval_on_selector('#success-celebration-modal', 'el => el.open'))
+        page.click('#celebration-confirm-btn')
+        page.wait_for_timeout(320)
+
+        page.click('#settings-trigger')
+        page.wait_for_timeout(340)
         page.click('#logout-btn')
         page.wait_for_selector('#viewLoginContainer:not(.hidden)')
+
+        # Verify old '123456' is rejected after changing password
+        page.fill('#iptUser', 'DMC0806')
+        page.fill('#iptPass', '123456')
+        page.click('#btnLoginSubmit')
         page.wait_for_timeout(250)
-        page.screenshot(path=str(SHOTS_DIR / '12_login_ocean_dark.png'))
+        self.assertTrue(page.is_visible('#viewLoginContainer'))
+
+        # Verify new '654321' logs in cleanly, then log out for Member test
+        page.fill('#iptPass', '654321')
+        page.click('#btnLoginSubmit')
+        page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
+        page.click('#settings-trigger')
+        page.wait_for_timeout(340)
+        page.click('#logout-btn')
+        page.wait_for_selector('#viewLoginContainer:not(.hidden)')
+
+        # 7. Real Member Account Login & Workflows
+        page.fill('#iptUser', 'NDA0407')
+        page.fill('#iptPass', '123456')
+        page.click('#btnLoginSubmit')
+        page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
+        page.wait_for_timeout(450)
+        self.assertFalse(page.is_visible('#role-badge'))
+        self.assertFalse(page.is_visible('#quick-actions-admin'))
+        self.assertTrue(page.is_visible('#quick-actions-member'))
+
+        # Member stat button opens Task Mission modal, NOT Approve modal
+        page.click('#stat-shifts-btn')
+        page.wait_for_timeout(340)
+        self.assertTrue(page.eval_on_selector('#task-mission-modal', 'el => el.open'))
+        page.locator('#mission-panel-shifts button:has-text("Đăng ký nhận ca này")').first.click()
+        page.wait_for_timeout(200)
+        page.click('#mission-tab-swap')
+        page.wait_for_timeout(200)
+        page.fill('#iptMissionReason', 'Trung lich thi hoc ky')
+        page.click('#btnSubmitMemberSwap')
+        page.wait_for_timeout(340)
+
+        page.click('#member-swap-btn')
+        page.wait_for_timeout(340)
+        self.assertIn('Chờ duyệt', page.text_content('#memberMyRequestsList'))
+        page.screenshot(path=str(SHOTS_DIR / '11_member_mission_modal.png'))
+        page.locator('#memberMyRequestsList button:has-text("Hủy đơn")').first.click()
+        page.wait_for_timeout(180)
+        page.click('#task-mission-close')
+        page.wait_for_timeout(320)
+
+        # Member shift-bound QR modal
+        page.click('#qr-modal-trigger')
+        page.wait_for_timeout(340)
+        self.assertTrue(page.eval_on_selector('#qr-modal', 'el => el.open'))
+        self.assertIn('#NDA0407', page.text_content('#qr-token-code'))
+        page.screenshot(path=str(SHOTS_DIR / '12_qr_member_modal.png'))
+        page.click('#qr-modal-close')
+        page.wait_for_timeout(320)
+
+        # Dark theme login screen screenshot
+        page.click('#settings-trigger')
+        page.wait_for_timeout(340)
+        page.click('#theme-btn-dark')
+        page.wait_for_timeout(220)
+        page.click('#logout-btn')
+        page.wait_for_selector('#viewLoginContainer:not(.hidden)')
+        page.wait_for_timeout(220)
+        page.screenshot(path=str(SHOTS_DIR / '13_login_ocean_dark.png'))
 
         self.assertEqual(errors, [], f'Browser runtime errors: {errors}')
         ctx.close()

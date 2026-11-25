@@ -1,4 +1,4 @@
-// SportPass V8.5 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
+// SportPass V8.6 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
 
 let syncDebounceTimer = null;
 
@@ -23,6 +23,15 @@ function buildMutationUrl(mut) {
   if (mut.type === 'UPDATE_ROLE') return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&lop=${encodeURIComponent(p.lop || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
   return null;
+}
+
+function dispatchBackendMutation(type, payload) {
+  const url = buildMutationUrl({ type, payload });
+  if (navigator.onLine && url) {
+    fetch(url).catch(() => enqueueOfflineMutation(type, payload));
+  } else {
+    enqueueOfflineMutation(type, payload);
+  }
 }
 
 function syncOfflineMutations(isManual = false) {
@@ -72,7 +81,7 @@ async function syncRealtimeData() {
 
     if (Array.isArray(data.membersList) && data.membersList.length > 0) {
       membersDirectory = data.membersList;
-      applyCustomAdminRoles(membersDirectory);
+      applyMemberOverrides(membersDirectory);
     }
 
     if (data.member) {
@@ -83,7 +92,7 @@ async function syncRealtimeData() {
       if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
       if (!currentUser.studentCode && preservedStudentCode) currentUser.studentCode = preservedStudentCode;
       if (!currentUser.ngaySinh && preservedDob) currentUser.ngaySinh = preservedDob;
-      applyCustomAdminRoles(membersDirectory);
+      applyMemberOverrides(membersDirectory);
       window.currentUser = currentUser;
     }
 

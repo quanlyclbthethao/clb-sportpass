@@ -1,4 +1,4 @@
-// SportPass V8.5 — Adaptive Dual-Mode Theme Controller
+// SportPass V8.6 — Adaptive 3-State Theme Controller (Light / Dark / System)
 
 const THEME_STORAGE_KEY = 'sportpass-theme-mode';
 
@@ -12,9 +12,9 @@ function resolveEffectiveTheme(mode) {
 function getSavedThemeMode() {
   try {
     const v = localStorage.getItem(THEME_STORAGE_KEY);
-    if (v === 'light' || v === 'dark' || v === 'system') return v;
+    if (v === 'light' || v === 'dark') return v;
   } catch (e) {}
-  return 'light';
+  return 'system';
 }
 
 function syncThemeControlUI(mode) {
@@ -23,22 +23,45 @@ function syncThemeControlUI(mode) {
   document.documentElement.dataset.theme = effective;
 
   const meta = document.querySelector('meta[name="color-scheme"]');
-  if (meta) meta.setAttribute('content', effective === 'dark' ? 'dark' : 'light');
-
-  const badge = document.getElementById('theme-mode-badge');
-  const desc = document.getElementById('theme-mode-desc');
-  if (badge) {
-    badge.textContent = active === 'dark' ? 'Tối ⌄' : (active === 'system' ? (effective === 'dark' ? 'Tự động (Tối) ⌄' : 'Tự động (Sáng) ⌄') : 'Sáng ⌄');
+  if (meta) {
+    meta.setAttribute('content', (active === 'light' || active === 'dark') ? active : 'light dark');
   }
+
+  const bLight = document.getElementById('theme-btn-light');
+  const bDark = document.getElementById('theme-btn-dark');
+  const bSys = document.getElementById('theme-btn-system');
+  if (bLight) {
+    bLight.classList.toggle('active', active === 'light');
+    bLight.setAttribute('aria-pressed', String(active === 'light'));
+  }
+  if (bDark) {
+    bDark.classList.toggle('active', active === 'dark');
+    bDark.setAttribute('aria-pressed', String(active === 'dark'));
+  }
+  if (bSys) {
+    bSys.classList.toggle('active', active === 'system');
+    bSys.setAttribute('aria-pressed', String(active === 'system'));
+  }
+
+  const desc = document.getElementById('theme-mode-desc');
   if (desc) {
-    desc.textContent = active === 'system' ? 'Theo hệ thống tự động' : (active === 'dark' ? 'Đang bật chế độ tối Aquamorphic' : 'Màu sắc hiển thị trên hệ thống');
+    if (active === 'system') {
+      desc.textContent = `Theo hệ thống (${effective === 'dark' ? 'đang tối' : 'đang sáng'})`;
+    } else if (active === 'dark') {
+      desc.textContent = 'Đang bật chế độ tối Aquamorphic';
+    } else {
+      desc.textContent = 'Đang bật chế độ sáng Frosted Sky';
+    }
   }
 }
 
-function setColorScheme(mode = 'light', animate = true) {
-  const nextMode = (mode === 'dark' || mode === 'system') ? mode : 'light';
+function setColorScheme(mode = 'system', animate = true) {
+  const nextMode = (mode === 'dark' || mode === 'light') ? mode : 'system';
   const apply = () => {
-    try { localStorage.setItem(THEME_STORAGE_KEY, nextMode); } catch (e) {}
+    try {
+      if (nextMode === 'system') localStorage.removeItem(THEME_STORAGE_KEY);
+      else localStorage.setItem(THEME_STORAGE_KEY, nextMode);
+    } catch (e) {}
     syncThemeControlUI(nextMode);
   };
 
@@ -58,7 +81,7 @@ function cycleThemeMode() {
   const next = order[(order.indexOf(cur) + 1) % order.length];
   setColorScheme(next, true);
   const label = next === 'dark' ? 'Tối' : (next === 'system' ? 'Tự động theo hệ thống' : 'Sáng Frosted Sky');
-  showToast(`Chủ đề giao diện: ${label}`);
+  showToast(`Giao diện: ${label}`);
 }
 
 function initThemeController() {
@@ -67,4 +90,7 @@ function initThemeController() {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     if (mq.addEventListener) mq.addEventListener('change', () => syncThemeControlUI());
   }
+  window.addEventListener('storage', (ev) => {
+    if (ev.key === THEME_STORAGE_KEY) syncThemeControlUI();
+  });
 }

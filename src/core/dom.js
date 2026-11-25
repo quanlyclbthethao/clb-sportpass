@@ -1,4 +1,4 @@
-// SportPass V8.5 — Zero-innerHTML Declarative DOM Builder, rAF 3D Parallax & Water Ripple Engine
+// SportPass V8.6 — Zero-innerHTML Declarative DOM Builder, Smooth rAF 3D Parallax & Water Ripple Engine
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -157,12 +157,7 @@ function mount(container, ...nodes) {
   container.replaceChildren(...flat);
 }
 
-function cloneData(val) {
-  return structuredClone(val);
-}
-
 function createWaterRipple(e) {
-  if (typeof appPreferences !== 'undefined' && appPreferences.tilt3d === false) return;
   const target = e.currentTarget;
   if (!target) return;
   const rect = target.getBoundingClientRect();
@@ -227,24 +222,22 @@ function initHeroCardParallax() {
 
   function applyFrame() {
     rafId = 0;
-    if (typeof appPreferences !== 'undefined' && appPreferences.tilt3d === false) {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-      return;
-    }
     const rect = card.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
     const x = pendingX - rect.left;
     const y = pendingY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((centerY - y) / centerY) * 7;
-    const rotateY = ((x - centerX) / centerX) * 7;
+    const rotateX = ((centerY - y) / centerY) * 6;
+    const rotateY = ((x - centerX) / centerX) * 6;
+    card.style.transition = 'transform 60ms linear';
     card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
     card.style.setProperty('--specular-x', `${((x / rect.width) * 100).toFixed(1)}%`);
     card.style.setProperty('--specular-y', `${((y / rect.height) * 100).toFixed(1)}%`);
   }
 
   function scheduleMove(e) {
+    if (e.target && e.target.closest && e.target.closest('button, a')) return;
     if (e.touches && e.touches.length > 0) {
       pendingX = e.touches[0].clientX;
       pendingY = e.touches[0].clientY;
@@ -260,6 +253,7 @@ function initHeroCardParallax() {
       cancelAnimationFrame(rafId);
       rafId = 0;
     }
+    card.style.transition = 'transform 380ms cubic-bezier(0.22, 1, 0.36, 1)';
     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
   }
 

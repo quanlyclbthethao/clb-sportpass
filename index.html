@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <script>
     try {
       var savedMode = localStorage.getItem('sportpass-theme-mode');
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var effective = (savedMode === 'dark') ? 'dark' : ((savedMode === 'system' && prefersDark) ? 'dark' : 'light');
+      var effective = (savedMode === 'dark') ? 'dark' : ((savedMode === 'light') ? 'light' : (prefersDark ? 'dark' : 'light'));
       document.documentElement.dataset.theme = effective;
-      document.querySelector('meta[name="color-scheme"]').content = effective;
+      document.querySelector('meta[name="color-scheme"]').content = (savedMode === 'dark' || savedMode === 'light') ? savedMode : 'light dark';
     } catch (e) {}
   </script>
   <title>SportPass Pro - Varsity Pass</title>
@@ -25,7 +25,7 @@
 /* === 01-tokens.css === */
 /* Core Design Tokens Light + Dark Aquamorphic */
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   --sp-canvas-light: #f4f6fb;
   --sp-surface-light: #ffffff;
   --sp-text-light: #0f172a;
@@ -52,6 +52,14 @@
 
   --sp-font-sans: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --sp-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  color-scheme: dark;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+  color-scheme: light;
 }
 
 html[data-theme="dark"] {
@@ -131,7 +139,7 @@ body {
 }
 
 .pb-safe {
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 74px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
 }
 
 button,
@@ -248,16 +256,17 @@ html[data-theme="dark"] .varsity-topbar {
 
 .varsity-topbar-inner {
   height: 56px;
-  padding: 0 20px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .brand-lockup {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -830,66 +839,6 @@ html[data-theme="dark"] .btn-glass-badge.sky {
   background-color: #e11d48;
   border: 1.5px solid #ffffff;
   z-index: 25;
-}
-
-/* Floating Role Switcher Pill (bottom right inside 420px column - Screenshot 6) */
-.role-preview-dock {
-  position: fixed;
-  bottom: max(env(safe-area-inset-bottom, 0px), 16px);
-  left: 0;
-  right: 0;
-  z-index: 35;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  padding: 0 16px;
-}
-
-.role-preview-stage {
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-@media (min-width: 640px) {
-  .role-preview-stage {
-    max-width: 960px;
-  }
-}
-
-.role-switch-capsule {
-  pointer-events: auto;
-  display: inline-grid;
-  grid-template-columns: repeat(2, 1fr);
-  padding: 3px;
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(20px);
-  border: 1px solid #bae6fd;
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.16);
-}
-
-html[data-theme="dark"] .role-switch-capsule {
-  background-color: rgba(19, 28, 46, 0.92);
-  border-color: rgba(56, 189, 248, 0.28);
-}
-
-.role-switch-btn {
-  min-height: 28px;
-  padding: 4px 12px;
-  border: 0;
-  border-radius: 9999px;
-  background: transparent;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  transition: background-color 200ms ease, color 200ms ease, transform 160ms ease;
-}
-
-.role-switch-btn.active {
-  background-color: #0369a1;
-  color: #ffffff;
 }
 
 /* ==================== PROFILE 8 ROWS ==================== */
@@ -1512,14 +1461,6 @@ dialog.sp-sheet-dialog:modal {
   overscroll-behavior: contain;
 }
 
-dialog.sp-sheet-dialog::backdrop {
-  background-color: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  overflow: hidden;
-  overscroll-behavior: contain;
-}
-
 .sheet-panel {
   width: 100%;
   max-width: 420px;
@@ -1882,94 +1823,35 @@ html[data-theme="dark"] .btn-sheet-danger {
   color: var(--text-muted);
 }
 
-.lang-toggle-group {
+.theme-seg-group {
   display: inline-grid;
-  grid-template-columns: repeat(2, 1fr);
-  padding: 2px;
-  border-radius: 8px;
+  grid-template-columns: repeat(3, auto);
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
   background-color: var(--surface-chip);
   border: 1px solid var(--border-input);
-}
-
-.lang-seg-btn {
-  min-height: 24px;
-  padding: 2px 8px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-}
-
-.lang-seg-btn.active {
-  background-color: #0369a1;
-  color: #ffffff;
-}
-
-.theme-mode-pill {
-  min-height: 26px;
-  display: inline-flex;
-  align-items: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: #0369a1;
-  background-color: #ffffff;
-  padding: 2px 9px;
-  border-radius: 8px;
-  border: 1px solid #bae6fd;
-  white-space: nowrap;
-}
-
-html[data-theme="dark"] .theme-mode-pill {
-  background-color: #131c2e;
-  color: #7dd3fc;
-  border-color: rgba(56, 189, 248, 0.32);
-}
-
-.strength-pill {
-  font-size: 11px;
-  font-weight: 600;
-  color: #047857;
-  background-color: #d1fae5;
-  padding: 2px 7px;
-  border-radius: 6px;
-}
-
-/* Switch Controls */
-.aqua-switch {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
   flex-shrink: 0;
 }
 
-.aqua-switch-track {
-  width: 38px;
-  height: 22px;
-  border-radius: 9999px;
-  background-color: #cbd5e1;
-  position: relative;
-  transition: background-color 180ms ease;
+.theme-seg-btn {
+  min-height: 30px;
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
-.aqua-switch-knob {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  border-radius: 9999px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
-  transition: transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+.theme-seg-btn.active {
+  background-color: #0369a1;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(3, 105, 161, 0.25);
 }
-
-.aqua-switch input:checked + .aqua-switch-track { background-color: #0284c7; }
-.aqua-switch input:checked + .aqua-switch-track.emerald { background-color: #059669; }
-.aqua-switch input:checked + .aqua-switch-track.indigo { background-color: #6366f1; }
-.aqua-switch input:checked + .aqua-switch-track .aqua-switch-knob { transform: translateX(16px); }
 
 /* ==================== EDIT PROFILE AVATAR BOX (SCREENSHOT 5) ==================== */
 .edit-avatar-card {
@@ -1991,6 +1873,9 @@ html[data-theme="dark"] .edit-avatar-card {
   position: relative;
   width: 56px;
   height: 56px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   flex-shrink: 0;
 }
 
@@ -2114,6 +1999,24 @@ html[data-theme="dark"] .edit-avatar-card {
   height: 8px;
   border-radius: 9999px;
   flex-shrink: 0;
+}
+
+.dept-inline-select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  outline: none;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+html[data-theme="dark"] .dept-inline-select option {
+  background-color: #131c2e;
+  color: #f8fafc;
 }
 
 .stepper-group {
@@ -2390,9 +2293,26 @@ html[data-theme="dark"] .dispatch-card.urgent {
   gap: 12px;
 }
 
+.notif-item-card.interactive {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.notif-item-card.interactive:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.10);
+}
+
 .notif-item-card.highlight {
   background-color: #f0f9ff;
   border-color: #e0f2fe;
+}
+
+html[data-theme="dark"] .notif-item-card.highlight {
+  background-color: rgba(14, 165, 233, 0.14);
+  border-color: rgba(56, 189, 248, 0.28);
 }
 
 .notif-item-icon {
@@ -2557,10 +2477,6 @@ html[data-theme="dark"] .dispatch-card.urgent {
   transition: opacity 280ms ease;
 }
 
-html[data-tilt="off"] .hero-specular-light {
-  display: none;
-}
-
 .hero-card-aquamorphic:hover .hero-specular-light {
   opacity: 1;
 }
@@ -2593,6 +2509,13 @@ html[data-tilt="off"] .hero-specular-light {
   will-change: transform, opacity;
 }
 
+/* Pause background ambient animations while modal dialog is open */
+body:has(dialog[open]) .aurora-beam,
+body:has(dialog[open]) .qr-button-sweep,
+body:has(dialog[open]) .hero-card-aquamorphic .ping-ring {
+  animation-play-state: paused;
+}
+
 @keyframes auroraShimmerSweep {
   0% { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
   15% { opacity: 0.8; }
@@ -2613,6 +2536,11 @@ html[data-tilt="off"] .hero-specular-light {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes tabPaneFadeIn {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
 @keyframes statBounce {
   0% { opacity: 0; transform: scale(0.7) translateY(8px); }
   60% { transform: scale(1.08) translateY(-2px); }
@@ -2626,27 +2554,6 @@ html[data-tilt="off"] .hero-specular-light {
 
 @keyframes pingHalo {
   75%, 100% { transform: scale(2); opacity: 0; }
-}
-
-/* 60fps Sheet Entry & Exit Animations */
-@keyframes sheetSlideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes sheetSlideDown {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(44px); }
-}
-
-@keyframes popupSpringIn {
-  from { opacity: 0; transform: scale(0.88) translateY(14px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-@keyframes popupSpringOut {
-  from { opacity: 1; transform: scale(1) translateY(0); }
-  to { opacity: 0; transform: scale(0.92) translateY(10px); }
 }
 
 @keyframes checkStrokeDraw {
@@ -2685,20 +2592,80 @@ html[data-tilt="off"] .hero-specular-light {
   animation: qrHoloGlow 3.5s ease-in-out infinite;
 }
 
-dialog.sp-sheet-dialog[open] .sheet-panel {
-  animation: sheetSlideUp 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+/* ==================== TOP-LAYER <dialog> ENTRY & EXIT (@starting-style + allow-discrete) ==================== */
+dialog.sp-sheet-dialog {
+  opacity: 0;
+  transition-property: opacity, display, overlay;
+  transition-duration: 240ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-behavior: allow-discrete;
 }
 
-dialog.sp-sheet-dialog[data-closing] .sheet-panel {
-  animation: sheetSlideDown 220ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+dialog.sp-sheet-dialog[open]:where(:not([data-closing])) {
+  opacity: 1;
 }
 
-dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel {
-  animation: popupSpringIn 340ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+dialog.sp-sheet-dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0);
+  backdrop-filter: none;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  transition-property: background-color, backdrop-filter, display, overlay;
+  transition-duration: 240ms;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
 }
 
-dialog.sp-sheet-dialog.sp-center-dialog[data-closing] .celebration-panel {
-  animation: popupSpringOut 200ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+dialog.sp-sheet-dialog[open]:where(:not([data-closing]))::backdrop {
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@starting-style {
+  dialog.sp-sheet-dialog[open] {
+    opacity: 0;
+  }
+  dialog.sp-sheet-dialog[open]::backdrop {
+    background-color: rgba(15, 23, 42, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.sp-sheet-dialog .sheet-panel {
+    transform: translate3d(0, 36px, 0);
+    transition-property: transform;
+    transition-duration: 280ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  dialog.sp-sheet-dialog[open]:where(:not([data-closing])) .sheet-panel {
+    transform: translate3d(0, 0, 0);
+  }
+
+  dialog.sp-sheet-dialog.sp-center-dialog .celebration-panel {
+    transform: scale(0.9) translate3d(0, 12px, 0);
+    transition-property: transform;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  dialog.sp-sheet-dialog.sp-center-dialog[open]:where(:not([data-closing])) .celebration-panel {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+
+  .tab-pane-anim {
+    animation: tabPaneFadeIn 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @starting-style {
+    dialog.sp-sheet-dialog[open] .sheet-panel {
+      transform: translate3d(0, 36px, 0);
+    }
+    dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel {
+      transform: scale(0.9) translate3d(0, 12px, 0);
+    }
+  }
 }
 
 dialog.sp-center-dialog[open] .check-draw-path {
@@ -2712,6 +2679,10 @@ dialog.sp-center-dialog[open] .check-draw-path {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  dialog.sp-sheet-dialog,
+  dialog.sp-sheet-dialog::backdrop {
+    transition-duration: 90ms;
+  }
   .hero-card-aquamorphic,
   .aurora-beam,
   .qr-button-sweep,
@@ -2724,16 +2695,13 @@ dialog.sp-center-dialog[open] .check-draw-path {
   .stat-anim-3,
   .qr-holo-card,
   .ping-ring,
-  dialog.sp-sheet-dialog[open] .sheet-panel,
-  dialog.sp-sheet-dialog[data-closing] .sheet-panel,
-  dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel,
+  .tab-pane-anim,
   dialog.sp-center-dialog[open] .check-draw-path {
     animation: none !important;
     transform: none !important;
   }
   .spring-press,
   .toast-pill,
-  .aqua-switch-knob,
   .dispatch-card {
     transition: none !important;
   }
@@ -2884,7 +2852,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
                 <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
                 <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
               </svg>
-              <span class="notif-dot" aria-hidden="true"></span>
+              <span id="notification-dot" class="notif-dot hidden" aria-hidden="true"></span>
             </button>
             <button id="members-trigger" type="button" class="icon-circle-btn water-ripple-target spring-press" aria-label="Thành viên CLB">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
@@ -3133,21 +3101,11 @@ dialog.sp-center-dialog[open] .check-draw-path {
                 </div>
                 <span class="profile-row-label">Liên hệ khẩn (ICE)</span>
               </div>
-              <span id="display-ice" class="profile-row-val font-mono">0988 123 456 (Trực CLB)</span>
+              <a id="display-ice" class="profile-phone-link font-mono" href="#display-ice">Chưa cập nhật</a>
             </div>
           </div>
         </section>
       </main>
-
-      <!-- FLOATING ROLE VIEW SWITCHER (ADMIN ONLY - SCREENSHOT 6) -->
-      <div id="role-preview-dock" class="role-preview-dock hidden">
-        <div class="role-preview-stage">
-          <div class="role-switch-capsule" role="group" aria-label="Chế độ xem vai trò">
-            <button id="role-switch-member" type="button" class="role-switch-btn">Thành viên</button>
-            <button id="role-switch-admin" type="button" class="role-switch-btn active">Admin</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -3156,12 +3114,10 @@ dialog.sp-center-dialog[open] .check-draw-path {
     <div class="sheet-panel sheet-panel-centered">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <h3 id="qr-modal-title" class="sheet-title-h3">Thẻ Vào Cổng &amp; Điểm Danh</h3>
-      <p class="sheet-sub" style="max-width:280px;font-size:13px;">Quét mã tại trạm trực ban sân vận động để xác nhận ca trực</p>
+      <p class="sheet-sub" style="max-width:280px;font-size:13px;">Chọn ca trực và quét mã tại trạm điều phối sân</p>
 
-      <div id="qr-locked-notice" class="dispatch-card urgent hidden" style="width:100%;margin-top:14px;">
-        <span style="font-size:12.5px;font-weight:700;color:#92400e;">Thẻ đang tạm khóa từ xa</span>
-        <span style="font-size:11.5px;color:#b45309;">Hãy tắt "Khóa thẻ từ xa" trong Cài Đặt &amp; Tài Khoản để xuất trình mã QR.</span>
-      </div>
+      <select id="selQrPassTask" class="aqua-input" aria-label="Chọn ca trực xuất trình QR" style="margin-top:12px;font-size:12.5px;"></select>
+      <span id="qr-checkin-status-pill" class="role-pill-badge" style="margin-top:8px;">Chưa điểm danh</span>
 
       <div id="qr-holo-container" class="qr-holo-card">
         <div id="qr-code-box" class="qr-render-frame"></div>
@@ -3260,149 +3216,36 @@ dialog.sp-center-dialog[open] .check-draw-path {
           <span id="settings-grade-badge" class="settings-grade-badge">A+</span>
         </div>
 
-        <span class="settings-group-kicker">BẢO MẬT &amp; ĐĂNG NHẬP</span>
+        <span class="settings-group-kicker">TÙY CHỈNH &amp; BẢO MẬT</span>
         <div class="settings-group-card">
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-emerald" aria-hidden="true">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Xác thực Face ID</span>
-                <p class="settings-row-desc">Mở thẻ và xác thực không cần PIN</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Bật Face ID">
-              <input id="switchFaceId" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-
-          <button id="security-password-row" type="button" class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-sky" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Đổi mật khẩu</span>
-                <p class="settings-row-desc">Cập nhật mật khẩu cá nhân</p>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span class="strength-pill">Mạnh</span>
-              <span style="font-size:13px;color:var(--text-muted);">›</span>
-            </div>
-          </button>
-
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-amber" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="3" width="12" x="6" y="3"/><path d="M12 17h.01"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Khóa thẻ từ xa</span>
-                <p class="settings-row-desc">Bảo vệ thẻ khi làm mất điện thoại</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Khóa thẻ từ xa">
-              <input id="switchRemoteLock" type="checkbox" class="sr-only">
-              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-        </div>
-
-        <span class="settings-group-kicker">GIAO DIỆN &amp; TRẢI NGHIỆM</span>
-        <div class="settings-group-card">
-          <button id="theme-toggle-row" type="button" class="settings-row-item">
+          <div id="theme-toggle-row" class="settings-row-item">
             <div class="settings-row-left">
               <div class="settings-row-icon tile-indigo" aria-hidden="true">
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2"/></svg>
               </div>
-              <div>
-                <span class="settings-row-title">Chủ đề giao diện</span>
-                <p id="theme-mode-desc" class="settings-row-desc">Màu sắc hiển thị trên hệ thống</p>
+              <div style="min-width:0;">
+                <span class="settings-row-title">Giao diện hiển thị</span>
+                <p id="theme-mode-desc" class="settings-row-desc">Sáng / Tối / Tự động</p>
               </div>
             </div>
-            <span id="theme-mode-badge" class="theme-mode-pill">Sáng ⌄</span>
-          </button>
+            <div class="theme-seg-group" role="group" aria-label="Chọn giao diện sáng tối">
+              <button id="theme-btn-light" type="button" class="theme-seg-btn active" aria-pressed="true">Sáng</button>
+              <button id="theme-btn-dark" type="button" class="theme-seg-btn" aria-pressed="false">Tối</button>
+              <button id="theme-btn-system" type="button" class="theme-seg-btn" aria-pressed="false">Tự động</button>
+            </div>
+          </div>
 
-          <div class="settings-row-item">
+          <button id="security-password-row" type="button" class="settings-row-item water-ripple-target spring-press">
             <div class="settings-row-left">
               <div class="settings-row-icon tile-sky" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
-              <div>
-                <span class="settings-row-title">Hiệu ứng 3D Tilt</span>
-                <p class="settings-row-desc">Gợn sóng chạm &amp; xoay góc thẻ</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Bật hiệu ứng 3D Tilt">
-              <input id="switchTilt3d" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-teal" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Ngôn ngữ</span>
-                <p class="settings-row-desc">Display language</p>
+              <div style="min-width:0;">
+                <span class="settings-row-title">Đổi mật khẩu</span>
+                <p id="password-status-desc" class="settings-row-desc">Cập nhật mật khẩu tài khoản</p>
               </div>
             </div>
-            <div class="lang-toggle-group">
-              <button id="lang-btn-vn" type="button" class="lang-seg-btn active">VN</button>
-              <button id="lang-btn-en" type="button" class="lang-seg-btn">EN</button>
-            </div>
-          </div>
-        </div>
-
-        <span class="settings-group-kicker">THÔNG BÁO &amp; PHẢN HỒI</span>
-        <div class="settings-group-card">
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-rose" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Thông báo ca khẩn cấp</span>
-                <p class="settings-row-desc">Đẩy chuông ưu tiên điều động sân</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Thông báo ca khẩn cấp">
-              <input id="switchUrgentNotifs" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-indigo" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="3" width="12" x="6" y="3"/><path d="M2 8v8m20-8v8"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Rung phản hồi (Haptics)</span>
-                <p class="settings-row-desc">Rung nhẹ khi chạm hoặc quét QR</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Rung phản hồi">
-              <input id="switchHaptics" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track indigo"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-        </div>
-
-        <span class="settings-group-kicker">HỆ THỐNG</span>
-        <div class="settings-group-card">
-          <div class="settings-row-item">
-            <span class="settings-row-title">Phiên bản Pass</span>
-            <span class="theme-mode-pill font-mono">v2.4.5</span>
-          </div>
-          <button id="terms-privacy-row" type="button" class="settings-row-item">
-            <span class="settings-row-title">Điều khoản &amp; Quyền riêng tư</span>
-            <span style="font-size:13px;color:var(--text-muted);">›</span>
+            <span style="font-size:15px;color:var(--text-muted);" aria-hidden="true">›</span>
           </button>
         </div>
 
@@ -3435,12 +3278,12 @@ dialog.sp-center-dialog[open] .check-draw-path {
 
       <form id="profile-form" class="sheet-scroll-body" onsubmit="return false;">
         <div class="edit-avatar-card">
-          <div class="edit-avatar-thumb-wrap">
+          <button id="btnAvatarThumbTrigger" type="button" class="edit-avatar-thumb-wrap" aria-label="Chọn ảnh đại diện">
             <img id="edit-avatar-preview" width="56" height="56" alt="Ảnh đại diện hồ sơ" class="edit-avatar-thumb" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
             <span class="edit-avatar-cam-dot" aria-hidden="true">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </span>
-          </div>
+          </button>
           <div style="flex:1;min-width:0;">
             <div style="font-size:13.5px;font-weight:700;color:var(--text-primary);">Ảnh đại diện hồ sơ</div>
             <div style="font-size:11px;color:var(--text-muted);">Định dạng JPG, PNG tối đa 5MB</div>
@@ -3561,15 +3404,15 @@ dialog.sp-center-dialog[open] .check-draw-path {
           <div id="area-cards-container" class="area-cards-grid"></div>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#0d9488;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-            <input id="iptTaskLocation" type="text" class="aqua-input with-lead" value="Sân Vận Động Trung Tâm">
+            <input id="iptTaskLocation" type="text" class="aqua-input with-lead" value="SVĐ Trung Tâm">
           </div>
         </div>
 
         <div class="field-group">
           <label class="field-label-mono" for="iptTaskTime">Thời gian trực</label>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <input id="iptTaskDate" type="text" class="aqua-input font-mono" value="18/03/2025" aria-label="Ngày trực">
-            <input id="iptTaskTime" type="text" class="aqua-input font-mono" value="14:00 - 18:00" aria-label="Khung giờ">
+            <input id="iptTaskDate" type="text" class="aqua-input font-mono" value="" placeholder="DD/MM/YYYY" aria-label="Ngày trực">
+            <input id="iptTaskTime" type="text" class="aqua-input font-mono" value="13:30 - 17:30" aria-label="Khung giờ">
           </div>
           <div id="preset-time-container" class="preset-time-row">
             <span style="font-size:11px;color:var(--text-muted);">Ca mẫu:</span>
@@ -3592,16 +3435,15 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <div class="field-group">
-          <span class="field-label-mono">Người phụ trách</span>
+          <label class="field-label-mono" for="selTaskLeader">Người phụ trách</label>
           <div class="leader-pick-card">
-            <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-              <img id="leaderPickAvatar" width="36" height="36" alt="Trưởng ca" style="width:36px;height:36px;border-radius:10px;object-fit:cover;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-              <div style="min-width:0;">
-                <div id="leaderPickName" style="font-size:13px;font-weight:700;color:var(--text-primary);" class="truncate">Đỗ Mạnh Cường</div>
-                <div id="leaderPickRole" style="font-size:11px;color:var(--text-muted);">Trưởng ca trực</div>
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;width:100%;">
+              <img id="leaderPickAvatar" width="38" height="38" alt="Trưởng ca" style="width:38px;height:38px;border-radius:10px;object-fit:cover;flex-shrink:0;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+              <div style="min-width:0;flex:1;">
+                <select id="selTaskLeader" class="aqua-input" style="min-height:38px;padding:6px 10px;font-size:12.5px;"></select>
+                <div id="leaderPickRole" style="font-size:11px;color:var(--text-muted);margin-top:3px;">Trưởng ca trực</div>
               </div>
             </div>
-            <button id="btnCycleLeader" type="button" class="btn-mini btn-mini-soft">Đổi</button>
           </div>
         </div>
 
@@ -3668,6 +3510,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
             <input id="iptManualCheckinId" type="text" class="aqua-input font-mono" placeholder="Nhập nhanh Mã ID (vd: DMC0806)">
             <button id="btnManualCheckin" type="button" class="btn-mini btn-mini-emerald" style="min-height:44px;flex-shrink:0;">Điểm danh</button>
           </div>
+          <div id="scannerCheckedInList" style="display:flex;flex-direction:column;gap:6px;"></div>
         </div>
       </div>
 
@@ -3717,9 +3560,10 @@ dialog.sp-center-dialog[open] .check-draw-path {
             <input id="iptMissionReason" type="text" class="aqua-input" placeholder="Ví dụ: Trùng lịch thi, thực tập đột xuất...">
           </div>
           <div class="dispatch-btn-pair">
-            <button id="btnSubmitMemberSwap" type="button" class="btn-sheet-primary">Gửi đơn đổi ca</button>
-            <button id="btnSubmitMemberLeave" type="button" class="btn-sheet-muted">Xin rút ca</button>
+            <button id="btnSubmitMemberSwap" type="button" class="btn-sheet-primary water-ripple-target spring-press">Gửi đơn đổi ca</button>
+            <button id="btnSubmitMemberLeave" type="button" class="btn-sheet-muted water-ripple-target spring-press">Xin rút ca</button>
           </div>
+          <div id="memberMyRequestsList" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
       </div>
 
@@ -3740,27 +3584,27 @@ dialog.sp-center-dialog[open] .check-draw-path {
           </div>
           <h3 id="password-modal-title" class="sheet-title-h3">Đổi Mật Khẩu</h3>
         </div>
-        <button id="password-modal-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+        <button id="password-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
-      <div class="sheet-scroll-body">
+      <form id="password-form" class="sheet-scroll-body" onsubmit="return false;">
         <div class="field-group">
           <label class="field-label-mono" for="iptCurrentPassword">Mật khẩu hiện tại</label>
-          <input id="iptCurrentPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu cũ">
+          <input id="iptCurrentPassword" type="password" class="aqua-input" autocomplete="current-password" placeholder="Nhập mật khẩu cũ">
         </div>
         <div class="field-group">
           <label class="field-label-mono" for="iptNewPassword">Mật khẩu mới (&gt;= 6 ký tự)</label>
-          <input id="iptNewPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu mới">
+          <input id="iptNewPassword" type="password" class="aqua-input" autocomplete="new-password" placeholder="Nhập mật khẩu mới">
         </div>
         <div class="field-group">
           <label class="field-label-mono" for="iptConfirmPassword">Xác nhận mật khẩu mới</label>
-          <input id="iptConfirmPassword" type="password" class="aqua-input" placeholder="Nhập lại mật khẩu mới">
+          <input id="iptConfirmPassword" type="password" class="aqua-input" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới">
         </div>
-      </div>
+      </form>
       <div class="sheet-footer">
-        <button id="password-modal-cancel" type="button" class="btn-sheet-muted">Hủy</button>
-        <button id="btnSavePassword" type="button" class="btn-sheet-primary">Lưu mật khẩu</button>
+        <button id="password-modal-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">Hủy</button>
+        <button id="btnSavePassword" type="button" class="btn-sheet-primary water-ripple-target spring-press">Lưu mật khẩu</button>
       </div>
     </div>
   </dialog>
@@ -3908,7 +3752,7 @@ const THE_TRANG_OPTIONS = [
 ];
 
 // === dom.js ===
-// SportPass V8.5 — Zero-innerHTML Declarative DOM Builder, rAF 3D Parallax & Water Ripple Engine
+// SportPass V8.6 — Zero-innerHTML Declarative DOM Builder, Smooth rAF 3D Parallax & Water Ripple Engine
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -4067,12 +3911,7 @@ function mount(container, ...nodes) {
   container.replaceChildren(...flat);
 }
 
-function cloneData(val) {
-  return structuredClone(val);
-}
-
 function createWaterRipple(e) {
-  if (typeof appPreferences !== 'undefined' && appPreferences.tilt3d === false) return;
   const target = e.currentTarget;
   if (!target) return;
   const rect = target.getBoundingClientRect();
@@ -4137,24 +3976,22 @@ function initHeroCardParallax() {
 
   function applyFrame() {
     rafId = 0;
-    if (typeof appPreferences !== 'undefined' && appPreferences.tilt3d === false) {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-      return;
-    }
     const rect = card.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
     const x = pendingX - rect.left;
     const y = pendingY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((centerY - y) / centerY) * 7;
-    const rotateY = ((x - centerX) / centerX) * 7;
+    const rotateX = ((centerY - y) / centerY) * 6;
+    const rotateY = ((x - centerX) / centerX) * 6;
+    card.style.transition = 'transform 60ms linear';
     card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
     card.style.setProperty('--specular-x', `${((x / rect.width) * 100).toFixed(1)}%`);
     card.style.setProperty('--specular-y', `${((y / rect.height) * 100).toFixed(1)}%`);
   }
 
   function scheduleMove(e) {
+    if (e.target && e.target.closest && e.target.closest('button, a')) return;
     if (e.touches && e.touches.length > 0) {
       pendingX = e.touches[0].clientX;
       pendingY = e.touches[0].clientY;
@@ -4170,6 +4007,7 @@ function initHeroCardParallax() {
       cancelAnimationFrame(rafId);
       rafId = 0;
     }
+    card.style.transition = 'transform 380ms cubic-bezier(0.22, 1, 0.36, 1)';
     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
   }
 
@@ -4180,7 +4018,7 @@ function initHeroCardParallax() {
 }
 
 // === state.js ===
-// SportPass V8.5 — Canonical Reactive State, Preferences, Tombstones, Deduplication & RBAC
+// SportPass V8.6 — Canonical Reactive State, Member Overrides, Tombstones, Deduplication & RBAC
 
 let currentUser = null;
 let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined') ? DEFAULT_MEMBERS_DIRECTORY.slice() : [];
@@ -4189,43 +4027,14 @@ let currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
 let currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
 let offlineMutationQueue = [];
 
-let currentRolePreviewMode = 'admin'; // 'admin' or 'member' (visible only when currentUser.isAdmin)
+let activeQrTaskId = null;
+let unreadNotifSignature = '';
 let currentApproveSubTab = 'swap'; // 'swap' | 'leave' | 'shifts' | 'scanner'
-let currentMissionTab = 'create'; // 'approvals' | 'create' | 'swap'
+let currentMissionTab = 'shifts'; // 'shifts' | 'swap'
 let currentDirDeptFilter = 'ALL';
 let editingTaskId = null;
 let selectedShiftLeaderId = 'DMC0806';
-let pendingSmartRotationCandidates = [];
-let pendingSmartRotationTaskId = null;
 let currentSyncPollTimer = null;
-
-let appPreferences = {
-  tilt3d: true,
-  haptics: true,
-  urgentNotifs: true,
-  faceId: true,
-  remoteLock: false,
-  lang: 'VI'
-};
-
-function loadAppPreferences() {
-  try {
-    const raw = localStorage.getItem('CLB_SPORTPASS_PREFS');
-    if (raw) {
-      appPreferences = Object.assign({}, appPreferences, JSON.parse(raw));
-    }
-  } catch (e) {}
-  document.documentElement.dataset.tilt = appPreferences.tilt3d ? 'on' : 'off';
-  document.documentElement.lang = appPreferences.lang === 'EN' ? 'en' : 'vi';
-}
-
-function saveAppPreferences() {
-  try {
-    localStorage.setItem('CLB_SPORTPASS_PREFS', JSON.stringify(appPreferences));
-  } catch (e) {}
-  document.documentElement.dataset.tilt = appPreferences.tilt3d ? 'on' : 'off';
-  document.documentElement.lang = appPreferences.lang === 'EN' ? 'en' : 'vi';
-}
 
 function safeSetText(id, text) {
   const node = document.getElementById(id);
@@ -4251,6 +4060,14 @@ function resolveAvatarUrl(member) {
   return DEFAULT_VARSITY_AVATAR;
 }
 
+function formatTodayVN(offsetDays = 1) {
+  const d = new Date(Date.now() + Number(offsetDays || 0) * 86400000);
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
 function formatMemberDob(member) {
   if (!member) return '08/06/2003';
   if (member.ngaySinh && /\d{2}\/\d{2}\/\d{4}/.test(String(member.ngaySinh))) return String(member.ngaySinh).trim();
@@ -4273,12 +4090,6 @@ function getDisplayStudentCode(member) {
   return member.id || 'SP0000';
 }
 
-function getMemberEmail(member) {
-  if (!member) return 'member@uhd.sportpass.vn';
-  if (member.email && String(member.email).trim()) return String(member.email).trim();
-  return `${String(member.id || 'member').toLowerCase()}@uhd.sportpass.vn`;
-}
-
 function getTheTrangTheme(theTrang) {
   const raw = String(theTrang || '');
   const lower = raw.toLowerCase();
@@ -4297,6 +4108,76 @@ function formatShortTheTrang(theTrang) {
   if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Miễn trực';
   if (lower.includes('hồi phục')) return 'B';
   return 'A+';
+}
+
+function computeMemberStats(member) {
+  if (!member) return { shiftsCount: 0, onTimeText: '100%', gradeText: 'A+' };
+  const uid = String(member.id || '').trim();
+  let checkedInTotal = 0;
+  const completedOrLocked = [];
+  const now = Date.now();
+
+  for (const t of (currentTasks || [])) {
+    if (!t) continue;
+    const isChecked = Array.isArray(t.checkedInMembers) && t.checkedInMembers.includes(uid);
+    if (isChecked) checkedInTotal++;
+    const isAssignedOrJoined =
+      (Array.isArray(t.joinedMembers) && t.joinedMembers.includes(uid)) ||
+      (Array.isArray(t.assignedMembers) && t.assignedMembers.includes(uid));
+    if (isAssignedOrJoined) {
+      const deadlineMs = t.lockDeadline ? Date.parse(t.lockDeadline) : NaN;
+      const pastDeadline = Number.isFinite(deadlineMs) && deadlineMs < now;
+      if (isChecked || pastDeadline) completedOrLocked.push(isChecked);
+    }
+  }
+
+  const shiftsCount = Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0), checkedInTotal);
+  let onTimeText = '100%';
+  if (completedOrLocked.length > 0) {
+    const attended = completedOrLocked.filter(Boolean).length;
+    onTimeText = `${Math.round((attended / completedOrLocked.length) * 100)}%`;
+  } else if (shiftsCount === 0 && member.onTimeRate) {
+    onTimeText = String(member.onTimeRate);
+  }
+
+  return {
+    shiftsCount,
+    onTimeText,
+    gradeText: formatShortTheTrang(member.theTrang)
+  };
+}
+
+// ==================== PERSISTENT MEMBER OVERRIDES ====================
+function getMemberOverrides() {
+  try {
+    return JSON.parse(localStorage.getItem('CLB_MEMBER_OVERRIDES') || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveMemberOverride(memberId, patch) {
+  if (!memberId || !patch || typeof patch !== 'object') return;
+  const all = getMemberOverrides();
+  all[memberId] = Object.assign({}, all[memberId] || {}, patch);
+  try {
+    localStorage.setItem('CLB_MEMBER_OVERRIDES', JSON.stringify(all));
+  } catch (e) {}
+}
+
+function applyMemberOverrides(members) {
+  const all = getMemberOverrides();
+  if (Array.isArray(members)) {
+    for (const m of members) {
+      if (m && m.id && all[m.id]) {
+        Object.assign(m, all[m.id]);
+      }
+    }
+  }
+  if (currentUser && currentUser.id && all[currentUser.id]) {
+    Object.assign(currentUser, all[currentUser.id]);
+  }
+  applyCustomAdminRoles(members);
 }
 
 // ==================== TOMBSTONES ANTI-RESURRECTION ====================
@@ -4426,7 +4307,7 @@ function saveLocalState() {
 }
 
 // === security.js ===
-// SportPass V8.5 — Security, Auth Session Lifecycle, Biometric Quick Unlock & Sole Admin Protection
+// SportPass V8.6 — Security, Auth Session Lifecycle, WebAuthn Passkey & Strict Password Enforcement
 
 function escapeHtml(str) {
   if (str === undefined || str === null) return '';
@@ -4450,6 +4331,35 @@ function isAuthorizedScanner(user = currentUser) {
     cv.includes('ban chủ nhiệm') ||
     bm.includes('ban chủ nhiệm')
   );
+}
+
+function verifyMemberPassword(memberId, inputPass) {
+  const customPass = localStorage.getItem('CLB_USER_PASS_' + memberId);
+  const expectedPass = customPass !== null ? customPass : '123456';
+  return String(inputPass || '') === expectedPass;
+}
+
+function findLocalMemberByIdentifier(identifier) {
+  const cleanIdent = String(identifier || '').trim().toLowerCase();
+  if (!cleanIdent) return null;
+  const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
+
+  let matched = null;
+  for (const m of (membersDirectory || [])) {
+    if (!m) continue;
+    const mId = String(m.id || '').trim().toLowerCase();
+    const mName = String(m.hoTen || '').trim().toLowerCase();
+    const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
+    if (mId === cleanIdent || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
+      if (!matched) {
+        matched = structuredClone(m);
+      } else {
+        matched.isAdmin = matched.isAdmin || m.isAdmin;
+        matched.isShiftLeader = matched.isShiftLeader || m.isShiftLeader;
+      }
+    }
+  }
+  return matched;
 }
 
 function togglePasswordVisibility() {
@@ -4489,7 +4399,6 @@ function persistUserSession(userObj) {
 }
 
 function checkStoredLoginSession() {
-  loadAppPreferences();
   const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');
   const sessionCached = sessionStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const localCached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
@@ -4520,8 +4429,7 @@ function checkStoredLoginSession() {
         currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
       }
 
-      applyCustomAdminRoles(membersDirectory);
-      currentRolePreviewMode = currentUser.isAdmin ? 'admin' : 'member';
+      applyMemberOverrides(membersDirectory);
       showMainAppView();
       renderProfileData();
       renderDispatchHub();
@@ -4539,33 +4447,15 @@ function checkStoredLoginSession() {
 }
 
 function fallbackOfflineLogin(user, pass, remember) {
-  const cleanIdent = String(user || '').trim().toLowerCase();
-  const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
-
-  let matched = null;
-  for (const m of membersDirectory) {
-    const mId = String(m.id || '').trim().toLowerCase();
-    const mName = String(m.hoTen || '').trim().toLowerCase();
-    const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
-    if (mId === cleanIdent || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
-      if (!matched) {
-        matched = structuredClone(m);
-      } else {
-        matched.isAdmin = matched.isAdmin || m.isAdmin;
-        matched.isShiftLeader = matched.isShiftLeader || m.isShiftLeader;
-      }
-    }
-  }
-
+  const matched = findLocalMemberByIdentifier(user);
   if (!matched) {
     showToast('Không tìm thấy tài khoản hội viên. Kiểm tra Mã ID hoặc SĐT.');
     return false;
   }
 
-  const customPassKey = 'CLB_USER_PASS_' + matched.id;
-  const savedPass = localStorage.getItem(customPassKey) || '123456';
-  if (pass !== savedPass && pass !== '123456') {
-    showToast('Mật khẩu chưa chính xác. Mặc định là 123456.');
+  if (!verifyMemberPassword(matched.id, pass)) {
+    const hasCustom = localStorage.getItem('CLB_USER_PASS_' + matched.id) !== null;
+    showToast(hasCustom ? 'Mật khẩu chưa chính xác.' : 'Mật khẩu chưa chính xác. Mặc định là 123456.');
     return false;
   }
 
@@ -4575,9 +4465,8 @@ function fallbackOfflineLogin(user, pass, remember) {
 
 function completeUserLogin(memberObj, remember) {
   currentUser = structuredClone(memberObj);
-  applyCustomAdminRoles(membersDirectory);
+  applyMemberOverrides(membersDirectory);
   window.currentUser = currentUser;
-  currentRolePreviewMode = currentUser.isAdmin ? 'admin' : 'member';
 
   const sessionStr = JSON.stringify(currentUser);
   sessionStorage.setItem('CLB_SPORTPASS_AUTH_SESSION', sessionStr);
@@ -4631,8 +4520,7 @@ async function handleLoginSubmit(event) {
       const res = await fetch(`${GAS_API_URL}?action=login&identifier=${encodeURIComponent(ident)}`);
       const data = await res.json();
       if (data && data.success && data.member) {
-        const savedPass = localStorage.getItem('CLB_USER_PASS_' + data.member.id) || '123456';
-        if (pass === savedPass || pass === '123456') {
+        if (verifyMemberPassword(data.member.id, pass)) {
           completeUserLogin(data.member, remember);
           return;
         }
@@ -4647,25 +4535,95 @@ async function handleLoginSubmit(event) {
   fallbackOfflineLogin(ident, pass, remember);
 }
 
-function handleBiometricLogin(methodLabel) {
-  const lastId = localStorage.getItem('CLB_LAST_MEMBER_ID') || '';
-  if (!appPreferences.faceId) {
-    showToast('Tính năng đăng nhập sinh trắc học đang tắt trong Cài đặt.');
+function bufferToBase64Url(buf) {
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function base64UrlToUint8Array(b64u) {
+  const b64 = String(b64u || '').replace(/-/g, '+').replace(/_/g, '/');
+  const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+  const bin = atob(b64 + pad);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+async function handleBiometricLogin(methodLabel) {
+  if (!window.PublicKeyCredential || !window.isSecureContext || !navigator.credentials) {
+    showToast('Trình duyệt hoặc kết nối chưa hỗ trợ sinh trắc học WebAuthn. Vui lòng đăng nhập bằng mật khẩu.');
+    document.getElementById('iptUser')?.focus();
     return;
   }
-  if (!lastId) {
-    showToast(`Nhập MSSV và mật khẩu 1 lần đầu để liên kết ${methodLabel}.`);
-    const identEl = document.getElementById('iptUser');
-    if (identEl) identEl.focus();
-    return;
+
+  let binding = null;
+  try {
+    const raw = localStorage.getItem('CLB_PASSKEY_BINDING');
+    if (raw) binding = JSON.parse(raw);
+  } catch (e) {}
+
+  if (binding && binding.memberId && binding.credIdB64) {
+    const boundMember = findLocalMemberByIdentifier(binding.memberId);
+    if (boundMember) {
+      try {
+        const challenge = crypto.getRandomValues(new Uint8Array(32));
+        const assertion = await navigator.credentials.get({
+          publicKey: {
+            challenge,
+            allowCredentials: [{ id: base64UrlToUint8Array(binding.credIdB64), type: 'public-key' }],
+            userVerification: 'required',
+            timeout: 30000
+          }
+        });
+        if (assertion) {
+          completeUserLogin(boundMember, true);
+          showToast(`Xác thực ${methodLabel} thành công: ${boundMember.hoTen}`);
+          return;
+        }
+      } catch (err) {
+        showToast(`Xác thực ${methodLabel} đã hủy hoặc không khớp trên thiết bị.`);
+        return;
+      }
+    }
   }
-  const found = (membersDirectory || []).find(m => m && m.id === lastId);
-  if (found) {
-    completeUserLogin(found, true);
-    showToast(`Xác thực ${methodLabel} thành công: ${found.hoTen}`);
-  } else {
-    showToast(`Không tìm thấy hồ sơ ${lastId} cho ${methodLabel}.`);
+
+  const ident = (document.getElementById('iptUser')?.value || '').trim();
+  const pass = (document.getElementById('iptPass')?.value || '').trim();
+  const candidate = ident ? findLocalMemberByIdentifier(ident) : null;
+
+  if (candidate && pass && verifyMemberPassword(candidate.id, pass)) {
+    try {
+      const challenge = crypto.getRandomValues(new Uint8Array(32));
+      const userId = new TextEncoder().encode(candidate.id);
+      const cred = await navigator.credentials.create({
+        publicKey: {
+          challenge,
+          rp: { name: 'SportPass Pro UHD' },
+          user: { id: userId, name: candidate.id, displayName: candidate.hoTen },
+          pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
+          authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+          timeout: 30000
+        }
+      });
+      if (cred && cred.rawId) {
+        localStorage.setItem('CLB_PASSKEY_BINDING', JSON.stringify({
+          memberId: candidate.id,
+          credIdB64: bufferToBase64Url(cred.rawId)
+        }));
+        completeUserLogin(candidate, true);
+        showToast(`Đã liên kết ${methodLabel} & đăng nhập: ${candidate.hoTen}`);
+        return;
+      }
+    } catch (err) {
+      showToast(`Thiết bị chưa hoàn tất tạo khóa ${methodLabel}. Vui lòng đăng nhập bằng mật khẩu.`);
+      return;
+    }
   }
+
+  showToast(`Đăng nhập bằng MSSV & mật khẩu trước, sau đó nhấn ${methodLabel} để liên kết thiết bị.`);
+  document.getElementById('iptUser')?.focus();
 }
 
 function executeLogoutAction() {
@@ -4682,7 +4640,7 @@ function executeLogoutAction() {
 }
 
 // === sync.js ===
-// SportPass V8.5 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
+// SportPass V8.6 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
 
 let syncDebounceTimer = null;
 
@@ -4707,6 +4665,15 @@ function buildMutationUrl(mut) {
   if (mut.type === 'UPDATE_ROLE') return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&lop=${encodeURIComponent(p.lop || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
   return null;
+}
+
+function dispatchBackendMutation(type, payload) {
+  const url = buildMutationUrl({ type, payload });
+  if (navigator.onLine && url) {
+    fetch(url).catch(() => enqueueOfflineMutation(type, payload));
+  } else {
+    enqueueOfflineMutation(type, payload);
+  }
 }
 
 function syncOfflineMutations(isManual = false) {
@@ -4756,7 +4723,7 @@ async function syncRealtimeData() {
 
     if (Array.isArray(data.membersList) && data.membersList.length > 0) {
       membersDirectory = data.membersList;
-      applyCustomAdminRoles(membersDirectory);
+      applyMemberOverrides(membersDirectory);
     }
 
     if (data.member) {
@@ -4767,7 +4734,7 @@ async function syncRealtimeData() {
       if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
       if (!currentUser.studentCode && preservedStudentCode) currentUser.studentCode = preservedStudentCode;
       if (!currentUser.ngaySinh && preservedDob) currentUser.ngaySinh = preservedDob;
-      applyCustomAdminRoles(membersDirectory);
+      applyMemberOverrides(membersDirectory);
       window.currentUser = currentUser;
     }
 
@@ -4935,7 +4902,7 @@ function runSmartRotationForTask(taskId) {
 }
 
 // === qr.js ===
-// SportPass V8.5 — 45s Dynamic QR Credential Pass, Remote Lock & Check-in Scanner
+// SportPass V8.6 — 45s Dynamic Shift-Bound QR Pass, Check-in Scanner & Live Verified List
 
 let qrCountdown = 45;
 let qrTimerInterval = null;
@@ -5013,26 +4980,56 @@ function renderQrIntoContainer(container, payloadText, pixelSize = 160) {
   container.replaceChildren(generateOfflineSvgQrNode(payloadText));
 }
 
-function updateQrPassDisplay() {
-  const lockedNotice = document.getElementById('qr-locked-notice');
-  const holoCard = document.getElementById('qr-holo-container');
-  const isLocked = Boolean(typeof appPreferences !== 'undefined' && appPreferences.remoteLock);
-  if (lockedNotice) lockedNotice.classList.toggle('hidden', !isLocked);
-  if (holoCard) holoCard.classList.toggle('hidden', isLocked);
-  if (isLocked) return;
+function populateQrPassTaskSelector() {
+  const sel = document.getElementById('selQrPassTask');
+  if (!sel) return;
+  const uid = currentUser ? currentUser.id : '';
+  const tasks = Array.isArray(currentTasks) ? currentTasks : [];
 
+  const sorted = tasks.slice().sort((a, b) => {
+    const aMine = uid && ([...(a.joinedMembers || []), ...(a.assignedMembers || [])].includes(uid));
+    const bMine = uid && ([...(b.joinedMembers || []), ...(b.assignedMembers || [])].includes(uid));
+    if (aMine !== bMine) return aMine ? -1 : 1;
+    return 0;
+  });
+
+  const opts = sorted.length > 0
+    ? sorted.map(t => el('option', { value: t.id }, `${t.id} — ${t.title}`))
+    : [el('option', { value: 'GENERAL' }, 'Điểm danh thành viên CLB')];
+
+  mount(sel, opts);
+  if (activeQrTaskId && sorted.some(t => t.id === activeQrTaskId)) {
+    sel.value = activeQrTaskId;
+  } else if (sel.options.length > 0) {
+    activeQrTaskId = sel.options[0].value;
+  }
+}
+
+function updateQrPassDisplay() {
   const uid = currentUser ? currentUser.id : 'DMC0806';
-  const taskId = (currentTasks && currentTasks[0]) ? currentTasks[0].id : 'GENERAL';
+  const sel = document.getElementById('selQrPassTask');
+  const taskId = (sel && sel.value) || activeQrTaskId || (currentTasks && currentTasks[0] ? currentTasks[0].id : 'GENERAL');
+  activeQrTaskId = taskId;
+
+  const task = (currentTasks || []).find(t => t && t.id === taskId);
+  const isChecked = Boolean(task && Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(uid));
+  const pill = document.getElementById('qr-checkin-status-pill');
+  if (pill) {
+    pill.textContent = isChecked ? 'Đã điểm danh ✓' : 'Chưa điểm danh';
+    pill.className = isChecked ? 'ready-badge-pill' : 'role-pill-badge';
+  }
+
   const slot = Math.floor(Date.now() / 45000);
   const payload = `SPORTPASS:CHECKIN:${taskId}:${uid}:${slot}`;
   const container = document.getElementById('qr-code-box');
   if (container) renderQrIntoContainer(container, payload, 160);
-  safeSetText('qr-token-code', `#${uid}-VN`);
+  safeSetText('qr-token-code', `#${uid} · ${taskId}`);
 }
 
 function startQrCountdown() {
   qrCountdown = 45;
   safeSetText('qr-timer', qrCountdown + 's');
+  populateQrPassTaskSelector();
   updateQrPassDisplay();
   if (qrTimerInterval) clearInterval(qrTimerInterval);
   qrTimerInterval = setInterval(() => {
@@ -5052,13 +5049,15 @@ function stopQrCountdown() {
   }
 }
 
-function openQrModal() {
+function openQrModal(preferredTaskId = null) {
+  if (preferredTaskId && typeof preferredTaskId === 'string') {
+    activeQrTaskId = preferredTaskId;
+  }
   startQrCountdown();
   openSheetDialog('qr-modal');
 }
 
 function closeQrModal() {
-  stopQrCountdown();
   closeSheetDialog('qr-modal');
 }
 
@@ -5073,6 +5072,40 @@ function stopQrCameraStream() {
     } catch (e) {}
     qrScannerStream = null;
   }
+}
+
+function renderScannerCheckedInList() {
+  const listEl = document.getElementById('scannerCheckedInList');
+  if (!listEl) return;
+  const selTask = document.getElementById('selScanTaskId')?.value || currentScanTargetTaskId || (currentTasks[0] ? currentTasks[0].id : '');
+  const task = (currentTasks || []).find(t => t && t.id === selTask);
+  const checked = task && Array.isArray(task.checkedInMembers) ? task.checkedInMembers : [];
+
+  const header = el('div', { className: 'field-head-split', style: { marginTop: '4px' } },
+    el('span', { className: 'field-label-mono' }, 'Danh sách đã điểm danh'),
+    el('span', { className: 'role-pill-badge' }, `${checked.length} thành viên`)
+  );
+
+  if (checked.length === 0) {
+    mount(listEl, header, el('div', { className: 'empty-card', style: { padding: '12px' } }, 'Chưa có thành viên nào điểm danh ca này.'));
+    return;
+  }
+
+  const rows = checked.map((mid) => {
+    const member = (membersDirectory || []).find(m => m && m.id === mid);
+    return el('div', { className: 'member-pill-row', style: { padding: '8px 10px' } },
+      el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', minWidth: '0', flex: '1' } },
+        el('div', { className: 'avatar-initials-circle solid', style: { width: '30px', height: '30px', fontSize: '10.5px' } }, getSportPassInitials(member ? member.hoTen : mid)),
+        el('div', { style: { minWidth: '0', flex: '1' } },
+          el('div', { style: { fontSize: '12.5px', fontWeight: '700', color: 'var(--text-primary)' }, className: 'truncate' }, member ? member.hoTen : mid),
+          el('div', { className: 'font-mono', style: { fontSize: '10.5px', color: 'var(--text-muted)' } }, mid)
+        )
+      ),
+      el('span', { className: 'ready-badge-pill' }, 'Đã vào ca')
+    );
+  });
+
+  mount(listEl, header, rows);
 }
 
 async function startQrScanner(targetTaskId = null) {
@@ -5188,8 +5221,8 @@ function handleScanQrPayload(rawCode) {
     const parts = trimmed.split(':');
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
-  } else if (trimmed.startsWith('#') && trimmed.endsWith('-VN')) {
-    memberId = trimmed.slice(1, -3);
+  } else if (trimmed.startsWith('#') && trimmed.includes('-VN')) {
+    memberId = trimmed.slice(1).split('-VN')[0].split(' ')[0];
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {
@@ -5229,27 +5262,30 @@ function handleQrCheckinAction(taskId, memberId) {
 
     for (const m of (membersDirectory || [])) {
       if (m.id === cleanMemberId) {
-        m.soCaHoanThanh = (Number(m.soCaHoanThanh) || 0) + 1;
-        m.soCa = m.soCaHoanThanh;
+        const nextShifts = (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) + 1;
+        m.soCaHoanThanh = nextShifts;
+        m.soCa = nextShifts;
+        saveMemberOverride(cleanMemberId, { soCaHoanThanh: nextShifts, soCa: nextShifts });
       }
     }
     if (currentUser && currentUser.id === cleanMemberId) {
-      currentUser.soCaHoanThanh = (Number(currentUser.soCaHoanThanh) || 0) + 1;
-      currentUser.soCa = currentUser.soCaHoanThanh;
+      const nextCur = (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0)) + 1;
+      currentUser.soCaHoanThanh = nextCur;
+      currentUser.soCa = nextCur;
+      saveMemberOverride(cleanMemberId, { soCaHoanThanh: nextCur, soCa: nextCur });
       persistUserSession(currentUser);
       renderProfileData();
     }
 
     const payload = { taskId: task.id, memberId: cleanMemberId, scannerId: currentUser ? currentUser.id : 'SYSTEM' };
-    if (navigator.onLine) {
-      fetch(`${GAS_API_URL}?action=checkinMember&taskId=${encodeURIComponent(task.id)}&memberId=${encodeURIComponent(cleanMemberId)}&adminId=${encodeURIComponent(payload.scannerId)}`)
-        .catch(() => enqueueOfflineMutation('QR_CHECKIN', payload));
-    } else {
-      enqueueOfflineMutation('QR_CHECKIN', payload);
-    }
+    dispatchBackendMutation('QR_CHECKIN', payload);
 
     saveLocalState();
     renderDispatchHub();
+    renderScannerCheckedInList();
+    renderMembersModalList();
+    renderNotificationsModalList();
+    safeSetValue('iptManualCheckinId', '');
     triggerHaptic('success');
     showToast(`Điểm danh QR thành công: ${cleanMemberId}`);
   } else {
@@ -5258,7 +5294,7 @@ function handleQrCheckinAction(taskId, memberId) {
 }
 
 // === notifications.js ===
-// SportPass V8.5 — Floating Pill Toast, Haptics & Notification Center Sheet Renderer
+// SportPass V8.6 — Interactive Role-Aware Notifications, Unread Indicator & Haptics
 
 let toastHideTimer = null;
 
@@ -5276,7 +5312,6 @@ function showToast(message) {
 
 function triggerHaptic(type = 'light') {
   try {
-    if (typeof appPreferences !== 'undefined' && appPreferences.haptics === false) return;
     if (!('vibrate' in navigator)) return;
     if (type === 'success') navigator.vibrate([12, 24, 18]);
     else if (type === 'warning') navigator.vibrate([22, 18, 22]);
@@ -5292,60 +5327,122 @@ function autoEnableBackgroundNotifications() {
   }
 }
 
-async function requestNotificationPermission() {
-  if (!('Notification' in window)) {
-    showToast('Trình duyệt không hỗ trợ thông báo đẩy.');
-    return 'unsupported';
-  }
-  const perm = await Notification.requestPermission();
-  if (perm === 'granted') {
-    autoEnableBackgroundNotifications();
-    showToast('Đã bật thông báo ca trực CLB!');
-  }
-  return perm;
+function markNotificationsRead() {
+  const uid = currentUser ? currentUser.id : 'GUEST';
+  try {
+    localStorage.setItem('CLB_READ_NOTIF_SIG_' + uid, unreadNotifSignature || '');
+  } catch (e) {}
+  const dot = document.getElementById('notification-dot');
+  if (dot) dot.classList.add('hidden');
 }
 
 function renderNotificationsModalList() {
   const listEl = document.getElementById('notification-list');
-  if (!listEl) return;
-
+  const uid = currentUser ? currentUser.id : '';
+  const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const items = [];
+
   const nextShift = (currentTasks || [])[0];
   if (nextShift) {
+    const occupied = Array.from(new Set([...(nextShift.joinedMembers || []), ...(nextShift.assignedMembers || [])]));
+    const isMine = Boolean(uid && occupied.includes(uid));
     items.push({
       highlight: true,
       iconBg: 'bg-icon-sky',
       icon: 'clock',
       title: 'Nhắc nhở ca trực sắp tới',
-      time: 'Hiện tại',
-      desc: `${nextShift.title} tại ${nextShift.location || 'Nhà Thi Đấu ĐH Hải Dương'} (${nextShift.time || '14:00'}). Vui lòng chuẩn bị thẻ QR để check-in.`
+      time: nextShift.id,
+      desc: `${nextShift.title} tại ${nextShift.location || 'SVĐ Trung Tâm'} (${nextShift.time || ''}). Nhấn để mở nhanh.`,
+      onClick: () => {
+        if (isMine) {
+          switchSheetDialog('notification-modal', 'qr-modal', () => {
+            activeQrTaskId = nextShift.id;
+            startQrCountdown();
+          });
+        } else if (isAdmin) {
+          switchSheetDialog('notification-modal', 'approve-shift-modal', () => switchApproveTab('shifts'));
+        } else {
+          switchSheetDialog('notification-modal', 'task-mission-modal', () => {
+            switchMissionTab('shifts');
+            renderMissionSheetPanels();
+          });
+        }
+      }
     });
   }
 
   const pendingSwaps = (currentSwaps || []).filter(s => s.status === 'pending').length;
   const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending').length;
-  if (pendingSwaps + pendingLeaves > 0) {
+
+  if (isAdmin && (pendingSwaps + pendingLeaves > 0)) {
     items.push({
       highlight: false,
       iconBg: 'bg-icon-amber',
       icon: 'alert',
       title: `Có ${pendingSwaps + pendingLeaves} yêu cầu điều động chờ duyệt`,
-      time: 'Ưu tiên',
-      desc: 'Mở mục Duyệt ca để phê duyệt đổi ca hoặc chi viện nhân sự kịp thời.'
+      time: 'Cần duyệt',
+      desc: 'Nhấn để mở thẳng bảng phê duyệt đổi ca và chi viện nhân sự.',
+      onClick: () => {
+        switchSheetDialog('notification-modal', 'approve-shift-modal', () => {
+          switchApproveTab(pendingSwaps > 0 ? 'swap' : 'leave');
+        });
+      }
     });
+  } else if (!isAdmin && uid) {
+    const mySwaps = (currentSwaps || []).filter(s => s.fromId === uid);
+    const myLeaves = (currentLeaves || []).filter(l => l.memberId === uid);
+    const myTotal = mySwaps.length + myLeaves.length;
+    if (myTotal > 0) {
+      const latest = mySwaps[0] || myLeaves[0];
+      const stLabel = latest.status === 'approved' ? 'Đã duyệt' : (latest.status === 'rejected' ? 'Từ chối' : 'Chờ duyệt');
+      items.push({
+        highlight: false,
+        iconBg: 'bg-icon-amber',
+        icon: 'refresh',
+        title: `Đơn đổi / rút ca của bạn (${myTotal})`,
+        time: stLabel,
+        desc: 'Nhấn để xem trạng thái phản hồi hoặc hủy yêu cầu đang chờ duyệt.',
+        onClick: () => {
+          switchSheetDialog('notification-modal', 'task-mission-modal', () => {
+            switchMissionTab('swap');
+            renderMissionSheetPanels();
+          });
+        }
+      });
+    }
   }
 
   items.push({
     highlight: false,
     iconBg: 'bg-icon-emerald',
     icon: 'check',
-    title: 'Hệ thống điểm danh QR đã sẵn sàng',
-    time: 'CLB UHD',
-    desc: 'Dữ liệu 125 thành viên thuộc 7 ban chuyên môn đã đồng bộ đầy đủ với Varsity Pass.'
+    title: 'Thẻ điểm danh QR đang hoạt động',
+    time: 'Mở QR',
+    desc: `Nhấn để xuất trình mã QR cá nhân của ${currentUser ? currentUser.hoTen : 'hội viên'} (làm mới mỗi 45 giây).`,
+    onClick: () => {
+      switchSheetDialog('notification-modal', 'qr-modal', () => startQrCountdown());
+    }
   });
 
+  unreadNotifSignature = [
+    nextShift ? nextShift.id : 'NONE',
+    isAdmin ? `${pendingSwaps}-${pendingLeaves}` : uid,
+    (currentSwaps || []).filter(s => s.fromId === uid).map(s => s.status).join(','),
+    (currentLeaves || []).filter(l => l.memberId === uid).map(l => l.status).join(',')
+  ].join('|');
+
+  let readSig = '';
+  try { readSig = localStorage.getItem('CLB_READ_NOTIF_SIG_' + (uid || 'GUEST')) || ''; } catch (e) {}
+  const dot = document.getElementById('notification-dot');
+  if (dot) dot.classList.toggle('hidden', !unreadNotifSignature || unreadNotifSignature === readSig);
+
+  if (!listEl) return;
   const nodes = items.map(it =>
-    el('div', { className: `notif-item-card${it.highlight ? ' highlight' : ''}` },
+    el('button', {
+      type: 'button',
+      className: `notif-item-card interactive spring-press${it.highlight ? ' highlight' : ''}`,
+      onClick: it.onClick
+    },
       el('div', { className: `notif-item-icon ${it.iconBg}` }, spIconNode(it.icon, 16)),
       el('div', { style: { flex: '1', minWidth: '0' } },
         el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
@@ -5361,7 +5458,7 @@ function renderNotificationsModalList() {
 }
 
 // === theme.js ===
-// SportPass V8.5 — Adaptive Dual-Mode Theme Controller
+// SportPass V8.6 — Adaptive 3-State Theme Controller (Light / Dark / System)
 
 const THEME_STORAGE_KEY = 'sportpass-theme-mode';
 
@@ -5375,9 +5472,9 @@ function resolveEffectiveTheme(mode) {
 function getSavedThemeMode() {
   try {
     const v = localStorage.getItem(THEME_STORAGE_KEY);
-    if (v === 'light' || v === 'dark' || v === 'system') return v;
+    if (v === 'light' || v === 'dark') return v;
   } catch (e) {}
-  return 'light';
+  return 'system';
 }
 
 function syncThemeControlUI(mode) {
@@ -5386,22 +5483,45 @@ function syncThemeControlUI(mode) {
   document.documentElement.dataset.theme = effective;
 
   const meta = document.querySelector('meta[name="color-scheme"]');
-  if (meta) meta.setAttribute('content', effective === 'dark' ? 'dark' : 'light');
-
-  const badge = document.getElementById('theme-mode-badge');
-  const desc = document.getElementById('theme-mode-desc');
-  if (badge) {
-    badge.textContent = active === 'dark' ? 'Tối ⌄' : (active === 'system' ? (effective === 'dark' ? 'Tự động (Tối) ⌄' : 'Tự động (Sáng) ⌄') : 'Sáng ⌄');
+  if (meta) {
+    meta.setAttribute('content', (active === 'light' || active === 'dark') ? active : 'light dark');
   }
+
+  const bLight = document.getElementById('theme-btn-light');
+  const bDark = document.getElementById('theme-btn-dark');
+  const bSys = document.getElementById('theme-btn-system');
+  if (bLight) {
+    bLight.classList.toggle('active', active === 'light');
+    bLight.setAttribute('aria-pressed', String(active === 'light'));
+  }
+  if (bDark) {
+    bDark.classList.toggle('active', active === 'dark');
+    bDark.setAttribute('aria-pressed', String(active === 'dark'));
+  }
+  if (bSys) {
+    bSys.classList.toggle('active', active === 'system');
+    bSys.setAttribute('aria-pressed', String(active === 'system'));
+  }
+
+  const desc = document.getElementById('theme-mode-desc');
   if (desc) {
-    desc.textContent = active === 'system' ? 'Theo hệ thống tự động' : (active === 'dark' ? 'Đang bật chế độ tối Aquamorphic' : 'Màu sắc hiển thị trên hệ thống');
+    if (active === 'system') {
+      desc.textContent = `Theo hệ thống (${effective === 'dark' ? 'đang tối' : 'đang sáng'})`;
+    } else if (active === 'dark') {
+      desc.textContent = 'Đang bật chế độ tối Aquamorphic';
+    } else {
+      desc.textContent = 'Đang bật chế độ sáng Frosted Sky';
+    }
   }
 }
 
-function setColorScheme(mode = 'light', animate = true) {
-  const nextMode = (mode === 'dark' || mode === 'system') ? mode : 'light';
+function setColorScheme(mode = 'system', animate = true) {
+  const nextMode = (mode === 'dark' || mode === 'light') ? mode : 'system';
   const apply = () => {
-    try { localStorage.setItem(THEME_STORAGE_KEY, nextMode); } catch (e) {}
+    try {
+      if (nextMode === 'system') localStorage.removeItem(THEME_STORAGE_KEY);
+      else localStorage.setItem(THEME_STORAGE_KEY, nextMode);
+    } catch (e) {}
     syncThemeControlUI(nextMode);
   };
 
@@ -5421,7 +5541,7 @@ function cycleThemeMode() {
   const next = order[(order.indexOf(cur) + 1) % order.length];
   setColorScheme(next, true);
   const label = next === 'dark' ? 'Tối' : (next === 'system' ? 'Tự động theo hệ thống' : 'Sáng Frosted Sky');
-  showToast(`Chủ đề giao diện: ${label}`);
+  showToast(`Giao diện: ${label}`);
 }
 
 function initThemeController() {
@@ -5430,12 +5550,35 @@ function initThemeController() {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     if (mq.addEventListener) mq.addEventListener('change', () => syncThemeControlUI());
   }
+  window.addEventListener('storage', (ev) => {
+    if (ev.key === THEME_STORAGE_KEY) syncThemeControlUI();
+  });
 }
 
 // === modals.js ===
-// SportPass V8.5 — 60fps Animated Top-Layer <dialog closedby="any"> & Success Celebration Controller
+// SportPass V8.6 — Top-Layer <dialog closedby="any"> Lifecycle (@starting-style + fallback) & Safe Switching
 
 let celebrationTimer = null;
+let supportsDisplayTransitionCache;
+
+function canTransitionDisplay() {
+  if (supportsDisplayTransitionCache !== undefined) return supportsDisplayTransitionCache;
+  if (!window.CSS?.supports?.('transition-behavior', 'allow-discrete') || !document.body) {
+    return false;
+  }
+  const probe = document.createElement('div');
+  probe.style.cssText = 'transition: display 1s allow-discrete !important; display: block;';
+  document.body.appendChild(probe);
+  getComputedStyle(probe).display;
+  probe.style.display = 'none';
+  supportsDisplayTransitionCache = getComputedStyle(probe).display === 'block';
+  probe.remove();
+  return supportsDisplayTransitionCache;
+}
+
+function supportsTopLayerExit() {
+  return Boolean(window.CSS?.supports?.('overlay', 'auto') && canTransitionDisplay());
+}
 
 function openSheetDialog(id) {
   const dlg = document.getElementById(id);
@@ -5447,7 +5590,7 @@ function openSheetDialog(id) {
   triggerHaptic('light');
 }
 
-function closeSheetDialog(id) {
+async function closeSheetDialog(id) {
   const dlg = document.getElementById(id);
   if (!dlg || !dlg.open) return;
 
@@ -5461,17 +5604,39 @@ function closeSheetDialog(id) {
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) {
     dlg.removeAttribute('data-closing');
-    try { dlg.close(); } catch (e) {}
+    if (dlg.open) try { dlg.close(); } catch (e) {}
     return;
   }
 
-  dlg.setAttribute('data-closing', '');
-  setTimeout(() => {
-    dlg.removeAttribute('data-closing');
-    if (dlg.open) {
-      try { dlg.close(); } catch (e) {}
+  if (!supportsTopLayerExit()) {
+    dlg.setAttribute('data-closing', '');
+    const animations = dlg.getAnimations({ subtree: true });
+    if (animations.length > 0) {
+      await Promise.race([
+        Promise.allSettled(animations.map(a => a.finished)),
+        new Promise(r => setTimeout(r, 450))
+      ]);
     }
-  }, 215);
+    if (!dlg.hasAttribute('data-closing')) return;
+    dlg.removeAttribute('data-closing');
+    if (dlg.open) try { dlg.close(); } catch (e) {}
+    return;
+  }
+
+  if (dlg.open) try { dlg.close(); } catch (e) {}
+  const exitAnimations = dlg.getAnimations({ subtree: true });
+  if (exitAnimations.length > 0) {
+    await Promise.race([
+      Promise.allSettled(exitAnimations.map(a => a.finished)),
+      new Promise(r => setTimeout(r, 320))
+    ]);
+  }
+}
+
+async function switchSheetDialog(fromId, toId, beforeOpenFn) {
+  await closeSheetDialog(fromId);
+  if (typeof beforeOpenFn === 'function') beforeOpenFn();
+  openSheetDialog(toId);
 }
 
 function openSuccessCelebration({ kicker, title, descNodes }) {
@@ -5519,7 +5684,10 @@ function closeAllModals() {
   document.querySelectorAll('dialog.sp-sheet-dialog').forEach((dlg) => {
     dlg.removeAttribute('data-closing');
     if (dlg.open && typeof dlg.close === 'function') {
+      dlg.style.transition = 'none';
       try { dlg.close(); } catch (e) {}
+      void dlg.offsetWidth;
+      dlg.style.transition = '';
     }
   });
   stopQrCountdown();
@@ -5557,7 +5725,7 @@ function initModalLifecycle() {
 }
 
 // === render-profile.js ===
-// SportPass V8.5 — Profile Hero, 8-Row Profile, Role Preview Switcher, Members Modal & Settings Modal
+// SportPass V8.6 — Profile Hero, Real Account RBAC, 8-Row Interactive Profile, Members Directory & Slim Settings
 
 async function compressImage(fileOrDataUrl, maxWidth = 320, maxHeight = 320, quality = 0.8) {
   return new Promise((resolve) => {
@@ -5586,57 +5754,43 @@ async function compressImage(fileOrDataUrl, maxWidth = 320, maxHeight = 320, qua
   });
 }
 
-function applyRolePreviewMode() {
-  const isRealAdmin = Boolean(currentUser && currentUser.isAdmin);
-  const dock = document.getElementById('role-preview-dock');
-  if (dock) dock.classList.toggle('hidden', !isRealAdmin);
-
-  const effectiveAdmin = isRealAdmin && (currentRolePreviewMode === 'admin');
+function applyAccountRoleUI() {
+  const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const adminActions = document.getElementById('quick-actions-admin');
   const memberActions = document.getElementById('quick-actions-member');
-  if (adminActions) adminActions.classList.toggle('hidden', !effectiveAdmin && !(currentUser && currentUser.isShiftLeader && currentRolePreviewMode !== 'member'));
-  if (memberActions) memberActions.classList.toggle('hidden', effectiveAdmin || (currentUser && currentUser.isShiftLeader && currentRolePreviewMode !== 'member'));
-
-  const swMember = document.getElementById('role-switch-member');
-  const swAdmin = document.getElementById('role-switch-admin');
-  if (swMember) swMember.classList.toggle('active', currentRolePreviewMode === 'member');
-  if (swAdmin) swAdmin.classList.toggle('active', currentRolePreviewMode === 'admin');
+  if (adminActions) adminActions.classList.toggle('hidden', !isAdmin);
+  if (memberActions) memberActions.classList.toggle('hidden', isAdmin);
 
   const roleBadge = document.getElementById('role-badge');
   if (roleBadge && currentUser) {
-    if (currentRolePreviewMode === 'member') {
-      roleBadge.textContent = 'THÀNH VIÊN';
-    } else {
-      roleBadge.textContent = currentUser.isAdmin ? 'ADMIN' : (currentUser.isShiftLeader ? 'TRƯỞNG CA' : 'HỘI VIÊN');
-    }
+    roleBadge.textContent = isAdmin ? 'ADMIN' : 'THÀNH VIÊN';
+    roleBadge.classList.toggle('hidden', !isAdmin);
   }
 }
 
-function setRolePreviewMode(mode) {
-  if (!currentUser || !currentUser.isAdmin) return;
-  currentRolePreviewMode = mode === 'member' ? 'member' : 'admin';
-  applyRolePreviewMode();
-  showToast(currentRolePreviewMode === 'member' ? 'Đang xem ở chế độ Thành viên' : 'Đang xem ở chế độ Admin');
+function extractPhoneDigits(text) {
+  const match = String(text || '').match(/\+?\d[\d\s.-]{6,}\d/);
+  return match ? match[0].replace(/[^0-9+]/g, '') : '';
 }
 
 function renderProfileData() {
   if (!currentUser) return;
-  applyCustomAdminRoles(membersDirectory);
+  applyMemberOverrides(membersDirectory);
 
   const isAdmin = Boolean(currentUser.isAdmin);
-  const shiftsCount = Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0);
+  const stats = computeMemberStats(currentUser);
   const avatarSrc = resolveAvatarUrl(currentUser);
   const studentCode = getDisplayStudentCode(currentUser);
   const dobText = formatMemberDob(currentUser);
   const phoneText = currentUser.sdt && String(currentUser.sdt).trim() ? String(currentUser.sdt).trim() : 'Chưa cập nhật';
   const iceText = currentUser.ice && String(currentUser.ice).trim()
     ? String(currentUser.ice).trim()
-    : (currentUser.sdt ? `${currentUser.sdt} (Gia đình)` : '0988 123 456 (Trực CLB)');
+    : (currentUser.sdt && String(currentUser.sdt).trim() ? String(currentUser.sdt).trim() : 'Chưa cập nhật');
 
   const hdrImg = document.getElementById('settings-trigger-avatar');
   if (hdrImg) {
     hdrImg.src = avatarSrc;
-    hdrImg.alt = currentUser.hoTen || 'Cài đặt ứng dụng';
+    hdrImg.alt = currentUser.hoTen || 'Cài đặt tài khoản';
   }
 
   const heroImg = document.getElementById('hero-avatar-img');
@@ -5654,9 +5808,9 @@ function renderProfileData() {
   safeSetText('card-subtitle', currentUser.chucVu || 'Thành viên CLB Thể Thao');
   safeSetText('card-mssv', studentCode);
 
-  safeSetText('stat-shifts', String(shiftsCount));
-  safeSetText('stat-efficiency', currentUser.onTimeRate || '98%');
-  safeSetText('stat-rating', formatShortTheTrang(currentUser.theTrang));
+  safeSetText('stat-shifts', String(stats.shiftsCount));
+  safeSetText('stat-efficiency', stats.onTimeText);
+  safeSetText('stat-rating', stats.gradeText);
 
   safeSetText('display-fullname', currentUser.hoTen || '');
   safeSetText('display-studentId', studentCode);
@@ -5664,13 +5818,21 @@ function renderProfileData() {
   safeSetText('display-dob', dobText);
   safeSetText('display-dutyArea', currentUser.boMon || 'Ban Nhân Sự');
   safeSetText('display-role', currentUser.chucVu || 'Thành viên');
-  safeSetText('display-ice', iceText);
 
   const phoneEl = document.getElementById('display-phone');
   if (phoneEl) {
     phoneEl.textContent = phoneText;
-    const digits = phoneText.replace(/[^0-9+]/g, '');
-    phoneEl.setAttribute('href', digits ? `tel:${digits}` : '#display-phone');
+    const digits = extractPhoneDigits(phoneText);
+    phoneEl.setAttribute('href', digits ? `tel:${digits}` : '#edit-profile-modal');
+    phoneEl.dataset.needsEdit = digits ? '0' : '1';
+  }
+
+  const iceEl = document.getElementById('display-ice');
+  if (iceEl) {
+    iceEl.textContent = iceText;
+    const iceDigits = extractPhoneDigits(iceText);
+    iceEl.setAttribute('href', iceDigits ? `tel:${iceDigits}` : '#edit-profile-modal');
+    iceEl.dataset.needsEdit = iceDigits ? '0' : '1';
   }
 
   // Sync Settings Mini Hero Card
@@ -5682,30 +5844,14 @@ function renderProfileData() {
   safeSetText('settings-role-kicker', isAdmin ? 'ĐIỀU PHỐI VIÊN' : String(currentUser.boMon || 'HỘI VIÊN CLB').toUpperCase());
   safeSetText('settings-name', currentUser.hoTen || 'Thành viên CLB');
   safeSetText('settings-submeta', `MSSV: ${studentCode} • ${currentUser.lop || 'UHD'}`);
-  safeSetText('settings-grade-badge', formatShortTheTrang(currentUser.theTrang));
+  safeSetText('settings-grade-badge', stats.gradeText);
+
+  const hasCustomPass = localStorage.getItem('CLB_USER_PASS_' + currentUser.id) !== null;
+  safeSetText('password-status-desc', hasCustomPass ? 'Đã thiết lập mật khẩu riêng' : 'Đang dùng mật khẩu mặc định (123456)');
 
   applyStatusBadgeStyle();
-  applyRolePreviewMode();
+  applyAccountRoleUI();
   updateQrPassDisplay();
-  syncSettingsSwitchesUI();
-}
-
-function syncSettingsSwitchesUI() {
-  const swFace = document.getElementById('switchFaceId');
-  const swLock = document.getElementById('switchRemoteLock');
-  const swTilt = document.getElementById('switchTilt3d');
-  const swNotif = document.getElementById('switchUrgentNotifs');
-  const swHaptic = document.getElementById('switchHaptics');
-  if (swFace) swFace.checked = Boolean(appPreferences.faceId);
-  if (swLock) swLock.checked = Boolean(appPreferences.remoteLock);
-  if (swTilt) swTilt.checked = Boolean(appPreferences.tilt3d);
-  if (swNotif) swNotif.checked = Boolean(appPreferences.urgentNotifs);
-  if (swHaptic) swHaptic.checked = Boolean(appPreferences.haptics);
-
-  const btnVn = document.getElementById('lang-btn-vn');
-  const btnEn = document.getElementById('lang-btn-en');
-  if (btnVn) btnVn.classList.toggle('active', appPreferences.lang !== 'EN');
-  if (btnEn) btnEn.classList.toggle('active', appPreferences.lang === 'EN');
 }
 
 function applyStatusBadgeStyle() {
@@ -5722,30 +5868,16 @@ function applyStatusBadgeStyle() {
 
 function cycleStatus(ev) {
   if (ev && ev.stopPropagation) ev.stopPropagation();
+  if (!currentUser) return;
   const states = ['Sẵn sàng', 'Đang bận', 'Tạm nghỉ'];
-  const cur = (currentUser && currentUser.status) ? currentUser.status : 'Sẵn sàng';
+  const cur = currentUser.status || 'Sẵn sàng';
   const next = states[(states.indexOf(cur) + 1) % states.length];
-  if (currentUser) {
-    currentUser.status = next;
-    persistUserSession(currentUser);
-  }
+  currentUser.status = next;
+  saveMemberOverride(currentUser.id, { status: next });
+  persistUserSession(currentUser);
   applyStatusBadgeStyle();
   renderMembersModalList();
   showToast(`Trạng thái: ${next}`);
-}
-
-function cycleReadinessRating() {
-  if (!currentUser) return;
-  const curIdx = THE_TRANG_OPTIONS.findIndex(o => o.label === currentUser.theTrang);
-  const nextOpt = THE_TRANG_OPTIONS[(Math.max(0, curIdx) + 1) % THE_TRANG_OPTIONS.length];
-  currentUser.theTrang = nextOpt.label;
-  for (const m of (membersDirectory || [])) {
-    if (m.id === currentUser.id) m.theTrang = nextOpt.label;
-  }
-  persistUserSession(currentUser);
-  saveLocalState();
-  renderProfileData();
-  showToast(`Thể trạng: ${nextOpt.short}`);
 }
 
 async function handleAvatarFileSelect(event) {
@@ -5757,6 +5889,7 @@ async function handleAvatarFileSelect(event) {
   for (const m of (membersDirectory || [])) {
     if (m.id === currentUser.id) m.avatar = compressed;
   }
+  saveMemberOverride(currentUser.id, { avatar: compressed });
   persistUserSession(currentUser);
   saveLocalState();
   renderProfileData();
@@ -5765,7 +5898,7 @@ async function handleAvatarFileSelect(event) {
   showToast('Đã cập nhật ảnh đại diện thành viên!');
 }
 
-// ==================== MEMBERS MODAL ("THÀNH VIÊN CLB" - SCREENSHOT 1) ====================
+// ==================== MEMBERS MODAL ("THÀNH VIÊN CLB") ====================
 function openMembersModal() {
   renderMembersModalList();
   openSheetDialog('members-modal');
@@ -5790,7 +5923,7 @@ function renderMembersModalList() {
   for (const m of (membersDirectory || [])) {
     if (m && m.id && !uniqueMap.has(m.id)) uniqueMap.set(m.id, m);
   }
-  let uniqueList = Array.from(uniqueMap.values());
+  const uniqueList = Array.from(uniqueMap.values());
   if (currentUser) {
     const idx = uniqueList.findIndex(m => m.id === currentUser.id);
     if (idx > 0) {
@@ -5866,8 +5999,8 @@ function renderMembersModalList() {
   mount(container, cards);
 }
 
-// ==================== EDIT PROFILE MODAL ("CHỈNH SỬA THÔNG TIN HỒ SƠ" - SCREENSHOT 5) ====================
-function openEditProfileModal() {
+// ==================== EDIT PROFILE MODAL ====================
+function openEditProfileModal(focusFieldId = null) {
   if (!currentUser) return;
   const previewImg = document.getElementById('edit-avatar-preview');
   if (previewImg) {
@@ -5883,13 +6016,16 @@ function openEditProfileModal() {
   safeSetValue('input-phone', currentUser.sdt || '');
   safeSetValue('input-ice', currentUser.ice || currentUser.sdt || '');
   openSheetDialog('edit-profile-modal');
+  if (focusFieldId && typeof focusFieldId === 'string') {
+    setTimeout(() => document.getElementById(focusFieldId)?.focus(), 100);
+  }
 }
 
 function closeEditProfileModal() {
-  closeSheetDialog('edit-profile-modal');
+  return closeSheetDialog('edit-profile-modal');
 }
 
-function saveEditProfileAction() {
+async function saveEditProfileAction() {
   if (!currentUser) return;
   const newName = (document.getElementById('input-fullname')?.value || '').trim();
   const newFaculty = (document.getElementById('input-faculty')?.value || '').trim();
@@ -5904,60 +6040,49 @@ function saveEditProfileAction() {
   if (newDob) currentUser.ngaySinh = newDob;
   if (newArea) currentUser.boMon = newArea;
   if (newRole) currentUser.chucVu = newRole;
-  if (newPhone) currentUser.sdt = newPhone;
-  if (newIce) currentUser.ice = newIce;
+  currentUser.sdt = newPhone;
+  currentUser.ice = newIce;
+
+  const patch = {
+    hoTen: currentUser.hoTen,
+    lop: currentUser.lop,
+    ngaySinh: currentUser.ngaySinh,
+    boMon: currentUser.boMon,
+    chucVu: currentUser.chucVu,
+    sdt: currentUser.sdt,
+    ice: currentUser.ice
+  };
 
   for (const m of (membersDirectory || [])) {
-    if (m.id === currentUser.id) {
-      m.hoTen = currentUser.hoTen;
-      m.lop = currentUser.lop;
-      m.ngaySinh = currentUser.ngaySinh;
-      m.boMon = currentUser.boMon;
-      m.chucVu = currentUser.chucVu;
-      m.sdt = currentUser.sdt;
-      m.ice = currentUser.ice;
-    }
+    if (m.id === currentUser.id) Object.assign(m, patch);
   }
 
+  saveMemberOverride(currentUser.id, patch);
   persistUserSession(currentUser);
   saveLocalState();
   renderProfileData();
   renderMembersModalList();
-  closeEditProfileModal();
+  dispatchBackendMutation('UPDATE_PROFILE', {
+    memberId: currentUser.id,
+    lop: currentUser.lop || '',
+    sdt: currentUser.sdt || '',
+    ice: currentUser.ice || '',
+    yTe: currentUser.yTe || 'Bình thường'
+  });
 
-  const url = `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(currentUser.id)}&lop=${encodeURIComponent(currentUser.lop || '')}&sdt=${encodeURIComponent(currentUser.sdt || '')}&ice=${encodeURIComponent(currentUser.ice || '')}&yTe=${encodeURIComponent(currentUser.yTe || 'Bình thường')}`;
-  if (navigator.onLine) {
-    fetch(url).catch(() => enqueueOfflineMutation('UPDATE_PROFILE', {
-      memberId: currentUser.id,
-      lop: currentUser.lop || '',
-      sdt: currentUser.sdt || '',
-      ice: currentUser.ice || '',
-      yTe: currentUser.yTe || 'Bình thường'
-    }));
-  } else {
-    enqueueOfflineMutation('UPDATE_PROFILE', {
-      memberId: currentUser.id,
-      lop: currentUser.lop || '',
-      sdt: currentUser.sdt || '',
-      ice: currentUser.ice || '',
-      yTe: currentUser.yTe || 'Bình thường'
-    });
-  }
-
-  setTimeout(() => {
-    openSuccessCelebration({
-      kicker: '• SPORTPASS PRO CLOUD',
-      title: 'Cập nhật hồ sơ thành công!',
-      descNodes: [
-        'Thông tin hồ sơ 8 trường của ',
-        el('strong', {}, currentUser.hoTen),
-        ' đã được lưu và đồng bộ an toàn vào hệ thống SportPass Pro.'
-      ]
-    });
-  }, 240);
+  await closeEditProfileModal();
+  openSuccessCelebration({
+    kicker: '• SPORTPASS PRO CLOUD',
+    title: 'Cập nhật hồ sơ thành công!',
+    descNodes: [
+      'Thông tin hồ sơ của ',
+      el('strong', {}, currentUser.hoTen),
+      ' đã được lưu và đồng bộ vào hệ thống SportPass.'
+    ]
+  });
 }
 
-// ==================== SETTINGS MODAL CONTROLS ====================
+// ==================== SETTINGS & PASSWORD MODAL CONTROLS ====================
 function openSettingsModal() {
   renderProfileData();
   syncThemeControlUI();
@@ -5965,38 +6090,39 @@ function openSettingsModal() {
 }
 
 function closeSettingsModal() {
-  closeSheetDialog('settings-modal');
+  return closeSheetDialog('settings-modal');
 }
 
 function openNotificationModal() {
   renderNotificationsModalList();
+  markNotificationsRead();
   openSheetDialog('notification-modal');
 }
 
 function closeNotificationModal() {
-  closeSheetDialog('notification-modal');
+  return closeSheetDialog('notification-modal');
 }
 
 function openChangePasswordModal() {
-  closeSheetDialog('settings-modal');
-  safeSetValue('iptCurrentPassword', '');
-  safeSetValue('iptNewPassword', '');
-  safeSetValue('iptConfirmPassword', '');
-  setTimeout(() => openSheetDialog('password-modal'), 230);
+  switchSheetDialog('settings-modal', 'password-modal', () => {
+    safeSetValue('iptCurrentPassword', '');
+    safeSetValue('iptNewPassword', '');
+    safeSetValue('iptConfirmPassword', '');
+  });
 }
 
 function closeChangePasswordModal() {
-  closeSheetDialog('password-modal');
+  return closeSheetDialog('password-modal');
 }
 
-function submitChangePassword() {
+async function submitChangePassword(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
   if (!currentUser) return;
   const curPass = (document.getElementById('iptCurrentPassword')?.value || '').trim();
   const newPass = (document.getElementById('iptNewPassword')?.value || '').trim();
   const confirmPass = (document.getElementById('iptConfirmPassword')?.value || '').trim();
-  const savedPass = localStorage.getItem('CLB_USER_PASS_' + currentUser.id) || '123456';
 
-  if (curPass !== savedPass) {
+  if (!verifyMemberPassword(currentUser.id, curPass)) {
     showToast('Mật khẩu hiện tại chưa chính xác.');
     return;
   }
@@ -6010,18 +6136,17 @@ function submitChangePassword() {
   }
 
   localStorage.setItem('CLB_USER_PASS_' + currentUser.id, newPass);
-  closeChangePasswordModal();
-  setTimeout(() => {
-    openSuccessCelebration({
-      kicker: '• SPORTPASS PRO SECURITY',
-      title: 'Đổi mật khẩu thành công!',
-      descNodes: ['Mật khẩu tài khoản ', el('strong', {}, currentUser.id), ' đã được cập nhật trên thiết bị này.']
-    });
-  }, 240);
+  renderProfileData();
+  await closeChangePasswordModal();
+  openSuccessCelebration({
+    kicker: '• SPORTPASS PRO SECURITY',
+    title: 'Đổi mật khẩu thành công!',
+    descNodes: ['Mật khẩu tài khoản ', el('strong', {}, currentUser.id), ' đã được cập nhật và kích hoạt ngay.']
+  });
 }
 
 // === render-tasks.js ===
-// SportPass V8.5 — Create Shift, Approve Dispatch (Swaps/Urgent), Member Task Mission, QR Scanner & RBAC
+// SportPass V8.6 — Create Shift, Approve Dispatch, Member Shifts/Swaps, QR Check-in & Strict Admin RBAC
 
 const AREA_PRESETS = [
   { id: 'svd', label: 'SVĐ Trung Tâm' },
@@ -6032,10 +6157,16 @@ const AREA_PRESETS = [
 const DEPT_DOT_COLORS = ['#0284c7', '#10b981', '#e11d48', '#6366f1', '#f59e0b', '#0d9488', '#06b6d4'];
 
 let currentDeptQuotaDraft = [
-  { dept: 'Ban Điều hành / Nhân Sự', color: '#0284c7', count: 2 },
+  { dept: 'Ban Nhân Sự', color: '#0284c7', count: 2 },
   { dept: 'Ban Bóng Chuyền', color: '#10b981', count: 1 },
   { dept: 'Ban Truyền Thông', color: '#e11d48', count: 1 }
 ];
+
+function replayTabEntrance(elNode) {
+  if (!elNode) return;
+  elNode.classList.remove('tab-pane-anim');
+  requestAnimationFrame(() => elNode.classList.add('tab-pane-anim'));
+}
 
 function buildDeptFilterChips(activeDept, onSelectFn) {
   const chips = [
@@ -6075,7 +6206,14 @@ function updatePendingBadges() {
   if (btnAll) btnAll.disabled = total === 0;
 }
 
-// ==================== CREATE SHIFT MODAL (SCREENSHOT 8) ====================
+// ==================== CREATE SHIFT MODAL ====================
+function syncPresetTimeButtons(timeStr) {
+  const norm = String(timeStr || '').trim();
+  document.querySelectorAll('#preset-time-container .preset-time-btn').forEach((btn) => {
+    btn.classList.toggle('active', String(btn.dataset.time || '').trim() === norm);
+  });
+}
+
 function renderAreaPresetCards(selectedLocation) {
   const box = document.getElementById('area-cards-container');
   if (!box) return;
@@ -6101,7 +6239,14 @@ function renderDeptQuotaRows() {
     el('div', { className: 'quota-row' },
       el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', minWidth: '0', flex: '1' } },
         el('span', { className: 'dept-dot', style: { backgroundColor: row.color || '#0284c7' } }),
-        el('span', { style: { fontSize: '12.5px', fontWeight: '600', color: 'var(--text-primary)' }, className: 'truncate' }, row.dept)
+        el('select', {
+          className: 'dept-inline-select',
+          'aria-label': 'Chọn ban chuyên môn',
+          value: row.dept,
+          onChange: (ev) => {
+            currentDeptQuotaDraft[idx].dept = ev.target.value;
+          }
+        }, ALL_DEPARTMENTS.map(d => el('option', { value: d, selected: d === row.dept }, d)))
       ),
       el('div', { className: 'stepper-group' },
         el('button', {
@@ -6156,6 +6301,19 @@ function addDeptQuotaRow() {
   renderDeptQuotaRows();
 }
 
+function populateTaskLeaderSelector(preferredId) {
+  const sel = document.getElementById('selTaskLeader');
+  const candidates = (membersDirectory || []).filter(m => m && (m.isAdmin || m.isShiftLeader));
+  if (candidates.length === 0) return;
+  const fallbackId = currentUser ? currentUser.id : candidates[0].id;
+  selectedShiftLeaderId = candidates.some(m => m.id === preferredId) ? preferredId : fallbackId;
+  if (sel) {
+    mount(sel, candidates.map(m => el('option', { value: m.id, selected: m.id === selectedShiftLeaderId }, `${m.hoTen} (${m.id})`)));
+    sel.value = selectedShiftLeaderId;
+  }
+  updateSelectedLeaderCard();
+}
+
 function updateSelectedLeaderCard() {
   const leader = (membersDirectory || []).find(m => m && m.id === selectedShiftLeaderId) || currentUser || DEFAULT_MEMBERS_DIRECTORY[0];
   if (!leader) return;
@@ -6165,32 +6323,33 @@ function updateSelectedLeaderCard() {
     img.src = resolveAvatarUrl(leader);
     img.alt = leader.hoTen || 'Trưởng ca';
   }
-  safeSetText('leaderPickName', leader.hoTen || 'Đỗ Mạnh Cường');
-  safeSetText('leaderPickRole', `${leader.chucVu || 'Trưởng ca'} (${leader.id})`);
-}
-
-function cycleShiftLeader() {
-  const candidates = (membersDirectory || []).filter(m => m && (m.isAdmin || m.isShiftLeader));
-  if (candidates.length === 0) return;
-  const idx = candidates.findIndex(m => m.id === selectedShiftLeaderId);
-  selectedShiftLeaderId = candidates[(idx + 1) % candidates.length].id;
-  updateSelectedLeaderCard();
+  safeSetText('leaderPickRole', `${leader.chucVu || 'Trưởng ca'} • ${leader.boMon || 'Ban Điều Hành'}`);
 }
 
 function openCreateShiftModal(taskId = null) {
-  if (!currentUser || (!currentUser.isAdmin && !currentUser.isShiftLeader)) {
-    openTaskMissionModal('shifts');
+  if (!currentUser || !currentUser.isAdmin) {
+    showToast('Chỉ Admin mới có quyền tạo hoặc chỉnh sửa ca trực.');
     return;
   }
   editingTaskId = taskId;
   const existing = taskId ? (currentTasks || []).find(t => t.id === taskId) : null;
   safeSetText('create-shift-title', existing ? 'Chỉnh sửa ca trực' : 'Tạo ca trực mới');
+  safeSetText('btnSubmitTask', existing ? '✓ Lưu cập nhật' : '✓ Tạo ca trực');
   safeSetValue('iptTaskTitle', existing ? existing.title : '');
-  const loc = existing ? existing.location : 'Sân Vận Động Trung Tâm';
+
+  const loc = existing ? existing.location : 'SVĐ Trung Tâm';
   safeSetValue('iptTaskLocation', loc);
   renderAreaPresetCards(loc);
-  safeSetValue('iptTaskDate', existing && existing.date ? existing.date : '18/03/2025');
-  safeSetValue('iptTaskTime', existing ? existing.time : '14:00 - 18:00');
+
+  const dateVal = existing && existing.date ? existing.date : formatTodayVN(1);
+  safeSetValue('iptTaskDate', dateVal);
+
+  const rawTime = existing
+    ? (existing.timeRange || String(existing.time || '13:30 - 17:30').replace(/\s*\([^)]*\)\s*$/, '').trim())
+    : '13:30 - 17:30';
+  safeSetValue('iptTaskTime', rawTime);
+  syncPresetTimeButtons(rawTime);
+
   safeSetValue('iptTaskNotes', existing ? (existing.notes || '') : '');
 
   if (existing && existing.departmentQuotas && Object.keys(existing.departmentQuotas).length > 0) {
@@ -6208,33 +6367,38 @@ function openCreateShiftModal(taskId = null) {
   }
   renderDeptQuotaRows();
 
-  selectedShiftLeaderId = (existing && existing.leaderId) ? existing.leaderId : (currentUser ? currentUser.id : 'DMC0806');
-  updateSelectedLeaderCard();
+  const preferredLeader = (existing && existing.leaderId) ? existing.leaderId : (currentUser ? currentUser.id : 'DMC0806');
+  populateTaskLeaderSelector(preferredLeader);
   openSheetDialog('create-shift-modal');
 }
 
 function closeCreateShiftModal() {
   editingTaskId = null;
-  closeSheetDialog('create-shift-modal');
+  return closeSheetDialog('create-shift-modal');
 }
 
-function submitCreateShiftAction() {
+async function submitCreateShiftAction() {
+  if (!currentUser || !currentUser.isAdmin) return;
   const title = (document.getElementById('iptTaskTitle')?.value || '').trim();
-  const location = (document.getElementById('iptTaskLocation')?.value || '').trim() || 'Sân Vận Động Trung Tâm';
+  const location = (document.getElementById('iptTaskLocation')?.value || '').trim() || 'SVĐ Trung Tâm';
   const dateStr = (document.getElementById('iptTaskDate')?.value || '').trim();
-  const timeOnly = (document.getElementById('iptTaskTime')?.value || '').trim() || '14:00 - 18:00';
-  const timeFull = dateStr ? `${timeOnly} (${dateStr})` : timeOnly;
+  const timeRange = (document.getElementById('iptTaskTime')?.value || '').trim().replace(/\s*\([^)]*\)\s*$/, '') || '13:30 - 17:30';
+  const timeFull = dateStr ? `${timeRange} (${dateStr})` : timeRange;
   const quota = Math.max(1, Number(document.getElementById('iptTaskQuota')?.value) || 4);
   const notes = (document.getElementById('iptTaskNotes')?.value || '').trim();
+  const wasEditing = Boolean(editingTaskId);
 
   if (!title) {
     showToast('Vui lòng nhập tên ca trực.');
+    document.getElementById('iptTaskTitle')?.focus();
     return;
   }
 
   const departmentQuotas = {};
   for (const row of currentDeptQuotaDraft) {
-    if (row.dept && Number(row.count) > 0) departmentQuotas[row.dept] = Number(row.count);
+    if (row.dept && Number(row.count) > 0) {
+      departmentQuotas[row.dept] = (departmentQuotas[row.dept] || 0) + Number(row.count);
+    }
   }
 
   let savedTask = null;
@@ -6243,6 +6407,7 @@ function submitCreateShiftAction() {
     if (existingTask) {
       existingTask.title = title;
       existingTask.location = location;
+      existingTask.timeRange = timeRange;
       existingTask.time = timeFull;
       existingTask.date = dateStr;
       existingTask.quota = quota;
@@ -6258,6 +6423,7 @@ function submitCreateShiftAction() {
       id: 'TASK_' + Date.now(),
       title,
       location,
+      timeRange,
       time: timeFull,
       date: dateStr,
       quota,
@@ -6279,34 +6445,35 @@ function submitCreateShiftAction() {
   syncTaskToBackend(savedTask);
   renderDispatchHub();
   renderNotificationsModalList();
-  closeCreateShiftModal();
+  await closeCreateShiftModal();
 
-  setTimeout(() => {
-    openSuccessCelebration({
-      kicker: '• SPORTPASS PRO SCHEDULE',
-      title: editingTaskId ? 'Cập nhật ca trực thành công!' : 'Tạo ca trực mới thành công!',
-      descNodes: [
-        'Ca trực ',
-        el('strong', {}, title),
-        ' đã được lên lịch tại ',
-        el('strong', {}, location),
-        ` và phân bổ cho `,
-        el('strong', {}, `${quota} thành viên`),
-        '.'
-      ]
-    });
-  }, 240);
+  openSuccessCelebration({
+    kicker: '• SPORTPASS PRO SCHEDULE',
+    title: wasEditing ? 'Cập nhật ca trực thành công!' : 'Tạo ca trực mới thành công!',
+    descNodes: [
+      'Ca trực ',
+      el('strong', {}, title),
+      ' đã được lên lịch tại ',
+      el('strong', {}, location),
+      ' và phân bổ cho ',
+      el('strong', {}, `${quota} thành viên`),
+      '.'
+    ]
+  });
 }
 
-// ==================== APPROVE DISPATCH MODAL (SCREENSHOT 14) ====================
+// ==================== APPROVE DISPATCH MODAL (ADMIN ONLY) ====================
 function openApproveShiftModal(tabName = 'swap') {
+  if (!currentUser || !currentUser.isAdmin) {
+    openTaskMissionModal('shifts');
+    return;
+  }
   switchApproveTab(tabName);
   openSheetDialog('approve-shift-modal');
 }
 
 function closeApproveShiftModal() {
-  stopQrCameraStream();
-  closeSheetDialog('approve-shift-modal');
+  return closeSheetDialog('approve-shift-modal');
 }
 
 function switchApproveTab(tabName) {
@@ -6326,8 +6493,14 @@ function switchApproveTab(tabName) {
   if (scanEl) scanEl.classList.toggle('hidden', !isScanner);
   if (footerEl) footerEl.classList.toggle('hidden', currentApproveSubTab !== 'swap' && currentApproveSubTab !== 'leave');
 
-  if (!isScanner) stopQrCameraStream();
-  else populateScanTaskSelector();
+  if (!isScanner) {
+    stopQrCameraStream();
+    replayTabEntrance(cardsEl);
+  } else {
+    populateScanTaskSelector();
+    renderScannerCheckedInList();
+    replayTabEntrance(scanEl);
+  }
 
   renderDispatchHub();
 }
@@ -6336,6 +6509,7 @@ function renderDispatchHub() {
   updatePendingBadges();
   populateScanTaskSelector();
   renderMissionSheetPanels();
+  updateQrPassDisplay();
 
   const container = document.getElementById('approve-cards-container');
   if (!container) return;
@@ -6435,13 +6609,13 @@ function renderDispatchHub() {
 
     const actions = [];
     if (isChecked) actions.push(el('button', { type: 'button', className: 'btn-mini btn-mini-emerald', disabled: true }, 'Đã điểm danh'));
-    else if (isMine) actions.push(el('button', { type: 'button', className: 'btn-mini btn-mini-sky', onClick: () => { closeApproveShiftModal(); setTimeout(openQrModal, 240); } }, 'Mã QR vào ca'));
-    else if (occupied.length < quota) actions.push(el('button', { type: 'button', className: 'btn-mini btn-mini-sky', onClick: () => handleClaimTask(t.id) }, 'Nhận ca trực'));
+    else if (isMine) actions.push(el('button', { type: 'button', className: 'btn-mini btn-mini-sky', onClick: () => switchSheetDialog('approve-shift-modal', 'qr-modal', () => { activeQrTaskId = t.id; startQrCountdown(); }) }, 'Mã QR vào ca'));
+    else if (occupied.length < quota) actions.push(el('button', { type: 'button', className: 'btn-mini btn-mini-sky', onClick: () => handleClaimTask(t.id, false) }, 'Nhận ca trực'));
 
     if (isAdmin) {
       actions.push(
         el('button', { type: 'button', className: 'btn-mini btn-mini-soft', onClick: () => runSmartRotationForTask(t.id) }, 'Xoay tua'),
-        el('button', { type: 'button', className: 'btn-mini btn-mini-soft', onClick: () => { closeApproveShiftModal(); setTimeout(() => openCreateShiftModal(t.id), 240); } }, 'Sửa'),
+        el('button', { type: 'button', className: 'btn-mini btn-mini-soft', onClick: () => switchSheetDialog('approve-shift-modal', 'create-shift-modal', () => openCreateShiftModal(t.id)) }, 'Sửa'),
         el('button', { type: 'button', className: 'btn-mini btn-mini-rose', onClick: () => deleteShiftDirect(t.id) }, 'Xóa')
       );
     }
@@ -6457,146 +6631,221 @@ function renderDispatchHub() {
   mount(container, shiftCards);
 }
 
+function applySwapApproval(swap) {
+  if (!swap) return;
+  swap.status = 'approved';
+  const task = (currentTasks || []).find(t => t.id === swap.taskId);
+  if (task) {
+    task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
+    task.assignedMembers = (task.assignedMembers || []).filter(id => id !== swap.fromId);
+    if (swap.toId && !swap.toId.startsWith('CA_')) {
+      const targetExists = (membersDirectory || []).some(m => m && m.id === swap.toId);
+      if (targetExists && !task.joinedMembers.includes(swap.toId) && !task.assignedMembers.includes(swap.toId)) {
+        task.joinedMembers.push(swap.toId);
+      }
+    }
+    syncTaskToBackend(task);
+  }
+}
+
+function applyLeaveApproval(leave) {
+  if (!leave) return;
+  leave.status = 'approved';
+  const task = (currentTasks || []).find(t => t.id === leave.taskId);
+  if (task) {
+    task.joinedMembers = (task.joinedMembers || []).filter(id => id !== leave.memberId);
+    task.assignedMembers = (task.assignedMembers || []).filter(id => id !== leave.memberId);
+    task.waitlist = (task.waitlist || []).filter(id => id !== leave.memberId);
+
+    if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(leave.memberId)) {
+      task.checkedInMembers = task.checkedInMembers.filter(id => id !== leave.memberId);
+      for (const m of (membersDirectory || [])) {
+        if (m.id === leave.memberId) {
+          const next = Math.max(0, (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) - 1);
+          m.soCaHoanThanh = next;
+          m.soCa = next;
+          saveMemberOverride(leave.memberId, { soCaHoanThanh: next, soCa: next });
+        }
+      }
+      if (currentUser && currentUser.id === leave.memberId) {
+        const nextCur = Math.max(0, (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0)) - 1);
+        currentUser.soCaHoanThanh = nextCur;
+        currentUser.soCa = nextCur;
+        saveMemberOverride(leave.memberId, { soCaHoanThanh: nextCur, soCa: nextCur });
+        persistUserSession(currentUser);
+      }
+    }
+
+    const quota = Number(task.quota) || 4;
+    if (task.waitlist.length > 0 && (task.joinedMembers.length + task.assignedMembers.length) < quota) {
+      const promoted = task.waitlist.shift();
+      if (promoted && !task.joinedMembers.includes(promoted)) {
+        task.joinedMembers.push(promoted);
+      }
+    }
+    syncTaskToBackend(task);
+  }
+
+  dispatchBackendMutation('WITHDRAW_TASK', {
+    taskId: leave.taskId,
+    memberId: leave.memberId,
+    reason: leave.reason || ''
+  });
+}
+
 function animateAndResolveSwap(ev, swapId, isApproved) {
+  if (!currentUser || !currentUser.isAdmin) return;
   const card = ev && ev.currentTarget ? ev.currentTarget.closest('.dispatch-card') : null;
   if (card) card.classList.add('dismissing');
   setTimeout(() => resolveSwapAction(swapId, isApproved), card ? 200 : 0);
 }
 
 function animateAndResolveLeave(ev, leaveId, isApproved) {
+  if (!currentUser || !currentUser.isAdmin) return;
   const card = ev && ev.currentTarget ? ev.currentTarget.closest('.dispatch-card') : null;
   if (card) card.classList.add('dismissing');
   setTimeout(() => resolveLeaveAction(leaveId, isApproved), card ? 200 : 0);
 }
 
 function resolveSwapAction(swapId, isApproved) {
+  if (!currentUser || !currentUser.isAdmin) return;
   const swap = (currentSwaps || []).find(s => s.id === swapId);
   if (!swap) return;
-  swap.status = isApproved ? 'approved' : 'rejected';
-  if (isApproved) {
-    const task = (currentTasks || []).find(t => t.id === swap.taskId);
-    if (task) {
-      task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
-      if (swap.toId && !swap.toId.startsWith('CA_') && !task.joinedMembers.includes(swap.toId)) {
-        task.joinedMembers.push(swap.toId);
-      }
-    }
-  }
+  if (isApproved) applySwapApproval(swap);
+  else swap.status = 'rejected';
   saveLocalState();
+  renderProfileData();
   renderDispatchHub();
   renderNotificationsModalList();
   showToast(isApproved ? `Đã phê duyệt đổi ca cho ${swap.fromName}.` : `Đã từ chối đơn của ${swap.fromName}.`);
 }
 
 function resolveLeaveAction(leaveId, isApproved) {
+  if (!currentUser || !currentUser.isAdmin) return;
   const leave = (currentLeaves || []).find(l => l.id === leaveId);
   if (!leave) return;
-  leave.status = isApproved ? 'approved' : 'rejected';
-
-  if (isApproved) {
-    const task = (currentTasks || []).find(t => t.id === leave.taskId);
-    if (task && Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(leave.memberId)) {
-      task.checkedInMembers = task.checkedInMembers.filter(id => id !== leave.memberId);
-      for (const m of (membersDirectory || [])) {
-        if (m.id === leave.memberId) {
-          m.soCaHoanThanh = Math.max(0, (Number(m.soCaHoanThanh) || 0) - 1);
-          m.soCa = m.soCaHoanThanh;
-        }
-      }
-      if (currentUser && currentUser.id === leave.memberId) {
-        currentUser.soCaHoanThanh = Math.max(0, (Number(currentUser.soCaHoanThanh) || 0) - 1);
-        currentUser.soCa = currentUser.soCaHoanThanh;
-        persistUserSession(currentUser);
-        renderProfileData();
-      }
-    }
-    if (navigator.onLine) {
-      fetch(`${GAS_API_URL}?action=withdrawTask&taskId=${encodeURIComponent(leave.taskId)}&memberId=${encodeURIComponent(leave.memberId)}&reason=${encodeURIComponent(leave.reason || '')}`)
-        .catch(() => enqueueOfflineMutation('WITHDRAW_TASK', { taskId: leave.taskId, memberId: leave.memberId, reason: leave.reason }));
-    } else {
-      enqueueOfflineMutation('WITHDRAW_TASK', { taskId: leave.taskId, memberId: leave.memberId, reason: leave.reason });
-    }
-  }
-
+  if (isApproved) applyLeaveApproval(leave);
+  else leave.status = 'rejected';
   saveLocalState();
+  renderProfileData();
   renderDispatchHub();
   renderNotificationsModalList();
   showToast(isApproved ? `Đã phê duyệt yêu cầu của ${leave.memberName}.` : 'Đã từ chối yêu cầu.');
 }
 
-function approveAllPendingRequests() {
+async function approveAllPendingRequests() {
+  if (!currentUser || !currentUser.isAdmin) return;
   const pendingSwaps = (currentSwaps || []).filter(s => s.status === 'pending');
   const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending');
   const count = pendingSwaps.length + pendingLeaves.length;
   if (count === 0) return;
 
-  pendingSwaps.forEach(s => { s.status = 'approved'; });
-  pendingLeaves.forEach(l => { l.status = 'approved'; });
+  pendingSwaps.forEach(s => applySwapApproval(s));
+  pendingLeaves.forEach(l => applyLeaveApproval(l));
 
   saveLocalState();
+  renderProfileData();
   renderDispatchHub();
   renderNotificationsModalList();
-  closeApproveShiftModal();
+  await closeApproveShiftModal();
 
-  setTimeout(() => {
-    openSuccessCelebration({
-      kicker: '• SPORTPASS PRO DISPATCH',
-      title: `Đã phê duyệt ${count} yêu cầu điều động!`,
-      descNodes: ['Các ca trực đã được cập nhật lịch trình và gửi thông báo tự động đến các thành viên liên quan.']
-    });
-  }, 240);
+  openSuccessCelebration({
+    kicker: '• SPORTPASS PRO DISPATCH',
+    title: `Đã phê duyệt ${count} yêu cầu điều động!`,
+    descNodes: ['Các ca trực đã được cập nhật lịch trình và đồng bộ tự động tới các thành viên liên quan.']
+  });
 }
 
-function handleClaimTask(taskId) {
+function handleClaimTask(taskId, asWaitlist = false) {
   if (!currentUser) return;
   const task = (currentTasks || []).find(t => t.id === taskId);
   if (!task) return;
+  const uid = currentUser.id;
   task.joinedMembers = Array.isArray(task.joinedMembers) ? task.joinedMembers : [];
-  if (!task.joinedMembers.includes(currentUser.id)) {
-    task.joinedMembers.push(currentUser.id);
+  task.assignedMembers = Array.isArray(task.assignedMembers) ? task.assignedMembers : [];
+  task.waitlist = Array.isArray(task.waitlist) ? task.waitlist : [];
+
+  if (task.joinedMembers.includes(uid) || task.assignedMembers.includes(uid)) {
+    showToast('Bạn đã tham gia ca trực này rồi.');
+    return;
+  }
+
+  const occupiedCount = new Set([...task.joinedMembers, ...task.assignedMembers]).size;
+  const quota = Number(task.quota) || 4;
+  const needsWaitlist = Boolean(asWaitlist) || occupiedCount >= quota;
+
+  if (needsWaitlist) {
+    if (task.waitlist.includes(uid)) {
+      showToast('Bạn đang ở hàng chờ dự bị của ca này.');
+      return;
+    }
+    task.waitlist.push(uid);
     saveLocalState();
     renderDispatchHub();
-    if (navigator.onLine) {
-      fetch(`${GAS_API_URL}?action=claimTask&taskId=${encodeURIComponent(taskId)}&memberId=${encodeURIComponent(currentUser.id)}&waitlist=false`)
-        .catch(() => enqueueOfflineMutation('CLAIM_TASK', { taskId, memberId: currentUser.id, waitlist: false }));
-    } else {
-      enqueueOfflineMutation('CLAIM_TASK', { taskId, memberId: currentUser.id, waitlist: false });
-    }
-    showToast(`Đã đăng ký ca: ${task.title}`);
+    renderNotificationsModalList();
+    dispatchBackendMutation('CLAIM_TASK', { taskId, memberId: uid, waitlist: true });
+    showToast(`Đã đăng ký dự bị ca: ${task.title}`);
+    return;
   }
+
+  if (typeof hasShiftTimeConflict === 'function' && hasShiftTimeConflict(uid, task)) {
+    showToast('Cảnh báo: Khung giờ ca này bị trùng với một ca bạn đã đăng ký.');
+    return;
+  }
+
+  task.waitlist = task.waitlist.filter(id => id !== uid);
+  task.joinedMembers.push(uid);
+  saveLocalState();
+  renderProfileData();
+  renderDispatchHub();
+  renderNotificationsModalList();
+  dispatchBackendMutation('CLAIM_TASK', { taskId, memberId: uid, waitlist: false });
+  showToast(`Đã đăng ký ca: ${task.title}`);
+}
+
+function withdrawFromWaitlist(taskId) {
+  if (!currentUser) return;
+  const task = (currentTasks || []).find(t => t.id === taskId);
+  if (!task) return;
+  task.waitlist = (task.waitlist || []).filter(id => id !== currentUser.id);
+  saveLocalState();
+  renderDispatchHub();
+  dispatchBackendMutation('WITHDRAW_TASK', { taskId, memberId: currentUser.id, reason: 'Rút khỏi danh sách dự bị' });
+  showToast('Đã rút khỏi danh sách dự bị.');
 }
 
 function deleteShiftDirect(taskId) {
+  if (!currentUser || !currentUser.isAdmin) return;
   saveDeletedTaskId(taskId);
   currentTasks = (currentTasks || []).filter(t => t.id !== taskId);
   saveLocalState();
+  renderProfileData();
   renderDispatchHub();
   renderNotificationsModalList();
-  if (navigator.onLine) {
-    fetch(`${GAS_API_URL}?action=deleteTask&taskId=${encodeURIComponent(taskId)}`)
-      .catch(() => enqueueOfflineMutation('DELETE_TASK', { taskId }));
-  } else {
-    enqueueOfflineMutation('DELETE_TASK', { taskId });
-  }
+  dispatchBackendMutation('DELETE_TASK', { taskId });
   showToast('Đã xóa ca trực thành công.');
 }
 
 function populateScanTaskSelector() {
   const sel = document.getElementById('selScanTaskId');
   if (!sel) return;
+  const prev = sel.value;
   const opts = (currentTasks || []).map(t => el('option', { value: t.id }, `${t.id} — ${t.title}`));
   mount(sel, opts);
+  if (prev && (currentTasks || []).some(t => t.id === prev)) {
+    sel.value = prev;
+  }
 }
 
-// ==================== MEMBER TASK MISSION MODAL ("ĐĂNG KÝ CA" & "XIN ĐỔI CA") ====================
-function openTaskMissionModal(tabName = 'shifts') {
+// ==================== MEMBER TASK MISSION MODAL ====================
+function openTaskMissionModal(tabName = 'shifts', preselectTaskId = null) {
   switchMissionTab(tabName);
-  renderMissionSheetPanels();
+  renderMissionSheetPanels(preselectTaskId);
   openSheetDialog('task-mission-modal');
 }
 
 function closeTaskMissionModal() {
-  closeSheetDialog('task-mission-modal');
+  return closeSheetDialog('task-mission-modal');
 }
 
 function switchMissionTab(tabName) {
@@ -6607,45 +6856,156 @@ function switchMissionTab(tabName) {
   const p1 = document.getElementById('mission-panel-swap');
   if (b0) b0.classList.toggle('active', currentMissionTab === 'shifts');
   if (b1) b1.classList.toggle('active', currentMissionTab === 'swap');
-  if (p0) p0.classList.toggle('hidden', currentMissionTab !== 'shifts');
-  if (p1) p1.classList.toggle('hidden', currentMissionTab !== 'swap');
+  if (p0) {
+    p0.classList.toggle('hidden', currentMissionTab !== 'shifts');
+    if (currentMissionTab === 'shifts') replayTabEntrance(p0);
+  }
+  if (p1) {
+    p1.classList.toggle('hidden', currentMissionTab !== 'swap');
+    if (currentMissionTab === 'swap') replayTabEntrance(p1);
+  }
 }
 
-function renderMissionSheetPanels() {
+function cancelMemberRequest(kind, reqId) {
+  if (!currentUser) return;
+  if (kind === 'swap') {
+    currentSwaps = (currentSwaps || []).filter(s => !(s.id === reqId && s.fromId === currentUser.id && s.status === 'pending'));
+  } else {
+    currentLeaves = (currentLeaves || []).filter(l => !(l.id === reqId && l.memberId === currentUser.id && l.status === 'pending'));
+  }
+  saveLocalState();
+  renderDispatchHub();
+  renderNotificationsModalList();
+  showToast('Đã hủy yêu cầu chờ duyệt.');
+}
+
+function renderMissionSheetPanels(preselectTaskId = null) {
+  const uid = currentUser ? currentUser.id : '';
   const listBox = document.getElementById('mission-panel-shifts');
   if (listBox) {
-    const uid = currentUser ? currentUser.id : '';
     const cards = (currentTasks || []).map((t) => {
       const occupied = Array.from(new Set([...(t.joinedMembers || []), ...(t.assignedMembers || [])]));
-      const isMine = uid && occupied.includes(uid);
+      const quota = Number(t.quota) || 4;
+      const isFull = occupied.length >= quota;
+      const isMine = Boolean(uid && occupied.includes(uid));
+      const isChecked = Boolean(uid && (t.checkedInMembers || []).includes(uid));
+      const isWaitlisted = Boolean(uid && (t.waitlist || []).includes(uid));
+
+      let footerNode = null;
+      if (isChecked) {
+        footerNode = el('span', { className: 'ready-badge-pill', style: { alignSelf: 'flex-start' } }, 'Đã điểm danh ✓');
+      } else if (isMine) {
+        footerNode = el('div', { className: 'mini-action-grid' },
+          el('span', { className: 'ready-badge-pill' }, 'Đã đăng ký'),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-sky',
+            onClick: () => switchSheetDialog('task-mission-modal', 'qr-modal', () => {
+              activeQrTaskId = t.id;
+              startQrCountdown();
+            })
+          }, 'Mã QR điểm danh'),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-soft',
+            onClick: () => {
+              switchMissionTab('swap');
+              renderMissionSheetPanels(t.id);
+            }
+          }, 'Đổi / Rút ca')
+        );
+      } else if (isWaitlisted) {
+        footerNode = el('div', { className: 'mini-action-grid' },
+          el('span', { className: 'role-pill-badge' }, 'Đang ở hàng chờ dự bị'),
+          el('button', { type: 'button', className: 'btn-mini btn-mini-rose', onClick: () => withdrawFromWaitlist(t.id) }, 'Rút dự bị')
+        );
+      } else if (isFull) {
+        footerNode = el('button', { type: 'button', className: 'btn-mini btn-mini-amber', onClick: () => handleClaimTask(t.id, true) }, `Đăng ký dự bị (${occupied.length}/${quota})`);
+      } else {
+        footerNode = el('button', { type: 'button', className: 'btn-card-approve', onClick: () => handleClaimTask(t.id, false) }, 'Đăng ký nhận ca này');
+      }
+
       return el('div', { className: 'dispatch-card' },
         el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, t.title),
-        el('div', { style: { fontSize: '12px', color: 'var(--text-secondary)' } }, `${t.location} · ${t.time} (${occupied.length}/${t.quota || 4})`),
-        isMine
-          ? el('span', { className: 'ready-badge-pill', style: { alignSelf: 'flex-start' } }, 'Bạn đã đăng ký')
-          : el('button', { type: 'button', className: 'btn-card-approve', onClick: () => handleClaimTask(t.id) }, 'Đăng ký nhận ca này')
+        el('div', { style: { fontSize: '12px', color: 'var(--text-secondary)' } }, `${t.location} · ${t.time} (${occupied.length}/${quota})`),
+        footerNode
       );
     });
     mount(listBox, cards.length ? cards : el('div', { className: 'empty-card' }, 'Chưa có ca trực khả dụng.'));
   }
 
+  const myTasks = (currentTasks || []).filter(t => {
+    const occupied = [...(t.joinedMembers || []), ...(t.assignedMembers || [])];
+    return uid && occupied.includes(uid);
+  });
+
   const selTask = document.getElementById('selMissionTaskId');
+  const btnSwap = document.getElementById('btnSubmitMemberSwap');
+  const btnLeave = document.getElementById('btnSubmitMemberLeave');
+
   if (selTask) {
-    mount(selTask, (currentTasks || []).map(t => el('option', { value: t.id }, `${t.title} (${t.time})`)));
+    if (myTasks.length > 0) {
+      mount(selTask, myTasks.map(t => el('option', { value: t.id }, `${t.title} (${t.time})`)));
+      if (preselectTaskId && myTasks.some(t => t.id === preselectTaskId)) {
+        selTask.value = preselectTaskId;
+      }
+      if (btnSwap) btnSwap.disabled = false;
+      if (btnLeave) btnLeave.disabled = false;
+    } else {
+      mount(selTask, el('option', { value: '' }, '-- Bạn chưa đăng ký ca trực nào --'));
+      if (btnSwap) btnSwap.disabled = true;
+      if (btnLeave) btnLeave.disabled = true;
+    }
   }
 
   const selMem = document.getElementById('selMissionTargetMember');
   if (selMem) {
-    const uid = currentUser ? currentUser.id : '';
-    mount(selMem, (membersDirectory || []).filter(m => m.id !== uid).slice(0, 60).map(m => el('option', { value: m.id }, `${m.hoTen} (${m.id})`)));
+    const others = (membersDirectory || []).filter(m => m && m.id && m.id !== uid);
+    mount(selMem, [
+      el('option', { value: '' }, '-- Để Ban Điều Phối sắp xếp --'),
+      ...others.map(m => el('option', { value: m.id }, `${m.hoTen} (${m.id})`))
+    ]);
+  }
+
+  const reqBox = document.getElementById('memberMyRequestsList');
+  if (reqBox && uid) {
+    const mine = [
+      ...(currentSwaps || []).filter(s => s.fromId === uid).map(s => ({ kind: 'swap', id: s.id, title: `Đổi ca: ${s.currentShift || s.taskId}`, sub: `${s.toName || 'Chờ điều phối'} · ${s.reason}`, status: s.status })),
+      ...(currentLeaves || []).filter(l => l.memberId === uid).map(l => ({ kind: 'leave', id: l.id, title: `Xin rút ca: ${l.taskId}`, sub: l.reason, status: l.status }))
+    ];
+    if (mine.length === 0) {
+      mount(reqBox, el('div', { className: 'empty-card', style: { padding: '12px' } }, 'Bạn chưa gửi yêu cầu đổi hoặc rút ca nào.'));
+    } else {
+      mount(reqBox, [
+        el('div', { className: 'field-label-mono', style: { marginTop: '4px' } }, 'Yêu cầu bạn đã gửi'),
+        ...mine.map(r => {
+          const stText = r.status === 'approved' ? 'Đã duyệt' : (r.status === 'rejected' ? 'Từ chối' : 'Chờ duyệt');
+          const stClass = r.status === 'approved' ? 'ready-badge-pill' : (r.status === 'rejected' ? 'btn-mini btn-mini-rose' : 'role-pill-badge');
+          return el('div', { className: 'dispatch-card', style: { padding: '10px 12px', gap: '6px' } },
+            el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' } },
+              el('span', { style: { fontSize: '12.5px', fontWeight: '700', color: 'var(--text-primary)' } }, r.title),
+              el('span', { className: stClass }, stText)
+            ),
+            el('div', { style: { fontSize: '11.5px', color: 'var(--text-secondary)' } }, r.sub),
+            r.status === 'pending'
+              ? el('button', { type: 'button', className: 'btn-mini btn-mini-rose', style: { alignSelf: 'flex-start' }, onClick: () => cancelMemberRequest(r.kind, r.id) }, 'Hủy đơn')
+              : null
+          );
+        })
+      ]);
+    }
   }
 }
 
-function submitMemberSwapRequest() {
+async function submitMemberSwapRequest() {
   if (!currentUser) return;
-  const taskId = document.getElementById('selMissionTaskId')?.value || 'TASK_01';
+  const taskId = document.getElementById('selMissionTaskId')?.value || '';
+  if (!taskId) {
+    showToast('Vui lòng đăng ký nhận ca trước khi gửi đơn đổi ca.');
+    return;
+  }
   const toId = document.getElementById('selMissionTargetMember')?.value || '';
-  const target = (membersDirectory || []).find(m => m.id === toId);
+  const target = toId ? (membersDirectory || []).find(m => m.id === toId) : null;
   const task = (currentTasks || []).find(t => t.id === taskId);
   const reason = (document.getElementById('iptMissionReason')?.value || '').trim() || 'Đổi lịch cá nhân';
 
@@ -6655,23 +7015,30 @@ function submitMemberSwapRequest() {
     fromId: currentUser.id,
     fromName: currentUser.hoTen,
     fromClass: currentUser.lop,
-    toId,
-    toName: target ? target.hoTen : toId,
+    toId: toId || 'CA_DIEU_PHOI',
+    toName: target ? target.hoTen : 'Ban Điều Phối sắp xếp',
     currentShift: task ? `${task.location} (${task.time})` : taskId,
     reason,
-    type: 'swap',
+    type: target ? 'swap' : 'transfer',
     status: 'pending'
   });
 
+  safeSetValue('iptMissionReason', '');
   saveLocalState();
   renderDispatchHub();
-  closeTaskMissionModal();
+  renderNotificationsModalList();
+  await closeTaskMissionModal();
   showToast('Đã gửi yêu cầu đổi ca tới Ban Điều Phối!');
 }
 
-function submitMemberLeaveRequest() {
+async function submitMemberLeaveRequest() {
   if (!currentUser) return;
-  const taskId = document.getElementById('selMissionTaskId')?.value || 'TASK_01';
+  const taskId = document.getElementById('selMissionTaskId')?.value || '';
+  if (!taskId) {
+    showToast('Vui lòng đăng ký nhận ca trước khi xin rút ca.');
+    return;
+  }
+  const task = (currentTasks || []).find(t => t.id === taskId);
   const reason = (document.getElementById('iptMissionReason')?.value || '').trim() || 'Xin vắng có lý do';
 
   currentLeaves.unshift({
@@ -6679,19 +7046,25 @@ function submitMemberLeaveRequest() {
     taskId,
     memberId: currentUser.id,
     memberName: currentUser.hoTen,
-    timeLabel: `Ca ${taskId}`,
+    timeLabel: task ? `${task.location} · ${task.time}` : `Ca ${taskId}`,
     reason,
     urgent: false,
     status: 'pending'
   });
 
+  safeSetValue('iptMissionReason', '');
   saveLocalState();
   renderDispatchHub();
-  closeTaskMissionModal();
+  renderNotificationsModalList();
+  await closeTaskMissionModal();
   showToast('Đã gửi đơn xin rút ca chờ duyệt!');
 }
 
 function toggleMemberRole(memberId, roleType) {
+  if (!currentUser || !currentUser.isAdmin) {
+    showToast('Chỉ Quản trị viên mới được phân quyền.');
+    return;
+  }
   if (memberId === 'DMC0806') {
     showToast('Quyền Quản trị gốc DMC0806 được bảo vệ vĩnh viễn.');
     return;
@@ -6711,39 +7084,50 @@ function toggleMemberRole(memberId, roleType) {
   custom[memberId] = { isAdmin: nextAdmin, isShiftLeader: nextLeader };
   saveCustomAdminRoles(custom);
 
-  const adminActorId = currentUser ? currentUser.id : 'DMC0806';
-  const url = `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(memberId)}&isAdmin=${nextAdmin}&isShiftLeader=${nextLeader}&adminActorId=${encodeURIComponent(adminActorId)}`;
-  if (navigator.onLine) {
-    fetch(url).catch(() => enqueueOfflineMutation('UPDATE_ROLE', { memberId, isAdmin: nextAdmin, isShiftLeader: nextLeader, adminActorId }));
-  } else {
-    enqueueOfflineMutation('UPDATE_ROLE', { memberId, isAdmin: nextAdmin, isShiftLeader: nextLeader, adminActorId });
-  }
+  dispatchBackendMutation('UPDATE_ROLE', {
+    memberId,
+    isAdmin: nextAdmin,
+    isShiftLeader: nextLeader,
+    adminActorId: currentUser.id
+  });
 
   renderMembersModalList();
   showToast(`Đã cập nhật quyền cho ${target.hoTen}.`);
 }
 
 function adjustMemberShiftCount(memberId, delta) {
+  if (!currentUser || !currentUser.isAdmin) {
+    showToast('Chỉ Quản trị viên mới được điều chỉnh số ca.');
+    return;
+  }
+  let nextVal = 0;
   for (const m of (membersDirectory || [])) {
     if (m.id === memberId) {
-      const next = Math.max(0, (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) + delta);
-      m.soCaHoanThanh = next;
-      m.soCa = next;
+      nextVal = Math.max(0, (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) + delta);
+      m.soCaHoanThanh = nextVal;
+      m.soCa = nextVal;
+      saveMemberOverride(memberId, { soCaHoanThanh: nextVal, soCa: nextVal });
     }
   }
   if (currentUser && currentUser.id === memberId) {
-    currentUser.soCaHoanThanh = Math.max(0, (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0)) + delta);
-    currentUser.soCa = currentUser.soCaHoanThanh;
+    currentUser.soCaHoanThanh = nextVal;
+    currentUser.soCa = nextVal;
     persistUserSession(currentUser);
     renderProfileData();
   }
+  dispatchBackendMutation('SHIFT_ADJUST', {
+    memberId,
+    delta,
+    reason: 'Điều chỉnh trực tiếp',
+    adminActorId: currentUser.id
+  });
   saveLocalState();
   renderMembersModalList();
   showToast(`Đã điều chỉnh ${delta > 0 ? '+1' : '-1'} ca cho ${memberId}.`);
 }
 
 // === app.js ===
-// SportPass V8.5 — Global Event Binding, Public Bridge & App Bootstrapper
+// SportPass V8.6 — Global Event Binding, Public Bridge & App Bootstrapper
 
 function bindUiListeners() {
   const on = (id, ev, fn) => {
@@ -6754,7 +7138,7 @@ function bindUiListeners() {
   // Login Gateway
   on('login-form', 'submit', handleLoginSubmit);
   on('btnTogglePass', 'click', togglePasswordVisibility);
-  on('btnForgotPass', 'click', () => showToast('Mật khẩu mặc định là 123456. Liên hệ DMC0806 nếu quên mật khẩu mới.'));
+  on('btnForgotPass', 'click', () => showToast('Mật khẩu mặc định là 123456. Liên hệ Trưởng ban Nhân sự DMC0806 để cấp lại mật khẩu.'));
   on('btnFaceIdLogin', 'click', () => handleBiometricLogin('Face ID'));
   on('btnTouchIdLogin', 'click', () => handleBiometricLogin('Touch ID'));
 
@@ -6770,26 +7154,44 @@ function bindUiListeners() {
     document.getElementById('hero-avatar-input')?.click();
   });
   on('hero-avatar-input', 'change', handleAvatarFileSelect);
+  on('btnAvatarThumbTrigger', 'click', () => document.getElementById('edit-avatar-input')?.click());
   on('btnTriggerEditAvatar', 'click', () => document.getElementById('edit-avatar-input')?.click());
   on('edit-avatar-input', 'change', handleAvatarFileSelect);
-  on('qr-modal-trigger', 'click', openQrModal);
+  on('qr-modal-trigger', 'click', () => openQrModal());
   on('qr-modal-close', 'click', closeQrModal);
-
-  // Performance Stats interactive triggers
-  on('stat-shifts-btn', 'click', () => openApproveShiftModal('shifts'));
-  on('stat-efficiency-btn', 'click', () => {
-    openApproveShiftModal('shifts');
-    showToast('Tỷ lệ đúng giờ được tính từ lịch sử check-in QR.');
+  on('selQrPassTask', 'change', (e) => {
+    activeQrTaskId = e.target.value;
+    updateQrPassDisplay();
   });
-  on('stat-rating-btn', 'click', cycleReadinessRating);
 
-  // Role Preview Switcher ("Thành viên | Admin") & Quick Actions
-  on('role-switch-member', 'click', () => setRolePreviewMode('member'));
-  on('role-switch-admin', 'click', () => setRolePreviewMode('admin'));
+  // Performance Stats -> Role-accurate Triggers
+  const openShiftHubByRole = () => {
+    if (currentUser && currentUser.isAdmin) openApproveShiftModal('shifts');
+    else openTaskMissionModal('shifts');
+  };
+  on('stat-shifts-btn', 'click', openShiftHubByRole);
+  on('stat-efficiency-btn', 'click', openShiftHubByRole);
+  on('stat-rating-btn', 'click', () => openEditProfileModal());
+
+  // Role-Locked Quick Actions
   on('admin-create-shift-btn', 'click', () => openCreateShiftModal(null));
   on('admin-approve-btn', 'click', () => openApproveShiftModal('swap'));
   on('member-register-btn', 'click', () => openTaskMissionModal('shifts'));
   on('member-swap-btn', 'click', () => openTaskMissionModal('swap'));
+
+  // Profile Inline Quick Edit when Phone or ICE not yet set
+  on('display-phone', 'click', (e) => {
+    if (e.currentTarget && e.currentTarget.dataset.needsEdit === '1') {
+      e.preventDefault();
+      openEditProfileModal('input-phone');
+    }
+  });
+  on('display-ice', 'click', (e) => {
+    if (e.currentTarget && e.currentTarget.dataset.needsEdit === '1') {
+      e.preventDefault();
+      openEditProfileModal('input-ice');
+    }
+  });
 
   // Members Modal
   on('members-modal-close', 'click', closeMembersModal);
@@ -6797,75 +7199,44 @@ function bindUiListeners() {
   on('iptSearchMembers', 'input', renderMembersModalList);
 
   // Edit Profile Modal
-  on('edit-profile-trigger', 'click', openEditProfileModal);
+  on('edit-profile-trigger', 'click', () => openEditProfileModal());
   on('edit-modal-close', 'click', closeEditProfileModal);
   on('edit-modal-cancel', 'click', closeEditProfileModal);
   on('edit-modal-save', 'click', saveEditProfileAction);
 
-  // Notifications & Settings Modals
+  // Notifications & Slim Settings Modals
   on('notification-modal-close', 'click', closeNotificationModal);
   on('notification-dismiss-btn', 'click', closeNotificationModal);
   on('settings-modal-close', 'click', closeSettingsModal);
+  on('theme-btn-light', 'click', (e) => { e.stopPropagation(); setColorScheme('light', true); });
+  on('theme-btn-dark', 'click', (e) => { e.stopPropagation(); setColorScheme('dark', true); });
+  on('theme-btn-system', 'click', (e) => { e.stopPropagation(); setColorScheme('system', true); });
   on('theme-toggle-row', 'click', cycleThemeMode);
   on('security-password-row', 'click', openChangePasswordModal);
-  on('terms-privacy-row', 'click', () => showToast('Dữ liệu hội viên được bảo mật nội bộ CLB Thể Thao ĐH Hải Dương.'));
   on('logout-btn', 'click', executeLogoutAction);
-
-  // Settings Toggles & Language
-  on('switchFaceId', 'change', (e) => {
-    appPreferences.faceId = Boolean(e.target.checked);
-    saveAppPreferences();
-    showToast(appPreferences.faceId ? 'Đã bật xác thực Face ID / Touch ID' : 'Đã tắt đăng nhập sinh trắc học');
-  });
-  on('switchRemoteLock', 'change', (e) => {
-    appPreferences.remoteLock = Boolean(e.target.checked);
-    saveAppPreferences();
-    updateQrPassDisplay();
-    showToast(appPreferences.remoteLock ? 'Đã kích hoạt khóa thẻ QR từ xa' : 'Đã mở khóa thẻ QR');
-  });
-  on('switchTilt3d', 'change', (e) => {
-    appPreferences.tilt3d = Boolean(e.target.checked);
-    saveAppPreferences();
-    showToast(appPreferences.tilt3d ? 'Đã bật hiệu ứng 3D Tilt & Gợn sóng' : 'Đã tắt hiệu ứng 3D Tilt');
-  });
-  on('switchUrgentNotifs', 'change', (e) => {
-    appPreferences.urgentNotifs = Boolean(e.target.checked);
-    saveAppPreferences();
-    showToast(appPreferences.urgentNotifs ? 'Đã bật chuông cảnh báo ca khẩn cấp' : 'Đã tắt cảnh báo ca khẩn cấp');
-  });
-  on('switchHaptics', 'change', (e) => {
-    appPreferences.haptics = Boolean(e.target.checked);
-    saveAppPreferences();
-  });
-  on('lang-btn-vn', 'click', () => {
-    appPreferences.lang = 'VI';
-    saveAppPreferences();
-    syncSettingsSwitchesUI();
-    showToast('Ngôn ngữ: Tiếng Việt');
-  });
-  on('lang-btn-en', 'click', () => {
-    appPreferences.lang = 'EN';
-    saveAppPreferences();
-    syncSettingsSwitchesUI();
-    showToast('Language: English labels prioritized');
-  });
 
   // Change Password Modal
   on('password-modal-close', 'click', closeChangePasswordModal);
   on('password-modal-cancel', 'click', closeChangePasswordModal);
+  on('password-form', 'submit', submitChangePassword);
   on('btnSavePassword', 'click', submitChangePassword);
 
   // Create Shift Modal
   on('create-shift-close', 'click', closeCreateShiftModal);
   on('create-shift-cancel', 'click', closeCreateShiftModal);
   on('btnAddDeptQuotaRow', 'click', addDeptQuotaRow);
-  on('btnCycleLeader', 'click', cycleShiftLeader);
+  on('selTaskLeader', 'change', (e) => {
+    selectedShiftLeaderId = e.target.value;
+    updateSelectedLeaderCard();
+  });
+  on('iptTaskLocation', 'input', (e) => renderAreaPresetCards(e.target.value));
+  on('iptTaskTime', 'input', (e) => syncPresetTimeButtons(e.target.value));
   on('btnSubmitTask', 'click', submitCreateShiftAction);
   document.querySelectorAll('#preset-time-container .preset-time-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('#preset-time-container .preset-time-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      safeSetValue('iptTaskTime', btn.dataset.time || '14:00 - 18:00');
+      safeSetValue('iptTaskTime', btn.dataset.time || '13:30 - 17:30');
     });
   });
 
@@ -6876,11 +7247,18 @@ function bindUiListeners() {
   on('approve-tab-shifts', 'click', () => switchApproveTab('shifts'));
   on('approve-tab-scanner', 'click', () => switchApproveTab('scanner'));
   on('btnApproveAllRequests', 'click', approveAllPendingRequests);
+  on('selScanTaskId', 'change', renderScannerCheckedInList);
   on('btnStartCameraScan', 'click', () => startQrScanner());
   on('btnSwitchCameraScan', 'click', toggleCameraFacing);
   on('btnTorchCameraScan', 'click', toggleTorchFlash);
   on('iptQrFileUpload', 'change', handleQrFileSelected);
   on('btnManualCheckin', 'click', () => handleScanQrPayload(document.getElementById('iptManualCheckinId')?.value || ''));
+  on('iptManualCheckinId', 'keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleScanQrPayload(document.getElementById('iptManualCheckinId')?.value || '');
+    }
+  });
 
   // Member Task Mission Modal
   on('task-mission-close', 'click', closeTaskMissionModal);
@@ -6899,16 +7277,17 @@ function exposeGlobalBridge() {
   window.DEFAULT_MEMBERS_DIRECTORY = DEFAULT_MEMBERS_DIRECTORY;
   window.ALL_DEPARTMENTS = ALL_DEPARTMENTS;
   window.DEFAULT_TASKS = DEFAULT_TASKS;
-  window.currentUser = currentUser;
-  window.membersDirectory = membersDirectory;
-  window.currentTasks = currentTasks;
-  window.currentSwaps = currentSwaps;
-  window.currentLeaves = currentLeaves;
+  Object.defineProperties(window, {
+    currentUser: { configurable: true, get: () => currentUser, set: (v) => { currentUser = v; } },
+    membersDirectory: { configurable: true, get: () => membersDirectory, set: (v) => { membersDirectory = v; } },
+    currentTasks: { configurable: true, get: () => currentTasks, set: (v) => { currentTasks = v; } },
+    currentSwaps: { configurable: true, get: () => currentSwaps, set: (v) => { currentSwaps = v; } },
+    currentLeaves: { configurable: true, get: () => currentLeaves, set: (v) => { currentLeaves = v; } }
+  });
 
   window.handleLoginSubmit = handleLoginSubmit;
   window.fallbackOfflineLogin = fallbackOfflineLogin;
   window.executeLogoutAction = executeLogoutAction;
-  window.setRolePreviewMode = setRolePreviewMode;
   window.renderProfileData = renderProfileData;
   window.openMembersModal = openMembersModal;
   window.openEditProfileModal = openEditProfileModal;

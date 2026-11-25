@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <script>
     try {
       var savedMode = localStorage.getItem('sportpass-theme-mode');
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var effective = (savedMode === 'dark') ? 'dark' : ((savedMode === 'system' && prefersDark) ? 'dark' : 'light');
+      var effective = (savedMode === 'dark') ? 'dark' : ((savedMode === 'light') ? 'light' : (prefersDark ? 'dark' : 'light'));
       document.documentElement.dataset.theme = effective;
-      document.querySelector('meta[name="color-scheme"]').content = effective;
+      document.querySelector('meta[name="color-scheme"]').content = (savedMode === 'dark' || savedMode === 'light') ? savedMode : 'light dark';
     } catch (e) {}
   </script>
   <title>SportPass Pro - Varsity Pass</title>
@@ -169,7 +169,7 @@
                 <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
                 <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
               </svg>
-              <span class="notif-dot" aria-hidden="true"></span>
+              <span id="notification-dot" class="notif-dot hidden" aria-hidden="true"></span>
             </button>
             <button id="members-trigger" type="button" class="icon-circle-btn water-ripple-target spring-press" aria-label="Thành viên CLB">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
@@ -418,21 +418,11 @@
                 </div>
                 <span class="profile-row-label">Liên hệ khẩn (ICE)</span>
               </div>
-              <span id="display-ice" class="profile-row-val font-mono">0988 123 456 (Trực CLB)</span>
+              <a id="display-ice" class="profile-phone-link font-mono" href="#display-ice">Chưa cập nhật</a>
             </div>
           </div>
         </section>
       </main>
-
-      <!-- FLOATING ROLE VIEW SWITCHER (ADMIN ONLY - SCREENSHOT 6) -->
-      <div id="role-preview-dock" class="role-preview-dock hidden">
-        <div class="role-preview-stage">
-          <div class="role-switch-capsule" role="group" aria-label="Chế độ xem vai trò">
-            <button id="role-switch-member" type="button" class="role-switch-btn">Thành viên</button>
-            <button id="role-switch-admin" type="button" class="role-switch-btn active">Admin</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -441,12 +431,10 @@
     <div class="sheet-panel sheet-panel-centered">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <h3 id="qr-modal-title" class="sheet-title-h3">Thẻ Vào Cổng &amp; Điểm Danh</h3>
-      <p class="sheet-sub" style="max-width:280px;font-size:13px;">Quét mã tại trạm trực ban sân vận động để xác nhận ca trực</p>
+      <p class="sheet-sub" style="max-width:280px;font-size:13px;">Chọn ca trực và quét mã tại trạm điều phối sân</p>
 
-      <div id="qr-locked-notice" class="dispatch-card urgent hidden" style="width:100%;margin-top:14px;">
-        <span style="font-size:12.5px;font-weight:700;color:#92400e;">Thẻ đang tạm khóa từ xa</span>
-        <span style="font-size:11.5px;color:#b45309;">Hãy tắt "Khóa thẻ từ xa" trong Cài Đặt &amp; Tài Khoản để xuất trình mã QR.</span>
-      </div>
+      <select id="selQrPassTask" class="aqua-input" aria-label="Chọn ca trực xuất trình QR" style="margin-top:12px;font-size:12.5px;"></select>
+      <span id="qr-checkin-status-pill" class="role-pill-badge" style="margin-top:8px;">Chưa điểm danh</span>
 
       <div id="qr-holo-container" class="qr-holo-card">
         <div id="qr-code-box" class="qr-render-frame"></div>
@@ -545,149 +533,36 @@
           <span id="settings-grade-badge" class="settings-grade-badge">A+</span>
         </div>
 
-        <span class="settings-group-kicker">BẢO MẬT &amp; ĐĂNG NHẬP</span>
+        <span class="settings-group-kicker">TÙY CHỈNH &amp; BẢO MẬT</span>
         <div class="settings-group-card">
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-emerald" aria-hidden="true">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Xác thực Face ID</span>
-                <p class="settings-row-desc">Mở thẻ và xác thực không cần PIN</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Bật Face ID">
-              <input id="switchFaceId" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-
-          <button id="security-password-row" type="button" class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-sky" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Đổi mật khẩu</span>
-                <p class="settings-row-desc">Cập nhật mật khẩu cá nhân</p>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span class="strength-pill">Mạnh</span>
-              <span style="font-size:13px;color:var(--text-muted);">›</span>
-            </div>
-          </button>
-
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-amber" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="3" width="12" x="6" y="3"/><path d="M12 17h.01"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Khóa thẻ từ xa</span>
-                <p class="settings-row-desc">Bảo vệ thẻ khi làm mất điện thoại</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Khóa thẻ từ xa">
-              <input id="switchRemoteLock" type="checkbox" class="sr-only">
-              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-        </div>
-
-        <span class="settings-group-kicker">GIAO DIỆN &amp; TRẢI NGHIỆM</span>
-        <div class="settings-group-card">
-          <button id="theme-toggle-row" type="button" class="settings-row-item">
+          <div id="theme-toggle-row" class="settings-row-item">
             <div class="settings-row-left">
               <div class="settings-row-icon tile-indigo" aria-hidden="true">
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2"/></svg>
               </div>
-              <div>
-                <span class="settings-row-title">Chủ đề giao diện</span>
-                <p id="theme-mode-desc" class="settings-row-desc">Màu sắc hiển thị trên hệ thống</p>
+              <div style="min-width:0;">
+                <span class="settings-row-title">Giao diện hiển thị</span>
+                <p id="theme-mode-desc" class="settings-row-desc">Sáng / Tối / Tự động</p>
               </div>
             </div>
-            <span id="theme-mode-badge" class="theme-mode-pill">Sáng ⌄</span>
-          </button>
+            <div class="theme-seg-group" role="group" aria-label="Chọn giao diện sáng tối">
+              <button id="theme-btn-light" type="button" class="theme-seg-btn active" aria-pressed="true">Sáng</button>
+              <button id="theme-btn-dark" type="button" class="theme-seg-btn" aria-pressed="false">Tối</button>
+              <button id="theme-btn-system" type="button" class="theme-seg-btn" aria-pressed="false">Tự động</button>
+            </div>
+          </div>
 
-          <div class="settings-row-item">
+          <button id="security-password-row" type="button" class="settings-row-item water-ripple-target spring-press">
             <div class="settings-row-left">
               <div class="settings-row-icon tile-sky" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
-              <div>
-                <span class="settings-row-title">Hiệu ứng 3D Tilt</span>
-                <p class="settings-row-desc">Gợn sóng chạm &amp; xoay góc thẻ</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Bật hiệu ứng 3D Tilt">
-              <input id="switchTilt3d" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-teal" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Ngôn ngữ</span>
-                <p class="settings-row-desc">Display language</p>
+              <div style="min-width:0;">
+                <span class="settings-row-title">Đổi mật khẩu</span>
+                <p id="password-status-desc" class="settings-row-desc">Cập nhật mật khẩu tài khoản</p>
               </div>
             </div>
-            <div class="lang-toggle-group">
-              <button id="lang-btn-vn" type="button" class="lang-seg-btn active">VN</button>
-              <button id="lang-btn-en" type="button" class="lang-seg-btn">EN</button>
-            </div>
-          </div>
-        </div>
-
-        <span class="settings-group-kicker">THÔNG BÁO &amp; PHẢN HỒI</span>
-        <div class="settings-group-card">
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-rose" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Thông báo ca khẩn cấp</span>
-                <p class="settings-row-desc">Đẩy chuông ưu tiên điều động sân</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Thông báo ca khẩn cấp">
-              <input id="switchUrgentNotifs" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-
-          <div class="settings-row-item">
-            <div class="settings-row-left">
-              <div class="settings-row-icon tile-indigo" aria-hidden="true">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="3" width="12" x="6" y="3"/><path d="M2 8v8m20-8v8"/></svg>
-              </div>
-              <div>
-                <span class="settings-row-title">Rung phản hồi (Haptics)</span>
-                <p class="settings-row-desc">Rung nhẹ khi chạm hoặc quét QR</p>
-              </div>
-            </div>
-            <label class="aqua-switch" aria-label="Rung phản hồi">
-              <input id="switchHaptics" type="checkbox" class="sr-only" checked>
-              <div class="aqua-switch-track indigo"><div class="aqua-switch-knob"></div></div>
-            </label>
-          </div>
-        </div>
-
-        <span class="settings-group-kicker">HỆ THỐNG</span>
-        <div class="settings-group-card">
-          <div class="settings-row-item">
-            <span class="settings-row-title">Phiên bản Pass</span>
-            <span class="theme-mode-pill font-mono">v2.4.5</span>
-          </div>
-          <button id="terms-privacy-row" type="button" class="settings-row-item">
-            <span class="settings-row-title">Điều khoản &amp; Quyền riêng tư</span>
-            <span style="font-size:13px;color:var(--text-muted);">›</span>
+            <span style="font-size:15px;color:var(--text-muted);" aria-hidden="true">›</span>
           </button>
         </div>
 
@@ -720,12 +595,12 @@
 
       <form id="profile-form" class="sheet-scroll-body" onsubmit="return false;">
         <div class="edit-avatar-card">
-          <div class="edit-avatar-thumb-wrap">
+          <button id="btnAvatarThumbTrigger" type="button" class="edit-avatar-thumb-wrap" aria-label="Chọn ảnh đại diện">
             <img id="edit-avatar-preview" width="56" height="56" alt="Ảnh đại diện hồ sơ" class="edit-avatar-thumb" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
             <span class="edit-avatar-cam-dot" aria-hidden="true">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </span>
-          </div>
+          </button>
           <div style="flex:1;min-width:0;">
             <div style="font-size:13.5px;font-weight:700;color:var(--text-primary);">Ảnh đại diện hồ sơ</div>
             <div style="font-size:11px;color:var(--text-muted);">Định dạng JPG, PNG tối đa 5MB</div>
@@ -846,15 +721,15 @@
           <div id="area-cards-container" class="area-cards-grid"></div>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#0d9488;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-            <input id="iptTaskLocation" type="text" class="aqua-input with-lead" value="Sân Vận Động Trung Tâm">
+            <input id="iptTaskLocation" type="text" class="aqua-input with-lead" value="SVĐ Trung Tâm">
           </div>
         </div>
 
         <div class="field-group">
           <label class="field-label-mono" for="iptTaskTime">Thời gian trực</label>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <input id="iptTaskDate" type="text" class="aqua-input font-mono" value="18/03/2025" aria-label="Ngày trực">
-            <input id="iptTaskTime" type="text" class="aqua-input font-mono" value="14:00 - 18:00" aria-label="Khung giờ">
+            <input id="iptTaskDate" type="text" class="aqua-input font-mono" value="" placeholder="DD/MM/YYYY" aria-label="Ngày trực">
+            <input id="iptTaskTime" type="text" class="aqua-input font-mono" value="13:30 - 17:30" aria-label="Khung giờ">
           </div>
           <div id="preset-time-container" class="preset-time-row">
             <span style="font-size:11px;color:var(--text-muted);">Ca mẫu:</span>
@@ -877,16 +752,15 @@
         </div>
 
         <div class="field-group">
-          <span class="field-label-mono">Người phụ trách</span>
+          <label class="field-label-mono" for="selTaskLeader">Người phụ trách</label>
           <div class="leader-pick-card">
-            <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-              <img id="leaderPickAvatar" width="36" height="36" alt="Trưởng ca" style="width:36px;height:36px;border-radius:10px;object-fit:cover;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-              <div style="min-width:0;">
-                <div id="leaderPickName" style="font-size:13px;font-weight:700;color:var(--text-primary);" class="truncate">Đỗ Mạnh Cường</div>
-                <div id="leaderPickRole" style="font-size:11px;color:var(--text-muted);">Trưởng ca trực</div>
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;width:100%;">
+              <img id="leaderPickAvatar" width="38" height="38" alt="Trưởng ca" style="width:38px;height:38px;border-radius:10px;object-fit:cover;flex-shrink:0;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+              <div style="min-width:0;flex:1;">
+                <select id="selTaskLeader" class="aqua-input" style="min-height:38px;padding:6px 10px;font-size:12.5px;"></select>
+                <div id="leaderPickRole" style="font-size:11px;color:var(--text-muted);margin-top:3px;">Trưởng ca trực</div>
               </div>
             </div>
-            <button id="btnCycleLeader" type="button" class="btn-mini btn-mini-soft">Đổi</button>
           </div>
         </div>
 
@@ -953,6 +827,7 @@
             <input id="iptManualCheckinId" type="text" class="aqua-input font-mono" placeholder="Nhập nhanh Mã ID (vd: DMC0806)">
             <button id="btnManualCheckin" type="button" class="btn-mini btn-mini-emerald" style="min-height:44px;flex-shrink:0;">Điểm danh</button>
           </div>
+          <div id="scannerCheckedInList" style="display:flex;flex-direction:column;gap:6px;"></div>
         </div>
       </div>
 
@@ -1002,9 +877,10 @@
             <input id="iptMissionReason" type="text" class="aqua-input" placeholder="Ví dụ: Trùng lịch thi, thực tập đột xuất...">
           </div>
           <div class="dispatch-btn-pair">
-            <button id="btnSubmitMemberSwap" type="button" class="btn-sheet-primary">Gửi đơn đổi ca</button>
-            <button id="btnSubmitMemberLeave" type="button" class="btn-sheet-muted">Xin rút ca</button>
+            <button id="btnSubmitMemberSwap" type="button" class="btn-sheet-primary water-ripple-target spring-press">Gửi đơn đổi ca</button>
+            <button id="btnSubmitMemberLeave" type="button" class="btn-sheet-muted water-ripple-target spring-press">Xin rút ca</button>
           </div>
+          <div id="memberMyRequestsList" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
       </div>
 
@@ -1025,27 +901,27 @@
           </div>
           <h3 id="password-modal-title" class="sheet-title-h3">Đổi Mật Khẩu</h3>
         </div>
-        <button id="password-modal-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+        <button id="password-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
-      <div class="sheet-scroll-body">
+      <form id="password-form" class="sheet-scroll-body" onsubmit="return false;">
         <div class="field-group">
           <label class="field-label-mono" for="iptCurrentPassword">Mật khẩu hiện tại</label>
-          <input id="iptCurrentPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu cũ">
+          <input id="iptCurrentPassword" type="password" class="aqua-input" autocomplete="current-password" placeholder="Nhập mật khẩu cũ">
         </div>
         <div class="field-group">
           <label class="field-label-mono" for="iptNewPassword">Mật khẩu mới (&gt;= 6 ký tự)</label>
-          <input id="iptNewPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu mới">
+          <input id="iptNewPassword" type="password" class="aqua-input" autocomplete="new-password" placeholder="Nhập mật khẩu mới">
         </div>
         <div class="field-group">
           <label class="field-label-mono" for="iptConfirmPassword">Xác nhận mật khẩu mới</label>
-          <input id="iptConfirmPassword" type="password" class="aqua-input" placeholder="Nhập lại mật khẩu mới">
+          <input id="iptConfirmPassword" type="password" class="aqua-input" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới">
         </div>
-      </div>
+      </form>
       <div class="sheet-footer">
-        <button id="password-modal-cancel" type="button" class="btn-sheet-muted">Hủy</button>
-        <button id="btnSavePassword" type="button" class="btn-sheet-primary">Lưu mật khẩu</button>
+        <button id="password-modal-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">Hủy</button>
+        <button id="btnSavePassword" type="button" class="btn-sheet-primary water-ripple-target spring-press">Lưu mật khẩu</button>
       </div>
     </div>
   </dialog>

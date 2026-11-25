@@ -1,11 +1,11 @@
-# DESIGN_CONTRACT.md — SportPass V8.5 (Aquamorphic Varsity Pass & Modal Suite)
-> Hợp đồng thẩm mỹ & kỹ thuật chuẩn `omni-app-studio` V2.0 — Tuân thủ tuyệt đối giao diện mẫu và 14 màn hình modal chức năng của người dùng, tối ưu chuyển động GPU 60fps/120fps.
+# DESIGN_CONTRACT.md — SportPass V8.6 (Aquamorphic Varsity Pass & Functional Modal Suite)
+> Hợp đồng thẩm mỹ & kỹ thuật chuẩn `omni-app-studio` V2.0 — Giữ nguyên thẩm mỹ Frosted Sky & Ocean Card, tinh gọn Cài đặt (Sáng/Tối/Đổi mật khẩu), phân quyền thật theo tài khoản và chuyển động Top-Layer 60fps.
 
 ## 1. Visual Thesis & Architecture
-- **Sản phẩm / Đề bài:** SportPass V8.5 (`Varsity Pass`) — Hệ sinh thái Thẻ Định Danh Số, Cổng Đăng Nhập Đại Dương, Phê Duyệt Điều Động, Tạo Ca Trực, Thành Viên CLB, Hồ Sơ & Cài Đặt (`CLB Thể Thao • Trường Đại học Hải Dương`).
+- **Sản phẩm / Đề bài:** SportPass V8.6 (`Varsity Pass`) — Hệ sinh thái Thẻ Định Danh Số, Cổng Đăng Nhập Đại Dương, Phê Duyệt Điều Động, Tạo Ca Trực, Thành Viên CLB, Hồ Sơ & Cài Đặt (`CLB Thể Thao • Trường Đại học Hải Dương`).
 - **Lĩnh vực (Domain):** `sports-club-operations`
 - **Trường phái thẩm mỹ:** **Aquamorphic Frosted Sky** (`#F4F6FB` canvas với 3 quầng sáng lam/ngọc, bề mặt kính mờ `backdrop-blur-2xl`, thẻ đại dương `#072A4D -> #0284C7`, gợn sóng `.water-ripple`, nghiêng 3D rAF, popup trung tâm nảy lò xo).
-- **Chuyển động 60fps:** Chỉ animate `transform` và `opacity` (kết hợp `stroke-dashoffset` cho dấu tích SVG). Đóng/mở `<dialog class="sp-sheet-dialog" closedby="any">` dùng khóa `[data-closing]` trượt xuống mượt trước `dlg.close()`.
+- **Chuyển động 60fps:** Chỉ animate `transform`, `opacity`, `background-color` (kết hợp `stroke-dashoffset` cho dấu tích SVG). Đóng/mở `<dialog class="sp-sheet-dialog" closedby="any">` dùng `@starting-style` + `transition-behavior: allow-discrete` + `overlay` và fallback `[data-closing]` chờ `getAnimations()`.
 
 ## 2. Hệ Màu Chuẩn W3C DTCG & Perceptual OKLCH Tokens
 - **Nền & Trung tính:** `#f4f6fb` `#ffffff` `#f8fafc` `#f1f5f9` `#e2e8f0` `#cbd5e1` `#94a3b8` `#64748b` `#475569` `#334155` `#1e293b` `#18181b` `#0f172a` `#0b1120` `#131c2e` `#022340`

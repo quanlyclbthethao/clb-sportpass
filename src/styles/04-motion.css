@@ -49,10 +49,6 @@
   transition: opacity 280ms ease;
 }
 
-html[data-tilt="off"] .hero-specular-light {
-  display: none;
-}
-
 .hero-card-aquamorphic:hover .hero-specular-light {
   opacity: 1;
 }
@@ -85,6 +81,13 @@ html[data-tilt="off"] .hero-specular-light {
   will-change: transform, opacity;
 }
 
+/* Pause background ambient animations while modal dialog is open */
+body:has(dialog[open]) .aurora-beam,
+body:has(dialog[open]) .qr-button-sweep,
+body:has(dialog[open]) .hero-card-aquamorphic .ping-ring {
+  animation-play-state: paused;
+}
+
 @keyframes auroraShimmerSweep {
   0% { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
   15% { opacity: 0.8; }
@@ -105,6 +108,11 @@ html[data-tilt="off"] .hero-specular-light {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes tabPaneFadeIn {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
 @keyframes statBounce {
   0% { opacity: 0; transform: scale(0.7) translateY(8px); }
   60% { transform: scale(1.08) translateY(-2px); }
@@ -118,27 +126,6 @@ html[data-tilt="off"] .hero-specular-light {
 
 @keyframes pingHalo {
   75%, 100% { transform: scale(2); opacity: 0; }
-}
-
-/* 60fps Sheet Entry & Exit Animations */
-@keyframes sheetSlideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes sheetSlideDown {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(44px); }
-}
-
-@keyframes popupSpringIn {
-  from { opacity: 0; transform: scale(0.88) translateY(14px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-@keyframes popupSpringOut {
-  from { opacity: 1; transform: scale(1) translateY(0); }
-  to { opacity: 0; transform: scale(0.92) translateY(10px); }
 }
 
 @keyframes checkStrokeDraw {
@@ -177,20 +164,80 @@ html[data-tilt="off"] .hero-specular-light {
   animation: qrHoloGlow 3.5s ease-in-out infinite;
 }
 
-dialog.sp-sheet-dialog[open] .sheet-panel {
-  animation: sheetSlideUp 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+/* ==================== TOP-LAYER <dialog> ENTRY & EXIT (@starting-style + allow-discrete) ==================== */
+dialog.sp-sheet-dialog {
+  opacity: 0;
+  transition-property: opacity, display, overlay;
+  transition-duration: 240ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-behavior: allow-discrete;
 }
 
-dialog.sp-sheet-dialog[data-closing] .sheet-panel {
-  animation: sheetSlideDown 220ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+dialog.sp-sheet-dialog[open]:where(:not([data-closing])) {
+  opacity: 1;
 }
 
-dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel {
-  animation: popupSpringIn 340ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+dialog.sp-sheet-dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0);
+  backdrop-filter: none;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  transition-property: background-color, backdrop-filter, display, overlay;
+  transition-duration: 240ms;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
 }
 
-dialog.sp-sheet-dialog.sp-center-dialog[data-closing] .celebration-panel {
-  animation: popupSpringOut 200ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+dialog.sp-sheet-dialog[open]:where(:not([data-closing]))::backdrop {
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@starting-style {
+  dialog.sp-sheet-dialog[open] {
+    opacity: 0;
+  }
+  dialog.sp-sheet-dialog[open]::backdrop {
+    background-color: rgba(15, 23, 42, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.sp-sheet-dialog .sheet-panel {
+    transform: translate3d(0, 36px, 0);
+    transition-property: transform;
+    transition-duration: 280ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  dialog.sp-sheet-dialog[open]:where(:not([data-closing])) .sheet-panel {
+    transform: translate3d(0, 0, 0);
+  }
+
+  dialog.sp-sheet-dialog.sp-center-dialog .celebration-panel {
+    transform: scale(0.9) translate3d(0, 12px, 0);
+    transition-property: transform;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  dialog.sp-sheet-dialog.sp-center-dialog[open]:where(:not([data-closing])) .celebration-panel {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+
+  .tab-pane-anim {
+    animation: tabPaneFadeIn 190ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @starting-style {
+    dialog.sp-sheet-dialog[open] .sheet-panel {
+      transform: translate3d(0, 36px, 0);
+    }
+    dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel {
+      transform: scale(0.9) translate3d(0, 12px, 0);
+    }
+  }
 }
 
 dialog.sp-center-dialog[open] .check-draw-path {
@@ -204,6 +251,10 @@ dialog.sp-center-dialog[open] .check-draw-path {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  dialog.sp-sheet-dialog,
+  dialog.sp-sheet-dialog::backdrop {
+    transition-duration: 90ms;
+  }
   .hero-card-aquamorphic,
   .aurora-beam,
   .qr-button-sweep,
@@ -216,16 +267,13 @@ dialog.sp-center-dialog[open] .check-draw-path {
   .stat-anim-3,
   .qr-holo-card,
   .ping-ring,
-  dialog.sp-sheet-dialog[open] .sheet-panel,
-  dialog.sp-sheet-dialog[data-closing] .sheet-panel,
-  dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel,
+  .tab-pane-anim,
   dialog.sp-center-dialog[open] .check-draw-path {
     animation: none !important;
     transform: none !important;
   }
   .spring-press,
   .toast-pill,
-  .aqua-switch-knob,
   .dispatch-card {
     transition: none !important;
   }

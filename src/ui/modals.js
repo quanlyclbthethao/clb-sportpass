@@ -1,6 +1,26 @@
-// SportPass V8.5 — 60fps Animated Top-Layer <dialog closedby="any"> & Success Celebration Controller
+// SportPass V8.6 — Top-Layer <dialog closedby="any"> Lifecycle (@starting-style + fallback) & Safe Switching
 
 let celebrationTimer = null;
+let supportsDisplayTransitionCache;
+
+function canTransitionDisplay() {
+  if (supportsDisplayTransitionCache !== undefined) return supportsDisplayTransitionCache;
+  if (!window.CSS?.supports?.('transition-behavior', 'allow-discrete') || !document.body) {
+    return false;
+  }
+  const probe = document.createElement('div');
+  probe.style.cssText = 'transition: display 1s allow-discrete !important; display: block;';
+  document.body.appendChild(probe);
+  getComputedStyle(probe).display;
+  probe.style.display = 'none';
+  supportsDisplayTransitionCache = getComputedStyle(probe).display === 'block';
+  probe.remove();
+  return supportsDisplayTransitionCache;
+}
+
+function supportsTopLayerExit() {
+  return Boolean(window.CSS?.supports?.('overlay', 'auto') && canTransitionDisplay());
+}
 
 function openSheetDialog(id) {
   const dlg = document.getElementById(id);
@@ -12,7 +32,7 @@ function openSheetDialog(id) {
   triggerHaptic('light');
 }
 
-function closeSheetDialog(id) {
+async function closeSheetDialog(id) {
   const dlg = document.getElementById(id);
   if (!dlg || !dlg.open) return;
 
@@ -26,17 +46,39 @@ function closeSheetDialog(id) {
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) {
     dlg.removeAttribute('data-closing');
-    try { dlg.close(); } catch (e) {}
+    if (dlg.open) try { dlg.close(); } catch (e) {}
     return;
   }
 
-  dlg.setAttribute('data-closing', '');
-  setTimeout(() => {
-    dlg.removeAttribute('data-closing');
-    if (dlg.open) {
-      try { dlg.close(); } catch (e) {}
+  if (!supportsTopLayerExit()) {
+    dlg.setAttribute('data-closing', '');
+    const animations = dlg.getAnimations({ subtree: true });
+    if (animations.length > 0) {
+      await Promise.race([
+        Promise.allSettled(animations.map(a => a.finished)),
+        new Promise(r => setTimeout(r, 450))
+      ]);
     }
-  }, 215);
+    if (!dlg.hasAttribute('data-closing')) return;
+    dlg.removeAttribute('data-closing');
+    if (dlg.open) try { dlg.close(); } catch (e) {}
+    return;
+  }
+
+  if (dlg.open) try { dlg.close(); } catch (e) {}
+  const exitAnimations = dlg.getAnimations({ subtree: true });
+  if (exitAnimations.length > 0) {
+    await Promise.race([
+      Promise.allSettled(exitAnimations.map(a => a.finished)),
+      new Promise(r => setTimeout(r, 320))
+    ]);
+  }
+}
+
+async function switchSheetDialog(fromId, toId, beforeOpenFn) {
+  await closeSheetDialog(fromId);
+  if (typeof beforeOpenFn === 'function') beforeOpenFn();
+  openSheetDialog(toId);
 }
 
 function openSuccessCelebration({ kicker, title, descNodes }) {
@@ -84,7 +126,10 @@ function closeAllModals() {
   document.querySelectorAll('dialog.sp-sheet-dialog').forEach((dlg) => {
     dlg.removeAttribute('data-closing');
     if (dlg.open && typeof dlg.close === 'function') {
+      dlg.style.transition = 'none';
       try { dlg.close(); } catch (e) {}
+      void dlg.offsetWidth;
+      dlg.style.transition = '';
     }
   });
   stopQrCountdown();

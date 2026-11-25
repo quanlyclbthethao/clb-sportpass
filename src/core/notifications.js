@@ -1,4 +1,4 @@
-// SportPass V8.5 — Floating Pill Toast, Haptics & Notification Center Sheet Renderer
+// SportPass V8.6 — Interactive Role-Aware Notifications, Unread Indicator & Haptics
 
 let toastHideTimer = null;
 
@@ -16,7 +16,6 @@ function showToast(message) {
 
 function triggerHaptic(type = 'light') {
   try {
-    if (typeof appPreferences !== 'undefined' && appPreferences.haptics === false) return;
     if (!('vibrate' in navigator)) return;
     if (type === 'success') navigator.vibrate([12, 24, 18]);
     else if (type === 'warning') navigator.vibrate([22, 18, 22]);
@@ -32,60 +31,122 @@ function autoEnableBackgroundNotifications() {
   }
 }
 
-async function requestNotificationPermission() {
-  if (!('Notification' in window)) {
-    showToast('Trình duyệt không hỗ trợ thông báo đẩy.');
-    return 'unsupported';
-  }
-  const perm = await Notification.requestPermission();
-  if (perm === 'granted') {
-    autoEnableBackgroundNotifications();
-    showToast('Đã bật thông báo ca trực CLB!');
-  }
-  return perm;
+function markNotificationsRead() {
+  const uid = currentUser ? currentUser.id : 'GUEST';
+  try {
+    localStorage.setItem('CLB_READ_NOTIF_SIG_' + uid, unreadNotifSignature || '');
+  } catch (e) {}
+  const dot = document.getElementById('notification-dot');
+  if (dot) dot.classList.add('hidden');
 }
 
 function renderNotificationsModalList() {
   const listEl = document.getElementById('notification-list');
-  if (!listEl) return;
-
+  const uid = currentUser ? currentUser.id : '';
+  const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const items = [];
+
   const nextShift = (currentTasks || [])[0];
   if (nextShift) {
+    const occupied = Array.from(new Set([...(nextShift.joinedMembers || []), ...(nextShift.assignedMembers || [])]));
+    const isMine = Boolean(uid && occupied.includes(uid));
     items.push({
       highlight: true,
       iconBg: 'bg-icon-sky',
       icon: 'clock',
       title: 'Nhắc nhở ca trực sắp tới',
-      time: 'Hiện tại',
-      desc: `${nextShift.title} tại ${nextShift.location || 'Nhà Thi Đấu ĐH Hải Dương'} (${nextShift.time || '14:00'}). Vui lòng chuẩn bị thẻ QR để check-in.`
+      time: nextShift.id,
+      desc: `${nextShift.title} tại ${nextShift.location || 'SVĐ Trung Tâm'} (${nextShift.time || ''}). Nhấn để mở nhanh.`,
+      onClick: () => {
+        if (isMine) {
+          switchSheetDialog('notification-modal', 'qr-modal', () => {
+            activeQrTaskId = nextShift.id;
+            startQrCountdown();
+          });
+        } else if (isAdmin) {
+          switchSheetDialog('notification-modal', 'approve-shift-modal', () => switchApproveTab('shifts'));
+        } else {
+          switchSheetDialog('notification-modal', 'task-mission-modal', () => {
+            switchMissionTab('shifts');
+            renderMissionSheetPanels();
+          });
+        }
+      }
     });
   }
 
   const pendingSwaps = (currentSwaps || []).filter(s => s.status === 'pending').length;
   const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending').length;
-  if (pendingSwaps + pendingLeaves > 0) {
+
+  if (isAdmin && (pendingSwaps + pendingLeaves > 0)) {
     items.push({
       highlight: false,
       iconBg: 'bg-icon-amber',
       icon: 'alert',
       title: `Có ${pendingSwaps + pendingLeaves} yêu cầu điều động chờ duyệt`,
-      time: 'Ưu tiên',
-      desc: 'Mở mục Duyệt ca để phê duyệt đổi ca hoặc chi viện nhân sự kịp thời.'
+      time: 'Cần duyệt',
+      desc: 'Nhấn để mở thẳng bảng phê duyệt đổi ca và chi viện nhân sự.',
+      onClick: () => {
+        switchSheetDialog('notification-modal', 'approve-shift-modal', () => {
+          switchApproveTab(pendingSwaps > 0 ? 'swap' : 'leave');
+        });
+      }
     });
+  } else if (!isAdmin && uid) {
+    const mySwaps = (currentSwaps || []).filter(s => s.fromId === uid);
+    const myLeaves = (currentLeaves || []).filter(l => l.memberId === uid);
+    const myTotal = mySwaps.length + myLeaves.length;
+    if (myTotal > 0) {
+      const latest = mySwaps[0] || myLeaves[0];
+      const stLabel = latest.status === 'approved' ? 'Đã duyệt' : (latest.status === 'rejected' ? 'Từ chối' : 'Chờ duyệt');
+      items.push({
+        highlight: false,
+        iconBg: 'bg-icon-amber',
+        icon: 'refresh',
+        title: `Đơn đổi / rút ca của bạn (${myTotal})`,
+        time: stLabel,
+        desc: 'Nhấn để xem trạng thái phản hồi hoặc hủy yêu cầu đang chờ duyệt.',
+        onClick: () => {
+          switchSheetDialog('notification-modal', 'task-mission-modal', () => {
+            switchMissionTab('swap');
+            renderMissionSheetPanels();
+          });
+        }
+      });
+    }
   }
 
   items.push({
     highlight: false,
     iconBg: 'bg-icon-emerald',
     icon: 'check',
-    title: 'Hệ thống điểm danh QR đã sẵn sàng',
-    time: 'CLB UHD',
-    desc: 'Dữ liệu 125 thành viên thuộc 7 ban chuyên môn đã đồng bộ đầy đủ với Varsity Pass.'
+    title: 'Thẻ điểm danh QR đang hoạt động',
+    time: 'Mở QR',
+    desc: `Nhấn để xuất trình mã QR cá nhân của ${currentUser ? currentUser.hoTen : 'hội viên'} (làm mới mỗi 45 giây).`,
+    onClick: () => {
+      switchSheetDialog('notification-modal', 'qr-modal', () => startQrCountdown());
+    }
   });
 
+  unreadNotifSignature = [
+    nextShift ? nextShift.id : 'NONE',
+    isAdmin ? `${pendingSwaps}-${pendingLeaves}` : uid,
+    (currentSwaps || []).filter(s => s.fromId === uid).map(s => s.status).join(','),
+    (currentLeaves || []).filter(l => l.memberId === uid).map(l => l.status).join(',')
+  ].join('|');
+
+  let readSig = '';
+  try { readSig = localStorage.getItem('CLB_READ_NOTIF_SIG_' + (uid || 'GUEST')) || ''; } catch (e) {}
+  const dot = document.getElementById('notification-dot');
+  if (dot) dot.classList.toggle('hidden', !unreadNotifSignature || unreadNotifSignature === readSig);
+
+  if (!listEl) return;
   const nodes = items.map(it =>
-    el('div', { className: `notif-item-card${it.highlight ? ' highlight' : ''}` },
+    el('button', {
+      type: 'button',
+      className: `notif-item-card interactive spring-press${it.highlight ? ' highlight' : ''}`,
+      onClick: it.onClick
+    },
       el('div', { className: `notif-item-icon ${it.iconBg}` }, spIconNode(it.icon, 16)),
       el('div', { style: { flex: '1', minWidth: '0' } },
         el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
