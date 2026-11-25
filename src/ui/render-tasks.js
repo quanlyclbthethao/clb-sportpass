@@ -178,6 +178,15 @@ function updateSelectedLeaderCard() {
   safeSetText('leaderPickRole', `${leader.chucVu || 'Trưởng ca'} • ${leader.boMon || 'Ban Điều Hành'}`);
 }
 
+function setTaskCategoryUI(category) {
+  const cat = category === 'activity' ? 'activity' : 'shift';
+  safeSetValue('iptTaskCategory', cat);
+  const bShift = document.getElementById('task-cat-shift');
+  const bAct = document.getElementById('task-cat-activity');
+  if (bShift) bShift.classList.toggle('active', cat === 'shift');
+  if (bAct) bAct.classList.toggle('active', cat === 'activity');
+}
+
 function openCreateShiftModal(taskId = null) {
   if (!currentUser || !currentUser.isAdmin) {
     showToast('Chỉ Admin mới có quyền tạo hoặc chỉnh sửa ca trực.');
@@ -188,6 +197,7 @@ function openCreateShiftModal(taskId = null) {
   safeSetText('create-shift-title', existing ? 'Chỉnh sửa ca trực' : 'Tạo ca trực mới');
   safeSetText('btnSubmitTask', existing ? '✓ Lưu cập nhật' : '✓ Tạo ca trực');
   safeSetValue('iptTaskTitle', existing ? existing.title : '');
+  setTaskCategoryUI(existing && existing.category === 'activity' ? 'activity' : 'shift');
 
   const loc = existing ? existing.location : 'SVĐ Trung Tâm';
   safeSetValue('iptTaskLocation', loc);
@@ -232,6 +242,7 @@ function closeCreateShiftModal() {
 async function submitCreateShiftAction() {
   if (!currentUser || !currentUser.isAdmin) return;
   const title = (document.getElementById('iptTaskTitle')?.value || '').trim();
+  const category = (document.getElementById('iptTaskCategory')?.value === 'activity') ? 'activity' : 'shift';
   const location = (document.getElementById('iptTaskLocation')?.value || '').trim() || 'SVĐ Trung Tâm';
   const dateStr = (document.getElementById('iptTaskDate')?.value || '').trim();
   const timeRange = (document.getElementById('iptTaskTime')?.value || '').trim().replace(/\s*\([^)]*\)\s*$/, '') || '13:30 - 17:30';
@@ -258,6 +269,7 @@ async function submitCreateShiftAction() {
     const existingTask = (currentTasks || []).find(t => t.id === editingTaskId);
     if (existingTask) {
       existingTask.title = title;
+      existingTask.category = category;
       existingTask.location = location;
       existingTask.timeRange = timeRange;
       existingTask.time = timeFull;
@@ -271,9 +283,10 @@ async function submitCreateShiftAction() {
   }
 
   if (!savedTask) {
-    savedTask = {
+    savedTask = normalizeTask({
       id: 'TASK_' + Date.now(),
       title,
+      category,
       location,
       timeRange,
       time: timeFull,
@@ -289,9 +302,10 @@ async function submitCreateShiftAction() {
       notes,
       status: 'active',
       localCreatedAt: Date.now()
-    };
+    });
     currentTasks.unshift(savedTask);
   }
+  currentScanTargetTaskId = savedTask.id;
 
   saveLocalState();
   syncTaskToBackend(savedTask);
@@ -453,11 +467,9 @@ function renderDispatchHub() {
   const uid = currentUser ? currentUser.id : '';
   const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const shiftCards = list.map((t) => {
-    const occupied = Array.from(new Set([...(t.joinedMembers || []), ...(t.assignedMembers || [])]));
-    const quota = Number(t.quota) || 4;
+    const { occupied, quota, isMine, isChecked } = getTaskOccupancy(t, uid);
     const progress = Math.min(1, occupied.length / quota);
-    const isMine = uid && occupied.includes(uid);
-    const isChecked = uid && (t.checkedInMembers || []).includes(uid);
+    const catLabel = t.category === 'activity' ? 'Ca sinh hoạt' : 'Ca trực';
 
     const actions = [];
     if (isChecked) actions.push(el('button', { type: 'button', className: 'btn-mini btn-mini-emerald', disabled: true }, 'Đã điểm danh'));
@@ -473,7 +485,10 @@ function renderDispatchHub() {
     }
 
     return el('article', { className: 'dispatch-card' },
-      el('div', { className: 'font-mono', style: { fontSize: '10.5px', color: '#0369a1', fontWeight: '600' } }, `${t.id} · ${occupied.length}/${quota} nhân sự`),
+      el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
+        el('span', { className: 'font-mono', style: { fontSize: '10.5px', color: '#0369a1', fontWeight: '600' } }, `${t.id} · ${occupied.length}/${quota} nhân sự`),
+        el('span', { className: t.category === 'activity' ? 'ready-badge-pill' : 'role-pill-badge' }, catLabel)
+      ),
       el('div', { style: { fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)' } }, t.title),
       el('div', { className: 'shift-progress-track' }, el('div', { className: 'shift-progress-fill', style: { '--progress': String(progress) } })),
       el('div', { style: { fontSize: '12px', color: 'var(--text-secondary)' } }, `${t.location} · ${t.time}`),
@@ -490,10 +505,18 @@ function applySwapApproval(swap) {
   if (task) {
     task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
     task.assignedMembers = (task.assignedMembers || []).filter(id => id !== swap.fromId);
+    task.waitlist = Array.isArray(task.waitlist) ? task.waitlist : [];
     if (swap.toId && !swap.toId.startsWith('CA_')) {
       const targetExists = (membersDirectory || []).some(m => m && m.id === swap.toId);
       if (targetExists && !task.joinedMembers.includes(swap.toId) && !task.assignedMembers.includes(swap.toId)) {
         task.joinedMembers.push(swap.toId);
+        task.waitlist = task.waitlist.filter(id => id !== swap.toId);
+      }
+    } else {
+      const { occupied, quota } = getTaskOccupancy(task);
+      if (task.waitlist.length > 0 && occupied.length < quota) {
+        const promoted = task.waitlist.shift();
+        if (promoted && !task.joinedMembers.includes(promoted)) task.joinedMembers.push(promoted);
       }
     }
     syncTaskToBackend(task);
@@ -511,25 +534,11 @@ function applyLeaveApproval(leave) {
 
     if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(leave.memberId)) {
       task.checkedInMembers = task.checkedInMembers.filter(id => id !== leave.memberId);
-      for (const m of (membersDirectory || [])) {
-        if (m.id === leave.memberId) {
-          const next = Math.max(0, (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) - 1);
-          m.soCaHoanThanh = next;
-          m.soCa = next;
-          saveMemberOverride(leave.memberId, { soCaHoanThanh: next, soCa: next });
-        }
-      }
-      if (currentUser && currentUser.id === leave.memberId) {
-        const nextCur = Math.max(0, (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0)) - 1);
-        currentUser.soCaHoanThanh = nextCur;
-        currentUser.soCa = nextCur;
-        saveMemberOverride(leave.memberId, { soCaHoanThanh: nextCur, soCa: nextCur });
-        persistUserSession(currentUser);
-      }
+      adjustMemberCounter(leave.memberId, task.category === 'activity' ? 'activity' : 'shift', -1);
     }
 
-    const quota = Number(task.quota) || 4;
-    if (task.waitlist.length > 0 && (task.joinedMembers.length + task.assignedMembers.length) < quota) {
+    const { occupied, quota } = getTaskOccupancy(task);
+    if (task.waitlist.length > 0 && occupied.length < quota) {
       const promoted = task.waitlist.shift();
       if (promoted && !task.joinedMembers.includes(promoted)) {
         task.joinedMembers.push(promoted);
@@ -681,11 +690,14 @@ function deleteShiftDirect(taskId) {
 function populateScanTaskSelector() {
   const sel = document.getElementById('selScanTaskId');
   if (!sel) return;
-  const prev = sel.value;
-  const opts = (currentTasks || []).map(t => el('option', { value: t.id }, `${t.id} — ${t.title}`));
+  const preferred = currentScanTargetTaskId || sel.value;
+  const activeTasks = deduplicateTasks(currentTasks || []);
+  const opts = activeTasks.map(t => el('option', { value: t.id }, `${t.id} — ${t.title}`));
   mount(sel, opts);
-  if (prev && (currentTasks || []).some(t => t.id === prev)) {
-    sel.value = prev;
+  if (preferred && activeTasks.some(t => t.id === preferred)) {
+    sel.value = preferred;
+  } else if (sel.options.length > 0) {
+    currentScanTargetTaskId = sel.options[0].value;
   }
 }
 
@@ -733,15 +745,12 @@ function cancelMemberRequest(kind, reqId) {
 
 function renderMissionSheetPanels(preselectTaskId = null) {
   const uid = currentUser ? currentUser.id : '';
+  const activeTasks = deduplicateTasks(currentTasks || []);
   const listBox = document.getElementById('mission-panel-shifts');
   if (listBox) {
-    const cards = (currentTasks || []).map((t) => {
-      const occupied = Array.from(new Set([...(t.joinedMembers || []), ...(t.assignedMembers || [])]));
-      const quota = Number(t.quota) || 4;
-      const isFull = occupied.length >= quota;
-      const isMine = Boolean(uid && occupied.includes(uid));
-      const isChecked = Boolean(uid && (t.checkedInMembers || []).includes(uid));
-      const isWaitlisted = Boolean(uid && (t.waitlist || []).includes(uid));
+    const cards = activeTasks.map((t) => {
+      const { occupied, quota, isFull, isMine, isChecked, isWaitlisted } = getTaskOccupancy(t, uid);
+      const catLabel = t.category === 'activity' ? 'Ca sinh hoạt' : 'Ca trực';
 
       let footerNode = null;
       if (isChecked) {
@@ -778,7 +787,10 @@ function renderMissionSheetPanels(preselectTaskId = null) {
       }
 
       return el('div', { className: 'dispatch-card' },
-        el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, t.title),
+        el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
+          el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, t.title),
+          el('span', { className: t.category === 'activity' ? 'ready-badge-pill' : 'role-pill-badge' }, catLabel)
+        ),
         el('div', { style: { fontSize: '12px', color: 'var(--text-secondary)' } }, `${t.location} · ${t.time} (${occupied.length}/${quota})`),
         footerNode
       );
@@ -786,10 +798,7 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     mount(listBox, cards.length ? cards : el('div', { className: 'empty-card' }, 'Chưa có ca trực khả dụng.'));
   }
 
-  const myTasks = (currentTasks || []).filter(t => {
-    const occupied = [...(t.joinedMembers || []), ...(t.assignedMembers || [])];
-    return uid && occupied.includes(uid);
-  });
+  const myTasks = activeTasks.filter(t => getTaskOccupancy(t, uid).isMine);
 
   const selTask = document.getElementById('selMissionTaskId');
   const btnSwap = document.getElementById('btnSubmitMemberSwap');
@@ -947,33 +956,25 @@ function toggleMemberRole(memberId, roleType) {
   showToast(`Đã cập nhật quyền cho ${target.hoTen}.`);
 }
 
-function adjustMemberShiftCount(memberId, delta) {
+function adjustMemberShiftCount(memberId, delta, metric = 'shift') {
   if (!currentUser || !currentUser.isAdmin) {
     showToast('Chỉ Quản trị viên mới được điều chỉnh số ca.');
     return;
   }
-  let nextVal = 0;
-  for (const m of (membersDirectory || [])) {
-    if (m.id === memberId) {
-      nextVal = Math.max(0, (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) + delta);
-      m.soCaHoanThanh = nextVal;
-      m.soCa = nextVal;
-      saveMemberOverride(memberId, { soCaHoanThanh: nextVal, soCa: nextVal });
-    }
-  }
+  const kind = metric === 'activity' ? 'activity' : 'shift';
+  adjustMemberCounter(memberId, kind, delta);
   if (currentUser && currentUser.id === memberId) {
-    currentUser.soCaHoanThanh = nextVal;
-    currentUser.soCa = nextVal;
-    persistUserSession(currentUser);
     renderProfileData();
   }
   dispatchBackendMutation('SHIFT_ADJUST', {
     memberId,
     delta,
-    reason: 'Điều chỉnh trực tiếp',
+    metric: kind,
+    reason: kind === 'activity' ? 'Điều chỉnh số ca sinh hoạt' : 'Điều chỉnh số ca trực',
     adminActorId: currentUser.id
   });
   saveLocalState();
   renderMembersModalList();
-  showToast(`Đã điều chỉnh ${delta > 0 ? '+1' : '-1'} ca cho ${memberId}.`);
+  const label = kind === 'activity' ? 'ca sinh hoạt' : 'ca trực';
+  showToast(`Đã điều chỉnh ${delta > 0 ? '+1' : '-1'} ${label} cho ${memberId}.`);
 }

@@ -12,10 +12,12 @@ function parseShiftTimeRange(timeStr) {
 
 function checkShiftTimeConflict(taskA, taskB) {
   if (!taskA || !taskB || taskA.id === taskB.id) return false;
-  const rA = parseShiftTimeRange(taskA.time);
-  const rB = parseShiftTimeRange(taskB.time);
+  const rA = parseShiftTimeRange(taskA.time || taskA.timeRange);
+  const rB = parseShiftTimeRange(taskB.time || taskB.timeRange);
   if (!rA || !rB) return false;
-  if (rA.day && rB.day && rA.day !== rB.day) return false;
+  const dayA = String(taskA.date || rA.day || '').trim().toLowerCase();
+  const dayB = String(taskB.date || rB.day || '').trim().toLowerCase();
+  if (dayA && dayB && dayA !== dayB) return false;
   return rA.start < rB.end && rB.start < rA.end;
 }
 
@@ -42,28 +44,26 @@ function calculateSmartRotation(task) {
     ? Object.entries(task.departmentQuotas).filter(([, q]) => Number(q) > 0)
     : [];
 
+  const isActivity = task.category === 'activity';
+
   const pickForBucket = (deptFilter, neededCount) => {
     const candidates = (membersDirectory || []).filter(m => {
       if (!m || !m.id || usedIds.has(m.id)) return false;
-      if (deptFilter && m.boMon !== deptFilter) return false;
-      const theme = getTheTrangTheme(m.theTrang);
+      if (deptFilter && m.boMon !== deptFilter && !(Array.isArray(m.cacBan) && m.cacBan.includes(deptFilter))) return false;
+      const healthSource = (m.yTe && m.yTe !== 'Bình thường') ? m.yTe : m.theTrang;
+      const theme = getTheTrangTheme(healthSource);
       if (theme.exempt) return false;
       if (hasShiftTimeConflict(m.id, task)) return false;
       return true;
     });
 
-    const uniqueById = [];
-    const bucketSeen = new Set();
-    for (const c of candidates) {
-      if (!bucketSeen.has(c.id)) {
-        bucketSeen.add(c.id);
-        uniqueById.push(c);
-      }
-    }
+    candidates.sort((a, b) => {
+      const aVal = isActivity ? (Number(a.soCaSinhHoat) || 0) : (Number(a.soCaHoanThanh ?? a.soCa ?? 0) || 0);
+      const bVal = isActivity ? (Number(b.soCaSinhHoat) || 0) : (Number(b.soCaHoanThanh ?? b.soCa ?? 0) || 0);
+      return aVal - bVal;
+    });
 
-    uniqueById.sort((a, b) => Number(a.soCaHoanThanh ?? a.soCa ?? 0) - Number(b.soCaHoanThanh ?? b.soCa ?? 0));
-
-    for (const m of uniqueById) {
+    for (const m of candidates) {
       if (picked.length + existing.size >= totalQuota) break;
       if (neededCount <= 0) break;
       usedIds.add(m.id);

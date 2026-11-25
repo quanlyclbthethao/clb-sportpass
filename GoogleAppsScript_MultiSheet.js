@@ -1529,12 +1529,17 @@ function handleRequest(e) {
     }
     // 10. CẬP NHẬT HỒ SƠ THÀNH VIÊN VÀ ĐỒNG BỘ GOOGLE SHEET (updateProfile)
     else if (action === 'updateProfile') {
-      var memberId = params.memberId;
-      var lop = params.lop;
-      var sdt = params.sdt;
-      var ice = params.ice;
-      var yTe = params.yTe;
-      responseData = handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe);
+      responseData = handleUpdateProfile(
+        ss,
+        params.memberId,
+        params.lop,
+        params.sdt,
+        params.ice,
+        params.yTe,
+        params.hoTen,
+        params.studentCode,
+        params.chucVu
+      );
     }
     // 11. CẬP NHẬT PHÂN QUYỀN ADMIN / TRƯỞNG CA (updateMemberRole)
     else if (action === 'updateMemberRole') {
@@ -1544,13 +1549,14 @@ function handleRequest(e) {
       var adminActorId = params.adminActorId || '';
       responseData = handleUpdateMemberRole(ss, memberId, isAdmin, isShiftLeader, adminActorId);
     }
-    // 12. ĐIỀU CHỈNH SỐ CA TRỰC THỦ CÔNG CHO ADMIN (adjustMemberShifts)
+    // 12. ĐIỀU CHỈNH SỐ CA TRỰC / SINH HOẠT THỦ CÔNG CHO ADMIN (adjustMemberShifts)
     else if (action === 'adjustMemberShifts') {
       var memberId = params.memberId;
       var delta = Number(params.delta) || 0;
       var reason = params.reason || '';
       var adminActorId = params.adminActorId || '';
-      responseData = handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId);
+      var metric = params.metric || 'shift';
+      responseData = handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId, metric);
     }
 
   } catch(error) {
@@ -1577,18 +1583,22 @@ function getAllMembersFromDepartments(ss) {
 
   // Đọc danh sách ca trực để tính số ca hoàn thành thực tế từ Tasks sheet
   var taskSheet = ss.getSheetByName('Tasks');
-  var taskCheckins = {};
+  var taskShiftCheckins = {};
+  var taskActivityCheckins = {};
   if (taskSheet) {
     try {
       var tRows = taskSheet.getDataRange().getValues();
       if (tRows.length > 1) {
         var checkColIdx = tRows[0].indexOf('checkedInMembers');
+        var catColIdx = tRows[0].indexOf('category');
         if (checkColIdx !== -1) {
           for (var tr = 1; tr < tRows.length; tr++) {
+            var isAct = catColIdx !== -1 && String(tRows[tr][catColIdx] || '').trim() === 'activity';
             var cList = parseJsonSafe(tRows[tr][checkColIdx], []);
             for (var ci = 0; ci < cList.length; ci++) {
               var cId = String(cList[ci]).trim();
-              taskCheckins[cId] = (taskCheckins[cId] || 0) + 1;
+              if (isAct) taskActivityCheckins[cId] = (taskActivityCheckins[cId] || 0) + 1;
+              else taskShiftCheckins[cId] = (taskShiftCheckins[cId] || 0) + 1;
             }
           }
         }
@@ -1618,6 +1628,8 @@ function getAllMembersFromDepartments(ss) {
       var sdt = cleanPhone(r[6]);
       var ice = cleanPhone(r[7]) || sdt;
       var soCa = (r.length > 8 && !isNaN(Number(r[8]))) ? Number(r[8]) : 0;
+      var soCaSinhHoat = (r.length > 9 && !isNaN(Number(r[9]))) ? Number(r[9]) : 0;
+      var studentCode = (r.length > 10 && String(r[10] || '').trim()) ? String(r[10]).trim() : '';
 
       var effectiveId = id || generateMemberIdFromInfo(hoTen, '');
       var cvLower = chucVu.toLowerCase();
@@ -1631,7 +1643,8 @@ function getAllMembersFromDepartments(ss) {
                           cvLower.indexOf('phó ban') !== -1;
 
       if (!membersMap[effectiveId]) {
-        var initialDone = soCa + (taskCheckins[effectiveId] || 0);
+        var initialDone = Math.max(soCa, taskShiftCheckins[effectiveId] || 0);
+        var initialAct = Math.max(soCaSinhHoat, taskActivityCheckins[effectiveId] || 0);
         membersMap[effectiveId] = {
           id: effectiveId,
           hoTen: hoTen,
@@ -1641,10 +1654,12 @@ function getAllMembersFromDepartments(ss) {
           yTe: yTe || 'Bình thường',
           sdt: sdt,
           ice: ice,
-          mssv: effectiveId,
+          mssv: studentCode || effectiveId,
+          studentCode: studentCode || effectiveId,
           donVi: 'Trường Đại học Hải Dương',
           soCa: initialDone,
           soCaHoanThanh: initialDone,
+          soCaSinhHoat: initialAct,
           status: 'Sẵn sàng',
           theTrang: 'Khỏe mạnh (100% Sẵn sàng)',
           avatar: '',
@@ -1677,9 +1692,16 @@ function getAllMembersFromDepartments(ss) {
         if (!existing.sdt && sdt) existing.sdt = sdt;
         if ((!existing.ice || existing.ice === existing.sdt) && ice) existing.ice = ice;
         if ((!existing.yTe || existing.yTe === 'Bình thường') && yTe && yTe !== 'Bình thường') existing.yTe = yTe;
-        if (soCa > 0) {
-          existing.soCa = (existing.soCa || 0) + soCa;
-          existing.soCaHoanThanh = existing.soCa;
+        if (studentCode && existing.studentCode === existing.id) {
+          existing.studentCode = studentCode;
+          existing.mssv = studentCode;
+        }
+        if (soCa > existing.soCaHoanThanh) {
+          existing.soCa = soCa;
+          existing.soCaHoanThanh = soCa;
+        }
+        if (soCaSinhHoat > existing.soCaSinhHoat) {
+          existing.soCaSinhHoat = soCaSinhHoat;
         }
       }
     }
@@ -1798,6 +1820,7 @@ function getTasksList(ss) {
     t.checkedInMembers = parseJsonSafe(t.checkedInMembers, []);
     t.checkinLogs = parseJsonSafe(t.checkinLogs, []);
     t.departmentQuotas = parseJsonSafe(t.departmentQuotas, {});
+    t.category = (String(t.category || '').trim() === 'activity') ? 'activity' : 'shift';
     tasks.push(t);
   }
   return tasks;
@@ -1927,7 +1950,9 @@ function handleWithdrawTask(ss, taskId, memberId, reason) {
         if (checkCol !== -1) {
           sheet.getRange(i + 1, checkCol + 1).setValue(JSON.stringify(checked));
         }
-        decrementMemberCompletedShifts(ss, memberId);
+        var catCol = headers.indexOf('category');
+        var withdrawMetric = (catCol !== -1 && String(rows[i][catCol] || '').trim() === 'activity') ? 'activity' : 'shift';
+        decrementMemberCompletedShifts(ss, memberId, withdrawMetric);
       }
 
       // Nếu có người trong hàng chờ, đôn lên vị trí chính thức
@@ -1991,7 +2016,9 @@ function handleCheckinMember(ss, taskId, memberId, adminId) {
         sheet.getRange(i + 1, logsCol + 1).setValue(JSON.stringify(logs));
         
         // Tăng số ca đã làm cho thành viên trong Sheet của Ban tương ứng
-        incrementMemberCompletedShifts(ss, memberId);
+        var catCol = headers.indexOf('category');
+        var checkinMetric = (catCol !== -1 && String(rows[i][catCol] || '').trim() === 'activity') ? 'activity' : 'shift';
+        incrementMemberCompletedShifts(ss, memberId, checkinMetric);
 
         return { success: true, message: 'Điểm danh thành công cho: ' + memberId };
       } else {
@@ -2005,17 +2032,20 @@ function handleCheckinMember(ss, taskId, memberId, adminId) {
 /**
  * Tăng số ca trực hoàn thành trong sheet tương ứng (Cột 1 là Mã ID, Cột 9 là Số Ca)
  */
-function incrementMemberCompletedShifts(ss, memberId) {
+function incrementMemberCompletedShifts(ss, memberId, metric) {
+  var isActivity = (metric === 'activity');
+  var colIdx = isActivity ? 10 : 9;
+  var headerLabel = isActivity ? 'Số ca sinh hoạt' : 'Số ca hoàn thành';
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
     var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
     if (!sheet) continue;
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
       if (String(rows[i][0]).trim() === memberId) {
-        var cur = (rows[i].length >= 9 && !isNaN(Number(rows[i][8]))) ? Number(rows[i][8]) : 0;
-        sheet.getRange(i + 1, 9).setValue(cur + 1);
-        if (rows[0].length < 9) {
-          sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+        var cur = (rows[i].length >= colIdx && !isNaN(Number(rows[i][colIdx - 1]))) ? Number(rows[i][colIdx - 1]) : 0;
+        sheet.getRange(i + 1, colIdx).setValue(cur + 1);
+        if (rows[0].length < colIdx) {
+          sheet.getRange(1, colIdx).setValue(headerLabel).setFontWeight('bold');
         }
         return cur + 1;
       }
@@ -2027,18 +2057,21 @@ function incrementMemberCompletedShifts(ss, memberId) {
 /**
  * Trừ số ca trực hoàn thành khi rút ca sau điểm danh hoặc khi Admin điều chỉnh
  */
-function decrementMemberCompletedShifts(ss, memberId) {
+function decrementMemberCompletedShifts(ss, memberId, metric) {
+  var isActivity = (metric === 'activity');
+  var colIdx = isActivity ? 10 : 9;
+  var headerLabel = isActivity ? 'Số ca sinh hoạt' : 'Số ca hoàn thành';
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
     var sheet = ss.getSheetByName(DEPARTMENT_SHEETS[d]);
     if (!sheet) continue;
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
       if (String(rows[i][0]).trim() === memberId) {
-        var cur = (rows[i].length >= 9 && !isNaN(Number(rows[i][8]))) ? Number(rows[i][8]) : 0;
+        var cur = (rows[i].length >= colIdx && !isNaN(Number(rows[i][colIdx - 1]))) ? Number(rows[i][colIdx - 1]) : 0;
         var nextVal = Math.max(0, cur - 1);
-        sheet.getRange(i + 1, 9).setValue(nextVal);
-        if (rows[0].length < 9) {
-          sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+        sheet.getRange(i + 1, colIdx).setValue(nextVal);
+        if (rows[0].length < colIdx) {
+          sheet.getRange(1, colIdx).setValue(headerLabel).setFontWeight('bold');
         }
         return nextVal;
       }
@@ -2050,8 +2083,11 @@ function decrementMemberCompletedShifts(ss, memberId) {
 /**
  * Admin điều chỉnh số ca trực thủ công (+1 / -1 / tuỳ biến) cho thành viên
  */
-function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId) {
+function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId, metric) {
   if (!memberId) return { success: false, message: 'Thiếu mã thành viên' };
+  var isActivity = (metric === 'activity');
+  var colIdx = isActivity ? 10 : 9;
+  var headerLabel = isActivity ? 'Số ca sinh hoạt' : 'Số ca hoàn thành';
   var found = false;
   var newCount = 0;
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
@@ -2060,11 +2096,11 @@ function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId) {
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
       if (String(rows[i][0]).trim() === memberId) {
-        var cur = (rows[i].length >= 9 && !isNaN(Number(rows[i][8]))) ? Number(rows[i][8]) : 0;
+        var cur = (rows[i].length >= colIdx && !isNaN(Number(rows[i][colIdx - 1]))) ? Number(rows[i][colIdx - 1]) : 0;
         newCount = Math.max(0, cur + delta);
-        sheet.getRange(i + 1, 9).setValue(newCount);
-        if (rows[0].length < 9) {
-          sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+        sheet.getRange(i + 1, colIdx).setValue(newCount);
+        if (rows[0].length < colIdx) {
+          sheet.getRange(1, colIdx).setValue(headerLabel).setFontWeight('bold');
         }
         found = true;
         break;
@@ -2079,7 +2115,7 @@ function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId) {
     swapsSheet.appendRow([
       'ADJUST_' + Date.now(),
       'SHIFT_ADJUST',
-      'Admin điều chỉnh: ' + (delta >= 0 ? '+' + delta : delta) + ' ca',
+      'Admin điều chỉnh: ' + (delta >= 0 ? '+' + delta : delta) + (isActivity ? ' sinh hoạt' : ' ca'),
       memberId,
       adminActorId || 'Admin',
       String(newCount),
@@ -2089,7 +2125,7 @@ function handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId) {
   }
 
   if (found) {
-    return { success: true, message: 'Đã điều chỉnh thành công! Số ca mới: ' + newCount, memberId: memberId, newShifts: newCount };
+    return { success: true, message: 'Đã điều chỉnh thành công! Số ca mới: ' + newCount, memberId: memberId, newShifts: newCount, metric: metric || 'shift' };
   } else {
     return { success: false, message: 'Không tìm thấy thành viên: ' + memberId };
   }
@@ -2104,7 +2140,7 @@ function handleCreateTask(ss, taskObj) {
     sheet = ss.insertSheet('Tasks');
   }
 
-  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas', 'notes'];
+  var taskHeaders = ['id', 'title', 'location', 'time', 'quota', 'joinedMembers', 'assignedMembers', 'waitlist', 'leaderId', 'checkedInMembers', 'checkinLogs', 'lockDeadline', 'status', 'departmentQuotas', 'notes', 'category'];
   var rows = sheet.getDataRange().getValues();
   if (rows.length === 0 || rows[0].length === 0 || !rows[0][0]) {
     sheet.appendRow(taskHeaders);
@@ -2158,7 +2194,8 @@ function handleCreateTask(ss, taskObj) {
     taskObj.lockDeadline || '',
     taskObj.status || 'active',
     typeof taskObj.departmentQuotas === 'string' ? taskObj.departmentQuotas : JSON.stringify(taskObj.departmentQuotas || {}),
-    taskObj.notes || ''
+    taskObj.notes || '',
+    taskObj.category === 'activity' ? 'activity' : 'shift'
   ];
 
   if (rowIndex !== -1) {
@@ -2256,7 +2293,7 @@ function handleDeletePost(ss, postId) {
 /**
  * Cập nhật thông tin cá nhân của thành viên trực tiếp vào Sheet Ban tương ứng
  */
-function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe) {
+function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCode, chucVu) {
   if (!memberId) return { success: false, message: 'Thiếu Mã ID thành viên' };
   var updated = false;
 
@@ -2267,17 +2304,29 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe) {
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
       if (String(rows[i][0]).trim() === String(memberId).trim()) {
+        if (hoTen !== undefined && hoTen !== null && String(hoTen).trim() !== '') {
+          sheet.getRange(i + 1, 2).setValue(String(hoTen).trim());
+        }
         if (lop !== undefined && lop !== null && String(lop).trim() !== '') {
           sheet.getRange(i + 1, 3).setValue(String(lop).trim());
+        }
+        if (chucVu !== undefined && chucVu !== null && String(chucVu).trim() !== '') {
+          sheet.getRange(i + 1, 5).setValue(String(chucVu).trim());
         }
         if (yTe !== undefined && yTe !== null && String(yTe).trim() !== '') {
           sheet.getRange(i + 1, 6).setValue(String(yTe).trim());
         }
         if (sdt !== undefined && sdt !== null && String(sdt).trim() !== '') {
-          sheet.getRange(i + 1, 7).setValue(String(sdt).trim());
+          sheet.getRange(i + 1, 7).setValue("'" + String(sdt).trim());
         }
         if (ice !== undefined && ice !== null && String(ice).trim() !== '') {
-          sheet.getRange(i + 1, 8).setValue(String(ice).trim());
+          sheet.getRange(i + 1, 8).setValue("'" + String(ice).trim());
+        }
+        if (studentCode !== undefined && studentCode !== null && String(studentCode).trim() !== '') {
+          if (rows[0].length < 11) {
+            sheet.getRange(1, 11).setValue('MSSV').setFontWeight('bold');
+          }
+          sheet.getRange(i + 1, 11).setValue("'" + String(studentCode).trim());
         }
         updated = true;
       }
@@ -2285,8 +2334,15 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe) {
   }
 
   if (updated) {
-    var all = getAllMembersFromDepartments(ss);
-    return { success: true, message: 'Đã cập nhật hồ sơ thành công vào Google Sheet', member: all.membersMap[memberId] };
+    var allMembers = getAllMembersFromDepartments(ss);
+    var updatedMember = null;
+    for (var mIdx = 0; mIdx < allMembers.length; mIdx++) {
+      if (allMembers[mIdx] && allMembers[mIdx].id === memberId) {
+        updatedMember = allMembers[mIdx];
+        break;
+      }
+    }
+    return { success: true, message: 'Đã cập nhật hồ sơ thành công vào Google Sheet', member: updatedMember };
   }
   return { success: false, message: 'Không tìm thấy thành viên: ' + memberId };
 }

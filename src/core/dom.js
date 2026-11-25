@@ -13,14 +13,6 @@ const SP_ICON_PATHS = {
     ['line', { x1: '12', y1: '9', x2: '12', y2: '13' }],
     ['line', { x1: '12', y1: '17', x2: '12.01', y2: '17' }]
   ],
-  lock: [
-    ['rect', { x: '3', y: '11', width: '18', height: '11', rx: '2', ry: '2' }],
-    ['path', { d: 'M7 11V7a5 5 0 0 1 10 0v4' }]
-  ],
-  shield: [
-    ['path', { d: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' }],
-    ['path', { d: 'm9 12 2 2 4-4' }]
-  ],
   refresh: [
     ['path', { d: 'M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8' }],
     ['path', { d: 'M3 3v5h5' }],
@@ -31,14 +23,6 @@ const SP_ICON_PATHS = {
     ['polyline', { points: '3 6 5 6 21 6' }],
     ['path', { d: 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' }]
   ],
-  bell: [
-    ['path', { d: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9' }],
-    ['path', { d: 'M10.3 21a1.94 1.94 0 0 0 3.4 0' }]
-  ],
-  edit: [
-    ['path', { d: 'M12 20h9' }],
-    ['path', { d: 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z' }]
-  ],
   'map-pin': [
     ['path', { d: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z' }],
     ['circle', { cx: '12', cy: '10', r: '3' }]
@@ -46,15 +30,6 @@ const SP_ICON_PATHS = {
   clock: [
     ['circle', { cx: '12', cy: '12', r: '10' }],
     ['polyline', { points: '12 6 12 12 16 14' }]
-  ],
-  rotate: [
-    ['path', { d: 'M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8' }],
-    ['path', { d: 'M21 3v5h-5' }]
-  ],
-  info: [
-    ['circle', { cx: '12', cy: '12', r: '10' }],
-    ['line', { x1: '12', y1: '16', x2: '12', y2: '12' }],
-    ['line', { x1: '12', y1: '8', x2: '12.01', y2: '8' }]
   ],
   eye: [
     ['path', { d: 'M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z' }],
@@ -157,9 +132,11 @@ function mount(container, ...nodes) {
   container.replaceChildren(...flat);
 }
 
-function createWaterRipple(e) {
-  const target = e.currentTarget;
-  if (!target) return;
+let waterRippleBound = false;
+
+function handleDelegatedWaterRipple(e) {
+  const target = e.target && e.target.closest ? e.target.closest('.water-ripple-target') : null;
+  if (!target || target.disabled) return;
   const rect = target.getBoundingClientRect();
   let clientX = e.clientX;
   let clientY = e.clientY;
@@ -202,10 +179,9 @@ function createWaterRipple(e) {
 }
 
 function bindWaterRipples() {
-  document.querySelectorAll('.water-ripple-target').forEach((node) => {
-    node.removeEventListener('pointerdown', createWaterRipple);
-    node.addEventListener('pointerdown', createWaterRipple);
-  });
+  if (waterRippleBound) return;
+  waterRippleBound = true;
+  document.addEventListener('pointerdown', handleDelegatedWaterRipple);
 }
 
 function initHeroCardParallax() {

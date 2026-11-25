@@ -33,7 +33,9 @@ class TestSportPassV86Architecture(unittest.TestCase):
             'DEFAULT_COMMUNITY_POSTS', 'renderForumFeed', 'tabContentForum',
             'role-preview-dock', 'role-switch-member', 'role-switch-admin', 'setRolePreviewMode',
             'switchFaceId', 'switchRemoteLock', 'switchTilt3d', 'switchUrgentNotifs', 'switchHaptics',
-            'lang-btn-vn', 'lang-btn-en', 'terms-privacy-row', 'qr-locked-notice'
+            'lang-btn-vn', 'lang-btn-en', 'terms-privacy-row', 'qr-locked-notice',
+            'stat-shifts-btn', 'stat-efficiency-btn', 'stat-rating-btn',
+            '>+ Tạo ca trực<'
         )
         for token in removed_tokens:
             self.assertNotIn(token, self.html, f'Removed/bloated token still present: {token}')
@@ -45,11 +47,12 @@ class TestSportPassV86Architecture(unittest.TestCase):
             'hero-card-wrap', 'hero-interactive-card', 'card-pattern',
             'hero-status-pill', 'hero-avatar-btn', 'card-heading', 'card-mssv', 'qr-modal-trigger',
             'selQrPassTask', 'qr-checkin-status-pill',
-            'stat-shifts', 'stat-efficiency', 'stat-rating',
+            'stat-shifts', 'stat-activities',
             'admin-create-shift-btn', 'admin-approve-btn', 'member-register-btn', 'member-swap-btn',
             'edit-profile-trigger', 'btnAvatarThumbTrigger', 'display-fullname', 'display-studentId',
             'display-faculty', 'display-dob', 'display-dutyArea', 'display-role', 'display-phone', 'display-ice',
             'theme-btn-light', 'theme-btn-dark', 'theme-btn-system', 'security-password-row', 'password-status-desc',
+            'task-cat-shift', 'task-cat-activity', 'iptTaskCategory',
             'selTaskLeader', 'scannerCheckedInList', 'memberMyRequestsList', 'password-form',
             'qr-modal', 'notification-modal', 'members-modal', 'settings-modal',
             'edit-profile-modal', 'create-shift-modal', 'approve-shift-modal', 'task-mission-modal',
@@ -57,6 +60,9 @@ class TestSportPassV86Architecture(unittest.TestCase):
         ]
         for eid in required_ids:
             self.assertIn(f'id="{eid}"', self.html, f'Missing element #{eid}')
+        student_input = re.search(r'<input[^>]*id="input-studentId"[^>]*>', self.html)
+        self.assertIsNotNone(student_input)
+        self.assertNotIn('readonly', student_input.group(0).lower())
 
     def test_single_h1_and_native_dialog_light_dismiss(self):
         markup = re.sub(r'<(script|style)\b[^>]*>[\s\S]*?</\1>', '', self.html, flags=re.I)

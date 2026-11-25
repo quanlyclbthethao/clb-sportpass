@@ -19,9 +19,9 @@ function buildMutationUrl(mut) {
   if (mut.type === 'CLAIM_TASK') return `${GAS_API_URL}?action=claimTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&waitlist=${Boolean(p.waitlist)}`;
   if (mut.type === 'WITHDRAW_TASK') return `${GAS_API_URL}?action=withdrawTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&reason=${encodeURIComponent(p.reason || '')}`;
   if (mut.type === 'QR_CHECKIN') return `${GAS_API_URL}?action=checkinMember&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&adminId=${encodeURIComponent(p.scannerId || p.adminId || '')}`;
-  if (mut.type === 'SHIFT_ADJUST') return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'SHIFT_ADJUST') return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&metric=${encodeURIComponent(p.metric || 'shift')}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_ROLE') return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
-  if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&lop=${encodeURIComponent(p.lop || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
+  if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&hoTen=${encodeURIComponent(p.hoTen || '')}&studentCode=${encodeURIComponent(p.studentCode || '')}&lop=${encodeURIComponent(p.lop || '')}&boMon=${encodeURIComponent(p.boMon || '')}&chucVu=${encodeURIComponent(p.chucVu || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
   return null;
 }
 
@@ -80,7 +80,7 @@ async function syncRealtimeData() {
     }
 
     if (Array.isArray(data.membersList) && data.membersList.length > 0) {
-      membersDirectory = data.membersList;
+      membersDirectory = normalizeMembersDirectory(data.membersList);
       applyMemberOverrides(membersDirectory);
     }
 
@@ -88,10 +88,12 @@ async function syncRealtimeData() {
       const preservedAvatar = currentUser.avatar || '';
       const preservedStudentCode = currentUser.studentCode || '';
       const preservedDob = currentUser.ngaySinh || '';
-      currentUser = Object.assign({}, currentUser, data.member);
+      const preservedActivities = Number(currentUser.soCaSinhHoat) || 0;
+      currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
       if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
-      if (!currentUser.studentCode && preservedStudentCode) currentUser.studentCode = preservedStudentCode;
-      if (!currentUser.ngaySinh && preservedDob) currentUser.ngaySinh = preservedDob;
+      if (preservedStudentCode && preservedStudentCode !== currentUser.id) currentUser.studentCode = preservedStudentCode;
+      if (preservedDob) currentUser.ngaySinh = preservedDob;
+      currentUser.soCaSinhHoat = Math.max(currentUser.soCaSinhHoat || 0, preservedActivities);
       applyMemberOverrides(membersDirectory);
       window.currentUser = currentUser;
     }
@@ -113,8 +115,8 @@ async function syncRealtimeData() {
     }
 
     currentTasks = deduplicateTasks(mergedTasks);
-    if (Array.isArray(data.swaps) && data.swaps.length > 0) currentSwaps = data.swaps;
-    if (Array.isArray(data.leaves) && data.leaves.length > 0) currentLeaves = data.leaves;
+    if (Array.isArray(data.swaps) && data.swaps.length > 0) currentSwaps = data.swaps.map(normalizeSwap).filter(Boolean);
+    if (Array.isArray(data.leaves) && data.leaves.length > 0) currentLeaves = data.leaves.map(normalizeLeave).filter(Boolean);
 
     saveLocalState();
     renderProfileData();

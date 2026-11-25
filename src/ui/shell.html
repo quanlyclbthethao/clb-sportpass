@@ -147,7 +147,7 @@
     </section>
 
     <!-- ==================== VIEW 2: CANONICAL MAIN VARSITY PASS UI ==================== -->
-    <div id="viewMainAppContainer" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
+    <div id="viewMainAppContainer" class="main-app-wrap hidden">
 
       <!-- TOP BAR -->
       <header class="varsity-topbar pt-safe">
@@ -258,20 +258,16 @@
         </div>
 
         <!-- BLOCK 2: PERFORMANCE STATS SECTION -->
-        <section aria-label="Chỉ số hiệu suất" class="anim-stagger-1 stats-glass-card">
-          <div class="stats-grid-3">
-            <button id="stat-shifts-btn" type="button" class="stat-cell water-ripple-target spring-press">
+        <section aria-label="Thống kê tham gia" class="anim-stagger-1 stats-glass-card">
+          <div class="stats-grid-2">
+            <div class="stat-cell">
               <span id="stat-shifts" class="stat-anim-1 stat-val stat-val-sky">0</span>
-              <span class="stat-lbl">Ca hoàn thành</span>
-            </button>
-            <button id="stat-efficiency-btn" type="button" class="stat-cell water-ripple-target spring-press">
-              <span id="stat-efficiency" class="stat-anim-2 stat-val stat-val-teal">98%</span>
-              <span class="stat-lbl">Đúng giờ</span>
-            </button>
-            <button id="stat-rating-btn" type="button" class="stat-cell water-ripple-target spring-press">
-              <span id="stat-rating" class="stat-anim-3 stat-val stat-val-indigo">A+</span>
-              <span class="stat-lbl">Tín nhiệm</span>
-            </button>
+              <span class="stat-lbl">Số ca hoàn thành</span>
+            </div>
+            <div class="stat-cell">
+              <span id="stat-activities" class="stat-anim-2 stat-val stat-val-teal">0</span>
+              <span class="stat-lbl">Số ca sinh hoạt</span>
+            </div>
           </div>
         </section>
 
@@ -283,7 +279,7 @@
                 <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
               </svg>
             </div>
-            <span style="position:relative;z-index:10;">+ Tạo ca trực</span>
+            <span style="position:relative;z-index:10;">Tạo ca trực</span>
           </button>
 
           <button id="admin-approve-btn" type="button" class="btn-aqua-glass water-ripple-target spring-press">
@@ -527,10 +523,10 @@
           <img id="settings-avatar" width="48" height="48" alt="Avatar" class="settings-user-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
           <div style="flex:1;min-width:0;">
             <div id="settings-role-kicker" class="font-mono" style="font-size:9.5px;color:#bae6fd;letter-spacing:0.06em;">ĐIỀU PHỐI VIÊN</div>
-            <div id="settings-name" style="font-size:14.5px;font-weight:700;color:#ffffff;" class="truncate">Đỗ Mạnh Cường</div>
+            <div id="settings-name" style="font-size:14.5px;font-weight:700;color:#ffffff;line-height:1.42;padding-top:2px;" class="truncate">Đỗ Mạnh Cường</div>
             <div id="settings-submeta" class="font-mono truncate" style="font-size:11px;color:rgba(224,242,254,0.88);">MSSV: DMC0806 • K13.GDTC</div>
           </div>
-          <span id="settings-grade-badge" class="settings-grade-badge">A+</span>
+          <span id="settings-grade-badge" class="settings-grade-badge">0 ca</span>
         </div>
 
         <span class="settings-group-kicker">TÙY CHỈNH &amp; BẢO MẬT</span>
@@ -618,14 +614,10 @@
         </div>
 
         <div class="field-group">
-          <div class="field-head-split">
-            <label class="field-label-mono" for="input-studentId">2. Mã số sinh viên</label>
-            <span class="field-readonly-tag">🔒 Chỉ đọc</span>
-          </div>
+          <label class="field-label-mono" for="input-studentId">2. Mã số sinh viên</label>
           <div class="input-icon-wrap">
-            <span class="input-lead-icon" style="color:#64748b;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/></svg></span>
-            <input id="input-studentId" type="text" class="aqua-input with-lead with-trail font-mono" readonly>
-            <span class="input-trail-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span class="input-lead-icon" style="color:#2563eb;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/></svg></span>
+            <input id="input-studentId" type="text" class="aqua-input with-lead font-mono" placeholder="Nhập mã số sinh viên..." autocomplete="off" autocapitalize="characters" spellcheck="false">
           </div>
         </div>
 
@@ -714,6 +706,15 @@
             <span class="input-lead-icon" style="color:#0284c7;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/><path d="M19.07 4.93L4.93 19.07"/></svg></span>
             <input id="iptTaskTitle" type="text" class="aqua-input with-lead" placeholder="Giải Bóng Đá Sinh Viên ĐH Hải Dương">
           </div>
+        </div>
+
+        <div class="field-group">
+          <span class="field-label-mono">Phân loại hoạt động</span>
+          <div class="sheet-seg-tabs" role="group" aria-label="Phân loại ca">
+            <button id="task-cat-shift" type="button" class="sheet-seg-btn active" data-category="shift">Ca trực sự kiện</button>
+            <button id="task-cat-activity" type="button" class="sheet-seg-btn" data-category="activity">Ca sinh hoạt CLB</button>
+          </div>
+          <input id="iptTaskCategory" type="hidden" value="shift">
         </div>
 
         <div class="field-group">

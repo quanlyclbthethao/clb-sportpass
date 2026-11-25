@@ -412,6 +412,12 @@ html[data-theme="dark"] .notif-dot {
   gap: 16px;
 }
 
+.main-app-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /* ==================== HERO CREDENTIAL PASS CARD ==================== */
 .hero-card-container {
   perspective: 1200px;
@@ -427,7 +433,6 @@ html[data-theme="dark"] .notif-dot {
   border: 1px solid rgba(125, 211, 252, 0.42);
   box-shadow: 0 20px 45px -10px rgba(2, 132, 199, 0.35), 0 6px 20px rgba(15, 23, 42, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.4);
   overflow: hidden;
-  cursor: pointer;
   transform-style: preserve-3d;
   will-change: transform, box-shadow;
   transition: transform 180ms cubic-bezier(0.2, 0, 0.2, 1), box-shadow 300ms ease;
@@ -602,21 +607,24 @@ html[data-theme="dark"] .notif-dot {
 }
 
 .hero-name-h1 {
-  margin: 2px 0 0;
+  margin: 0;
+  padding: 4px 0 2px;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: #ffffff;
-  line-height: 1.3;
+  line-height: 1.42;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .hero-role-sub {
-  margin: 2px 0 0;
+  margin: 0;
+  padding-bottom: 1px;
   font-size: 12.5px;
   font-weight: 400;
+  line-height: 1.4;
   color: rgba(224, 242, 254, 0.92);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -683,17 +691,14 @@ html[data-theme="dark"] .notif-dot {
   border: 1px solid var(--border-glass);
 }
 
-.stats-grid-3 {
+.stats-grid-2 {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   text-align: center;
 }
 
 .stat-cell {
-  border: 0;
-  background: transparent;
-  border-radius: 12px;
-  padding: 6px 8px;
+  padding: 6px 12px;
   min-height: 54px;
   display: flex;
   flex-direction: column;
@@ -1317,15 +1322,6 @@ html[data-theme="dark"] .login-club-chip {
   color: #0369a1;
 }
 
-.field-readonly-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
 .input-icon-wrap {
   position: relative;
   display: flex;
@@ -1336,14 +1332,6 @@ html[data-theme="dark"] .login-club-chip {
   position: absolute;
   left: 13px;
   display: flex;
-  pointer-events: none;
-}
-
-.input-trail-icon {
-  position: absolute;
-  right: 13px;
-  display: flex;
-  color: #94a3b8;
   pointer-events: none;
 }
 
@@ -1362,14 +1350,8 @@ html[data-theme="dark"] .login-club-chip {
 }
 
 .aqua-input.with-lead { padding-left: 38px; }
-.aqua-input.with-trail { padding-right: 38px; }
-.aqua-input[readonly] {
-  background-color: var(--surface-chip);
-  color: var(--text-secondary);
-  cursor: not-allowed;
-}
 
-.aqua-input:focus:not([readonly]) {
+.aqua-input:focus {
   background-color: var(--surface);
   border-color: #0ea5e9;
   box-shadow: 0 0 0 3px rgba(186, 230, 253, 0.55);
@@ -1746,19 +1728,21 @@ html[data-theme="dark"] .btn-sheet-danger {
 }
 
 .settings-grade-badge {
-  width: 34px;
-  height: 34px;
+  min-width: 42px;
+  height: 30px;
+  padding: 0 10px;
   border-radius: 9999px;
   background-color: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.32);
   color: #ffffff;
   font-family: var(--sp-font-mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .settings-group-kicker {
@@ -2054,6 +2038,12 @@ html[data-theme="dark"] .dept-inline-select option {
   align-items: center;
   justify-content: center;
   gap: 6px;
+}
+
+html[data-theme="dark"] .btn-dashed-add {
+  background-color: rgba(14, 165, 233, 0.16);
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #7dd3fc;
 }
 
 .leader-pick-card {
@@ -2399,6 +2389,10 @@ html[data-theme="dark"] .notif-item-card.highlight {
 .btn-mini-amber { background-color: #fef3c7; color: #92400e; border-color: #fde68a; }
 .btn-mini-rose { background-color: #fff1f2; color: #be123c; border-color: #fecdd3; }
 
+html[data-theme="dark"] .btn-mini-soft { background-color: rgba(14, 165, 233, 0.18); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.35); }
+html[data-theme="dark"] .btn-mini-amber { background-color: rgba(245, 158, 11, 0.18); color: #fde68a; border-color: rgba(251, 191, 36, 0.35); }
+html[data-theme="dark"] .btn-mini-rose { background-color: rgba(225, 29, 72, 0.18); color: #fecdd3; border-color: rgba(244, 63, 94, 0.35); }
+
 .empty-card {
   padding: 20px 14px;
   border-radius: 14px;
@@ -2586,7 +2580,6 @@ body:has(dialog[open]) .hero-card-aquamorphic .ping-ring {
 
 .stat-anim-1 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 200ms both; }
 .stat-anim-2 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 280ms both; }
-.stat-anim-3 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 360ms both; }
 
 .qr-holo-card {
   animation: qrHoloGlow 3.5s ease-in-out infinite;
@@ -2692,7 +2685,6 @@ dialog.sp-center-dialog[open] .check-draw-path {
   .anim-stagger-3,
   .stat-anim-1,
   .stat-anim-2,
-  .stat-anim-3,
   .qr-holo-card,
   .ping-ring,
   .tab-pane-anim,
@@ -2830,7 +2822,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
     </section>
 
     <!-- ==================== VIEW 2: CANONICAL MAIN VARSITY PASS UI ==================== -->
-    <div id="viewMainAppContainer" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
+    <div id="viewMainAppContainer" class="main-app-wrap hidden">
 
       <!-- TOP BAR -->
       <header class="varsity-topbar pt-safe">
@@ -2941,20 +2933,16 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <!-- BLOCK 2: PERFORMANCE STATS SECTION -->
-        <section aria-label="Chỉ số hiệu suất" class="anim-stagger-1 stats-glass-card">
-          <div class="stats-grid-3">
-            <button id="stat-shifts-btn" type="button" class="stat-cell water-ripple-target spring-press">
+        <section aria-label="Thống kê tham gia" class="anim-stagger-1 stats-glass-card">
+          <div class="stats-grid-2">
+            <div class="stat-cell">
               <span id="stat-shifts" class="stat-anim-1 stat-val stat-val-sky">0</span>
-              <span class="stat-lbl">Ca hoàn thành</span>
-            </button>
-            <button id="stat-efficiency-btn" type="button" class="stat-cell water-ripple-target spring-press">
-              <span id="stat-efficiency" class="stat-anim-2 stat-val stat-val-teal">98%</span>
-              <span class="stat-lbl">Đúng giờ</span>
-            </button>
-            <button id="stat-rating-btn" type="button" class="stat-cell water-ripple-target spring-press">
-              <span id="stat-rating" class="stat-anim-3 stat-val stat-val-indigo">A+</span>
-              <span class="stat-lbl">Tín nhiệm</span>
-            </button>
+              <span class="stat-lbl">Số ca hoàn thành</span>
+            </div>
+            <div class="stat-cell">
+              <span id="stat-activities" class="stat-anim-2 stat-val stat-val-teal">0</span>
+              <span class="stat-lbl">Số ca sinh hoạt</span>
+            </div>
           </div>
         </section>
 
@@ -2966,7 +2954,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
                 <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
               </svg>
             </div>
-            <span style="position:relative;z-index:10;">+ Tạo ca trực</span>
+            <span style="position:relative;z-index:10;">Tạo ca trực</span>
           </button>
 
           <button id="admin-approve-btn" type="button" class="btn-aqua-glass water-ripple-target spring-press">
@@ -3210,10 +3198,10 @@ dialog.sp-center-dialog[open] .check-draw-path {
           <img id="settings-avatar" width="48" height="48" alt="Avatar" class="settings-user-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
           <div style="flex:1;min-width:0;">
             <div id="settings-role-kicker" class="font-mono" style="font-size:9.5px;color:#bae6fd;letter-spacing:0.06em;">ĐIỀU PHỐI VIÊN</div>
-            <div id="settings-name" style="font-size:14.5px;font-weight:700;color:#ffffff;" class="truncate">Đỗ Mạnh Cường</div>
+            <div id="settings-name" style="font-size:14.5px;font-weight:700;color:#ffffff;line-height:1.42;padding-top:2px;" class="truncate">Đỗ Mạnh Cường</div>
             <div id="settings-submeta" class="font-mono truncate" style="font-size:11px;color:rgba(224,242,254,0.88);">MSSV: DMC0806 • K13.GDTC</div>
           </div>
-          <span id="settings-grade-badge" class="settings-grade-badge">A+</span>
+          <span id="settings-grade-badge" class="settings-grade-badge">0 ca</span>
         </div>
 
         <span class="settings-group-kicker">TÙY CHỈNH &amp; BẢO MẬT</span>
@@ -3301,14 +3289,10 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <div class="field-group">
-          <div class="field-head-split">
-            <label class="field-label-mono" for="input-studentId">2. Mã số sinh viên</label>
-            <span class="field-readonly-tag">🔒 Chỉ đọc</span>
-          </div>
+          <label class="field-label-mono" for="input-studentId">2. Mã số sinh viên</label>
           <div class="input-icon-wrap">
-            <span class="input-lead-icon" style="color:#64748b;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/></svg></span>
-            <input id="input-studentId" type="text" class="aqua-input with-lead with-trail font-mono" readonly>
-            <span class="input-trail-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span class="input-lead-icon" style="color:#2563eb;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/></svg></span>
+            <input id="input-studentId" type="text" class="aqua-input with-lead font-mono" placeholder="Nhập mã số sinh viên..." autocomplete="off" autocapitalize="characters" spellcheck="false">
           </div>
         </div>
 
@@ -3397,6 +3381,15 @@ dialog.sp-center-dialog[open] .check-draw-path {
             <span class="input-lead-icon" style="color:#0284c7;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/><path d="M19.07 4.93L4.93 19.07"/></svg></span>
             <input id="iptTaskTitle" type="text" class="aqua-input with-lead" placeholder="Giải Bóng Đá Sinh Viên ĐH Hải Dương">
           </div>
+        </div>
+
+        <div class="field-group">
+          <span class="field-label-mono">Phân loại hoạt động</span>
+          <div class="sheet-seg-tabs" role="group" aria-label="Phân loại ca">
+            <button id="task-cat-shift" type="button" class="sheet-seg-btn active" data-category="shift">Ca trực sự kiện</button>
+            <button id="task-cat-activity" type="button" class="sheet-seg-btn" data-category="activity">Ca sinh hoạt CLB</button>
+          </div>
+          <input id="iptTaskCategory" type="hidden" value="shift">
         </div>
 
         <div class="field-group">
@@ -3663,6 +3656,7 @@ const DEFAULT_TASKS = [
     time: '14:00 - 18:00 Thứ Bảy',
     date: '18/03/2025',
     quota: 6,
+    category: 'shift',
     joinedMembers: [],
     assignedMembers: [],
     waitlist: [],
@@ -3685,6 +3679,7 @@ const DEFAULT_TASKS = [
     time: '08:00 - 11:30 Chủ Nhật',
     date: '19/03/2025',
     quota: 4,
+    category: 'shift',
     joinedMembers: [],
     assignedMembers: [],
     waitlist: [],
@@ -3767,14 +3762,6 @@ const SP_ICON_PATHS = {
     ['line', { x1: '12', y1: '9', x2: '12', y2: '13' }],
     ['line', { x1: '12', y1: '17', x2: '12.01', y2: '17' }]
   ],
-  lock: [
-    ['rect', { x: '3', y: '11', width: '18', height: '11', rx: '2', ry: '2' }],
-    ['path', { d: 'M7 11V7a5 5 0 0 1 10 0v4' }]
-  ],
-  shield: [
-    ['path', { d: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' }],
-    ['path', { d: 'm9 12 2 2 4-4' }]
-  ],
   refresh: [
     ['path', { d: 'M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8' }],
     ['path', { d: 'M3 3v5h5' }],
@@ -3785,14 +3772,6 @@ const SP_ICON_PATHS = {
     ['polyline', { points: '3 6 5 6 21 6' }],
     ['path', { d: 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2' }]
   ],
-  bell: [
-    ['path', { d: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9' }],
-    ['path', { d: 'M10.3 21a1.94 1.94 0 0 0 3.4 0' }]
-  ],
-  edit: [
-    ['path', { d: 'M12 20h9' }],
-    ['path', { d: 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z' }]
-  ],
   'map-pin': [
     ['path', { d: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z' }],
     ['circle', { cx: '12', cy: '10', r: '3' }]
@@ -3800,15 +3779,6 @@ const SP_ICON_PATHS = {
   clock: [
     ['circle', { cx: '12', cy: '12', r: '10' }],
     ['polyline', { points: '12 6 12 12 16 14' }]
-  ],
-  rotate: [
-    ['path', { d: 'M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8' }],
-    ['path', { d: 'M21 3v5h-5' }]
-  ],
-  info: [
-    ['circle', { cx: '12', cy: '12', r: '10' }],
-    ['line', { x1: '12', y1: '16', x2: '12', y2: '12' }],
-    ['line', { x1: '12', y1: '8', x2: '12.01', y2: '8' }]
   ],
   eye: [
     ['path', { d: 'M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z' }],
@@ -3911,9 +3881,11 @@ function mount(container, ...nodes) {
   container.replaceChildren(...flat);
 }
 
-function createWaterRipple(e) {
-  const target = e.currentTarget;
-  if (!target) return;
+let waterRippleBound = false;
+
+function handleDelegatedWaterRipple(e) {
+  const target = e.target && e.target.closest ? e.target.closest('.water-ripple-target') : null;
+  if (!target || target.disabled) return;
   const rect = target.getBoundingClientRect();
   let clientX = e.clientX;
   let clientY = e.clientY;
@@ -3956,10 +3928,9 @@ function createWaterRipple(e) {
 }
 
 function bindWaterRipples() {
-  document.querySelectorAll('.water-ripple-target').forEach((node) => {
-    node.removeEventListener('pointerdown', createWaterRipple);
-    node.addEventListener('pointerdown', createWaterRipple);
-  });
+  if (waterRippleBound) return;
+  waterRippleBound = true;
+  document.addEventListener('pointerdown', handleDelegatedWaterRipple);
 }
 
 function initHeroCardParallax() {
@@ -4018,23 +3989,13 @@ function initHeroCardParallax() {
 }
 
 // === state.js ===
-// SportPass V8.6 — Canonical Reactive State, Member Overrides, Tombstones, Deduplication & RBAC
+// SportPass V8.7 — Canonical Normalized Models, Multi-Role Merge, Overrides, Tombstones & RBAC
 
-let currentUser = null;
-let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined') ? DEFAULT_MEMBERS_DIRECTORY.slice() : [];
-let currentTasks = DEFAULT_TASKS.map(t => structuredClone(t));
-let currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
-let currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
-let offlineMutationQueue = [];
-
-let activeQrTaskId = null;
-let unreadNotifSignature = '';
-let currentApproveSubTab = 'swap'; // 'swap' | 'leave' | 'shifts' | 'scanner'
-let currentMissionTab = 'shifts'; // 'shifts' | 'swap'
-let currentDirDeptFilter = 'ALL';
-let editingTaskId = null;
-let selectedShiftLeaderId = 'DMC0806';
-let currentSyncPollTimer = null;
+const DOB_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
+const DATA_CACHE_KEY = 'CLB_SPORTPASS_DATA_CACHE';
+const OVERRIDES_KEY = 'CLB_MEMBER_OVERRIDES';
+const DELETED_TASKS_KEY = 'CLB_DELETED_TASK_IDS';
+const CUSTOM_ROLES_KEY = 'CLB_CUSTOM_ADMIN_ROLES';
 
 function safeSetText(id, text) {
   const node = document.getElementById(id);
@@ -4070,16 +4031,12 @@ function formatTodayVN(offsetDays = 1) {
 
 function formatMemberDob(member) {
   if (!member) return '08/06/2003';
-  if (member.ngaySinh && /\d{2}\/\d{2}\/\d{4}/.test(String(member.ngaySinh))) return String(member.ngaySinh).trim();
-  if (member.mssv && /\d{2}\/\d{2}\/\d{4}/.test(String(member.mssv))) {
-    return String(member.mssv).trim();
-  }
+  if (member.ngaySinh && DOB_REGEX.test(String(member.ngaySinh).trim())) return String(member.ngaySinh).trim();
+  if (member.mssv && DOB_REGEX.test(String(member.mssv).trim())) return String(member.mssv).trim();
   const canonical = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined')
-    ? DEFAULT_MEMBERS_DIRECTORY.find(x => x && x.id === member.id)
+    ? DEFAULT_MEMBERS_DIRECTORY.find(x => x && x.id === member.id && DOB_REGEX.test(String(x.mssv || '').trim()))
     : null;
-  if (canonical && canonical.mssv && /\d{2}\/\d{2}\/\d{4}/.test(String(canonical.mssv))) {
-    return String(canonical.mssv).trim();
-  }
+  if (canonical) return String(canonical.mssv).trim();
   const m = String(member.id || '').match(/(\d{2})(\d{2})$/);
   return m ? `${m[1]}/${m[2]}/2004` : '08/06/2003';
 }
@@ -4087,6 +4044,8 @@ function formatMemberDob(member) {
 function getDisplayStudentCode(member) {
   if (!member) return 'DMC0806';
   if (member.studentCode && String(member.studentCode).trim()) return String(member.studentCode).trim();
+  const rawMssv = String(member.mssv || '').trim();
+  if (rawMssv && !DOB_REGEX.test(rawMssv)) return rawMssv;
   return member.id || 'SP0000';
 }
 
@@ -4102,55 +4061,205 @@ function getTheTrangTheme(theTrang) {
   return { label: raw || 'Khỏe mạnh (100% Sẵn sàng)', tone: 'success', exempt: false };
 }
 
-function formatShortTheTrang(theTrang) {
-  const raw = String(theTrang || 'Khỏe mạnh');
-  const lower = raw.toLowerCase();
-  if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Miễn trực';
-  if (lower.includes('hồi phục')) return 'B';
-  return 'A+';
+function normalizeMember(raw) {
+  if (!raw) return null;
+  const copy = structuredClone(raw);
+  const id = String(copy.id || '').trim();
+  if (!id) return null;
+
+  const shiftsDone = Math.max(0, Number(copy.soCaHoanThanh ?? copy.soCa ?? 0) || 0);
+  const activitiesDone = Math.max(0, Number(copy.soCaSinhHoat ?? 0) || 0);
+  const sdt = String(copy.sdt || '').trim();
+  const ice = String(copy.ice || '').trim() || sdt;
+  const boMon = String(copy.boMon || 'Ban Nhân Sự').trim();
+  const cacBan = Array.isArray(copy.cacBan) && copy.cacBan.length > 0
+    ? Array.from(new Set(copy.cacBan.map(x => String(x || '').trim()).filter(Boolean)))
+    : (boMon ? [boMon] : []);
+
+  copy.id = id;
+  copy.hoTen = String(copy.hoTen || '').trim();
+  copy.lop = String(copy.lop || '').trim();
+  copy.boMon = boMon;
+  copy.cacBan = cacBan;
+  copy.chucVu = String(copy.chucVu || 'Thành viên').trim();
+  copy.sdt = sdt;
+  copy.ice = ice;
+  copy.yTe = String(copy.yTe || 'Bình thường').trim();
+  copy.theTrang = String(copy.theTrang || 'Khỏe mạnh (100% Sẵn sàng)').trim();
+  copy.status = String(copy.status || 'Sẵn sàng').trim();
+  copy.ngaySinh = formatMemberDob(copy);
+  copy.studentCode = getDisplayStudentCode(copy);
+  copy.soCaHoanThanh = shiftsDone;
+  copy.soCa = shiftsDone;
+  copy.soCaSinhHoat = activitiesDone;
+  copy.isAdmin = id === 'DMC0806' ? true : Boolean(copy.isAdmin);
+  copy.isShiftLeader = copy.isAdmin ? true : Boolean(copy.isShiftLeader);
+  copy.donVi = copy.donVi || 'Trường Đại học Hải Dương';
+  return copy;
+}
+
+function normalizeMembersDirectory(rawList) {
+  const byId = new Map();
+  for (const raw of (Array.isArray(rawList) ? rawList : [])) {
+    const m = normalizeMember(raw);
+    if (!m) continue;
+    const prev = byId.get(m.id);
+    if (!prev) {
+      byId.set(m.id, m);
+      continue;
+    }
+    for (const dept of m.cacBan) {
+      if (!prev.cacBan.includes(dept)) prev.cacBan.push(dept);
+    }
+    const prevIsMemberOnly = prev.chucVu.toLowerCase().startsWith('thành viên');
+    const nextIsMemberOnly = m.chucVu.toLowerCase().startsWith('thành viên');
+    if ((m.isAdmin && !prev.isAdmin) || (m.isShiftLeader && !prev.isShiftLeader) || (prevIsMemberOnly && !nextIsMemberOnly)) {
+      prev.chucVu = m.chucVu;
+      prev.boMon = m.boMon;
+    }
+    prev.isAdmin = prev.isAdmin || m.isAdmin;
+    prev.isShiftLeader = prev.isAdmin || prev.isShiftLeader || m.isShiftLeader;
+    if (!prev.sdt && m.sdt) prev.sdt = m.sdt;
+    if ((!prev.ice || prev.ice === prev.sdt) && m.ice) prev.ice = m.ice;
+    if (prev.yTe === 'Bình thường' && m.yTe && m.yTe !== 'Bình thường') prev.yTe = m.yTe;
+    if (prev.studentCode === prev.id && m.studentCode !== m.id) prev.studentCode = m.studentCode;
+    prev.soCaHoanThanh = Math.max(prev.soCaHoanThanh, m.soCaHoanThanh);
+    prev.soCa = prev.soCaHoanThanh;
+    prev.soCaSinhHoat = Math.max(prev.soCaSinhHoat, m.soCaSinhHoat);
+  }
+  return Array.from(byId.values());
+}
+
+function normalizeTask(raw) {
+  if (!raw || !raw.title) return null;
+  const copy = structuredClone(raw);
+  const uniq = (arr) => Array.from(new Set((Array.isArray(arr) ? arr : []).map(x => String(x || '').trim()).filter(Boolean)));
+  copy.id = String(copy.id || ('TASK_' + Date.now())).trim();
+  copy.title = String(copy.title).trim();
+  copy.location = String(copy.location || 'SVĐ Trung Tâm').trim();
+  copy.time = String(copy.time || '').trim();
+  copy.date = String(copy.date || '').trim();
+  copy.timeRange = String(copy.timeRange || copy.time.replace(/\s*\([^)]*\)\s*$/, '')).trim();
+  copy.quota = Math.max(1, Number(copy.quota) || 4);
+  copy.category = copy.category === 'activity' ? 'activity' : 'shift';
+  copy.joinedMembers = uniq(copy.joinedMembers);
+  copy.assignedMembers = uniq(copy.assignedMembers);
+  copy.waitlist = uniq(copy.waitlist);
+  copy.checkedInMembers = uniq(copy.checkedInMembers);
+  copy.checkinLogs = Array.isArray(copy.checkinLogs) ? copy.checkinLogs : [];
+  copy.departmentQuotas = (copy.departmentQuotas && typeof copy.departmentQuotas === 'object') ? copy.departmentQuotas : {};
+  copy.status = copy.status || 'active';
+  return copy;
+}
+
+function normalizeSwap(raw) {
+  if (!raw) return null;
+  const copy = structuredClone(raw);
+  copy.id = String(copy.id || ('SWAP_' + Date.now()));
+  copy.taskId = String(copy.taskId || '');
+  copy.fromId = String(copy.fromId || copy.fromMemberId || '');
+  copy.fromName = String(copy.fromName || copy.fromMemberName || copy.fromId);
+  copy.fromClass = String(copy.fromClass || '');
+  copy.toId = String(copy.toId || copy.toMemberId || 'CA_DIEU_PHOI');
+  copy.toName = String(copy.toName || (copy.toId && !copy.toId.startsWith('CA_') ? copy.toId : 'Ban Điều Phối sắp xếp'));
+  copy.currentShift = String(copy.currentShift || copy.taskTitle || copy.taskId);
+  copy.reason = String(copy.reason || '');
+  copy.type = copy.type || (copy.toId && !copy.toId.startsWith('CA_') ? 'swap' : 'transfer');
+  copy.status = copy.status || 'pending';
+  return copy;
+}
+
+function normalizeLeave(raw) {
+  if (!raw) return null;
+  const copy = structuredClone(raw);
+  copy.id = String(copy.id || ('LEAVE_' + Date.now()));
+  copy.taskId = String(copy.taskId || '');
+  copy.memberId = String(copy.memberId || '');
+  copy.memberName = String(copy.memberName || copy.memberId);
+  copy.timeLabel = String(copy.timeLabel || `Ca ${copy.taskId}`);
+  copy.reason = String(copy.reason || '');
+  copy.urgent = Boolean(copy.urgent);
+  copy.status = copy.status || 'pending';
+  return copy;
+}
+
+function getTaskOccupancy(task, uid = '') {
+  const occupied = Array.from(new Set([...(task?.joinedMembers || []), ...(task?.assignedMembers || [])]));
+  const quota = Math.max(1, Number(task?.quota) || 4);
+  return {
+    occupied,
+    quota,
+    isFull: occupied.length >= quota,
+    isMine: Boolean(uid && occupied.includes(uid)),
+    isChecked: Boolean(uid && Array.isArray(task?.checkedInMembers) && task.checkedInMembers.includes(uid)),
+    isWaitlisted: Boolean(uid && Array.isArray(task?.waitlist) && task.waitlist.includes(uid))
+  };
 }
 
 function computeMemberStats(member) {
-  if (!member) return { shiftsCount: 0, onTimeText: '100%', gradeText: 'A+' };
+  if (!member) return { shiftsCount: 0, activitiesCount: 0 };
   const uid = String(member.id || '').trim();
-  let checkedInTotal = 0;
-  const completedOrLocked = [];
-  const now = Date.now();
+  let shiftsCheckedIn = 0;
+  let activitiesCheckedIn = 0;
 
-  for (const t of (currentTasks || [])) {
+  for (const t of deduplicateTasks(currentTasks || [])) {
     if (!t) continue;
-    const isChecked = Array.isArray(t.checkedInMembers) && t.checkedInMembers.includes(uid);
-    if (isChecked) checkedInTotal++;
-    const isAssignedOrJoined =
-      (Array.isArray(t.joinedMembers) && t.joinedMembers.includes(uid)) ||
-      (Array.isArray(t.assignedMembers) && t.assignedMembers.includes(uid));
-    if (isAssignedOrJoined) {
-      const deadlineMs = t.lockDeadline ? Date.parse(t.lockDeadline) : NaN;
-      const pastDeadline = Number.isFinite(deadlineMs) && deadlineMs < now;
-      if (isChecked || pastDeadline) completedOrLocked.push(isChecked);
+    if (Array.isArray(t.checkedInMembers) && t.checkedInMembers.includes(uid)) {
+      if (t.category === 'activity') activitiesCheckedIn++;
+      else shiftsCheckedIn++;
     }
   }
 
-  const shiftsCount = Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0), checkedInTotal);
-  let onTimeText = '100%';
-  if (completedOrLocked.length > 0) {
-    const attended = completedOrLocked.filter(Boolean).length;
-    onTimeText = `${Math.round((attended / completedOrLocked.length) * 100)}%`;
-  } else if (shiftsCount === 0 && member.onTimeRate) {
-    onTimeText = String(member.onTimeRate);
+  return {
+    shiftsCount: Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0) || 0, shiftsCheckedIn),
+    activitiesCount: Math.max(Number(member.soCaSinhHoat ?? 0) || 0, activitiesCheckedIn)
+  };
+}
+
+function adjustMemberCounter(memberId, metric, delta) {
+  const targetId = String(memberId || '').trim();
+  if (!targetId) return 0;
+  const isActivity = metric === 'activity';
+  const d = Number(delta) || 0;
+  let nextVal = 0;
+  let found = false;
+
+  for (const m of (membersDirectory || [])) {
+    if (m && m.id === targetId) {
+      const cur = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+      nextVal = Math.max(0, cur + d);
+      if (isActivity) {
+        m.soCaSinhHoat = nextVal;
+        saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
+      } else {
+        m.soCaHoanThanh = nextVal;
+        m.soCa = nextVal;
+        saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
+      }
+      found = true;
+    }
   }
 
-  return {
-    shiftsCount,
-    onTimeText,
-    gradeText: formatShortTheTrang(member.theTrang)
-  };
+  if (currentUser && currentUser.id === targetId) {
+    const curSelf = isActivity ? (Number(currentUser.soCaSinhHoat) || 0) : (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0) || 0);
+    if (!found) nextVal = Math.max(0, curSelf + d);
+    if (isActivity) {
+      currentUser.soCaSinhHoat = nextVal;
+      saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
+    } else {
+      currentUser.soCaHoanThanh = nextVal;
+      currentUser.soCa = nextVal;
+      saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
+    }
+    if (typeof persistUserSession === 'function') persistUserSession(currentUser);
+  }
+  return nextVal;
 }
 
 // ==================== PERSISTENT MEMBER OVERRIDES ====================
 function getMemberOverrides() {
   try {
-    return JSON.parse(localStorage.getItem('CLB_MEMBER_OVERRIDES') || '{}');
+    return JSON.parse(localStorage.getItem(OVERRIDES_KEY) || '{}');
   } catch (e) {
     return {};
   }
@@ -4161,7 +4270,7 @@ function saveMemberOverride(memberId, patch) {
   const all = getMemberOverrides();
   all[memberId] = Object.assign({}, all[memberId] || {}, patch);
   try {
-    localStorage.setItem('CLB_MEMBER_OVERRIDES', JSON.stringify(all));
+    localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
   } catch (e) {}
 }
 
@@ -4183,7 +4292,7 @@ function applyMemberOverrides(members) {
 // ==================== TOMBSTONES ANTI-RESURRECTION ====================
 function getDeletedTaskIds() {
   try {
-    return JSON.parse(localStorage.getItem('CLB_DELETED_TASK_IDS') || '[]');
+    return JSON.parse(localStorage.getItem(DELETED_TASKS_KEY) || '[]');
   } catch (e) {
     return [];
   }
@@ -4194,7 +4303,7 @@ function saveDeletedTaskId(id) {
   const list = getDeletedTaskIds();
   if (!list.includes(id)) {
     list.push(id);
-    try { localStorage.setItem('CLB_DELETED_TASK_IDS', JSON.stringify(list)); } catch (e) {}
+    try { localStorage.setItem(DELETED_TASKS_KEY, JSON.stringify(list)); } catch (e) {}
   }
 }
 
@@ -4212,31 +4321,25 @@ function deduplicateTasks(tasks) {
   const map = new Map();
 
   for (const raw of tasks) {
-    if (!raw || !raw.title) continue;
-    if (deleted.includes(raw.id)) continue;
+    const copy = normalizeTask(raw);
+    if (!copy) continue;
+    if (deleted.includes(copy.id)) continue;
 
-    const copy = structuredClone(raw);
-    copy.joinedMembers = Array.isArray(copy.joinedMembers) ? copy.joinedMembers : [];
-    copy.assignedMembers = Array.isArray(copy.assignedMembers) ? copy.assignedMembers : [];
-    copy.waitlist = Array.isArray(copy.waitlist) ? copy.waitlist : [];
-    copy.checkedInMembers = Array.isArray(copy.checkedInMembers) ? copy.checkedInMembers : [];
-    copy.checkinLogs = Array.isArray(copy.checkinLogs) ? copy.checkinLogs : [];
-    copy.departmentQuotas = (copy.departmentQuotas && typeof copy.departmentQuotas === 'object') ? copy.departmentQuotas : {};
-
-    const semKey = String(copy.title).trim().toLowerCase() + '||' + String(copy.time || '').trim().toLowerCase();
+    const semKey = `${copy.title.toLowerCase()}||${copy.time.toLowerCase()}||${copy.location.toLowerCase()}`;
     if (!map.has(semKey)) {
       map.set(semKey, copy);
     } else {
       const existing = map.get(semKey);
-      if (/^TASK_\d+$/i.test(String(copy.id)) && !/^TASK_\d+$/i.test(String(existing.id))) {
+      if (/^TASK_\d+$/i.test(copy.id) && !/^TASK_\d+$/i.test(existing.id)) {
         existing.id = copy.id;
       }
       existing.joinedMembers = Array.from(new Set([...existing.joinedMembers, ...copy.joinedMembers]));
       existing.assignedMembers = Array.from(new Set([...existing.assignedMembers, ...copy.assignedMembers]));
       existing.waitlist = Array.from(new Set([...existing.waitlist, ...copy.waitlist]));
       existing.checkedInMembers = Array.from(new Set([...existing.checkedInMembers, ...copy.checkedInMembers]));
-      existing.quota = Math.max(Number(existing.quota) || 0, Number(copy.quota) || 0);
-      if (!existing.location && copy.location) existing.location = copy.location;
+      if (copy.checkinLogs.length > existing.checkinLogs.length) existing.checkinLogs = copy.checkinLogs;
+      existing.quota = Math.max(existing.quota, copy.quota);
+      if (copy.category === 'activity') existing.category = 'activity';
       if (!existing.notes && copy.notes) existing.notes = copy.notes;
       if (Object.keys(existing.departmentQuotas).length === 0 && Object.keys(copy.departmentQuotas).length > 0) {
         existing.departmentQuotas = copy.departmentQuotas;
@@ -4249,7 +4352,7 @@ function deduplicateTasks(tasks) {
 // ==================== CUSTOM RBAC & SOLE ADMIN INVARIANT ====================
 function getCustomAdminRoles() {
   try {
-    return JSON.parse(localStorage.getItem('CLB_CUSTOM_ADMIN_ROLES') || '{}');
+    return JSON.parse(localStorage.getItem(CUSTOM_ROLES_KEY) || '{}');
   } catch (e) {
     return {};
   }
@@ -4257,7 +4360,7 @@ function getCustomAdminRoles() {
 
 function saveCustomAdminRoles(roles) {
   try {
-    localStorage.setItem('CLB_CUSTOM_ADMIN_ROLES', JSON.stringify(roles || {}));
+    localStorage.setItem(CUSTOM_ROLES_KEY, JSON.stringify(roles || {}));
   } catch (e) {}
 }
 
@@ -4293,11 +4396,39 @@ function applyCustomAdminRoles(members) {
   }
 }
 
+function hydrateLocalStateFromCache() {
+  const deletedTasks = getDeletedTaskIds();
+  let loadedFromCache = false;
+  try {
+    const raw = localStorage.getItem(DATA_CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const rawTasks = (Array.isArray(parsed.currentTasks) && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
+      currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
+      currentSwaps = (Array.isArray(parsed.currentSwaps) && parsed.currentSwaps.length)
+        ? parsed.currentSwaps.map(normalizeSwap).filter(Boolean)
+        : DEFAULT_SWAPS_SEED.map(normalizeSwap);
+      currentLeaves = (Array.isArray(parsed.currentLeaves) && parsed.currentLeaves.length)
+        ? parsed.currentLeaves.map(normalizeLeave).filter(Boolean)
+        : DEFAULT_LEAVES_SEED.map(normalizeLeave);
+      offlineMutationQueue = Array.isArray(parsed.offlineMutationQueue) ? parsed.offlineMutationQueue : [];
+      loadedFromCache = true;
+    }
+  } catch (e) {}
+
+  if (!loadedFromCache) {
+    currentTasks = deduplicateTasks(DEFAULT_TASKS.filter(t => t && !deletedTasks.includes(t.id)));
+    currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
+    currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
+    offlineMutationQueue = [];
+  }
+}
+
 function saveLocalState() {
   try {
     const deletedTasks = getDeletedTaskIds();
     const cleanTasks = (currentTasks || []).filter(t => t && !deletedTasks.includes(t.id));
-    localStorage.setItem('CLB_SPORTPASS_DATA_CACHE', JSON.stringify({
+    localStorage.setItem(DATA_CACHE_KEY, JSON.stringify({
       currentTasks: cleanTasks,
       currentSwaps: currentSwaps || [],
       currentLeaves: currentLeaves || [],
@@ -4306,18 +4437,24 @@ function saveLocalState() {
   } catch (e) {}
 }
 
-// === security.js ===
-// SportPass V8.6 — Security, Auth Session Lifecycle, WebAuthn Passkey & Strict Password Enforcement
+let currentUser = null;
+let membersDirectory = normalizeMembersDirectory(typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY : []);
+let currentTasks = deduplicateTasks(DEFAULT_TASKS);
+let currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
+let currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
+let offlineMutationQueue = [];
 
-function escapeHtml(str) {
-  if (str === undefined || str === null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+let activeQrTaskId = null;
+let unreadNotifSignature = '';
+let currentApproveSubTab = 'swap'; // 'swap' | 'leave' | 'shifts' | 'scanner'
+let currentMissionTab = 'shifts'; // 'shifts' | 'swap'
+let currentDirDeptFilter = 'ALL';
+let editingTaskId = null;
+let selectedShiftLeaderId = 'DMC0806';
+let currentSyncPollTimer = null;
+
+// === security.js ===
+// SportPass V8.7 — Security, Auth Session Lifecycle, WebAuthn Passkey & Strict Password Enforcement
 
 function isAuthorizedScanner(user = currentUser) {
   if (!user) return false;
@@ -4344,22 +4481,17 @@ function findLocalMemberByIdentifier(identifier) {
   if (!cleanIdent) return null;
   const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
 
-  let matched = null;
   for (const m of (membersDirectory || [])) {
     if (!m) continue;
     const mId = String(m.id || '').trim().toLowerCase();
+    const mStudentCode = String(m.studentCode || '').trim().toLowerCase();
     const mName = String(m.hoTen || '').trim().toLowerCase();
     const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
-    if (mId === cleanIdent || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
-      if (!matched) {
-        matched = structuredClone(m);
-      } else {
-        matched.isAdmin = matched.isAdmin || m.isAdmin;
-        matched.isShiftLeader = matched.isShiftLeader || m.isShiftLeader;
-      }
+    if (mId === cleanIdent || (mStudentCode && mStudentCode === cleanIdent) || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
+      return structuredClone(m);
     }
   }
-  return matched;
+  return null;
 }
 
 function togglePasswordVisibility() {
@@ -4398,12 +4530,25 @@ function persistUserSession(userObj) {
   }
 }
 
+function activateAuthenticatedSession() {
+  showMainAppView();
+  renderProfileData();
+  renderDispatchHub();
+  renderMembersModalList();
+  renderNotificationsModalList();
+  updateQrPassDisplay();
+  autoEnableBackgroundNotifications();
+  restartAdaptivePolling();
+  syncRealtimeData();
+}
+
 function checkStoredLoginSession() {
+  membersDirectory = normalizeMembersDirectory(typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY : []);
+  applyMemberOverrides(membersDirectory);
+
   const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');
   const sessionCached = sessionStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const localCached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
-  const dataCache = localStorage.getItem('CLB_SPORTPASS_DATA_CACHE');
-
   const isRemembered = rememberFlag === 'true';
   const activeSessionJson = sessionCached || (isRemembered ? localCached : null);
 
@@ -4412,37 +4557,18 @@ function checkStoredLoginSession() {
 
   if (activeSessionJson) {
     try {
-      currentUser = JSON.parse(activeSessionJson);
-      window.currentUser = currentUser;
-      const deletedTasks = getDeletedTaskIds();
-      if (dataCache) {
-        const parsed = JSON.parse(dataCache);
-        const rawTasks = (parsed.currentTasks && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
-        currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
-        currentSwaps = (parsed.currentSwaps && parsed.currentSwaps.length) ? parsed.currentSwaps : DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
-        currentLeaves = (parsed.currentLeaves && parsed.currentLeaves.length) ? parsed.currentLeaves : DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
-        offlineMutationQueue = parsed.offlineMutationQueue || [];
-      } else {
-        membersDirectory = DEFAULT_MEMBERS_DIRECTORY.slice();
-        currentTasks = deduplicateTasks(DEFAULT_TASKS);
-        currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
-        currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
+      currentUser = normalizeMember(JSON.parse(activeSessionJson));
+      if (currentUser) {
+        window.currentUser = currentUser;
+        hydrateLocalStateFromCache();
+        applyMemberOverrides(membersDirectory);
+        activateAuthenticatedSession();
+        return;
       }
-
-      applyMemberOverrides(membersDirectory);
-      showMainAppView();
-      renderProfileData();
-      renderDispatchHub();
-      renderMembersModalList();
-      renderNotificationsModalList();
-      updateQrPassDisplay();
-      autoEnableBackgroundNotifications();
-      restartAdaptivePolling();
-      syncRealtimeData();
-      return;
     } catch (e) {}
   }
 
+  hydrateLocalStateFromCache();
   showLoginView();
 }
 
@@ -4464,7 +4590,8 @@ function fallbackOfflineLogin(user, pass, remember) {
 }
 
 function completeUserLogin(memberObj, remember) {
-  currentUser = structuredClone(memberObj);
+  currentUser = normalizeMember(memberObj);
+  hydrateLocalStateFromCache();
   applyMemberOverrides(membersDirectory);
   window.currentUser = currentUser;
 
@@ -4479,18 +4606,7 @@ function completeUserLogin(memberObj, remember) {
     localStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');
   }
 
-  const deletedTasks = getDeletedTaskIds();
-  currentTasks = deduplicateTasks((currentTasks.length ? currentTasks : DEFAULT_TASKS).filter(t => t && !deletedTasks.includes(t.id)));
-
-  showMainAppView();
-  renderProfileData();
-  renderDispatchHub();
-  renderMembersModalList();
-  renderNotificationsModalList();
-  updateQrPassDisplay();
-  autoEnableBackgroundNotifications();
-  restartAdaptivePolling();
-  syncRealtimeData();
+  activateAuthenticatedSession();
   triggerHaptic('success');
   showToast('Đăng nhập thành công: ' + currentUser.hoTen);
 }
@@ -4627,6 +4743,10 @@ async function handleBiometricLogin(methodLabel) {
 }
 
 function executeLogoutAction() {
+  if (currentSyncPollTimer) {
+    clearInterval(currentSyncPollTimer);
+    currentSyncPollTimer = null;
+  }
   localStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');
   localStorage.removeItem('CLB_REMEMBER_LOGIN');
   sessionStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');
@@ -4661,9 +4781,9 @@ function buildMutationUrl(mut) {
   if (mut.type === 'CLAIM_TASK') return `${GAS_API_URL}?action=claimTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&waitlist=${Boolean(p.waitlist)}`;
   if (mut.type === 'WITHDRAW_TASK') return `${GAS_API_URL}?action=withdrawTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&reason=${encodeURIComponent(p.reason || '')}`;
   if (mut.type === 'QR_CHECKIN') return `${GAS_API_URL}?action=checkinMember&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&adminId=${encodeURIComponent(p.scannerId || p.adminId || '')}`;
-  if (mut.type === 'SHIFT_ADJUST') return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'SHIFT_ADJUST') return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&metric=${encodeURIComponent(p.metric || 'shift')}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_ROLE') return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
-  if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&lop=${encodeURIComponent(p.lop || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
+  if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&hoTen=${encodeURIComponent(p.hoTen || '')}&studentCode=${encodeURIComponent(p.studentCode || '')}&lop=${encodeURIComponent(p.lop || '')}&boMon=${encodeURIComponent(p.boMon || '')}&chucVu=${encodeURIComponent(p.chucVu || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
   return null;
 }
 
@@ -4722,7 +4842,7 @@ async function syncRealtimeData() {
     }
 
     if (Array.isArray(data.membersList) && data.membersList.length > 0) {
-      membersDirectory = data.membersList;
+      membersDirectory = normalizeMembersDirectory(data.membersList);
       applyMemberOverrides(membersDirectory);
     }
 
@@ -4730,10 +4850,12 @@ async function syncRealtimeData() {
       const preservedAvatar = currentUser.avatar || '';
       const preservedStudentCode = currentUser.studentCode || '';
       const preservedDob = currentUser.ngaySinh || '';
-      currentUser = Object.assign({}, currentUser, data.member);
+      const preservedActivities = Number(currentUser.soCaSinhHoat) || 0;
+      currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
       if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
-      if (!currentUser.studentCode && preservedStudentCode) currentUser.studentCode = preservedStudentCode;
-      if (!currentUser.ngaySinh && preservedDob) currentUser.ngaySinh = preservedDob;
+      if (preservedStudentCode && preservedStudentCode !== currentUser.id) currentUser.studentCode = preservedStudentCode;
+      if (preservedDob) currentUser.ngaySinh = preservedDob;
+      currentUser.soCaSinhHoat = Math.max(currentUser.soCaSinhHoat || 0, preservedActivities);
       applyMemberOverrides(membersDirectory);
       window.currentUser = currentUser;
     }
@@ -4755,8 +4877,8 @@ async function syncRealtimeData() {
     }
 
     currentTasks = deduplicateTasks(mergedTasks);
-    if (Array.isArray(data.swaps) && data.swaps.length > 0) currentSwaps = data.swaps;
-    if (Array.isArray(data.leaves) && data.leaves.length > 0) currentLeaves = data.leaves;
+    if (Array.isArray(data.swaps) && data.swaps.length > 0) currentSwaps = data.swaps.map(normalizeSwap).filter(Boolean);
+    if (Array.isArray(data.leaves) && data.leaves.length > 0) currentLeaves = data.leaves.map(normalizeLeave).filter(Boolean);
 
     saveLocalState();
     renderProfileData();
@@ -4806,10 +4928,12 @@ function parseShiftTimeRange(timeStr) {
 
 function checkShiftTimeConflict(taskA, taskB) {
   if (!taskA || !taskB || taskA.id === taskB.id) return false;
-  const rA = parseShiftTimeRange(taskA.time);
-  const rB = parseShiftTimeRange(taskB.time);
+  const rA = parseShiftTimeRange(taskA.time || taskA.timeRange);
+  const rB = parseShiftTimeRange(taskB.time || taskB.timeRange);
   if (!rA || !rB) return false;
-  if (rA.day && rB.day && rA.day !== rB.day) return false;
+  const dayA = String(taskA.date || rA.day || '').trim().toLowerCase();
+  const dayB = String(taskB.date || rB.day || '').trim().toLowerCase();
+  if (dayA && dayB && dayA !== dayB) return false;
   return rA.start < rB.end && rB.start < rA.end;
 }
 
@@ -4836,28 +4960,26 @@ function calculateSmartRotation(task) {
     ? Object.entries(task.departmentQuotas).filter(([, q]) => Number(q) > 0)
     : [];
 
+  const isActivity = task.category === 'activity';
+
   const pickForBucket = (deptFilter, neededCount) => {
     const candidates = (membersDirectory || []).filter(m => {
       if (!m || !m.id || usedIds.has(m.id)) return false;
-      if (deptFilter && m.boMon !== deptFilter) return false;
-      const theme = getTheTrangTheme(m.theTrang);
+      if (deptFilter && m.boMon !== deptFilter && !(Array.isArray(m.cacBan) && m.cacBan.includes(deptFilter))) return false;
+      const healthSource = (m.yTe && m.yTe !== 'Bình thường') ? m.yTe : m.theTrang;
+      const theme = getTheTrangTheme(healthSource);
       if (theme.exempt) return false;
       if (hasShiftTimeConflict(m.id, task)) return false;
       return true;
     });
 
-    const uniqueById = [];
-    const bucketSeen = new Set();
-    for (const c of candidates) {
-      if (!bucketSeen.has(c.id)) {
-        bucketSeen.add(c.id);
-        uniqueById.push(c);
-      }
-    }
+    candidates.sort((a, b) => {
+      const aVal = isActivity ? (Number(a.soCaSinhHoat) || 0) : (Number(a.soCaHoanThanh ?? a.soCa ?? 0) || 0);
+      const bVal = isActivity ? (Number(b.soCaSinhHoat) || 0) : (Number(b.soCaHoanThanh ?? b.soCa ?? 0) || 0);
+      return aVal - bVal;
+    });
 
-    uniqueById.sort((a, b) => Number(a.soCaHoanThanh ?? a.soCa ?? 0) - Number(b.soCaHoanThanh ?? b.soCa ?? 0));
-
-    for (const m of uniqueById) {
+    for (const m of candidates) {
       if (picked.length + existing.size >= totalQuota) break;
       if (neededCount <= 0) break;
       usedIds.add(m.id);
@@ -5023,7 +5145,8 @@ function updateQrPassDisplay() {
   const payload = `SPORTPASS:CHECKIN:${taskId}:${uid}:${slot}`;
   const container = document.getElementById('qr-code-box');
   if (container) renderQrIntoContainer(container, payload, 160);
-  safeSetText('qr-token-code', `#${uid} · ${taskId}`);
+  const displayCode = currentUser ? getDisplayStudentCode(currentUser) : uid;
+  safeSetText('qr-token-code', `#${displayCode} · ${taskId}`);
 }
 
 function startQrCountdown() {
@@ -5221,8 +5344,8 @@ function handleScanQrPayload(rawCode) {
     const parts = trimmed.split(':');
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
-  } else if (trimmed.startsWith('#') && trimmed.includes('-VN')) {
-    memberId = trimmed.slice(1).split('-VN')[0].split(' ')[0];
+  } else if (trimmed.startsWith('#')) {
+    memberId = trimmed.slice(1).split(/[\s·-]+/)[0];
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {
@@ -5247,7 +5370,19 @@ function handleQrCheckinAction(taskId, memberId) {
     showToast('Chỉ Ban Chủ Nhiệm hoặc Trưởng/Phó ban mới được quét điểm danh.');
     return;
   }
-  const cleanMemberId = String(memberId || '').trim().toUpperCase();
+  const cleanCode = String(memberId || '').trim().toUpperCase();
+  const targetMember = (membersDirectory || []).find(
+    m => m && (
+      String(m.id || '').toUpperCase() === cleanCode ||
+      String(m.studentCode || '').toUpperCase() === cleanCode
+    )
+  );
+  if (!targetMember) {
+    showToast(`Không tìm thấy hội viên với mã ${cleanCode || '(trống)'}.`);
+    return;
+  }
+
+  const canonicalId = targetMember.id;
   const task = (currentTasks || []).find(t => t.id === taskId) || currentTasks[0];
   if (!task) {
     showToast('Chưa có ca trực để điểm danh.');
@@ -5255,29 +5390,24 @@ function handleQrCheckinAction(taskId, memberId) {
   }
 
   task.checkedInMembers = Array.isArray(task.checkedInMembers) ? task.checkedInMembers : [];
-  if (!task.checkedInMembers.includes(cleanMemberId)) {
-    task.checkedInMembers.push(cleanMemberId);
+  task.checkinLogs = Array.isArray(task.checkinLogs) ? task.checkinLogs : [];
+  if (!task.checkedInMembers.includes(canonicalId)) {
+    task.checkedInMembers.push(canonicalId);
     task.joinedMembers = Array.isArray(task.joinedMembers) ? task.joinedMembers : [];
-    if (!task.joinedMembers.includes(cleanMemberId)) task.joinedMembers.push(cleanMemberId);
+    if (!task.joinedMembers.includes(canonicalId)) task.joinedMembers.push(canonicalId);
+    task.checkinLogs.push({
+      memberId: canonicalId,
+      adminId: currentUser ? currentUser.id : 'SYSTEM',
+      time: new Date().toISOString()
+    });
 
-    for (const m of (membersDirectory || [])) {
-      if (m.id === cleanMemberId) {
-        const nextShifts = (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) + 1;
-        m.soCaHoanThanh = nextShifts;
-        m.soCa = nextShifts;
-        saveMemberOverride(cleanMemberId, { soCaHoanThanh: nextShifts, soCa: nextShifts });
-      }
-    }
-    if (currentUser && currentUser.id === cleanMemberId) {
-      const nextCur = (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0)) + 1;
-      currentUser.soCaHoanThanh = nextCur;
-      currentUser.soCa = nextCur;
-      saveMemberOverride(cleanMemberId, { soCaHoanThanh: nextCur, soCa: nextCur });
-      persistUserSession(currentUser);
+    const metric = task.category === 'activity' ? 'activity' : 'shift';
+    adjustMemberCounter(canonicalId, metric, 1);
+    if (currentUser && currentUser.id === canonicalId) {
       renderProfileData();
     }
 
-    const payload = { taskId: task.id, memberId: cleanMemberId, scannerId: currentUser ? currentUser.id : 'SYSTEM' };
+    const payload = { taskId: task.id, memberId: canonicalId, scannerId: currentUser ? currentUser.id : 'SYSTEM' };
     dispatchBackendMutation('QR_CHECKIN', payload);
 
     saveLocalState();
@@ -5287,9 +5417,9 @@ function handleQrCheckinAction(taskId, memberId) {
     renderNotificationsModalList();
     safeSetValue('iptManualCheckinId', '');
     triggerHaptic('success');
-    showToast(`Điểm danh QR thành công: ${cleanMemberId}`);
+    showToast(`Điểm danh QR thành công: ${targetMember.hoTen} (${canonicalId})`);
   } else {
-    showToast(`${cleanMemberId} đã điểm danh ca này trước đó.`);
+    showToast(`${canonicalId} đã điểm danh ca này trước đó.`);
   }
 }
 
@@ -5320,7 +5450,7 @@ function triggerHaptic(type = 'light') {
 }
 
 function autoEnableBackgroundNotifications() {
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       if ('sync' in reg) reg.sync.register('check-tasks').catch(() => {});
     }).catch(() => {});
@@ -5342,7 +5472,7 @@ function renderNotificationsModalList() {
   const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const items = [];
 
-  const nextShift = (currentTasks || [])[0];
+  const nextShift = deduplicateTasks(currentTasks || [])[0];
   if (nextShift) {
     const occupied = Array.from(new Set([...(nextShift.joinedMembers || []), ...(nextShift.assignedMembers || [])]));
     const isMine = Boolean(uid && occupied.includes(uid));
@@ -5809,8 +5939,7 @@ function renderProfileData() {
   safeSetText('card-mssv', studentCode);
 
   safeSetText('stat-shifts', String(stats.shiftsCount));
-  safeSetText('stat-efficiency', stats.onTimeText);
-  safeSetText('stat-rating', stats.gradeText);
+  safeSetText('stat-activities', String(stats.activitiesCount));
 
   safeSetText('display-fullname', currentUser.hoTen || '');
   safeSetText('display-studentId', studentCode);
@@ -5844,7 +5973,7 @@ function renderProfileData() {
   safeSetText('settings-role-kicker', isAdmin ? 'ĐIỀU PHỐI VIÊN' : String(currentUser.boMon || 'HỘI VIÊN CLB').toUpperCase());
   safeSetText('settings-name', currentUser.hoTen || 'Thành viên CLB');
   safeSetText('settings-submeta', `MSSV: ${studentCode} • ${currentUser.lop || 'UHD'}`);
-  safeSetText('settings-grade-badge', stats.gradeText);
+  safeSetText('settings-grade-badge', `${stats.shiftsCount} ca · ${stats.activitiesCount} SH`);
 
   const hasCustomPass = localStorage.getItem('CLB_USER_PASS_' + currentUser.id) !== null;
   safeSetText('password-status-desc', hasCustomPass ? 'Đã thiết lập mật khẩu riêng' : 'Đang dùng mật khẩu mặc định (123456)');
@@ -5934,17 +6063,20 @@ function renderMembersModalList() {
 
   const q = (document.getElementById('iptSearchMembers')?.value || '').trim().toLowerCase();
   const visible = uniqueList.filter((m) => {
-    if (currentDirDeptFilter !== 'ALL' && m.boMon !== currentDirDeptFilter) return false;
+    const inDept = currentDirDeptFilter === 'ALL' || m.boMon === currentDirDeptFilter || (Array.isArray(m.cacBan) && m.cacBan.includes(currentDirDeptFilter));
+    if (!inDept) return false;
     if (!q) return true;
     return (
       String(m.hoTen || '').toLowerCase().includes(q) ||
       String(m.id || '').toLowerCase().includes(q) ||
+      getDisplayStudentCode(m).toLowerCase().includes(q) ||
       String(m.lop || '').toLowerCase().includes(q) ||
-      String(m.boMon || '').toLowerCase().includes(q)
+      String(m.boMon || '').toLowerCase().includes(q) ||
+      (Array.isArray(m.cacBan) && m.cacBan.join(' ').toLowerCase().includes(q))
     );
   });
 
-  safeSetText('membersCountBadge', `${visible.length} / ${(membersDirectory || []).length}`);
+  safeSetText('membersCountBadge', `${visible.length} / ${uniqueList.length}`);
 
   if (visible.length === 0) {
     mount(container, el('div', { className: 'empty-card' }, 'Không tìm thấy thành viên phù hợp.'));
@@ -5955,7 +6087,48 @@ function renderMembersModalList() {
   const cards = visible.map((m) => {
     const isMe = currentUser && m.id === currentUser.id;
     const isRoot = m.id === 'DMC0806';
-    const shifts = Number(m.soCaHoanThanh ?? m.soCa ?? 0);
+    const mStats = computeMemberStats(m);
+    const adminControls = isAdmin
+      ? el('div', { className: 'mini-action-grid', style: { width: '100%', paddingTop: '4px', borderTop: '1px solid var(--border-subtle)' } },
+          !isMe
+            ? el('button', {
+                type: 'button',
+                className: `btn-mini ${m.isAdmin ? 'btn-mini-sky' : 'btn-mini-soft'}`,
+                disabled: isRoot,
+                onClick: () => toggleMemberRole(m.id, 'admin')
+              }, m.isAdmin ? 'Admin ✓' : 'Cấp Admin')
+            : null,
+          !isMe
+            ? el('button', {
+                type: 'button',
+                className: `btn-mini ${m.isShiftLeader ? 'btn-mini-emerald' : 'btn-mini-soft'}`,
+                disabled: isRoot,
+                onClick: () => toggleMemberRole(m.id, 'leader')
+              }, m.isShiftLeader ? 'Trưởng ca ✓' : 'Trưởng ca')
+            : null,
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-soft',
+            onClick: () => adjustMemberShiftCount(m.id, 1, 'shift')
+          }, `+1 Trực (${mStats.shiftsCount})`),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-rose',
+            onClick: () => adjustMemberShiftCount(m.id, -1, 'shift')
+          }, '-1 Trực'),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-soft',
+            onClick: () => adjustMemberShiftCount(m.id, 1, 'activity')
+          }, `+1 SH (${mStats.activitiesCount})`),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-rose',
+            onClick: () => adjustMemberShiftCount(m.id, -1, 'activity')
+          }, '-1 SH')
+        )
+      : null;
+
     return el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' }, className: 'member-pill-row' },
       el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '10px' } },
         el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0', flex: '1' } },
@@ -5967,32 +6140,7 @@ function renderMembersModalList() {
         ),
         el('span', { className: 'ready-badge-pill' }, m.status || 'Sẵn sàng')
       ),
-      isAdmin && !isMe
-        ? el('div', { className: 'mini-action-grid', style: { width: '100%', paddingTop: '4px', borderTop: '1px solid var(--border-subtle)' } },
-            el('button', {
-              type: 'button',
-              className: `btn-mini ${m.isAdmin ? 'btn-mini-sky' : 'btn-mini-soft'}`,
-              disabled: isRoot,
-              onClick: () => toggleMemberRole(m.id, 'admin')
-            }, m.isAdmin ? 'Admin ✓' : 'Cấp Admin'),
-            el('button', {
-              type: 'button',
-              className: `btn-mini ${m.isShiftLeader ? 'btn-mini-emerald' : 'btn-mini-soft'}`,
-              disabled: isRoot,
-              onClick: () => toggleMemberRole(m.id, 'leader')
-            }, m.isShiftLeader ? 'Trưởng ca ✓' : 'Trưởng ca'),
-            el('button', {
-              type: 'button',
-              className: 'btn-mini btn-mini-soft',
-              onClick: () => adjustMemberShiftCount(m.id, 1)
-            }, `+1 (${shifts})`),
-            el('button', {
-              type: 'button',
-              className: 'btn-mini btn-mini-rose',
-              onClick: () => adjustMemberShiftCount(m.id, -1)
-            }, '-1')
-          )
-        : null
+      adminControls
     );
   });
 
@@ -6028,6 +6176,7 @@ function closeEditProfileModal() {
 async function saveEditProfileAction() {
   if (!currentUser) return;
   const newName = (document.getElementById('input-fullname')?.value || '').trim();
+  const newStudentCode = (document.getElementById('input-studentId')?.value || '').trim();
   const newFaculty = (document.getElementById('input-faculty')?.value || '').trim();
   const newDob = (document.getElementById('input-dob')?.value || '').trim();
   const newArea = (document.getElementById('input-dutyArea')?.value || '').trim();
@@ -6036,6 +6185,7 @@ async function saveEditProfileAction() {
   const newIce = (document.getElementById('input-ice')?.value || '').trim();
 
   if (newName) currentUser.hoTen = newName;
+  currentUser.studentCode = newStudentCode || currentUser.id;
   if (newFaculty) currentUser.lop = newFaculty;
   if (newDob) currentUser.ngaySinh = newDob;
   if (newArea) currentUser.boMon = newArea;
@@ -6045,6 +6195,7 @@ async function saveEditProfileAction() {
 
   const patch = {
     hoTen: currentUser.hoTen,
+    studentCode: currentUser.studentCode,
     lop: currentUser.lop,
     ngaySinh: currentUser.ngaySinh,
     boMon: currentUser.boMon,
@@ -6054,7 +6205,12 @@ async function saveEditProfileAction() {
   };
 
   for (const m of (membersDirectory || [])) {
-    if (m.id === currentUser.id) Object.assign(m, patch);
+    if (m.id === currentUser.id) {
+      Object.assign(m, patch);
+      if (newArea && Array.isArray(m.cacBan) && !m.cacBan.includes(newArea)) {
+        m.cacBan.push(newArea);
+      }
+    }
   }
 
   saveMemberOverride(currentUser.id, patch);
@@ -6062,9 +6218,14 @@ async function saveEditProfileAction() {
   saveLocalState();
   renderProfileData();
   renderMembersModalList();
+  renderDispatchHub();
   dispatchBackendMutation('UPDATE_PROFILE', {
     memberId: currentUser.id,
+    hoTen: currentUser.hoTen || '',
+    studentCode: currentUser.studentCode || '',
     lop: currentUser.lop || '',
+    boMon: currentUser.boMon || '',
+    chucVu: currentUser.chucVu || '',
     sdt: currentUser.sdt || '',
     ice: currentUser.ice || '',
     yTe: currentUser.yTe || 'Bình thường'
@@ -6326,6 +6487,15 @@ function updateSelectedLeaderCard() {
   safeSetText('leaderPickRole', `${leader.chucVu || 'Trưởng ca'} • ${leader.boMon || 'Ban Điều Hành'}`);
 }
 
+function setTaskCategoryUI(category) {
+  const cat = category === 'activity' ? 'activity' : 'shift';
+  safeSetValue('iptTaskCategory', cat);
+  const bShift = document.getElementById('task-cat-shift');
+  const bAct = document.getElementById('task-cat-activity');
+  if (bShift) bShift.classList.toggle('active', cat === 'shift');
+  if (bAct) bAct.classList.toggle('active', cat === 'activity');
+}
+
 function openCreateShiftModal(taskId = null) {
   if (!currentUser || !currentUser.isAdmin) {
     showToast('Chỉ Admin mới có quyền tạo hoặc chỉnh sửa ca trực.');
@@ -6336,6 +6506,7 @@ function openCreateShiftModal(taskId = null) {
   safeSetText('create-shift-title', existing ? 'Chỉnh sửa ca trực' : 'Tạo ca trực mới');
   safeSetText('btnSubmitTask', existing ? '✓ Lưu cập nhật' : '✓ Tạo ca trực');
   safeSetValue('iptTaskTitle', existing ? existing.title : '');
+  setTaskCategoryUI(existing && existing.category === 'activity' ? 'activity' : 'shift');
 
   const loc = existing ? existing.location : 'SVĐ Trung Tâm';
   safeSetValue('iptTaskLocation', loc);
@@ -6380,6 +6551,7 @@ function closeCreateShiftModal() {
 async function submitCreateShiftAction() {
   if (!currentUser || !currentUser.isAdmin) return;
   const title = (document.getElementById('iptTaskTitle')?.value || '').trim();
+  const category = (document.getElementById('iptTaskCategory')?.value === 'activity') ? 'activity' : 'shift';
   const location = (document.getElementById('iptTaskLocation')?.value || '').trim() || 'SVĐ Trung Tâm';
   const dateStr = (document.getElementById('iptTaskDate')?.value || '').trim();
   const timeRange = (document.getElementById('iptTaskTime')?.value || '').trim().replace(/\s*\([^)]*\)\s*$/, '') || '13:30 - 17:30';
@@ -6406,6 +6578,7 @@ async function submitCreateShiftAction() {
     const existingTask = (currentTasks || []).find(t => t.id === editingTaskId);
     if (existingTask) {
       existingTask.title = title;
+      existingTask.category = category;
       existingTask.location = location;
       existingTask.timeRange = timeRange;
       existingTask.time = timeFull;
@@ -6419,9 +6592,10 @@ async function submitCreateShiftAction() {
   }
 
   if (!savedTask) {
-    savedTask = {
+    savedTask = normalizeTask({
       id: 'TASK_' + Date.now(),
       title,
+      category,
       location,
       timeRange,
       time: timeFull,
@@ -6437,9 +6611,10 @@ async function submitCreateShiftAction() {
       notes,
       status: 'active',
       localCreatedAt: Date.now()
-    };
+    });
     currentTasks.unshift(savedTask);
   }
+  currentScanTargetTaskId = savedTask.id;
 
   saveLocalState();
   syncTaskToBackend(savedTask);
@@ -6601,11 +6776,9 @@ function renderDispatchHub() {
   const uid = currentUser ? currentUser.id : '';
   const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const shiftCards = list.map((t) => {
-    const occupied = Array.from(new Set([...(t.joinedMembers || []), ...(t.assignedMembers || [])]));
-    const quota = Number(t.quota) || 4;
+    const { occupied, quota, isMine, isChecked } = getTaskOccupancy(t, uid);
     const progress = Math.min(1, occupied.length / quota);
-    const isMine = uid && occupied.includes(uid);
-    const isChecked = uid && (t.checkedInMembers || []).includes(uid);
+    const catLabel = t.category === 'activity' ? 'Ca sinh hoạt' : 'Ca trực';
 
     const actions = [];
     if (isChecked) actions.push(el('button', { type: 'button', className: 'btn-mini btn-mini-emerald', disabled: true }, 'Đã điểm danh'));
@@ -6621,7 +6794,10 @@ function renderDispatchHub() {
     }
 
     return el('article', { className: 'dispatch-card' },
-      el('div', { className: 'font-mono', style: { fontSize: '10.5px', color: '#0369a1', fontWeight: '600' } }, `${t.id} · ${occupied.length}/${quota} nhân sự`),
+      el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
+        el('span', { className: 'font-mono', style: { fontSize: '10.5px', color: '#0369a1', fontWeight: '600' } }, `${t.id} · ${occupied.length}/${quota} nhân sự`),
+        el('span', { className: t.category === 'activity' ? 'ready-badge-pill' : 'role-pill-badge' }, catLabel)
+      ),
       el('div', { style: { fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)' } }, t.title),
       el('div', { className: 'shift-progress-track' }, el('div', { className: 'shift-progress-fill', style: { '--progress': String(progress) } })),
       el('div', { style: { fontSize: '12px', color: 'var(--text-secondary)' } }, `${t.location} · ${t.time}`),
@@ -6638,10 +6814,18 @@ function applySwapApproval(swap) {
   if (task) {
     task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
     task.assignedMembers = (task.assignedMembers || []).filter(id => id !== swap.fromId);
+    task.waitlist = Array.isArray(task.waitlist) ? task.waitlist : [];
     if (swap.toId && !swap.toId.startsWith('CA_')) {
       const targetExists = (membersDirectory || []).some(m => m && m.id === swap.toId);
       if (targetExists && !task.joinedMembers.includes(swap.toId) && !task.assignedMembers.includes(swap.toId)) {
         task.joinedMembers.push(swap.toId);
+        task.waitlist = task.waitlist.filter(id => id !== swap.toId);
+      }
+    } else {
+      const { occupied, quota } = getTaskOccupancy(task);
+      if (task.waitlist.length > 0 && occupied.length < quota) {
+        const promoted = task.waitlist.shift();
+        if (promoted && !task.joinedMembers.includes(promoted)) task.joinedMembers.push(promoted);
       }
     }
     syncTaskToBackend(task);
@@ -6659,25 +6843,11 @@ function applyLeaveApproval(leave) {
 
     if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(leave.memberId)) {
       task.checkedInMembers = task.checkedInMembers.filter(id => id !== leave.memberId);
-      for (const m of (membersDirectory || [])) {
-        if (m.id === leave.memberId) {
-          const next = Math.max(0, (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) - 1);
-          m.soCaHoanThanh = next;
-          m.soCa = next;
-          saveMemberOverride(leave.memberId, { soCaHoanThanh: next, soCa: next });
-        }
-      }
-      if (currentUser && currentUser.id === leave.memberId) {
-        const nextCur = Math.max(0, (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0)) - 1);
-        currentUser.soCaHoanThanh = nextCur;
-        currentUser.soCa = nextCur;
-        saveMemberOverride(leave.memberId, { soCaHoanThanh: nextCur, soCa: nextCur });
-        persistUserSession(currentUser);
-      }
+      adjustMemberCounter(leave.memberId, task.category === 'activity' ? 'activity' : 'shift', -1);
     }
 
-    const quota = Number(task.quota) || 4;
-    if (task.waitlist.length > 0 && (task.joinedMembers.length + task.assignedMembers.length) < quota) {
+    const { occupied, quota } = getTaskOccupancy(task);
+    if (task.waitlist.length > 0 && occupied.length < quota) {
       const promoted = task.waitlist.shift();
       if (promoted && !task.joinedMembers.includes(promoted)) {
         task.joinedMembers.push(promoted);
@@ -6829,11 +6999,14 @@ function deleteShiftDirect(taskId) {
 function populateScanTaskSelector() {
   const sel = document.getElementById('selScanTaskId');
   if (!sel) return;
-  const prev = sel.value;
-  const opts = (currentTasks || []).map(t => el('option', { value: t.id }, `${t.id} — ${t.title}`));
+  const preferred = currentScanTargetTaskId || sel.value;
+  const activeTasks = deduplicateTasks(currentTasks || []);
+  const opts = activeTasks.map(t => el('option', { value: t.id }, `${t.id} — ${t.title}`));
   mount(sel, opts);
-  if (prev && (currentTasks || []).some(t => t.id === prev)) {
-    sel.value = prev;
+  if (preferred && activeTasks.some(t => t.id === preferred)) {
+    sel.value = preferred;
+  } else if (sel.options.length > 0) {
+    currentScanTargetTaskId = sel.options[0].value;
   }
 }
 
@@ -6881,15 +7054,12 @@ function cancelMemberRequest(kind, reqId) {
 
 function renderMissionSheetPanels(preselectTaskId = null) {
   const uid = currentUser ? currentUser.id : '';
+  const activeTasks = deduplicateTasks(currentTasks || []);
   const listBox = document.getElementById('mission-panel-shifts');
   if (listBox) {
-    const cards = (currentTasks || []).map((t) => {
-      const occupied = Array.from(new Set([...(t.joinedMembers || []), ...(t.assignedMembers || [])]));
-      const quota = Number(t.quota) || 4;
-      const isFull = occupied.length >= quota;
-      const isMine = Boolean(uid && occupied.includes(uid));
-      const isChecked = Boolean(uid && (t.checkedInMembers || []).includes(uid));
-      const isWaitlisted = Boolean(uid && (t.waitlist || []).includes(uid));
+    const cards = activeTasks.map((t) => {
+      const { occupied, quota, isFull, isMine, isChecked, isWaitlisted } = getTaskOccupancy(t, uid);
+      const catLabel = t.category === 'activity' ? 'Ca sinh hoạt' : 'Ca trực';
 
       let footerNode = null;
       if (isChecked) {
@@ -6926,7 +7096,10 @@ function renderMissionSheetPanels(preselectTaskId = null) {
       }
 
       return el('div', { className: 'dispatch-card' },
-        el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, t.title),
+        el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
+          el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, t.title),
+          el('span', { className: t.category === 'activity' ? 'ready-badge-pill' : 'role-pill-badge' }, catLabel)
+        ),
         el('div', { style: { fontSize: '12px', color: 'var(--text-secondary)' } }, `${t.location} · ${t.time} (${occupied.length}/${quota})`),
         footerNode
       );
@@ -6934,10 +7107,7 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     mount(listBox, cards.length ? cards : el('div', { className: 'empty-card' }, 'Chưa có ca trực khả dụng.'));
   }
 
-  const myTasks = (currentTasks || []).filter(t => {
-    const occupied = [...(t.joinedMembers || []), ...(t.assignedMembers || [])];
-    return uid && occupied.includes(uid);
-  });
+  const myTasks = activeTasks.filter(t => getTaskOccupancy(t, uid).isMine);
 
   const selTask = document.getElementById('selMissionTaskId');
   const btnSwap = document.getElementById('btnSubmitMemberSwap');
@@ -7095,35 +7265,27 @@ function toggleMemberRole(memberId, roleType) {
   showToast(`Đã cập nhật quyền cho ${target.hoTen}.`);
 }
 
-function adjustMemberShiftCount(memberId, delta) {
+function adjustMemberShiftCount(memberId, delta, metric = 'shift') {
   if (!currentUser || !currentUser.isAdmin) {
     showToast('Chỉ Quản trị viên mới được điều chỉnh số ca.');
     return;
   }
-  let nextVal = 0;
-  for (const m of (membersDirectory || [])) {
-    if (m.id === memberId) {
-      nextVal = Math.max(0, (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) + delta);
-      m.soCaHoanThanh = nextVal;
-      m.soCa = nextVal;
-      saveMemberOverride(memberId, { soCaHoanThanh: nextVal, soCa: nextVal });
-    }
-  }
+  const kind = metric === 'activity' ? 'activity' : 'shift';
+  adjustMemberCounter(memberId, kind, delta);
   if (currentUser && currentUser.id === memberId) {
-    currentUser.soCaHoanThanh = nextVal;
-    currentUser.soCa = nextVal;
-    persistUserSession(currentUser);
     renderProfileData();
   }
   dispatchBackendMutation('SHIFT_ADJUST', {
     memberId,
     delta,
-    reason: 'Điều chỉnh trực tiếp',
+    metric: kind,
+    reason: kind === 'activity' ? 'Điều chỉnh số ca sinh hoạt' : 'Điều chỉnh số ca trực',
     adminActorId: currentUser.id
   });
   saveLocalState();
   renderMembersModalList();
-  showToast(`Đã điều chỉnh ${delta > 0 ? '+1' : '-1'} ca cho ${memberId}.`);
+  const label = kind === 'activity' ? 'ca sinh hoạt' : 'ca trực';
+  showToast(`Đã điều chỉnh ${delta > 0 ? '+1' : '-1'} ${label} cho ${memberId}.`);
 }
 
 // === app.js ===
@@ -7163,15 +7325,6 @@ function bindUiListeners() {
     activeQrTaskId = e.target.value;
     updateQrPassDisplay();
   });
-
-  // Performance Stats -> Role-accurate Triggers
-  const openShiftHubByRole = () => {
-    if (currentUser && currentUser.isAdmin) openApproveShiftModal('shifts');
-    else openTaskMissionModal('shifts');
-  };
-  on('stat-shifts-btn', 'click', openShiftHubByRole);
-  on('stat-efficiency-btn', 'click', openShiftHubByRole);
-  on('stat-rating-btn', 'click', () => openEditProfileModal());
 
   // Role-Locked Quick Actions
   on('admin-create-shift-btn', 'click', () => openCreateShiftModal(null));
@@ -7224,6 +7377,8 @@ function bindUiListeners() {
   // Create Shift Modal
   on('create-shift-close', 'click', closeCreateShiftModal);
   on('create-shift-cancel', 'click', closeCreateShiftModal);
+  on('task-cat-shift', 'click', () => setTaskCategoryUI('shift'));
+  on('task-cat-activity', 'click', () => setTaskCategoryUI('activity'));
   on('btnAddDeptQuotaRow', 'click', addDeptQuotaRow);
   on('selTaskLeader', 'change', (e) => {
     selectedShiftLeaderId = e.target.value;
@@ -7247,7 +7402,10 @@ function bindUiListeners() {
   on('approve-tab-shifts', 'click', () => switchApproveTab('shifts'));
   on('approve-tab-scanner', 'click', () => switchApproveTab('scanner'));
   on('btnApproveAllRequests', 'click', approveAllPendingRequests);
-  on('selScanTaskId', 'change', renderScannerCheckedInList);
+  on('selScanTaskId', 'change', (e) => {
+    currentScanTargetTaskId = e.target.value;
+    renderScannerCheckedInList();
+  });
   on('btnStartCameraScan', 'click', () => startQrScanner());
   on('btnSwitchCameraScan', 'click', toggleCameraFacing);
   on('btnTorchCameraScan', 'click', toggleTorchFlash);

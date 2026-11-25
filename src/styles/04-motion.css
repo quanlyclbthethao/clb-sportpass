@@ -158,7 +158,6 @@ body:has(dialog[open]) .hero-card-aquamorphic .ping-ring {
 
 .stat-anim-1 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 200ms both; }
 .stat-anim-2 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 280ms both; }
-.stat-anim-3 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 360ms both; }
 
 .qr-holo-card {
   animation: qrHoloGlow 3.5s ease-in-out infinite;
@@ -264,7 +263,6 @@ dialog.sp-center-dialog[open] .check-draw-path {
   .anim-stagger-3,
   .stat-anim-1,
   .stat-anim-2,
-  .stat-anim-3,
   .qr-holo-card,
   .ping-ring,
   .tab-pane-anim,

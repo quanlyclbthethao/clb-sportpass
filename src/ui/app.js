@@ -35,15 +35,6 @@ function bindUiListeners() {
     updateQrPassDisplay();
   });
 
-  // Performance Stats -> Role-accurate Triggers
-  const openShiftHubByRole = () => {
-    if (currentUser && currentUser.isAdmin) openApproveShiftModal('shifts');
-    else openTaskMissionModal('shifts');
-  };
-  on('stat-shifts-btn', 'click', openShiftHubByRole);
-  on('stat-efficiency-btn', 'click', openShiftHubByRole);
-  on('stat-rating-btn', 'click', () => openEditProfileModal());
-
   // Role-Locked Quick Actions
   on('admin-create-shift-btn', 'click', () => openCreateShiftModal(null));
   on('admin-approve-btn', 'click', () => openApproveShiftModal('swap'));
@@ -95,6 +86,8 @@ function bindUiListeners() {
   // Create Shift Modal
   on('create-shift-close', 'click', closeCreateShiftModal);
   on('create-shift-cancel', 'click', closeCreateShiftModal);
+  on('task-cat-shift', 'click', () => setTaskCategoryUI('shift'));
+  on('task-cat-activity', 'click', () => setTaskCategoryUI('activity'));
   on('btnAddDeptQuotaRow', 'click', addDeptQuotaRow);
   on('selTaskLeader', 'change', (e) => {
     selectedShiftLeaderId = e.target.value;
@@ -118,7 +111,10 @@ function bindUiListeners() {
   on('approve-tab-shifts', 'click', () => switchApproveTab('shifts'));
   on('approve-tab-scanner', 'click', () => switchApproveTab('scanner'));
   on('btnApproveAllRequests', 'click', approveAllPendingRequests);
-  on('selScanTaskId', 'change', renderScannerCheckedInList);
+  on('selScanTaskId', 'change', (e) => {
+    currentScanTargetTaskId = e.target.value;
+    renderScannerCheckedInList();
+  });
   on('btnStartCameraScan', 'click', () => startQrScanner());
   on('btnSwitchCameraScan', 'click', toggleCameraFacing);
   on('btnTorchCameraScan', 'click', toggleTorchFlash);

@@ -1,14 +1,4 @@
-// SportPass V8.6 — Security, Auth Session Lifecycle, WebAuthn Passkey & Strict Password Enforcement
-
-function escapeHtml(str) {
-  if (str === undefined || str === null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+// SportPass V8.7 — Security, Auth Session Lifecycle, WebAuthn Passkey & Strict Password Enforcement
 
 function isAuthorizedScanner(user = currentUser) {
   if (!user) return false;
@@ -35,22 +25,17 @@ function findLocalMemberByIdentifier(identifier) {
   if (!cleanIdent) return null;
   const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
 
-  let matched = null;
   for (const m of (membersDirectory || [])) {
     if (!m) continue;
     const mId = String(m.id || '').trim().toLowerCase();
+    const mStudentCode = String(m.studentCode || '').trim().toLowerCase();
     const mName = String(m.hoTen || '').trim().toLowerCase();
     const mPhone = String(m.sdt || '').replace(/[^0-9]/g, '');
-    if (mId === cleanIdent || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
-      if (!matched) {
-        matched = structuredClone(m);
-      } else {
-        matched.isAdmin = matched.isAdmin || m.isAdmin;
-        matched.isShiftLeader = matched.isShiftLeader || m.isShiftLeader;
-      }
+    if (mId === cleanIdent || (mStudentCode && mStudentCode === cleanIdent) || mName === cleanIdent || (cleanPhone.length >= 9 && mPhone === cleanPhone)) {
+      return structuredClone(m);
     }
   }
-  return matched;
+  return null;
 }
 
 function togglePasswordVisibility() {
@@ -89,12 +74,25 @@ function persistUserSession(userObj) {
   }
 }
 
+function activateAuthenticatedSession() {
+  showMainAppView();
+  renderProfileData();
+  renderDispatchHub();
+  renderMembersModalList();
+  renderNotificationsModalList();
+  updateQrPassDisplay();
+  autoEnableBackgroundNotifications();
+  restartAdaptivePolling();
+  syncRealtimeData();
+}
+
 function checkStoredLoginSession() {
+  membersDirectory = normalizeMembersDirectory(typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY : []);
+  applyMemberOverrides(membersDirectory);
+
   const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');
   const sessionCached = sessionStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const localCached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
-  const dataCache = localStorage.getItem('CLB_SPORTPASS_DATA_CACHE');
-
   const isRemembered = rememberFlag === 'true';
   const activeSessionJson = sessionCached || (isRemembered ? localCached : null);
 
@@ -103,37 +101,18 @@ function checkStoredLoginSession() {
 
   if (activeSessionJson) {
     try {
-      currentUser = JSON.parse(activeSessionJson);
-      window.currentUser = currentUser;
-      const deletedTasks = getDeletedTaskIds();
-      if (dataCache) {
-        const parsed = JSON.parse(dataCache);
-        const rawTasks = (parsed.currentTasks && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
-        currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
-        currentSwaps = (parsed.currentSwaps && parsed.currentSwaps.length) ? parsed.currentSwaps : DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
-        currentLeaves = (parsed.currentLeaves && parsed.currentLeaves.length) ? parsed.currentLeaves : DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
-        offlineMutationQueue = parsed.offlineMutationQueue || [];
-      } else {
-        membersDirectory = DEFAULT_MEMBERS_DIRECTORY.slice();
-        currentTasks = deduplicateTasks(DEFAULT_TASKS);
-        currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
-        currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
+      currentUser = normalizeMember(JSON.parse(activeSessionJson));
+      if (currentUser) {
+        window.currentUser = currentUser;
+        hydrateLocalStateFromCache();
+        applyMemberOverrides(membersDirectory);
+        activateAuthenticatedSession();
+        return;
       }
-
-      applyMemberOverrides(membersDirectory);
-      showMainAppView();
-      renderProfileData();
-      renderDispatchHub();
-      renderMembersModalList();
-      renderNotificationsModalList();
-      updateQrPassDisplay();
-      autoEnableBackgroundNotifications();
-      restartAdaptivePolling();
-      syncRealtimeData();
-      return;
     } catch (e) {}
   }
 
+  hydrateLocalStateFromCache();
   showLoginView();
 }
 
@@ -155,7 +134,8 @@ function fallbackOfflineLogin(user, pass, remember) {
 }
 
 function completeUserLogin(memberObj, remember) {
-  currentUser = structuredClone(memberObj);
+  currentUser = normalizeMember(memberObj);
+  hydrateLocalStateFromCache();
   applyMemberOverrides(membersDirectory);
   window.currentUser = currentUser;
 
@@ -170,18 +150,7 @@ function completeUserLogin(memberObj, remember) {
     localStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');
   }
 
-  const deletedTasks = getDeletedTaskIds();
-  currentTasks = deduplicateTasks((currentTasks.length ? currentTasks : DEFAULT_TASKS).filter(t => t && !deletedTasks.includes(t.id)));
-
-  showMainAppView();
-  renderProfileData();
-  renderDispatchHub();
-  renderMembersModalList();
-  renderNotificationsModalList();
-  updateQrPassDisplay();
-  autoEnableBackgroundNotifications();
-  restartAdaptivePolling();
-  syncRealtimeData();
+  activateAuthenticatedSession();
   triggerHaptic('success');
   showToast('Đăng nhập thành công: ' + currentUser.hoTen);
 }
@@ -318,6 +287,10 @@ async function handleBiometricLogin(methodLabel) {
 }
 
 function executeLogoutAction() {
+  if (currentSyncPollTimer) {
+    clearInterval(currentSyncPollTimer);
+    currentSyncPollTimer = null;
+  }
   localStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');
   localStorage.removeItem('CLB_REMEMBER_LOGIN');
   sessionStorage.removeItem('CLB_SPORTPASS_AUTH_SESSION');

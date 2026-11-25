@@ -82,8 +82,7 @@ function renderProfileData() {
   safeSetText('card-mssv', studentCode);
 
   safeSetText('stat-shifts', String(stats.shiftsCount));
-  safeSetText('stat-efficiency', stats.onTimeText);
-  safeSetText('stat-rating', stats.gradeText);
+  safeSetText('stat-activities', String(stats.activitiesCount));
 
   safeSetText('display-fullname', currentUser.hoTen || '');
   safeSetText('display-studentId', studentCode);
@@ -117,7 +116,7 @@ function renderProfileData() {
   safeSetText('settings-role-kicker', isAdmin ? 'ĐIỀU PHỐI VIÊN' : String(currentUser.boMon || 'HỘI VIÊN CLB').toUpperCase());
   safeSetText('settings-name', currentUser.hoTen || 'Thành viên CLB');
   safeSetText('settings-submeta', `MSSV: ${studentCode} • ${currentUser.lop || 'UHD'}`);
-  safeSetText('settings-grade-badge', stats.gradeText);
+  safeSetText('settings-grade-badge', `${stats.shiftsCount} ca · ${stats.activitiesCount} SH`);
 
   const hasCustomPass = localStorage.getItem('CLB_USER_PASS_' + currentUser.id) !== null;
   safeSetText('password-status-desc', hasCustomPass ? 'Đã thiết lập mật khẩu riêng' : 'Đang dùng mật khẩu mặc định (123456)');
@@ -207,17 +206,20 @@ function renderMembersModalList() {
 
   const q = (document.getElementById('iptSearchMembers')?.value || '').trim().toLowerCase();
   const visible = uniqueList.filter((m) => {
-    if (currentDirDeptFilter !== 'ALL' && m.boMon !== currentDirDeptFilter) return false;
+    const inDept = currentDirDeptFilter === 'ALL' || m.boMon === currentDirDeptFilter || (Array.isArray(m.cacBan) && m.cacBan.includes(currentDirDeptFilter));
+    if (!inDept) return false;
     if (!q) return true;
     return (
       String(m.hoTen || '').toLowerCase().includes(q) ||
       String(m.id || '').toLowerCase().includes(q) ||
+      getDisplayStudentCode(m).toLowerCase().includes(q) ||
       String(m.lop || '').toLowerCase().includes(q) ||
-      String(m.boMon || '').toLowerCase().includes(q)
+      String(m.boMon || '').toLowerCase().includes(q) ||
+      (Array.isArray(m.cacBan) && m.cacBan.join(' ').toLowerCase().includes(q))
     );
   });
 
-  safeSetText('membersCountBadge', `${visible.length} / ${(membersDirectory || []).length}`);
+  safeSetText('membersCountBadge', `${visible.length} / ${uniqueList.length}`);
 
   if (visible.length === 0) {
     mount(container, el('div', { className: 'empty-card' }, 'Không tìm thấy thành viên phù hợp.'));
@@ -228,7 +230,48 @@ function renderMembersModalList() {
   const cards = visible.map((m) => {
     const isMe = currentUser && m.id === currentUser.id;
     const isRoot = m.id === 'DMC0806';
-    const shifts = Number(m.soCaHoanThanh ?? m.soCa ?? 0);
+    const mStats = computeMemberStats(m);
+    const adminControls = isAdmin
+      ? el('div', { className: 'mini-action-grid', style: { width: '100%', paddingTop: '4px', borderTop: '1px solid var(--border-subtle)' } },
+          !isMe
+            ? el('button', {
+                type: 'button',
+                className: `btn-mini ${m.isAdmin ? 'btn-mini-sky' : 'btn-mini-soft'}`,
+                disabled: isRoot,
+                onClick: () => toggleMemberRole(m.id, 'admin')
+              }, m.isAdmin ? 'Admin ✓' : 'Cấp Admin')
+            : null,
+          !isMe
+            ? el('button', {
+                type: 'button',
+                className: `btn-mini ${m.isShiftLeader ? 'btn-mini-emerald' : 'btn-mini-soft'}`,
+                disabled: isRoot,
+                onClick: () => toggleMemberRole(m.id, 'leader')
+              }, m.isShiftLeader ? 'Trưởng ca ✓' : 'Trưởng ca')
+            : null,
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-soft',
+            onClick: () => adjustMemberShiftCount(m.id, 1, 'shift')
+          }, `+1 Trực (${mStats.shiftsCount})`),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-rose',
+            onClick: () => adjustMemberShiftCount(m.id, -1, 'shift')
+          }, '-1 Trực'),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-soft',
+            onClick: () => adjustMemberShiftCount(m.id, 1, 'activity')
+          }, `+1 SH (${mStats.activitiesCount})`),
+          el('button', {
+            type: 'button',
+            className: 'btn-mini btn-mini-rose',
+            onClick: () => adjustMemberShiftCount(m.id, -1, 'activity')
+          }, '-1 SH')
+        )
+      : null;
+
     return el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' }, className: 'member-pill-row' },
       el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '10px' } },
         el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0', flex: '1' } },
@@ -240,32 +283,7 @@ function renderMembersModalList() {
         ),
         el('span', { className: 'ready-badge-pill' }, m.status || 'Sẵn sàng')
       ),
-      isAdmin && !isMe
-        ? el('div', { className: 'mini-action-grid', style: { width: '100%', paddingTop: '4px', borderTop: '1px solid var(--border-subtle)' } },
-            el('button', {
-              type: 'button',
-              className: `btn-mini ${m.isAdmin ? 'btn-mini-sky' : 'btn-mini-soft'}`,
-              disabled: isRoot,
-              onClick: () => toggleMemberRole(m.id, 'admin')
-            }, m.isAdmin ? 'Admin ✓' : 'Cấp Admin'),
-            el('button', {
-              type: 'button',
-              className: `btn-mini ${m.isShiftLeader ? 'btn-mini-emerald' : 'btn-mini-soft'}`,
-              disabled: isRoot,
-              onClick: () => toggleMemberRole(m.id, 'leader')
-            }, m.isShiftLeader ? 'Trưởng ca ✓' : 'Trưởng ca'),
-            el('button', {
-              type: 'button',
-              className: 'btn-mini btn-mini-soft',
-              onClick: () => adjustMemberShiftCount(m.id, 1)
-            }, `+1 (${shifts})`),
-            el('button', {
-              type: 'button',
-              className: 'btn-mini btn-mini-rose',
-              onClick: () => adjustMemberShiftCount(m.id, -1)
-            }, '-1')
-          )
-        : null
+      adminControls
     );
   });
 
@@ -301,6 +319,7 @@ function closeEditProfileModal() {
 async function saveEditProfileAction() {
   if (!currentUser) return;
   const newName = (document.getElementById('input-fullname')?.value || '').trim();
+  const newStudentCode = (document.getElementById('input-studentId')?.value || '').trim();
   const newFaculty = (document.getElementById('input-faculty')?.value || '').trim();
   const newDob = (document.getElementById('input-dob')?.value || '').trim();
   const newArea = (document.getElementById('input-dutyArea')?.value || '').trim();
@@ -309,6 +328,7 @@ async function saveEditProfileAction() {
   const newIce = (document.getElementById('input-ice')?.value || '').trim();
 
   if (newName) currentUser.hoTen = newName;
+  currentUser.studentCode = newStudentCode || currentUser.id;
   if (newFaculty) currentUser.lop = newFaculty;
   if (newDob) currentUser.ngaySinh = newDob;
   if (newArea) currentUser.boMon = newArea;
@@ -318,6 +338,7 @@ async function saveEditProfileAction() {
 
   const patch = {
     hoTen: currentUser.hoTen,
+    studentCode: currentUser.studentCode,
     lop: currentUser.lop,
     ngaySinh: currentUser.ngaySinh,
     boMon: currentUser.boMon,
@@ -327,7 +348,12 @@ async function saveEditProfileAction() {
   };
 
   for (const m of (membersDirectory || [])) {
-    if (m.id === currentUser.id) Object.assign(m, patch);
+    if (m.id === currentUser.id) {
+      Object.assign(m, patch);
+      if (newArea && Array.isArray(m.cacBan) && !m.cacBan.includes(newArea)) {
+        m.cacBan.push(newArea);
+      }
+    }
   }
 
   saveMemberOverride(currentUser.id, patch);
@@ -335,9 +361,14 @@ async function saveEditProfileAction() {
   saveLocalState();
   renderProfileData();
   renderMembersModalList();
+  renderDispatchHub();
   dispatchBackendMutation('UPDATE_PROFILE', {
     memberId: currentUser.id,
+    hoTen: currentUser.hoTen || '',
+    studentCode: currentUser.studentCode || '',
     lop: currentUser.lop || '',
+    boMon: currentUser.boMon || '',
+    chucVu: currentUser.chucVu || '',
     sdt: currentUser.sdt || '',
     ice: currentUser.ice || '',
     yTe: currentUser.yTe || 'Bình thường'

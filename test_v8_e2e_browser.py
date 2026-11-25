@@ -14,7 +14,7 @@ if sys.platform == 'win32':
 BASE_DIR = Path(__file__).resolve().parent
 INDEX_URL = (BASE_DIR / 'index.html').as_uri()
 AUDITOR_DIR = Path(r'C:\Users\Admin\.gemini\config\skills\omni-app-studio\scripts')
-SHOTS_DIR = Path(r'C:\Users\Admin\.gemini\antigravity\brain\f504c5bf-4fbe-4426-a4f4-b601c663d25d\shots_v86')
+SHOTS_DIR = Path(r'C:\Users\Admin\.gemini\antigravity\brain\43faf2f5-110e-4b39-a9e0-3003b477edc9\shots_v87')
 
 sys.path.insert(0, str(AUDITOR_DIR))
 from live_dom_auditor import DOM_PROBE_JS, VIEWPORTS  # noqa: E402
@@ -114,21 +114,52 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         self.assertTrue(page.is_visible('#quick-actions-admin'))
         self.assertFalse(page.is_visible('#quick-actions-member'))
 
-        # 2. Members directory modal
+        # Verify stats card has 2 non-clickable metrics (no links) & no duplicate '+' on Tạo ca trực
+        self.assertEqual(page.text_content('#admin-create-shift-btn').strip(), 'Tạo ca trực')
+        self.assertEqual(page.locator('.stats-glass-card button, .stats-glass-card a').count(), 0)
+        self.assertEqual(page.locator('.stats-glass-card .stat-lbl').all_text_contents(), ['Số ca hoàn thành', 'Số ca sinh hoạt'])
+        page.click('#stat-shifts')
+        page.click('#stat-activities')
+        page.wait_for_timeout(150)
+        self.assertEqual(page.locator('dialog[open]').count(), 0)
+
+        # Verify hero card name has vertical padding so Vietnamese stacked diacritics are never clipped
+        h1_metrics = page.evaluate('''() => {
+            const h1 = document.getElementById('card-heading');
+            const cs = getComputedStyle(h1);
+            return {
+                paddingTop: parseFloat(cs.paddingTop),
+                lineHeightRatio: parseFloat(cs.lineHeight) / parseFloat(cs.fontSize)
+            };
+        }''')
+        self.assertGreaterEqual(h1_metrics['paddingTop'], 3.0)
+        self.assertGreaterEqual(h1_metrics['lineHeightRatio'], 1.38)
+
+        # 2. Members directory modal (merged 118 unique members + multi-dept filter + boundary counter test)
         page.click('#members-trigger')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#members-modal', 'el => el.open'))
         self.assertIn('Đỗ Mạnh Cường (Bạn)', page.text_content('#membersModalList'))
-        self.assertIn('/ 125', page.text_content('#membersCountBadge'))
+        self.assertIn('/ 118', page.text_content('#membersCountBadge'))
+        page.locator('#membersDeptFilterBar button:has-text("Truyền Thông")').click()
+        page.wait_for_timeout(120)
+        self.assertIn('Tào Thị Tuyết Linh', page.text_content('#membersModalList'))
+        page.locator('#membersDeptFilterBar button:has-text("Tất cả")').click()
+        page.wait_for_timeout(120)
+        # Boundary test: decrementing at 0 never goes negative
+        page.locator('#membersModalList button:has-text("-1 SH")').first.click()
+        page.wait_for_timeout(120)
+        self.assertEqual(page.text_content('#stat-activities').strip(), '0')
         page.screenshot(path=str(SHOTS_DIR / '02_members_modal.png'))
         page.click('#members-modal-close')
         page.wait_for_timeout(320)
 
-        # 3. Edit profile persists across full page reload
+        # 3. Edit profile (including editable MSSV) persists across full page reload & works for login/search
         page.click('#edit-profile-trigger')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#edit-profile-modal', 'el => el.open'))
-        self.assertTrue(page.eval_on_selector('#input-studentId', 'el => el.readOnly'))
+        self.assertFalse(page.eval_on_selector('#input-studentId', 'el => el.readOnly'))
+        page.fill('#input-studentId', '21103100806')
         page.fill('#input-faculty', 'K13.GDTC-PRO')
         page.fill('#input-phone', '0987654321')
         page.fill('#input-ice', '0911222333 <img src=x onerror=alert(1)>')
@@ -137,6 +168,8 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.wait_for_timeout(520)
         self.assertTrue(page.eval_on_selector('#success-celebration-modal', 'el => el.open'))
         self.assertIn('<img src=x', page.text_content('#display-ice'))
+        self.assertEqual(page.text_content('#card-mssv').strip(), '21103100806')
+        self.assertEqual(page.text_content('#display-studentId').strip(), '21103100806')
         page.screenshot(path=str(SHOTS_DIR / '04_celebration_profile_popup.png'))
         page.click('#celebration-confirm-btn')
         page.wait_for_timeout(320)
@@ -144,16 +177,22 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.reload(wait_until='domcontentloaded')
         page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
         page.wait_for_timeout(350)
+        self.assertEqual(page.text_content('#display-studentId').strip(), '21103100806')
+        self.assertEqual(page.text_content('#card-mssv').strip(), '21103100806')
         self.assertEqual(page.text_content('#display-phone').strip(), '0987654321')
         self.assertEqual(page.text_content('#display-faculty').strip(), 'K13.GDTC-PRO')
+        page.locator('#hero-interactive-card').screenshot(path=str(SHOTS_DIR / '01b_hero_card_admin_accents.png'))
 
-        # 4. Create shift modal (dept select + leader select + clean time on edit)
+        # 4. Create shift modal (unique leader options + Ca sinh hoạt category + clean time on edit)
         page.click('#admin-create-shift-btn')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#create-shift-modal', 'el => el.open'))
+        leader_vals = page.eval_on_selector_all('#selTaskLeader option', 'opts => opts.map(o => o.value)')
+        self.assertEqual(len(leader_vals), len(set(leader_vals)), f'Duplicate leader options: {leader_vals}')
         self.assertEqual(page.input_value('#iptTaskLocation'), 'SVĐ Trung Tâm')
         self.assertEqual(page.input_value('#iptTaskTime'), '13:30 - 17:30')
-        page.fill('#iptTaskTitle', 'Giải Bóng Đá Tứ Hùng Sinh Viên UHD')
+        page.fill('#iptTaskTitle', 'Sinh hoạt Thể lực Thứ Năm CLB')
+        page.click('#task-cat-activity')
         page.screenshot(path=str(SHOTS_DIR / '05_create_shift_modal.png'))
         page.click('#btnSubmitTask')
         page.wait_for_timeout(520)
@@ -161,19 +200,22 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.click('#celebration-confirm-btn')
         page.wait_for_timeout(320)
 
-        # Verify #stat-shifts-btn opens #approve-shift-modal on Shifts tab for Admin
-        page.click('#stat-shifts-btn')
+        # Verify #admin-approve-btn opens #approve-shift-modal, Shifts tab shows new activity card & edits cleanly
+        page.click('#admin-approve-btn')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#approve-shift-modal', 'el => el.open'))
-        self.assertTrue(page.eval_on_selector('#approve-tab-shifts', 'el => el.classList.contains("active")'))
+        page.click('#approve-tab-shifts')
+        page.wait_for_timeout(200)
+        self.assertIn('Ca sinh hoạt', page.text_content('#approve-cards-container'))
         page.locator('#approve-cards-container button:has-text("Sửa")').first.click()
         page.wait_for_timeout(420)
         self.assertTrue(page.eval_on_selector('#create-shift-modal', 'el => el.open'))
         self.assertEqual(page.input_value('#iptTaskTime'), '13:30 - 17:30')
+        self.assertEqual(page.input_value('#iptTaskCategory'), 'activity')
         page.click('#create-shift-cancel')
         page.wait_for_timeout(320)
 
-        # 5. Approve dispatch modal: QR check-in live list + Approve All mutating tasks
+        # 5. Approve dispatch modal: QR check-in validation + activity check-in + Approve All
         page.click('#admin-approve-btn')
         page.wait_for_timeout(340)
         self.assertEqual(page.text_content('#approve-header-count').strip(), '3 đơn mới')
@@ -181,6 +223,12 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
 
         page.click('#approve-tab-scanner')
         page.wait_for_timeout(220)
+        # Reject unknown bogus member ID
+        page.fill('#iptManualCheckinId', 'BOGUS999')
+        page.click('#btnManualCheckin')
+        page.wait_for_timeout(150)
+        self.assertNotIn('BOGUS999', page.text_content('#scannerCheckedInList'))
+        # Check-in NDA0407 on newly created activity session (selected first in selScanTaskId)
         page.fill('#iptManualCheckinId', 'NDA0407')
         page.click('#btnManualCheckin')
         page.wait_for_timeout(200)
@@ -239,16 +287,18 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.wait_for_timeout(250)
         self.assertTrue(page.is_visible('#viewLoginContainer'))
 
-        # Verify new '654321' logs in cleanly, then log out for Member test
+        # Verify new '654321' + editable MSSV '21103100806' logs in cleanly, then log out for Member test
+        page.fill('#iptUser', '21103100806')
         page.fill('#iptPass', '654321')
         page.click('#btnLoginSubmit')
         page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
+        self.assertEqual(page.text_content('#card-mssv').strip(), '21103100806')
         page.click('#settings-trigger')
         page.wait_for_timeout(340)
         page.click('#logout-btn')
         page.wait_for_selector('#viewLoginContainer:not(.hidden)')
 
-        # 7. Real Member Account Login & Workflows
+        # 7. Real Member Account Login & Workflows (NDA0407 has 1 activity from QR check-in, 0 duty shifts)
         page.fill('#iptUser', 'NDA0407')
         page.fill('#iptPass', '123456')
         page.click('#btnLoginSubmit')
@@ -257,11 +307,16 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         self.assertFalse(page.is_visible('#role-badge'))
         self.assertFalse(page.is_visible('#quick-actions-admin'))
         self.assertTrue(page.is_visible('#quick-actions-member'))
+        self.assertEqual(page.text_content('#stat-shifts').strip(), '0')
+        self.assertEqual(page.text_content('#stat-activities').strip(), '1')
+        page.locator('#hero-interactive-card').screenshot(path=str(SHOTS_DIR / '10b_hero_card_member_accents.png'))
 
-        # Member stat button opens Task Mission modal, NOT Approve modal
-        page.click('#stat-shifts-btn')
+        # Member register button opens Task Mission modal
+        page.click('#member-register-btn')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#task-mission-modal', 'el => el.open'))
+        target_vals = page.eval_on_selector_all('#selMissionTargetMember option', 'opts => opts.map(o => o.value).filter(Boolean)')
+        self.assertEqual(len(target_vals), len(set(target_vals)), 'Duplicate target member options found')
         page.locator('#mission-panel-shifts button:has-text("Đăng ký nhận ca này")').first.click()
         page.wait_for_timeout(200)
         page.click('#mission-tab-swap')
@@ -288,11 +343,20 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.click('#qr-modal-close')
         page.wait_for_timeout(320)
 
-        # Dark theme login screen screenshot
+        # Dark theme main & login screen audit
         page.click('#settings-trigger')
         page.wait_for_timeout(340)
         page.click('#theme-btn-dark')
-        page.wait_for_timeout(220)
+        page.wait_for_timeout(240)
+        page.click('#settings-modal-close')
+        page.wait_for_timeout(320)
+        dark_metrics = page.evaluate(DOM_PROBE_JS)
+        self.assertEqual(dark_metrics['overflowPx'], 0)
+        self.assertEqual(dark_metrics['sub24Targets'], [])
+        self.assertEqual(dark_metrics['contrastFailures'], [], f'Dark mode contrast failures: {dark_metrics["contrastFailures"]}')
+        page.screenshot(path=str(SHOTS_DIR / '13a_member_main_dark.png'))
+        page.click('#settings-trigger')
+        page.wait_for_timeout(340)
         page.click('#logout-btn')
         page.wait_for_selector('#viewLoginContainer:not(.hidden)')
         page.wait_for_timeout(220)

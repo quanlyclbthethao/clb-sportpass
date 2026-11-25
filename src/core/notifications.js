@@ -24,7 +24,7 @@ function triggerHaptic(type = 'light') {
 }
 
 function autoEnableBackgroundNotifications() {
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
       if ('sync' in reg) reg.sync.register('check-tasks').catch(() => {});
     }).catch(() => {});
@@ -46,7 +46,7 @@ function renderNotificationsModalList() {
   const isAdmin = Boolean(currentUser && currentUser.isAdmin);
   const items = [];
 
-  const nextShift = (currentTasks || [])[0];
+  const nextShift = deduplicateTasks(currentTasks || [])[0];
   if (nextShift) {
     const occupied = Array.from(new Set([...(nextShift.joinedMembers || []), ...(nextShift.assignedMembers || [])]));
     const isMine = Boolean(uid && occupied.includes(uid));

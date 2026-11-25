@@ -119,7 +119,8 @@ function updateQrPassDisplay() {
   const payload = `SPORTPASS:CHECKIN:${taskId}:${uid}:${slot}`;
   const container = document.getElementById('qr-code-box');
   if (container) renderQrIntoContainer(container, payload, 160);
-  safeSetText('qr-token-code', `#${uid} · ${taskId}`);
+  const displayCode = currentUser ? getDisplayStudentCode(currentUser) : uid;
+  safeSetText('qr-token-code', `#${displayCode} · ${taskId}`);
 }
 
 function startQrCountdown() {
@@ -317,8 +318,8 @@ function handleScanQrPayload(rawCode) {
     const parts = trimmed.split(':');
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
-  } else if (trimmed.startsWith('#') && trimmed.includes('-VN')) {
-    memberId = trimmed.slice(1).split('-VN')[0].split(' ')[0];
+  } else if (trimmed.startsWith('#')) {
+    memberId = trimmed.slice(1).split(/[\s·-]+/)[0];
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {
@@ -343,7 +344,19 @@ function handleQrCheckinAction(taskId, memberId) {
     showToast('Chỉ Ban Chủ Nhiệm hoặc Trưởng/Phó ban mới được quét điểm danh.');
     return;
   }
-  const cleanMemberId = String(memberId || '').trim().toUpperCase();
+  const cleanCode = String(memberId || '').trim().toUpperCase();
+  const targetMember = (membersDirectory || []).find(
+    m => m && (
+      String(m.id || '').toUpperCase() === cleanCode ||
+      String(m.studentCode || '').toUpperCase() === cleanCode
+    )
+  );
+  if (!targetMember) {
+    showToast(`Không tìm thấy hội viên với mã ${cleanCode || '(trống)'}.`);
+    return;
+  }
+
+  const canonicalId = targetMember.id;
   const task = (currentTasks || []).find(t => t.id === taskId) || currentTasks[0];
   if (!task) {
     showToast('Chưa có ca trực để điểm danh.');
@@ -351,29 +364,24 @@ function handleQrCheckinAction(taskId, memberId) {
   }
 
   task.checkedInMembers = Array.isArray(task.checkedInMembers) ? task.checkedInMembers : [];
-  if (!task.checkedInMembers.includes(cleanMemberId)) {
-    task.checkedInMembers.push(cleanMemberId);
+  task.checkinLogs = Array.isArray(task.checkinLogs) ? task.checkinLogs : [];
+  if (!task.checkedInMembers.includes(canonicalId)) {
+    task.checkedInMembers.push(canonicalId);
     task.joinedMembers = Array.isArray(task.joinedMembers) ? task.joinedMembers : [];
-    if (!task.joinedMembers.includes(cleanMemberId)) task.joinedMembers.push(cleanMemberId);
+    if (!task.joinedMembers.includes(canonicalId)) task.joinedMembers.push(canonicalId);
+    task.checkinLogs.push({
+      memberId: canonicalId,
+      adminId: currentUser ? currentUser.id : 'SYSTEM',
+      time: new Date().toISOString()
+    });
 
-    for (const m of (membersDirectory || [])) {
-      if (m.id === cleanMemberId) {
-        const nextShifts = (Number(m.soCaHoanThanh ?? m.soCa ?? 0)) + 1;
-        m.soCaHoanThanh = nextShifts;
-        m.soCa = nextShifts;
-        saveMemberOverride(cleanMemberId, { soCaHoanThanh: nextShifts, soCa: nextShifts });
-      }
-    }
-    if (currentUser && currentUser.id === cleanMemberId) {
-      const nextCur = (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0)) + 1;
-      currentUser.soCaHoanThanh = nextCur;
-      currentUser.soCa = nextCur;
-      saveMemberOverride(cleanMemberId, { soCaHoanThanh: nextCur, soCa: nextCur });
-      persistUserSession(currentUser);
+    const metric = task.category === 'activity' ? 'activity' : 'shift';
+    adjustMemberCounter(canonicalId, metric, 1);
+    if (currentUser && currentUser.id === canonicalId) {
       renderProfileData();
     }
 
-    const payload = { taskId: task.id, memberId: cleanMemberId, scannerId: currentUser ? currentUser.id : 'SYSTEM' };
+    const payload = { taskId: task.id, memberId: canonicalId, scannerId: currentUser ? currentUser.id : 'SYSTEM' };
     dispatchBackendMutation('QR_CHECKIN', payload);
 
     saveLocalState();
@@ -383,8 +391,8 @@ function handleQrCheckinAction(taskId, memberId) {
     renderNotificationsModalList();
     safeSetValue('iptManualCheckinId', '');
     triggerHaptic('success');
-    showToast(`Điểm danh QR thành công: ${cleanMemberId}`);
+    showToast(`Điểm danh QR thành công: ${targetMember.hoTen} (${canonicalId})`);
   } else {
-    showToast(`${cleanMemberId} đã điểm danh ca này trước đó.`);
+    showToast(`${canonicalId} đã điểm danh ca này trước đó.`);
   }
 }

@@ -1,20 +1,10 @@
-// SportPass V8.6 — Canonical Reactive State, Member Overrides, Tombstones, Deduplication & RBAC
+// SportPass V8.7 — Canonical Normalized Models, Multi-Role Merge, Overrides, Tombstones & RBAC
 
-let currentUser = null;
-let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined') ? DEFAULT_MEMBERS_DIRECTORY.slice() : [];
-let currentTasks = DEFAULT_TASKS.map(t => structuredClone(t));
-let currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
-let currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
-let offlineMutationQueue = [];
-
-let activeQrTaskId = null;
-let unreadNotifSignature = '';
-let currentApproveSubTab = 'swap'; // 'swap' | 'leave' | 'shifts' | 'scanner'
-let currentMissionTab = 'shifts'; // 'shifts' | 'swap'
-let currentDirDeptFilter = 'ALL';
-let editingTaskId = null;
-let selectedShiftLeaderId = 'DMC0806';
-let currentSyncPollTimer = null;
+const DOB_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
+const DATA_CACHE_KEY = 'CLB_SPORTPASS_DATA_CACHE';
+const OVERRIDES_KEY = 'CLB_MEMBER_OVERRIDES';
+const DELETED_TASKS_KEY = 'CLB_DELETED_TASK_IDS';
+const CUSTOM_ROLES_KEY = 'CLB_CUSTOM_ADMIN_ROLES';
 
 function safeSetText(id, text) {
   const node = document.getElementById(id);
@@ -50,16 +40,12 @@ function formatTodayVN(offsetDays = 1) {
 
 function formatMemberDob(member) {
   if (!member) return '08/06/2003';
-  if (member.ngaySinh && /\d{2}\/\d{2}\/\d{4}/.test(String(member.ngaySinh))) return String(member.ngaySinh).trim();
-  if (member.mssv && /\d{2}\/\d{2}\/\d{4}/.test(String(member.mssv))) {
-    return String(member.mssv).trim();
-  }
+  if (member.ngaySinh && DOB_REGEX.test(String(member.ngaySinh).trim())) return String(member.ngaySinh).trim();
+  if (member.mssv && DOB_REGEX.test(String(member.mssv).trim())) return String(member.mssv).trim();
   const canonical = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined')
-    ? DEFAULT_MEMBERS_DIRECTORY.find(x => x && x.id === member.id)
+    ? DEFAULT_MEMBERS_DIRECTORY.find(x => x && x.id === member.id && DOB_REGEX.test(String(x.mssv || '').trim()))
     : null;
-  if (canonical && canonical.mssv && /\d{2}\/\d{2}\/\d{4}/.test(String(canonical.mssv))) {
-    return String(canonical.mssv).trim();
-  }
+  if (canonical) return String(canonical.mssv).trim();
   const m = String(member.id || '').match(/(\d{2})(\d{2})$/);
   return m ? `${m[1]}/${m[2]}/2004` : '08/06/2003';
 }
@@ -67,6 +53,8 @@ function formatMemberDob(member) {
 function getDisplayStudentCode(member) {
   if (!member) return 'DMC0806';
   if (member.studentCode && String(member.studentCode).trim()) return String(member.studentCode).trim();
+  const rawMssv = String(member.mssv || '').trim();
+  if (rawMssv && !DOB_REGEX.test(rawMssv)) return rawMssv;
   return member.id || 'SP0000';
 }
 
@@ -82,55 +70,205 @@ function getTheTrangTheme(theTrang) {
   return { label: raw || 'Khỏe mạnh (100% Sẵn sàng)', tone: 'success', exempt: false };
 }
 
-function formatShortTheTrang(theTrang) {
-  const raw = String(theTrang || 'Khỏe mạnh');
-  const lower = raw.toLowerCase();
-  if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Miễn trực';
-  if (lower.includes('hồi phục')) return 'B';
-  return 'A+';
+function normalizeMember(raw) {
+  if (!raw) return null;
+  const copy = structuredClone(raw);
+  const id = String(copy.id || '').trim();
+  if (!id) return null;
+
+  const shiftsDone = Math.max(0, Number(copy.soCaHoanThanh ?? copy.soCa ?? 0) || 0);
+  const activitiesDone = Math.max(0, Number(copy.soCaSinhHoat ?? 0) || 0);
+  const sdt = String(copy.sdt || '').trim();
+  const ice = String(copy.ice || '').trim() || sdt;
+  const boMon = String(copy.boMon || 'Ban Nhân Sự').trim();
+  const cacBan = Array.isArray(copy.cacBan) && copy.cacBan.length > 0
+    ? Array.from(new Set(copy.cacBan.map(x => String(x || '').trim()).filter(Boolean)))
+    : (boMon ? [boMon] : []);
+
+  copy.id = id;
+  copy.hoTen = String(copy.hoTen || '').trim();
+  copy.lop = String(copy.lop || '').trim();
+  copy.boMon = boMon;
+  copy.cacBan = cacBan;
+  copy.chucVu = String(copy.chucVu || 'Thành viên').trim();
+  copy.sdt = sdt;
+  copy.ice = ice;
+  copy.yTe = String(copy.yTe || 'Bình thường').trim();
+  copy.theTrang = String(copy.theTrang || 'Khỏe mạnh (100% Sẵn sàng)').trim();
+  copy.status = String(copy.status || 'Sẵn sàng').trim();
+  copy.ngaySinh = formatMemberDob(copy);
+  copy.studentCode = getDisplayStudentCode(copy);
+  copy.soCaHoanThanh = shiftsDone;
+  copy.soCa = shiftsDone;
+  copy.soCaSinhHoat = activitiesDone;
+  copy.isAdmin = id === 'DMC0806' ? true : Boolean(copy.isAdmin);
+  copy.isShiftLeader = copy.isAdmin ? true : Boolean(copy.isShiftLeader);
+  copy.donVi = copy.donVi || 'Trường Đại học Hải Dương';
+  return copy;
+}
+
+function normalizeMembersDirectory(rawList) {
+  const byId = new Map();
+  for (const raw of (Array.isArray(rawList) ? rawList : [])) {
+    const m = normalizeMember(raw);
+    if (!m) continue;
+    const prev = byId.get(m.id);
+    if (!prev) {
+      byId.set(m.id, m);
+      continue;
+    }
+    for (const dept of m.cacBan) {
+      if (!prev.cacBan.includes(dept)) prev.cacBan.push(dept);
+    }
+    const prevIsMemberOnly = prev.chucVu.toLowerCase().startsWith('thành viên');
+    const nextIsMemberOnly = m.chucVu.toLowerCase().startsWith('thành viên');
+    if ((m.isAdmin && !prev.isAdmin) || (m.isShiftLeader && !prev.isShiftLeader) || (prevIsMemberOnly && !nextIsMemberOnly)) {
+      prev.chucVu = m.chucVu;
+      prev.boMon = m.boMon;
+    }
+    prev.isAdmin = prev.isAdmin || m.isAdmin;
+    prev.isShiftLeader = prev.isAdmin || prev.isShiftLeader || m.isShiftLeader;
+    if (!prev.sdt && m.sdt) prev.sdt = m.sdt;
+    if ((!prev.ice || prev.ice === prev.sdt) && m.ice) prev.ice = m.ice;
+    if (prev.yTe === 'Bình thường' && m.yTe && m.yTe !== 'Bình thường') prev.yTe = m.yTe;
+    if (prev.studentCode === prev.id && m.studentCode !== m.id) prev.studentCode = m.studentCode;
+    prev.soCaHoanThanh = Math.max(prev.soCaHoanThanh, m.soCaHoanThanh);
+    prev.soCa = prev.soCaHoanThanh;
+    prev.soCaSinhHoat = Math.max(prev.soCaSinhHoat, m.soCaSinhHoat);
+  }
+  return Array.from(byId.values());
+}
+
+function normalizeTask(raw) {
+  if (!raw || !raw.title) return null;
+  const copy = structuredClone(raw);
+  const uniq = (arr) => Array.from(new Set((Array.isArray(arr) ? arr : []).map(x => String(x || '').trim()).filter(Boolean)));
+  copy.id = String(copy.id || ('TASK_' + Date.now())).trim();
+  copy.title = String(copy.title).trim();
+  copy.location = String(copy.location || 'SVĐ Trung Tâm').trim();
+  copy.time = String(copy.time || '').trim();
+  copy.date = String(copy.date || '').trim();
+  copy.timeRange = String(copy.timeRange || copy.time.replace(/\s*\([^)]*\)\s*$/, '')).trim();
+  copy.quota = Math.max(1, Number(copy.quota) || 4);
+  copy.category = copy.category === 'activity' ? 'activity' : 'shift';
+  copy.joinedMembers = uniq(copy.joinedMembers);
+  copy.assignedMembers = uniq(copy.assignedMembers);
+  copy.waitlist = uniq(copy.waitlist);
+  copy.checkedInMembers = uniq(copy.checkedInMembers);
+  copy.checkinLogs = Array.isArray(copy.checkinLogs) ? copy.checkinLogs : [];
+  copy.departmentQuotas = (copy.departmentQuotas && typeof copy.departmentQuotas === 'object') ? copy.departmentQuotas : {};
+  copy.status = copy.status || 'active';
+  return copy;
+}
+
+function normalizeSwap(raw) {
+  if (!raw) return null;
+  const copy = structuredClone(raw);
+  copy.id = String(copy.id || ('SWAP_' + Date.now()));
+  copy.taskId = String(copy.taskId || '');
+  copy.fromId = String(copy.fromId || copy.fromMemberId || '');
+  copy.fromName = String(copy.fromName || copy.fromMemberName || copy.fromId);
+  copy.fromClass = String(copy.fromClass || '');
+  copy.toId = String(copy.toId || copy.toMemberId || 'CA_DIEU_PHOI');
+  copy.toName = String(copy.toName || (copy.toId && !copy.toId.startsWith('CA_') ? copy.toId : 'Ban Điều Phối sắp xếp'));
+  copy.currentShift = String(copy.currentShift || copy.taskTitle || copy.taskId);
+  copy.reason = String(copy.reason || '');
+  copy.type = copy.type || (copy.toId && !copy.toId.startsWith('CA_') ? 'swap' : 'transfer');
+  copy.status = copy.status || 'pending';
+  return copy;
+}
+
+function normalizeLeave(raw) {
+  if (!raw) return null;
+  const copy = structuredClone(raw);
+  copy.id = String(copy.id || ('LEAVE_' + Date.now()));
+  copy.taskId = String(copy.taskId || '');
+  copy.memberId = String(copy.memberId || '');
+  copy.memberName = String(copy.memberName || copy.memberId);
+  copy.timeLabel = String(copy.timeLabel || `Ca ${copy.taskId}`);
+  copy.reason = String(copy.reason || '');
+  copy.urgent = Boolean(copy.urgent);
+  copy.status = copy.status || 'pending';
+  return copy;
+}
+
+function getTaskOccupancy(task, uid = '') {
+  const occupied = Array.from(new Set([...(task?.joinedMembers || []), ...(task?.assignedMembers || [])]));
+  const quota = Math.max(1, Number(task?.quota) || 4);
+  return {
+    occupied,
+    quota,
+    isFull: occupied.length >= quota,
+    isMine: Boolean(uid && occupied.includes(uid)),
+    isChecked: Boolean(uid && Array.isArray(task?.checkedInMembers) && task.checkedInMembers.includes(uid)),
+    isWaitlisted: Boolean(uid && Array.isArray(task?.waitlist) && task.waitlist.includes(uid))
+  };
 }
 
 function computeMemberStats(member) {
-  if (!member) return { shiftsCount: 0, onTimeText: '100%', gradeText: 'A+' };
+  if (!member) return { shiftsCount: 0, activitiesCount: 0 };
   const uid = String(member.id || '').trim();
-  let checkedInTotal = 0;
-  const completedOrLocked = [];
-  const now = Date.now();
+  let shiftsCheckedIn = 0;
+  let activitiesCheckedIn = 0;
 
-  for (const t of (currentTasks || [])) {
+  for (const t of deduplicateTasks(currentTasks || [])) {
     if (!t) continue;
-    const isChecked = Array.isArray(t.checkedInMembers) && t.checkedInMembers.includes(uid);
-    if (isChecked) checkedInTotal++;
-    const isAssignedOrJoined =
-      (Array.isArray(t.joinedMembers) && t.joinedMembers.includes(uid)) ||
-      (Array.isArray(t.assignedMembers) && t.assignedMembers.includes(uid));
-    if (isAssignedOrJoined) {
-      const deadlineMs = t.lockDeadline ? Date.parse(t.lockDeadline) : NaN;
-      const pastDeadline = Number.isFinite(deadlineMs) && deadlineMs < now;
-      if (isChecked || pastDeadline) completedOrLocked.push(isChecked);
+    if (Array.isArray(t.checkedInMembers) && t.checkedInMembers.includes(uid)) {
+      if (t.category === 'activity') activitiesCheckedIn++;
+      else shiftsCheckedIn++;
     }
   }
 
-  const shiftsCount = Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0), checkedInTotal);
-  let onTimeText = '100%';
-  if (completedOrLocked.length > 0) {
-    const attended = completedOrLocked.filter(Boolean).length;
-    onTimeText = `${Math.round((attended / completedOrLocked.length) * 100)}%`;
-  } else if (shiftsCount === 0 && member.onTimeRate) {
-    onTimeText = String(member.onTimeRate);
+  return {
+    shiftsCount: Math.max(Number(member.soCaHoanThanh ?? member.soCa ?? 0) || 0, shiftsCheckedIn),
+    activitiesCount: Math.max(Number(member.soCaSinhHoat ?? 0) || 0, activitiesCheckedIn)
+  };
+}
+
+function adjustMemberCounter(memberId, metric, delta) {
+  const targetId = String(memberId || '').trim();
+  if (!targetId) return 0;
+  const isActivity = metric === 'activity';
+  const d = Number(delta) || 0;
+  let nextVal = 0;
+  let found = false;
+
+  for (const m of (membersDirectory || [])) {
+    if (m && m.id === targetId) {
+      const cur = isActivity ? (Number(m.soCaSinhHoat) || 0) : (Number(m.soCaHoanThanh ?? m.soCa ?? 0) || 0);
+      nextVal = Math.max(0, cur + d);
+      if (isActivity) {
+        m.soCaSinhHoat = nextVal;
+        saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
+      } else {
+        m.soCaHoanThanh = nextVal;
+        m.soCa = nextVal;
+        saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
+      }
+      found = true;
+    }
   }
 
-  return {
-    shiftsCount,
-    onTimeText,
-    gradeText: formatShortTheTrang(member.theTrang)
-  };
+  if (currentUser && currentUser.id === targetId) {
+    const curSelf = isActivity ? (Number(currentUser.soCaSinhHoat) || 0) : (Number(currentUser.soCaHoanThanh ?? currentUser.soCa ?? 0) || 0);
+    if (!found) nextVal = Math.max(0, curSelf + d);
+    if (isActivity) {
+      currentUser.soCaSinhHoat = nextVal;
+      saveMemberOverride(targetId, { soCaSinhHoat: nextVal });
+    } else {
+      currentUser.soCaHoanThanh = nextVal;
+      currentUser.soCa = nextVal;
+      saveMemberOverride(targetId, { soCaHoanThanh: nextVal, soCa: nextVal });
+    }
+    if (typeof persistUserSession === 'function') persistUserSession(currentUser);
+  }
+  return nextVal;
 }
 
 // ==================== PERSISTENT MEMBER OVERRIDES ====================
 function getMemberOverrides() {
   try {
-    return JSON.parse(localStorage.getItem('CLB_MEMBER_OVERRIDES') || '{}');
+    return JSON.parse(localStorage.getItem(OVERRIDES_KEY) || '{}');
   } catch (e) {
     return {};
   }
@@ -141,7 +279,7 @@ function saveMemberOverride(memberId, patch) {
   const all = getMemberOverrides();
   all[memberId] = Object.assign({}, all[memberId] || {}, patch);
   try {
-    localStorage.setItem('CLB_MEMBER_OVERRIDES', JSON.stringify(all));
+    localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
   } catch (e) {}
 }
 
@@ -163,7 +301,7 @@ function applyMemberOverrides(members) {
 // ==================== TOMBSTONES ANTI-RESURRECTION ====================
 function getDeletedTaskIds() {
   try {
-    return JSON.parse(localStorage.getItem('CLB_DELETED_TASK_IDS') || '[]');
+    return JSON.parse(localStorage.getItem(DELETED_TASKS_KEY) || '[]');
   } catch (e) {
     return [];
   }
@@ -174,7 +312,7 @@ function saveDeletedTaskId(id) {
   const list = getDeletedTaskIds();
   if (!list.includes(id)) {
     list.push(id);
-    try { localStorage.setItem('CLB_DELETED_TASK_IDS', JSON.stringify(list)); } catch (e) {}
+    try { localStorage.setItem(DELETED_TASKS_KEY, JSON.stringify(list)); } catch (e) {}
   }
 }
 
@@ -192,31 +330,25 @@ function deduplicateTasks(tasks) {
   const map = new Map();
 
   for (const raw of tasks) {
-    if (!raw || !raw.title) continue;
-    if (deleted.includes(raw.id)) continue;
+    const copy = normalizeTask(raw);
+    if (!copy) continue;
+    if (deleted.includes(copy.id)) continue;
 
-    const copy = structuredClone(raw);
-    copy.joinedMembers = Array.isArray(copy.joinedMembers) ? copy.joinedMembers : [];
-    copy.assignedMembers = Array.isArray(copy.assignedMembers) ? copy.assignedMembers : [];
-    copy.waitlist = Array.isArray(copy.waitlist) ? copy.waitlist : [];
-    copy.checkedInMembers = Array.isArray(copy.checkedInMembers) ? copy.checkedInMembers : [];
-    copy.checkinLogs = Array.isArray(copy.checkinLogs) ? copy.checkinLogs : [];
-    copy.departmentQuotas = (copy.departmentQuotas && typeof copy.departmentQuotas === 'object') ? copy.departmentQuotas : {};
-
-    const semKey = String(copy.title).trim().toLowerCase() + '||' + String(copy.time || '').trim().toLowerCase();
+    const semKey = `${copy.title.toLowerCase()}||${copy.time.toLowerCase()}||${copy.location.toLowerCase()}`;
     if (!map.has(semKey)) {
       map.set(semKey, copy);
     } else {
       const existing = map.get(semKey);
-      if (/^TASK_\d+$/i.test(String(copy.id)) && !/^TASK_\d+$/i.test(String(existing.id))) {
+      if (/^TASK_\d+$/i.test(copy.id) && !/^TASK_\d+$/i.test(existing.id)) {
         existing.id = copy.id;
       }
       existing.joinedMembers = Array.from(new Set([...existing.joinedMembers, ...copy.joinedMembers]));
       existing.assignedMembers = Array.from(new Set([...existing.assignedMembers, ...copy.assignedMembers]));
       existing.waitlist = Array.from(new Set([...existing.waitlist, ...copy.waitlist]));
       existing.checkedInMembers = Array.from(new Set([...existing.checkedInMembers, ...copy.checkedInMembers]));
-      existing.quota = Math.max(Number(existing.quota) || 0, Number(copy.quota) || 0);
-      if (!existing.location && copy.location) existing.location = copy.location;
+      if (copy.checkinLogs.length > existing.checkinLogs.length) existing.checkinLogs = copy.checkinLogs;
+      existing.quota = Math.max(existing.quota, copy.quota);
+      if (copy.category === 'activity') existing.category = 'activity';
       if (!existing.notes && copy.notes) existing.notes = copy.notes;
       if (Object.keys(existing.departmentQuotas).length === 0 && Object.keys(copy.departmentQuotas).length > 0) {
         existing.departmentQuotas = copy.departmentQuotas;
@@ -229,7 +361,7 @@ function deduplicateTasks(tasks) {
 // ==================== CUSTOM RBAC & SOLE ADMIN INVARIANT ====================
 function getCustomAdminRoles() {
   try {
-    return JSON.parse(localStorage.getItem('CLB_CUSTOM_ADMIN_ROLES') || '{}');
+    return JSON.parse(localStorage.getItem(CUSTOM_ROLES_KEY) || '{}');
   } catch (e) {
     return {};
   }
@@ -237,7 +369,7 @@ function getCustomAdminRoles() {
 
 function saveCustomAdminRoles(roles) {
   try {
-    localStorage.setItem('CLB_CUSTOM_ADMIN_ROLES', JSON.stringify(roles || {}));
+    localStorage.setItem(CUSTOM_ROLES_KEY, JSON.stringify(roles || {}));
   } catch (e) {}
 }
 
@@ -273,11 +405,39 @@ function applyCustomAdminRoles(members) {
   }
 }
 
+function hydrateLocalStateFromCache() {
+  const deletedTasks = getDeletedTaskIds();
+  let loadedFromCache = false;
+  try {
+    const raw = localStorage.getItem(DATA_CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const rawTasks = (Array.isArray(parsed.currentTasks) && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
+      currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
+      currentSwaps = (Array.isArray(parsed.currentSwaps) && parsed.currentSwaps.length)
+        ? parsed.currentSwaps.map(normalizeSwap).filter(Boolean)
+        : DEFAULT_SWAPS_SEED.map(normalizeSwap);
+      currentLeaves = (Array.isArray(parsed.currentLeaves) && parsed.currentLeaves.length)
+        ? parsed.currentLeaves.map(normalizeLeave).filter(Boolean)
+        : DEFAULT_LEAVES_SEED.map(normalizeLeave);
+      offlineMutationQueue = Array.isArray(parsed.offlineMutationQueue) ? parsed.offlineMutationQueue : [];
+      loadedFromCache = true;
+    }
+  } catch (e) {}
+
+  if (!loadedFromCache) {
+    currentTasks = deduplicateTasks(DEFAULT_TASKS.filter(t => t && !deletedTasks.includes(t.id)));
+    currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
+    currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
+    offlineMutationQueue = [];
+  }
+}
+
 function saveLocalState() {
   try {
     const deletedTasks = getDeletedTaskIds();
     const cleanTasks = (currentTasks || []).filter(t => t && !deletedTasks.includes(t.id));
-    localStorage.setItem('CLB_SPORTPASS_DATA_CACHE', JSON.stringify({
+    localStorage.setItem(DATA_CACHE_KEY, JSON.stringify({
       currentTasks: cleanTasks,
       currentSwaps: currentSwaps || [],
       currentLeaves: currentLeaves || [],
@@ -285,3 +445,19 @@ function saveLocalState() {
     }));
   } catch (e) {}
 }
+
+let currentUser = null;
+let membersDirectory = normalizeMembersDirectory(typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY : []);
+let currentTasks = deduplicateTasks(DEFAULT_TASKS);
+let currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
+let currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
+let offlineMutationQueue = [];
+
+let activeQrTaskId = null;
+let unreadNotifSignature = '';
+let currentApproveSubTab = 'swap'; // 'swap' | 'leave' | 'shifts' | 'scanner'
+let currentMissionTab = 'shifts'; // 'shifts' | 'swap'
+let currentDirDeptFilter = 'ALL';
+let editingTaskId = null;
+let selectedShiftLeaderId = 'DMC0806';
+let currentSyncPollTimer = null;
