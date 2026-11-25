@@ -751,7 +751,7 @@ html[data-theme="dark"] .stat-val-teal { color: #2dd4bf; }
   height: 44px;
   border-radius: 12px;
   background-color: #0369a1;
-  background-image: linear-gradient(to right, #0284c7, #0369a1, #0ea5e9);
+  background-image: linear-gradient(to right, #0369a1, #0284c7 48%, #0ea5e9);
   color: #ffffff;
   box-shadow: 0 4px 18px rgba(2, 132, 199, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -1594,6 +1594,7 @@ html[data-theme="dark"] .sheet-panel {
 .sheet-title-h3 {
   margin: 0;
   font-size: 16.5px;
+  line-height: 1.3;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -1618,7 +1619,7 @@ html[data-theme="dark"] .sheet-panel {
 }
 
 .sheet-scroll-body {
-  padding: 14px 2px;
+  padding: 14px 4px;
   overflow-y: auto;
   flex: 1 1 auto;
   min-height: 0;
@@ -1662,7 +1663,7 @@ html[data-theme="dark"] .sheet-panel {
   height: 44px;
   border-radius: 12px;
   background-color: #0369a1;
-  background-image: linear-gradient(to right, #0284c7, #0369a1, #0ea5e9);
+  background-image: linear-gradient(to right, #0369a1, #0284c7 48%, #0ea5e9);
   border: 1px solid rgba(255, 255, 255, 0.22);
   color: #ffffff;
   font-size: 13px;
@@ -1708,7 +1709,7 @@ html[data-theme="dark"] .btn-sheet-danger {
   color: #ffffff;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   box-shadow: 0 8px 22px rgba(2, 132, 199, 0.24);
 }
 
@@ -1721,16 +1722,24 @@ html[data-theme="dark"] .btn-sheet-danger {
   flex-shrink: 0;
 }
 
+.settings-submeta {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: rgba(224, 242, 254, 0.88);
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
 .settings-grade-badge {
-  min-width: 42px;
-  height: 30px;
-  padding: 0 10px;
+  min-width: 0;
+  height: 26px;
+  padding: 0 8px;
   border-radius: 9999px;
   background-color: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.32);
   color: #ffffff;
   font-family: var(--sp-font-mono);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -1762,7 +1771,7 @@ html[data-theme="dark"] .btn-sheet-danger {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   padding: 12px 14px;
   background-color: transparent;
 }
@@ -1774,7 +1783,7 @@ html[data-theme="dark"] .btn-sheet-danger {
 .settings-row-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
 }
 
@@ -1793,6 +1802,7 @@ html[data-theme="dark"] .btn-sheet-danger {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 .settings-row-desc {
@@ -1813,8 +1823,9 @@ html[data-theme="dark"] .btn-sheet-danger {
 }
 
 .theme-seg-btn {
+  min-width: 28px;
   min-height: 30px;
-  padding: 4px 7px;
+  padding: 4px 6px;
   border: 0;
   border-radius: 7px;
   background: transparent;
@@ -2060,6 +2071,8 @@ html[data-theme="dark"] .btn-dashed-add {
   font-size: 11px;
   font-weight: 700;
   font-family: var(--sp-font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .sheet-seg-tabs {
@@ -3192,8 +3205,8 @@ dialog.sp-center-dialog[open] .check-draw-path {
           <img id="settings-avatar" width="48" height="48" alt="Avatar" class="settings-user-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
           <div style="flex:1;min-width:0;">
             <div id="settings-role-kicker" class="font-mono" style="font-size:9.5px;color:#bae6fd;letter-spacing:0.06em;">ĐIỀU PHỐI VIÊN</div>
-            <div id="settings-name" style="font-size:14.5px;font-weight:700;color:#ffffff;line-height:1.42;padding-top:2px;" class="truncate">Đỗ Mạnh Cường</div>
-            <div id="settings-submeta" class="font-mono truncate" style="font-size:11px;color:rgba(224,242,254,0.88);">MSSV: DMC0806 • K13.GDTC</div>
+            <div id="settings-name" style="font-size:14.5px;font-weight:700;color:#ffffff;line-height:1.38;padding-top:2px;overflow-wrap:break-word;">Đỗ Mạnh Cường</div>
+            <div id="settings-submeta" class="font-mono settings-submeta">MSSV: DMC0806 • K13.GDTC</div>
           </div>
           <span id="settings-grade-badge" class="settings-grade-badge">0 ca</span>
         </div>
@@ -3206,7 +3219,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2"/></svg>
               </div>
               <div style="min-width:0;">
-                <span class="settings-row-title">Giao diện hiển thị</span>
+                <span class="settings-row-title">Giao diện</span>
                 <p id="theme-mode-desc" class="settings-row-desc">Sáng / Tối / Tự động</p>
               </div>
             </div>
@@ -5276,6 +5289,10 @@ function stopQrCameraStream() {
     } catch (e) {}
     qrScannerStream = null;
   }
+  const video = document.getElementById('qrScannerVideo');
+  if (video && video.srcObject) {
+    video.srcObject = null;
+  }
 }
 
 function renderScannerCheckedInList() {
@@ -5770,10 +5787,20 @@ function initThemeController() {
 }
 
 // === modals.js ===
-// SportPass V8.6 — Top-Layer <dialog closedby="any"> Lifecycle (@starting-style + fallback) & Safe Switching
+// SportPass V8.7 — Top-Layer <dialog closedby="any"> Lifecycle (@starting-style + fallback) & Safe Switching
 
 let celebrationTimer = null;
 let supportsDisplayTransitionCache;
+
+function cleanupDialogState(id) {
+  if (id === 'approve-shift-modal') stopQrCameraStream();
+  if (id === 'qr-modal') stopQrCountdown();
+  if (id === 'create-shift-modal') editingTaskId = null;
+  if (id === 'success-celebration-modal' && celebrationTimer) {
+    clearInterval(celebrationTimer);
+    celebrationTimer = null;
+  }
+}
 
 function canTransitionDisplay() {
   if (supportsDisplayTransitionCache !== undefined) return supportsDisplayTransitionCache;
@@ -5808,13 +5835,7 @@ async function closeSheetDialog(id) {
   const dlg = document.getElementById(id);
   if (!dlg || !dlg.open) return;
 
-  if (id === 'approve-shift-modal') stopQrCameraStream();
-  if (id === 'qr-modal') stopQrCountdown();
-  if (id === 'create-shift-modal') editingTaskId = null;
-  if (id === 'success-celebration-modal' && celebrationTimer) {
-    clearInterval(celebrationTimer);
-    celebrationTimer = null;
-  }
+  cleanupDialogState(id);
 
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) {
@@ -5892,6 +5913,7 @@ function openSuccessCelebration({ kicker, title, descNodes }) {
 }
 
 function closeAllModals() {
+  editingTaskId = null;
   if (celebrationTimer) {
     clearInterval(celebrationTimer);
     celebrationTimer = null;
@@ -5912,6 +5934,8 @@ function closeAllModals() {
 function initModalLifecycle() {
   const supportsClosedBy = ('closedBy' in HTMLDialogElement.prototype);
   document.querySelectorAll('dialog.sp-sheet-dialog').forEach((dlg) => {
+    dlg.addEventListener('close', () => cleanupDialogState(dlg.id));
+
     dlg.addEventListener('cancel', (ev) => {
       ev.preventDefault();
       closeSheetDialog(dlg.id);
@@ -6827,11 +6851,11 @@ function renderDispatchHub() {
         ),
         el('div', { className: 'dispatch-info-box' },
           el('div', { style: { display: 'flex', justifyContent: 'space-between', gap: '8px' } },
-            el('span', { style: { color: 'var(--text-muted)' } }, 'Ca hiện tại:'),
+            el('span', { style: { color: 'var(--text-muted)', whiteSpace: 'nowrap', flexShrink: '0' } }, 'Ca hiện tại:'),
             el('strong', { style: { color: 'var(--text-primary)', textAlign: 'right' } }, s.currentShift || s.taskId)
           ),
           el('div', { style: { display: 'flex', justifyContent: 'space-between', gap: '8px' } },
-            el('span', { style: { color: 'var(--text-muted)' } }, s.type === 'transfer' ? 'Đề xuất chuyển:' : 'Hoán đổi với:'),
+            el('span', { style: { color: 'var(--text-muted)', whiteSpace: 'nowrap', flexShrink: '0' } }, s.type === 'transfer' ? 'Đề xuất chuyển:' : 'Hoán đổi với:'),
             el('strong', { style: { color: s.type === 'transfer' ? '#0369a1' : '#047857', textAlign: 'right' } }, s.type === 'transfer' ? s.toName : `${s.toName} ✓`)
           ),
           el('div', { style: { borderTop: '1px solid var(--border-subtle)', paddingTop: '5px', marginTop: '3px', color: 'var(--text-secondary)' } },

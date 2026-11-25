@@ -1,7 +1,17 @@
-// SportPass V8.6 — Top-Layer <dialog closedby="any"> Lifecycle (@starting-style + fallback) & Safe Switching
+// SportPass V8.7 — Top-Layer <dialog closedby="any"> Lifecycle (@starting-style + fallback) & Safe Switching
 
 let celebrationTimer = null;
 let supportsDisplayTransitionCache;
+
+function cleanupDialogState(id) {
+  if (id === 'approve-shift-modal') stopQrCameraStream();
+  if (id === 'qr-modal') stopQrCountdown();
+  if (id === 'create-shift-modal') editingTaskId = null;
+  if (id === 'success-celebration-modal' && celebrationTimer) {
+    clearInterval(celebrationTimer);
+    celebrationTimer = null;
+  }
+}
 
 function canTransitionDisplay() {
   if (supportsDisplayTransitionCache !== undefined) return supportsDisplayTransitionCache;
@@ -36,13 +46,7 @@ async function closeSheetDialog(id) {
   const dlg = document.getElementById(id);
   if (!dlg || !dlg.open) return;
 
-  if (id === 'approve-shift-modal') stopQrCameraStream();
-  if (id === 'qr-modal') stopQrCountdown();
-  if (id === 'create-shift-modal') editingTaskId = null;
-  if (id === 'success-celebration-modal' && celebrationTimer) {
-    clearInterval(celebrationTimer);
-    celebrationTimer = null;
-  }
+  cleanupDialogState(id);
 
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) {
@@ -120,6 +124,7 @@ function openSuccessCelebration({ kicker, title, descNodes }) {
 }
 
 function closeAllModals() {
+  editingTaskId = null;
   if (celebrationTimer) {
     clearInterval(celebrationTimer);
     celebrationTimer = null;
@@ -140,6 +145,8 @@ function closeAllModals() {
 function initModalLifecycle() {
   const supportsClosedBy = ('closedBy' in HTMLDialogElement.prototype);
   document.querySelectorAll('dialog.sp-sheet-dialog').forEach((dlg) => {
+    dlg.addEventListener('close', () => cleanupDialogState(dlg.id));
+
     dlg.addEventListener('cancel', (ev) => {
       ev.preventDefault();
       closeSheetDialog(dlg.id);

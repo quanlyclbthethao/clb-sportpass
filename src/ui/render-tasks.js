@@ -405,11 +405,11 @@ function renderDispatchHub() {
         ),
         el('div', { className: 'dispatch-info-box' },
           el('div', { style: { display: 'flex', justifyContent: 'space-between', gap: '8px' } },
-            el('span', { style: { color: 'var(--text-muted)' } }, 'Ca hiện tại:'),
+            el('span', { style: { color: 'var(--text-muted)', whiteSpace: 'nowrap', flexShrink: '0' } }, 'Ca hiện tại:'),
             el('strong', { style: { color: 'var(--text-primary)', textAlign: 'right' } }, s.currentShift || s.taskId)
           ),
           el('div', { style: { display: 'flex', justifyContent: 'space-between', gap: '8px' } },
-            el('span', { style: { color: 'var(--text-muted)' } }, s.type === 'transfer' ? 'Đề xuất chuyển:' : 'Hoán đổi với:'),
+            el('span', { style: { color: 'var(--text-muted)', whiteSpace: 'nowrap', flexShrink: '0' } }, s.type === 'transfer' ? 'Đề xuất chuyển:' : 'Hoán đổi với:'),
             el('strong', { style: { color: s.type === 'transfer' ? '#0369a1' : '#047857', textAlign: 'right' } }, s.type === 'transfer' ? s.toName : `${s.toName} ✓`)
           ),
           el('div', { style: { borderTop: '1px solid var(--border-subtle)', paddingTop: '5px', marginTop: '3px', color: 'var(--text-secondary)' } },

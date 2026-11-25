@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-SportPass V8.6 — Real Account RBAC, Slim Settings, Accurate Triggers & End-to-End Browser Verification
+SportPass V8.7 — Real Account RBAC, Slim Settings, Accurate Triggers & End-to-End Browser Verification
 """
 
 import sys
@@ -14,7 +14,7 @@ if sys.platform == 'win32':
 BASE_DIR = Path(__file__).resolve().parent
 INDEX_URL = (BASE_DIR / 'index.html').as_uri()
 AUDITOR_DIR = Path(r'C:\Users\Admin\.gemini\config\skills\omni-app-studio\scripts')
-SHOTS_DIR = Path(r'C:\Users\Admin\.gemini\antigravity\brain\43faf2f5-110e-4b39-a9e0-3003b477edc9\shots_v87')
+SHOTS_DIR = Path(r'C:\Users\Admin\.gemini\antigravity\brain\f504c5bf-4fbe-4426-a4f4-b601c663d25d\shots_v87')
 
 sys.path.insert(0, str(AUDITOR_DIR))
 from live_dom_auditor import DOM_PROBE_JS, VIEWPORTS  # noqa: E402
@@ -223,13 +223,24 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         self.assertTrue(page.eval_on_selector('#create-shift-modal', 'el => el.open'))
         self.assertEqual(page.input_value('#iptTaskTime'), '13:30 - 17:30')
         self.assertEqual(page.input_value('#iptTaskCategory'), 'activity')
-        page.click('#create-shift-cancel')
-        page.wait_for_timeout(320)
+        self.assertIsNotNone(page.evaluate('editingTaskId'))
+        # Native <dialog closedby="any"> light-dismiss / .close() fires 'close' directly and must clear editingTaskId
+        page.evaluate("document.getElementById('create-shift-modal').close()")
+        page.wait_for_timeout(120)
+        self.assertFalse(page.eval_on_selector('#create-shift-modal', 'el => el.open'))
+        self.assertIsNone(page.evaluate('editingTaskId'))
 
         # 5. Approve dispatch modal: QR check-in validation + activity check-in + Approve All
         page.click('#admin-approve-btn')
         page.wait_for_timeout(340)
         self.assertEqual(page.text_content('#approve-header-count').strip(), '3 đơn mới')
+        pill_single_line = page.evaluate('''() => {
+            const el = document.getElementById('approve-header-count');
+            const r = document.createRange();
+            r.selectNodeContents(el);
+            return r.getClientRects().length === 1 && getComputedStyle(el).whiteSpace === 'nowrap';
+        }''')
+        self.assertTrue(pill_single_line, '#approve-header-count wrapped onto multiple lines!')
         page.screenshot(path=str(SHOTS_DIR / '06_approve_dispatch_modal.png'))
 
         page.click('#approve-tab-scanner')
@@ -280,6 +291,20 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         self.assertEqual(page.locator('#switchFaceId').count(), 0)
         self.assertEqual(page.locator('#switchTilt3d').count(), 0)
         self.assertEqual(page.locator('#lang-btn-en').count(), 0)
+        settings_layout = page.evaluate('''() => {
+            const sub = document.getElementById('settings-submeta');
+            const title = document.querySelector('#theme-toggle-row .settings-row-title');
+            const r = document.createRange();
+            r.selectNodeContents(title);
+            return {
+                subTextOverflow: getComputedStyle(sub).textOverflow,
+                subScrollOverflow: sub.scrollWidth > sub.clientWidth + 1,
+                themeTitleLines: r.getClientRects().length
+            };
+        }''')
+        self.assertNotEqual(settings_layout['subTextOverflow'], 'ellipsis')
+        self.assertFalse(settings_layout['subScrollOverflow'], 'Settings submeta clipped horizontally!')
+        self.assertEqual(settings_layout['themeTitleLines'], 1, 'Theme row title wrapped onto multiple lines!')
         page.screenshot(path=str(SHOTS_DIR / '08_settings_slim_modal.png'))
 
         page.click('#theme-btn-dark')
@@ -361,14 +386,18 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.click('#task-mission-close')
         page.wait_for_timeout(320)
 
-        # Member shift-bound QR modal
+        # Member shift-bound QR modal & native <dialog closedby="any"> backdrop light-dismiss cleanup
         page.click('#qr-modal-trigger')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#qr-modal', 'el => el.open'))
         self.assertIn('#NDA0407', page.text_content('#qr-token-code'))
+        self.assertIsNotNone(page.evaluate('qrTimerInterval'))
         page.screenshot(path=str(SHOTS_DIR / '12_qr_member_modal.png'))
-        page.click('#qr-modal-close')
-        page.wait_for_timeout(320)
+        # Real backdrop pointer click at (10, 10) triggers closedby="any" light-dismiss -> 'close' cleanup
+        page.mouse.click(10, 10)
+        page.wait_for_timeout(360)
+        self.assertFalse(page.eval_on_selector('#qr-modal', 'el => el.open'))
+        self.assertIsNone(page.evaluate('qrTimerInterval'))
 
         # Dark theme main & login screen audit
         page.click('#settings-trigger')

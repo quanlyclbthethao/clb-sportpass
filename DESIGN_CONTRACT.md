@@ -1,11 +1,11 @@
-# DESIGN_CONTRACT.md — SportPass V8.6 (Aquamorphic Varsity Pass & Functional Modal Suite)
-> Hợp đồng thẩm mỹ & kỹ thuật chuẩn `omni-app-studio` V2.0 — Giữ nguyên thẩm mỹ Frosted Sky & Ocean Card, tinh gọn Cài đặt (Sáng/Tối/Đổi mật khẩu), phân quyền thật theo tài khoản và chuyển động Top-Layer 60fps.
+# DESIGN_CONTRACT.md — SportPass V8.7 (Aquamorphic Varsity Pass & Functional Modal Suite)
+> Hợp đồng thẩm mỹ & kỹ thuật chuẩn `omni-app-studio` V2.0 — Giữ nguyên thẩm mỹ Frosted Sky & Ocean Card, 2 chỉ số phi tương tác (`Số ca hoàn thành` & `Số ca sinh hoạt`), MSSV chỉnh sửa được, phân quyền thật theo tài khoản và chuyển động Top-Layer 60fps.
 
 ## 1. Visual Thesis & Architecture
-- **Sản phẩm / Đề bài:** SportPass V8.6 (`Varsity Pass`) — Hệ sinh thái Thẻ Định Danh Số, Cổng Đăng Nhập Đại Dương, Phê Duyệt Điều Động, Tạo Ca Trực, Thành Viên CLB, Hồ Sơ & Cài Đặt (`CLB Thể Thao • Trường Đại học Hải Dương`).
+- **Sản phẩm / Đề bài:** SportPass V8.7 (`Varsity Pass`) — Hệ sinh thái Thẻ Định Danh Số, Cổng Đăng Nhập Đại Dương, Phê Duyệt Điều Động, Tạo Ca Trực, Thành Viên CLB, Hồ Sơ (MSSV chỉnh sửa linh hoạt) & Cài Đặt (`CLB Thể Thao • Trường Đại học Hải Dương`).
 - **Lĩnh vực (Domain):** `sports-club-operations`
-- **Trường phái thẩm mỹ:** **Aquamorphic Frosted Sky** (`#F4F6FB` canvas với 3 quầng sáng lam/ngọc, bề mặt kính mờ `backdrop-blur-2xl`, thẻ đại dương `#072A4D -> #0284C7`, gợn sóng `.water-ripple`, nghiêng 3D rAF, popup trung tâm nảy lò xo).
-- **Chuyển động 60fps:** Chỉ animate `transform`, `opacity`, `background-color` (kết hợp `stroke-dashoffset` cho dấu tích SVG). Đóng/mở `<dialog class="sp-sheet-dialog" closedby="any">` dùng `@starting-style` + `transition-behavior: allow-discrete` + `overlay` và fallback `[data-closing]` chờ `getAnimations()`.
+- **Trường phái thẩm mỹ:** **Aquamorphic Frosted Sky** (`#F4F6FB` canvas với 3 quầng sáng lam/ngọc, bề mặt kính mờ `backdrop-blur-2xl`, thẻ đại dương `#072A4D -> #0284C7`, nút CTA đơn điệu `#0369a1 -> #0284c7 48% -> #0ea5e9`, gợn sóng `.water-ripple`, nghiêng 3D rAF, popup trung tâm nảy lò xo).
+- **Chuyển động 60fps & Top-Layer Cleanup:** Chỉ animate `transform`, `opacity`, `background-color` (kết hợp `stroke-dashoffset` cho dấu tích SVG). Đóng/mở `<dialog class="sp-sheet-dialog" closedby="any">` dùng `@starting-style` + `transition-behavior: allow-discrete` + `overlay`, dọn tài nguyên qua `cleanupDialogState()` trên cả `closeSheetDialog` lẫn sự kiện `'close'` và fallback `[data-closing]` chờ `getAnimations()`.
 
 ## 2. Hệ Màu Chuẩn W3C DTCG & Perceptual OKLCH Tokens
 - **Nền & Trung tính:** `#f4f6fb` `#ffffff` `#f8fafc` `#f1f5f9` `#e2e8f0` `#cbd5e1` `#94a3b8` `#64748b` `#475569` `#334155` `#1e293b` `#18181b` `#0f172a` `#0b1120` `#131c2e` `#022340`

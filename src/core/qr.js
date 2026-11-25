@@ -169,6 +169,10 @@ function stopQrCameraStream() {
     } catch (e) {}
     qrScannerStream = null;
   }
+  const video = document.getElementById('qrScannerVideo');
+  if (video && video.srcObject) {
+    video.srcObject = null;
+  }
 }
 
 function renderScannerCheckedInList() {
