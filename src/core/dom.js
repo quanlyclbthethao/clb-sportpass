@@ -1,4 +1,4 @@
-// SportPass V8.0 — Zero-innerHTML Declarative DOM Builder, 3D Parallax & Water Ripple Engine
+// SportPass V8.5 — Zero-innerHTML Declarative DOM Builder, rAF 3D Parallax & Water Ripple Engine
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -162,6 +162,7 @@ function cloneData(val) {
 }
 
 function createWaterRipple(e) {
+  if (typeof appPreferences !== 'undefined' && appPreferences.tilt3d === false) return;
   const target = e.currentTarget;
   if (!target) return;
   const rect = target.getBoundingClientRect();
@@ -184,7 +185,11 @@ function createWaterRipple(e) {
 
   if (target.classList.contains('btn-sheet-danger')) {
     ripple.classList.add('ripple-danger');
-  } else if (target.classList.contains('btn-aqua-primary') || target.classList.contains('btn-sheet-primary')) {
+  } else if (
+    target.classList.contains('btn-aqua-primary') ||
+    target.classList.contains('btn-sheet-primary') ||
+    target.classList.contains('btn-card-approve')
+  ) {
     ripple.classList.add('ripple-dark');
   } else {
     ripple.classList.add('ripple-light');
@@ -198,7 +203,7 @@ function createWaterRipple(e) {
 
   setTimeout(() => {
     if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
-  }, 660);
+  }, 630);
 }
 
 function bindWaterRipples() {
@@ -216,17 +221,20 @@ function initHeroCardParallax() {
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;
 
-  function handleMove(e) {
-    const rect = card.getBoundingClientRect();
-    let clientX = e.clientX;
-    let clientY = e.clientY;
-    if (e.touches && e.touches.length > 0) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
+  let rafId = 0;
+  let pendingX = 0;
+  let pendingY = 0;
+
+  function applyFrame() {
+    rafId = 0;
+    if (typeof appPreferences !== 'undefined' && appPreferences.tilt3d === false) {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      return;
     }
+    const rect = card.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
+    const x = pendingX - rect.left;
+    const y = pendingY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     const rotateX = ((centerY - y) / centerY) * 7;
@@ -236,12 +244,27 @@ function initHeroCardParallax() {
     card.style.setProperty('--specular-y', `${((y / rect.height) * 100).toFixed(1)}%`);
   }
 
+  function scheduleMove(e) {
+    if (e.touches && e.touches.length > 0) {
+      pendingX = e.touches[0].clientX;
+      pendingY = e.touches[0].clientY;
+    } else {
+      pendingX = e.clientX;
+      pendingY = e.clientY;
+    }
+    if (!rafId) rafId = requestAnimationFrame(applyFrame);
+  }
+
   function resetCard() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
   }
 
-  cardWrap.addEventListener('mousemove', handleMove);
+  cardWrap.addEventListener('mousemove', scheduleMove);
   cardWrap.addEventListener('mouseleave', resetCard);
-  cardWrap.addEventListener('touchmove', handleMove, { passive: true });
+  cardWrap.addEventListener('touchmove', scheduleMove, { passive: true });
   cardWrap.addEventListener('touchend', resetCard);
 }

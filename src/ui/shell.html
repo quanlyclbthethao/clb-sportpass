@@ -14,6 +14,7 @@
     } catch (e) {}
   </script>
   <title>SportPass Pro - Varsity Pass</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230284c7'/%3E%3Cpath d='M16 6l8 3.5v5c0 5-3.4 9.5-8 11-4.6-1.5-8-6-8-11v-5L16 6z' fill='none' stroke='%23fff' stroke-width='2.2'/%3E%3Cpath d='M12.5 16l2.5 2.5 4.5-4.5' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="manifest" href="./manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +26,7 @@
   </style>
 </head>
 <body>
-  <!-- Ambient Background Glow Orbs for Glass Refraction -->
+  <!-- Ambient Background Glow Orbs -->
   <div class="ambient-backdrop" aria-hidden="true">
     <div class="ambient-stage">
       <div class="ambient-orb ambient-orb-1"></div>
@@ -46,67 +47,109 @@
 
   <div class="varsity-shell">
 
-    <!-- ==================== VIEW 1: AQUAMORPHIC LOGIN GATEWAY ==================== -->
-    <section id="viewLoginContainer" class="login-shell-wrap" aria-label="Đăng nhập SportPass">
+    <!-- ==================== VIEW 1: OCEAN LOGIN PORTAL (SCREENSHOTS 7 & 11) ==================== -->
+    <section id="viewLoginContainer" class="login-shell-wrap" aria-label="Cổng Thẻ Số Thể Thao">
       <div class="login-hero-head">
-        <div class="login-crest-lg" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            <path d="m9 12 2 2 4-4"/>
-          </svg>
+        <div class="login-crest-wrap">
+          <div class="login-crest-lg" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="login-pro-tag">PRO</span>
         </div>
-        <h2 class="login-title-h2">Varsity Pass</h2>
-        <p class="login-sub-copy">CLB Thể Thao • Trường Đại học Hải Dương</p>
+        <div class="login-club-chip">• CLB THỂ THAO</div>
+        <h2 class="login-portal-title">Cổng Thẻ Số Thể Thao</h2>
+        <p class="login-sub-copy">Xác thực sinh viên để truy cập tiện ích thể thao</p>
       </div>
 
-      <form id="login-form" class="login-glass-form">
-        <div class="field-group">
-          <label class="field-label-mono" for="iptUser">Mã ID hoặc Số điện thoại</label>
-          <div class="input-icon-wrap">
-            <span class="input-lead-icon" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </span>
-            <input id="iptUser" type="text" class="aqua-input with-lead" placeholder="Ví dụ: DMC0806 hoặc 09xxxxxxxx" autocomplete="username" autocapitalize="characters">
-          </div>
+      <form id="login-form" class="login-ocean-card">
+        <div class="card-wave-pattern" aria-hidden="true">
+          <svg fill="none" preserveAspectRatio="none" stroke="currentColor" viewBox="0 0 400 320">
+            <path d="M-20 50 C 90 30, 160 120, 260 80 C 340 45, 380 100, 440 70" stroke-dasharray="3 3" stroke-width="1.2"/>
+            <path d="M-20 140 C 80 100, 200 200, 320 150 C 390 120, 420 170, 450 150" stroke-width="1.3"/>
+            <circle cx="340" cy="70" r="55" stroke-width="0.9"/>
+            <circle cx="340" cy="70" r="88" stroke-dasharray="2 4" stroke-width="0.7"/>
+          </svg>
         </div>
 
-        <div class="field-group">
-          <label class="field-label-mono" for="iptPass">Mật khẩu xác thực</label>
-          <div class="input-icon-wrap">
-            <span class="input-lead-icon" aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div class="login-card-inner">
+          <div class="login-badge-row">
+            <span class="login-glass-pill">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>ĐĂNG NHẬP HỆ THỐNG</span>
             </span>
-            <input id="iptPass" type="password" class="aqua-input with-lead with-trail" placeholder="Mặc định: 123456" autocomplete="current-password">
-            <button id="btnTogglePass" type="button" class="password-eye-toggle" aria-label="Hiện mật khẩu" aria-pressed="false">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
-              </svg>
+            <span class="login-glass-pill">NIÊN KHÓA 2024 - 2025</span>
+          </div>
+
+          <div class="field-group">
+            <div class="login-field-head">
+              <label class="login-field-label" for="iptUser">MÃ SỐ SINH VIÊN (MSSV)</label>
+              <span class="login-req-badge">BẮT BUỘC</span>
+            </div>
+            <div class="login-glass-input-wrap">
+              <span class="login-input-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h6"/></svg>
+              </span>
+              <input id="iptUser" type="text" class="login-glass-input font-mono" placeholder="Ví dụ: DMC0806 hoặc SĐT" autocomplete="username" autocapitalize="characters">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="login-field-head">
+              <label class="login-field-label" for="iptPass">MẬT KHẨU TRUY CẬP</label>
+              <span class="login-sec-badge">BẢO MẬT</span>
+            </div>
+            <div class="login-glass-input-wrap">
+              <span class="login-input-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <input id="iptPass" type="password" class="login-glass-input" placeholder="Mặc định: 123456" autocomplete="current-password">
+              <button id="btnTogglePass" type="button" class="login-eye-btn" aria-label="Hiện mật khẩu" aria-pressed="false">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="login-options-row">
+            <label class="login-remember-label" for="chkRememberLogin">
+              <input id="chkRememberLogin" type="checkbox" checked>
+              <span>Ghi nhớ phiên</span>
+            </label>
+            <button id="btnForgotPass" type="button" class="login-forgot-btn">Quên mật khẩu?</button>
+          </div>
+
+          <button id="btnLoginSubmit" type="submit" class="login-white-cta water-ripple-target spring-press">
+            <span>Đăng nhập ngay</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+
+          <div class="login-bio-row">
+            <button id="btnFaceIdLogin" type="button" class="login-bio-btn water-ripple-target spring-press">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/><path d="M9 10v1m6-1v1m-4 4a2 2 0 0 0 2 0"/></svg>
+              <span>Face ID</span>
+            </button>
+            <button id="btnTouchIdLogin" type="button" class="login-bio-btn water-ripple-target spring-press">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0 0 8 11a4 4 0 1 1 8 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0 0 15.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 0 0 8 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/></svg>
+              <span>Touch ID</span>
             </button>
           </div>
         </div>
-
-        <div class="remember-row">
-          <label class="remember-label" for="chkRememberLogin">
-            <input id="chkRememberLogin" type="checkbox" checked>
-            <span>Ghi nhớ đăng nhập trên thiết bị này</span>
-          </label>
-        </div>
-
-        <button id="btnLoginSubmit" type="submit" class="btn-aqua-primary water-ripple-target spring-press">
-          <span>Đăng nhập Varsity Pass</span>
-        </button>
       </form>
 
-      <div class="login-guide-card">
-        <div>Quy tắc Mã ID: <strong>Chữ cái đầu Họ Tên + Ngày/Tháng sinh</strong>.</div>
-        <div style="margin-top:4px;">Quản trị viên gốc: <span class="code-chip">DMC0806</span> • Mật khẩu mặc định: <span class="code-chip">123456</span></div>
+      <div class="login-footer-ssl">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span>Bảo mật chuẩn mã hóa SSL 256-bit • CLB Thể Thao ĐH Hải Dương</span>
       </div>
     </section>
 
-    <!-- ==================== VIEW 2: EXACT CANONICAL 5-BLOCK VARSITY PASS UI ==================== -->
+    <!-- ==================== VIEW 2: CANONICAL MAIN VARSITY PASS UI ==================== -->
     <div id="viewMainAppContainer" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
 
-      <!-- BLOCK 0: STICKY FROSTED TOP BAR -->
+      <!-- TOP BAR -->
       <header class="varsity-topbar pt-safe">
         <div class="varsity-topbar-inner">
           <div class="brand-lockup">
@@ -128,7 +171,15 @@
               </svg>
               <span class="notif-dot" aria-hidden="true"></span>
             </button>
-            <button id="settings-trigger" type="button" class="avatar-ring-btn water-ripple-target spring-press" aria-label="Cài đặt ứng dụng">
+            <button id="members-trigger" type="button" class="icon-circle-btn water-ripple-target spring-press" aria-label="Thành viên CLB">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </button>
+            <button id="settings-trigger" type="button" class="avatar-ring-btn water-ripple-target spring-press" aria-label="Cài đặt và tài khoản">
               <img id="settings-trigger-avatar" width="36" height="36" alt="Đỗ Mạnh Cường" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
             </button>
           </div>
@@ -136,16 +187,16 @@
       </header>
 
       <!-- MAIN SCROLL CONTENT -->
-      <main class="varsity-main pb-safe">
+      <main class="varsity-main">
 
-        <!-- BLOCK 1: HERO CREDENTIAL PASS CARD (3D Tilt, Specular Reflection, Aurora Sweep, Exact SVG Pattern) -->
+        <!-- BLOCK 1: HERO CREDENTIAL PASS CARD -->
         <div class="hero-card-container anim-hero" id="hero-card-wrap">
           <section aria-labelledby="card-heading" class="hero-card-aquamorphic" id="hero-interactive-card" style="--specular-x: 70%; --specular-y: 35%;">
             <div class="hero-specular-light" aria-hidden="true"></div>
             <div class="aurora-beam" aria-hidden="true"></div>
             <div class="hero-sheen-layer" aria-hidden="true"></div>
 
-            <!-- Preserved Aquamorphic Contour Waves & Concentric Rings (H2-002) -->
+            <!-- Preserved Aquamorphic SVG Pattern (H2-002) -->
             <div class="card-wave-pattern" id="card-pattern" aria-hidden="true">
               <svg fill="none" preserveAspectRatio="none" stroke="currentColor" viewBox="0 0 400 240">
                 <path d="M-20 40 C 90 20, 160 110, 260 70 C 340 35, 380 90, 440 60" stroke-dasharray="3 3" stroke-width="1.2"/>
@@ -169,6 +220,7 @@
                     <span class="status-ping-dot"></span>
                   </span>
                   <span id="hero-status-text">Sẵn sàng</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
               </div>
             </div>
@@ -223,28 +275,46 @@
           </div>
         </section>
 
-        <!-- BLOCK 3: QUICK ACTIONS ("Tạo ca" & "Duyệt ca") -->
-        <section aria-label="Thao tác nhanh" class="anim-stagger-2 quick-actions-grid">
+        <!-- BLOCK 3A: QUICK ACTIONS (ADMIN MODE - SCREENSHOT 6) -->
+        <section id="quick-actions-admin" aria-label="Thao tác điều phối" class="anim-stagger-2 quick-actions-grid">
           <button id="admin-create-shift-btn" type="button" class="btn-aqua-primary water-ripple-target spring-press">
             <div class="btn-aqua-badge" aria-hidden="true">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
                 <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
               </svg>
             </div>
-            <span style="position:relative;z-index:10;">Tạo ca</span>
+            <span style="position:relative;z-index:10;">+ Tạo ca trực</span>
           </button>
 
           <button id="admin-approve-btn" type="button" class="btn-aqua-glass water-ripple-target spring-press">
+            <span id="approve-corner-dot" class="action-corner-dot" aria-hidden="true"></span>
             <div class="btn-glass-badge" aria-hidden="true">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
                 <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
               </svg>
             </div>
-            <span style="position:relative;z-index:10;">Duyệt ca</span>
+            <span id="approve-btn-label" style="position:relative;z-index:10;">Duyệt ca (3)</span>
           </button>
         </section>
 
-        <!-- BLOCK 4: PROFILE DETAILS (8 ROWS MATCHING REFERENCE UI) -->
+        <!-- BLOCK 3B: QUICK ACTIONS (MEMBER MODE - SCREENSHOT 10) -->
+        <section id="quick-actions-member" aria-label="Thao tác thành viên" class="anim-stagger-2 quick-actions-grid hidden">
+          <button id="member-register-btn" type="button" class="btn-aqua-glass water-ripple-target spring-press">
+            <div class="btn-glass-badge sky" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><line x1="12" x2="12" y1="13" y2="17"/><line x1="10" x2="14" y1="15" y2="15"/></svg>
+            </div>
+            <span style="position:relative;z-index:10;">Đăng ký ca trực</span>
+          </button>
+
+          <button id="member-swap-btn" type="button" class="btn-aqua-glass water-ripple-target spring-press">
+            <div class="btn-glass-badge" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 3l4 4-4 4"/><path d="M20 7H4"/><path d="M8 21l-4-4 4-4"/><path d="M4 17h16"/></svg>
+            </div>
+            <span style="position:relative;z-index:10;">Xin đổi ca</span>
+          </button>
+        </section>
+
+        <!-- BLOCK 4: PROFILE DETAILS (EXACT 8 ROWS) -->
         <section aria-labelledby="details-heading" class="anim-stagger-3 profile-section">
           <div class="profile-section-head">
             <h2 id="details-heading" class="section-kicker">THÔNG TIN HỒ SƠ</h2>
@@ -353,19 +423,32 @@
           </div>
         </section>
       </main>
+
+      <!-- FLOATING ROLE VIEW SWITCHER (ADMIN ONLY - SCREENSHOT 6) -->
+      <div id="role-preview-dock" class="role-preview-dock hidden">
+        <div class="role-preview-stage">
+          <div class="role-switch-capsule" role="group" aria-label="Chế độ xem vai trò">
+            <button id="role-switch-member" type="button" class="role-switch-btn">Thành viên</button>
+            <button id="role-switch-admin" type="button" class="role-switch-btn active">Admin</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ==================== AQUAMORPHIC NATIVE <dialog closedby="any"> BOTTOM SHEETS ==================== -->
-
-  <!-- SHEET 1: QR PASS (45s Live Countdown) -->
+  <!-- ==================== MODAL 1: THẺ VÀO CỔNG QR ==================== -->
   <dialog id="qr-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="qr-modal-title">
     <div class="sheet-panel sheet-panel-centered">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <h3 id="qr-modal-title" class="sheet-title-h3">Thẻ Vào Cổng &amp; Điểm Danh</h3>
       <p class="sheet-sub" style="max-width:280px;font-size:13px;">Quét mã tại trạm trực ban sân vận động để xác nhận ca trực</p>
 
-      <div class="qr-holo-card">
+      <div id="qr-locked-notice" class="dispatch-card urgent hidden" style="width:100%;margin-top:14px;">
+        <span style="font-size:12.5px;font-weight:700;color:#92400e;">Thẻ đang tạm khóa từ xa</span>
+        <span style="font-size:11.5px;color:#b45309;">Hãy tắt "Khóa thẻ từ xa" trong Cài Đặt &amp; Tài Khoản để xuất trình mã QR.</span>
+      </div>
+
+      <div id="qr-holo-container" class="qr-holo-card">
         <div id="qr-code-box" class="qr-render-frame"></div>
         <span id="qr-token-code" class="qr-token-text">#DMC0806-VN</span>
         <div class="qr-timer-line">
@@ -383,13 +466,13 @@
     </div>
   </dialog>
 
-  <!-- SHEET 2: NOTIFICATION CENTER -->
+  <!-- ==================== MODAL 2: THÔNG BÁO ==================== -->
   <dialog id="notification-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="notif-modal-title">
     <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="sheet-header">
         <div class="sheet-title-wrap">
-          <div class="sheet-icon-badge" aria-hidden="true">
+          <div class="sheet-icon-badge soft" aria-hidden="true">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
           </div>
           <div>
@@ -401,27 +484,49 @@
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
-
       <div id="notification-list" class="sheet-scroll-body"></div>
-
       <div class="sheet-footer">
-        <button id="notification-dismiss-btn" type="button" class="btn-sheet-muted water-ripple-target spring-press">
-          <span>Đóng thông báo</span>
-        </button>
+        <button id="notification-dismiss-btn" type="button" class="btn-sheet-muted water-ripple-target spring-press">Đóng thông báo</button>
       </div>
     </div>
   </dialog>
 
-  <!-- SHEET 3: APP SETTINGS -->
+  <!-- ==================== MODAL 3: THÀNH VIÊN CLB (SCREENSHOT 1) ==================== -->
+  <dialog id="members-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="members-modal-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <h3 id="members-modal-title" class="sheet-title-h3">Thành Viên CLB</h3>
+          <span id="membersCountBadge" class="role-pill-badge">125</span>
+        </div>
+        <button id="members-modal-close-x" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="sheet-scroll-body">
+        <input id="iptSearchMembers" type="search" class="aqua-input" placeholder="Tìm tên, Mã ID hoặc ban...">
+        <div id="membersDeptFilterBar" class="dept-chip-scroll"></div>
+        <div id="membersModalList" style="display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+
+      <div class="sheet-footer">
+        <button id="members-modal-close" type="button" class="btn-sheet-muted water-ripple-target spring-press">Đóng</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== MODAL 4: CÀI ĐẶT & TÀI KHOẢN (SCREENSHOT 9) ==================== -->
   <dialog id="settings-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="settings-modal-title">
     <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="sheet-header">
         <div class="sheet-title-wrap">
-          <div class="sheet-icon-badge" aria-hidden="true">
+          <div class="sheet-icon-badge soft" aria-hidden="true">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </div>
-          <h3 id="settings-modal-title" class="sheet-title-h3">Cài Đặt Ứng Dụng</h3>
+          <h3 id="settings-modal-title" class="sheet-title-h3">Cài Đặt &amp; Tài Khoản</h3>
         </div>
         <button id="settings-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -429,81 +534,161 @@
       </div>
 
       <div class="sheet-scroll-body">
-        <div class="settings-user-card">
+        <!-- Mini Ocean Member Card -->
+        <div class="settings-mini-hero">
           <img id="settings-avatar" width="48" height="48" alt="Avatar" class="settings-user-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
           <div style="flex:1;min-width:0;">
-            <div id="settings-name" style="font-size:14px;font-weight:700;color:var(--text-primary);" class="truncate">Đỗ Mạnh Cường</div>
-            <div id="settings-email" class="font-mono truncate" style="font-size:11px;color:var(--text-muted);">dmc0806@uhd.sportpass.vn</div>
+            <div id="settings-role-kicker" class="font-mono" style="font-size:9.5px;color:#bae6fd;letter-spacing:0.06em;">ĐIỀU PHỐI VIÊN</div>
+            <div id="settings-name" style="font-size:14.5px;font-weight:700;color:#ffffff;" class="truncate">Đỗ Mạnh Cường</div>
+            <div id="settings-submeta" class="font-mono truncate" style="font-size:11px;color:rgba(224,242,254,0.88);">MSSV: DMC0806 • K13.GDTC</div>
           </div>
-          <span id="settings-status-badge" class="settings-status-pill">Sẵn sàng</span>
+          <span id="settings-grade-badge" class="settings-grade-badge">A+</span>
         </div>
 
-        <div class="settings-row-item">
-          <div class="settings-row-left">
-            <div class="settings-row-icon tile-sky" aria-hidden="true">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="settings-group-kicker">BẢO MẬT &amp; ĐĂNG NHẬP</span>
+        <div class="settings-group-card">
+          <div class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-emerald" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Xác thực Face ID</span>
+                <p class="settings-row-desc">Mở thẻ và xác thực không cần PIN</p>
+              </div>
             </div>
-            <div>
-              <span class="settings-row-title">Cài đặt thông báo</span>
-              <p class="settings-row-desc">Chuông nhắc lịch và tin khẩn cấp</p>
-            </div>
+            <label class="aqua-switch" aria-label="Bật Face ID">
+              <input id="switchFaceId" type="checkbox" class="sr-only" checked>
+              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
+            </label>
           </div>
-          <label class="aqua-switch" aria-label="Bật thông báo">
-            <input id="toggle-notif-switch" type="checkbox" class="sr-only" checked>
-            <div class="aqua-switch-track"><div class="aqua-switch-knob"></div></div>
-          </label>
+
+          <button id="security-password-row" type="button" class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-sky" aria-hidden="true">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Đổi mật khẩu</span>
+                <p class="settings-row-desc">Cập nhật mật khẩu cá nhân</p>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="strength-pill">Mạnh</span>
+              <span style="font-size:13px;color:var(--text-muted);">›</span>
+            </div>
+          </button>
+
+          <div class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-amber" aria-hidden="true">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="3" width="12" x="6" y="3"/><path d="M12 17h.01"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Khóa thẻ từ xa</span>
+                <p class="settings-row-desc">Bảo vệ thẻ khi làm mất điện thoại</p>
+              </div>
+            </div>
+            <label class="aqua-switch" aria-label="Khóa thẻ từ xa">
+              <input id="switchRemoteLock" type="checkbox" class="sr-only">
+              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
+            </label>
+          </div>
         </div>
 
-        <button id="theme-toggle-row" type="button" class="settings-row-item">
-          <div class="settings-row-left">
-            <div class="settings-row-icon tile-indigo" aria-hidden="true">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span class="settings-group-kicker">GIAO DIỆN &amp; TRẢI NGHIỆM</span>
+        <div class="settings-group-card">
+          <button id="theme-toggle-row" type="button" class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-indigo" aria-hidden="true">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Chủ đề giao diện</span>
+                <p id="theme-mode-desc" class="settings-row-desc">Màu sắc hiển thị trên hệ thống</p>
+              </div>
             </div>
-            <div>
-              <span class="settings-row-title">Giao diện (Chế độ tối / sáng)</span>
-              <p id="theme-mode-desc" class="settings-row-desc">Giao diện sáng Frosted Sky</p>
-            </div>
-          </div>
-          <span id="theme-mode-badge" class="theme-mode-pill">Sáng</span>
-        </button>
+            <span id="theme-mode-badge" class="theme-mode-pill">Sáng ⌄</span>
+          </button>
 
-        <div class="settings-row-item">
-          <div class="settings-row-left">
-            <div class="settings-row-icon tile-teal" aria-hidden="true">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <div class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-sky" aria-hidden="true">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Hiệu ứng 3D Tilt</span>
+                <p class="settings-row-desc">Gợn sóng chạm &amp; xoay góc thẻ</p>
+              </div>
             </div>
-            <div>
-              <span class="settings-row-title">Ngôn ngữ</span>
-              <p class="settings-row-desc">Tiếng Việt (Mặc định)</p>
+            <label class="aqua-switch" aria-label="Bật hiệu ứng 3D Tilt">
+              <input id="switchTilt3d" type="checkbox" class="sr-only" checked>
+              <div class="aqua-switch-track"><div class="aqua-switch-knob"></div></div>
+            </label>
+          </div>
+
+          <div class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-teal" aria-hidden="true">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Ngôn ngữ</span>
+                <p class="settings-row-desc">Display language</p>
+              </div>
+            </div>
+            <div class="lang-toggle-group">
+              <button id="lang-btn-vn" type="button" class="lang-seg-btn active">VN</button>
+              <button id="lang-btn-en" type="button" class="lang-seg-btn">EN</button>
             </div>
           </div>
-          <span style="font-size:12px;font-weight:500;color:var(--text-secondary);">Tiếng Việt ›</span>
         </div>
 
-        <button id="security-password-row" type="button" class="settings-row-item">
-          <div class="settings-row-left">
-            <div class="settings-row-icon tile-emerald" aria-hidden="true">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span class="settings-group-kicker">THÔNG BÁO &amp; PHẢN HỒI</span>
+        <div class="settings-group-card">
+          <div class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-rose" aria-hidden="true">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Thông báo ca khẩn cấp</span>
+                <p class="settings-row-desc">Đẩy chuông ưu tiên điều động sân</p>
+              </div>
             </div>
-            <div>
-              <span class="settings-row-title">Bảo mật &amp; Đổi mật khẩu</span>
-              <p class="settings-row-desc">Cập nhật mật khẩu tài khoản CLB</p>
-            </div>
+            <label class="aqua-switch" aria-label="Thông báo ca khẩn cấp">
+              <input id="switchUrgentNotifs" type="checkbox" class="sr-only" checked>
+              <div class="aqua-switch-track emerald"><div class="aqua-switch-knob"></div></div>
+            </label>
           </div>
-          <span class="security-action-label">Đổi PIN ›</span>
-        </button>
 
-        <div class="settings-row-item">
-          <div class="settings-row-left">
-            <div class="settings-row-icon" style="background:var(--surface-chip);color:var(--text-secondary);" aria-hidden="true">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+          <div class="settings-row-item">
+            <div class="settings-row-left">
+              <div class="settings-row-icon tile-indigo" aria-hidden="true">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="3" width="12" x="6" y="3"/><path d="M2 8v8m20-8v8"/></svg>
+              </div>
+              <div>
+                <span class="settings-row-title">Rung phản hồi (Haptics)</span>
+                <p class="settings-row-desc">Rung nhẹ khi chạm hoặc quét QR</p>
+              </div>
             </div>
-            <div>
-              <span class="settings-row-title">Phiên bản ứng dụng</span>
-              <p class="settings-row-desc">Đã cập nhật bản mới nhất</p>
-            </div>
+            <label class="aqua-switch" aria-label="Rung phản hồi">
+              <input id="switchHaptics" type="checkbox" class="sr-only" checked>
+              <div class="aqua-switch-track indigo"><div class="aqua-switch-knob"></div></div>
+            </label>
           </div>
-          <span class="font-mono" style="font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface-chip);padding:2px 8px;border-radius:6px;">v2.4.0</span>
+        </div>
+
+        <span class="settings-group-kicker">HỆ THỐNG</span>
+        <div class="settings-group-card">
+          <div class="settings-row-item">
+            <span class="settings-row-title">Phiên bản Pass</span>
+            <span class="theme-mode-pill font-mono">v2.4.5</span>
+          </div>
+          <button id="terms-privacy-row" type="button" class="settings-row-item">
+            <span class="settings-row-title">Điều khoản &amp; Quyền riêng tư</span>
+            <span style="font-size:13px;color:var(--text-muted);">›</span>
+          </button>
         </div>
 
         <button id="logout-btn" type="button" class="btn-sheet-danger water-ripple-target spring-press">
@@ -514,7 +699,7 @@
     </div>
   </dialog>
 
-  <!-- SHEET 4: EDIT PROFILE -->
+  <!-- ==================== MODAL 5: CHỈNH SỬA THÔNG TIN HỒ SƠ (SCREENSHOT 5) ==================== -->
   <dialog id="edit-profile-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="edit-modal-title">
     <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
@@ -523,7 +708,10 @@
           <div class="sheet-icon-badge" aria-hidden="true">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
-          <h3 id="edit-modal-title" class="sheet-title-h3">Chỉnh Sửa Hồ Sơ</h3>
+          <div>
+            <h3 id="edit-modal-title" class="sheet-title-h3">Chỉnh sửa thông tin hồ sơ</h3>
+            <p class="sheet-sub">Cập nhật thông tin cán bộ &amp; thành viên</p>
+          </div>
         </div>
         <button id="edit-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -531,189 +719,218 @@
       </div>
 
       <form id="profile-form" class="sheet-scroll-body" onsubmit="return false;">
-        <div class="field-group">
-          <label class="field-label-mono" for="edit-avatar-input">Ảnh đại diện thẻ (Tùy chọn)</label>
-          <input id="edit-avatar-input" type="file" accept="image/*" class="aqua-input" style="padding:8px 12px;">
+        <div class="edit-avatar-card">
+          <div class="edit-avatar-thumb-wrap">
+            <img id="edit-avatar-preview" width="56" height="56" alt="Ảnh đại diện hồ sơ" class="edit-avatar-thumb" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+            <span class="edit-avatar-cam-dot" aria-hidden="true">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </span>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:13.5px;font-weight:700;color:var(--text-primary);">Ảnh đại diện hồ sơ</div>
+            <div style="font-size:11px;color:var(--text-muted);">Định dạng JPG, PNG tối đa 5MB</div>
+            <button id="btnTriggerEditAvatar" type="button" class="btn-upload-avatar">↑ Đổi ảnh đại diện</button>
+            <input id="edit-avatar-input" type="file" accept="image/*" class="hidden">
+          </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-fullname">Họ và tên</label>
-          <input id="input-fullname" type="text" class="aqua-input" placeholder="Nhập họ và tên...">
+          <label class="field-label-mono" for="input-fullname">1. Họ và tên</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#0284c7;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <input id="input-fullname" type="text" class="aqua-input with-lead" placeholder="Nhập họ và tên...">
+          </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-studentId">Mã số sinh viên</label>
-          <input id="input-studentId" type="text" class="aqua-input font-mono" placeholder="Mã số sinh viên...">
+          <div class="field-head-split">
+            <label class="field-label-mono" for="input-studentId">2. Mã số sinh viên</label>
+            <span class="field-readonly-tag">🔒 Chỉ đọc</span>
+          </div>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#64748b;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/></svg></span>
+            <input id="input-studentId" type="text" class="aqua-input with-lead with-trail font-mono" readonly>
+            <span class="input-trail-icon" aria-hidden="true"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+          </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-faculty">Khoa / Khóa</label>
-          <input id="input-faculty" type="text" class="aqua-input" placeholder="Khoa và khóa đào tạo...">
+          <label class="field-label-mono" for="input-faculty">3. Khoa / Khóa học</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#4f46e5;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+            <input id="input-faculty" type="text" class="aqua-input with-lead" placeholder="Khoa và khóa đào tạo...">
+          </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-dob">Ngày tháng năm sinh</label>
-          <input id="input-dob" type="text" class="aqua-input font-mono" placeholder="DD/MM/YYYY">
+          <label class="field-label-mono" for="input-dob">4. Ngày tháng năm sinh</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#e11d48;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>
+            <input id="input-dob" type="text" class="aqua-input with-lead font-mono" placeholder="DD/MM/YYYY">
+          </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-dutyArea">Ban hoạt động</label>
-          <input id="input-dutyArea" type="text" class="aqua-input" placeholder="Ban hoạt động CLB...">
+          <label class="field-label-mono" for="input-dutyArea">5. Ban hoạt động</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#0d9488;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+            <input id="input-dutyArea" type="text" class="aqua-input with-lead" placeholder="Ban hoạt động CLB...">
+          </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-phone">Số điện thoại</label>
-          <input id="input-phone" type="tel" class="aqua-input font-mono" placeholder="Số điện thoại liên hệ...">
+          <label class="field-label-mono" for="input-role">6. Chức vụ</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#d97706;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+            <input id="input-role" type="text" class="aqua-input with-lead" placeholder="Chức vụ trong CLB...">
+          </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-ice">Liên hệ khẩn (ICE)</label>
-          <input id="input-ice" type="text" class="aqua-input font-mono" placeholder="Số điện thoại khẩn cấp và quan hệ...">
+          <label class="field-label-mono" for="input-phone">7. Số điện thoại</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#059669;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <input id="input-phone" type="tel" class="aqua-input with-lead font-mono" placeholder="Số điện thoại liên hệ...">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-ice">8. Liên hệ khẩn (ICE)</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#d97706;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            <input id="input-ice" type="text" class="aqua-input with-lead font-mono" placeholder="Số điện thoại khẩn cấp...">
+          </div>
         </div>
       </form>
 
       <div class="sheet-footer">
-        <button id="edit-modal-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">
-          <span>Hủy</span>
-        </button>
-        <button id="edit-modal-save" type="button" class="btn-sheet-primary water-ripple-target spring-press">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
-          <span>Lưu thay đổi</span>
-        </button>
+        <button id="edit-modal-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">Hủy</button>
+        <button id="edit-modal-save" type="button" class="btn-sheet-primary water-ripple-target spring-press">✓ Lưu thay đổi</button>
       </div>
     </div>
   </dialog>
 
-  <!-- SHEET 5: CHANGE PASSWORD -->
-  <dialog id="password-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="password-modal-title">
-    <div class="sheet-panel">
-      <div class="sheet-drag-handle" aria-hidden="true"></div>
-      <div class="sheet-header">
-        <div class="sheet-title-wrap">
-          <div class="sheet-icon-badge" aria-hidden="true">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <h3 id="password-modal-title" class="sheet-title-h3">Đổi Mật Khẩu</h3>
-        </div>
-        <button id="password-modal-close" type="button" class="sheet-close-btn" aria-label="Đóng">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="sheet-scroll-body">
-        <div class="field-group">
-          <label class="field-label-mono" for="iptCurrentPassword">Mật khẩu hiện tại</label>
-          <input id="iptCurrentPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu cũ">
-        </div>
-        <div class="field-group">
-          <label class="field-label-mono" for="iptNewPassword">Mật khẩu mới (>= 6 ký tự)</label>
-          <input id="iptNewPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu mới">
-        </div>
-        <div class="field-group">
-          <label class="field-label-mono" for="iptConfirmPassword">Xác nhận mật khẩu mới</label>
-          <input id="iptConfirmPassword" type="password" class="aqua-input" placeholder="Nhập lại mật khẩu mới">
-        </div>
-      </div>
-
-      <div class="sheet-footer">
-        <button id="password-modal-cancel" type="button" class="btn-sheet-muted">Hủy</button>
-        <button id="btnSavePassword" type="button" class="btn-sheet-primary">Lưu mật khẩu</button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- SHEET 6: CREATE / EDIT SHIFT ("Tạo ca") -->
+  <!-- ==================== MODAL 6: TẠO CA TRỰC MỚI (SCREENSHOT 8) ==================== -->
   <dialog id="create-shift-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="create-shift-title">
     <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="sheet-header">
         <div class="sheet-title-wrap">
           <div class="sheet-icon-badge" aria-hidden="true">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
           </div>
-          <h3 id="create-shift-title" class="sheet-title-h3">Tạo Ca Trực Mới</h3>
+          <div>
+            <h3 id="create-shift-title" class="sheet-title-h3">Tạo ca trực mới</h3>
+            <p class="sheet-sub">Thiết lập thông tin và điều phối nhân sự thể thao</p>
+          </div>
         </div>
-        <button id="create-shift-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+        <button id="create-shift-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
       <div class="sheet-scroll-body">
         <div class="field-group">
-          <label class="field-label-mono" for="iptTaskTitle">Tên ca trực / sự kiện</label>
-          <input id="iptTaskTitle" type="text" class="aqua-input" placeholder="Ví dụ: Trực bàn giải Cầu lông K16">
-        </div>
-        <div class="field-group">
-          <label class="field-label-mono" for="iptTaskLocation">Địa điểm</label>
-          <input id="iptTaskLocation" type="text" class="aqua-input" value="Nhà Thi Đấu ĐH Hải Dương">
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 90px;gap:10px;">
-          <div class="field-group">
-            <label class="field-label-mono" for="iptTaskTime">Khung giờ trực</label>
-            <input id="iptTaskTime" type="text" class="aqua-input font-mono" value="14:00 - 17:30 Thứ Bảy">
+          <div class="field-head-split">
+            <label class="field-label-mono" for="iptTaskTitle">Tên ca trực</label>
+            <span class="field-req-pill">Bắt buộc</span>
           </div>
-          <div class="field-group">
-            <label class="field-label-mono" for="iptTaskQuota">Chỉ tiêu</label>
-            <input id="iptTaskQuota" type="number" min="1" class="aqua-input font-mono" value="4">
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#0284c7;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/><path d="M19.07 4.93L4.93 19.07"/></svg></span>
+            <input id="iptTaskTitle" type="text" class="aqua-input with-lead" placeholder="Giải Bóng Đá Sinh Viên ĐH Hải Dương">
           </div>
         </div>
+
         <div class="field-group">
-          <label class="field-label-mono" for="iptTaskNotes">Ghi chú nhiệm vụ</label>
-          <input id="iptTaskNotes" type="text" class="aqua-input" placeholder="Trang phục, dụng cụ...">
+          <label class="field-label-mono" for="iptTaskLocation">Khu vực điều phối</label>
+          <div id="area-cards-container" class="area-cards-grid"></div>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#0d9488;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <input id="iptTaskLocation" type="text" class="aqua-input with-lead" value="Sân Vận Động Trung Tâm">
+          </div>
         </div>
+
         <div class="field-group">
-          <span class="field-label-mono">Phân bổ 7 Ban chuyên môn</span>
-          <div id="deptQuotaContainer" style="display:flex;flex-direction:column;gap:6px;"></div>
+          <label class="field-label-mono" for="iptTaskTime">Thời gian trực</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <input id="iptTaskDate" type="text" class="aqua-input font-mono" value="18/03/2025" aria-label="Ngày trực">
+            <input id="iptTaskTime" type="text" class="aqua-input font-mono" value="14:00 - 18:00" aria-label="Khung giờ">
+          </div>
+          <div id="preset-time-container" class="preset-time-row">
+            <span style="font-size:11px;color:var(--text-muted);">Ca mẫu:</span>
+            <button type="button" class="preset-time-btn" data-time="07:30 - 11:30">Sáng: 07:30</button>
+            <button type="button" class="preset-time-btn active" data-time="13:30 - 17:30">Chiều: 13:30</button>
+            <button type="button" class="preset-time-btn" data-time="18:00 - 21:30">Tối: 18:00</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-head-split">
+            <span class="field-label-mono">Quy mô nhân sự &amp; Ban trực</span>
+            <span style="font-size:11.5px;color:var(--text-secondary);">Tổng cộng: <span id="create-shift-total-pill" class="role-pill-badge">4 nhân sự</span></span>
+          </div>
+          <input id="iptTaskQuota" type="hidden" value="4">
+          <div class="dept-box-card">
+            <div id="deptQuotaContainer" style="display:flex;flex-direction:column;gap:6px;"></div>
+            <button id="btnAddDeptQuotaRow" type="button" class="btn-dashed-add">+ Thêm ban</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <span class="field-label-mono">Người phụ trách</span>
+          <div class="leader-pick-card">
+            <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+              <img id="leaderPickAvatar" width="36" height="36" alt="Trưởng ca" style="width:36px;height:36px;border-radius:10px;object-fit:cover;" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+              <div style="min-width:0;">
+                <div id="leaderPickName" style="font-size:13px;font-weight:700;color:var(--text-primary);" class="truncate">Đỗ Mạnh Cường</div>
+                <div id="leaderPickRole" style="font-size:11px;color:var(--text-muted);">Trưởng ca trực</div>
+              </div>
+            </div>
+            <button id="btnCycleLeader" type="button" class="btn-mini btn-mini-soft">Đổi</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="iptTaskNotes">Ghi chú</label>
+          <input id="iptTaskNotes" type="text" class="aqua-input" placeholder="Trang phục CLB, bảng điểm, nước uống...">
         </div>
       </div>
 
       <div class="sheet-footer">
-        <button id="create-shift-cancel" type="button" class="btn-sheet-muted">Hủy</button>
-        <button id="btnSubmitTask" type="button" class="btn-sheet-primary">Phát hành ca trực</button>
+        <button id="create-shift-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">Hủy</button>
+        <button id="btnSubmitTask" type="button" class="btn-sheet-primary water-ripple-target spring-press">✓ Tạo ca trực</button>
       </div>
     </div>
   </dialog>
 
-  <!-- SHEET 7: APPROVE / DISPATCH / SCAN / DIRECTORY ("Duyệt ca") -->
+  <!-- ==================== MODAL 7: PHÊ DUYỆT ĐIỀU ĐỘNG (SCREENSHOT 14) ==================== -->
   <dialog id="approve-shift-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="approve-shift-title">
     <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="sheet-header">
         <div class="sheet-title-wrap">
-          <div class="sheet-icon-badge" aria-hidden="true">
+          <div class="sheet-icon-badge mint" aria-hidden="true">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           </div>
-          <div>
-            <h3 id="approve-shift-title" class="sheet-title-h3">Điều Phối &amp; Duyệt Ca</h3>
-            <p class="sheet-sub">Nhận ca, duyệt đơn, quét QR &amp; danh bạ 125 thành viên</p>
-          </div>
+          <h3 id="approve-shift-title" class="sheet-title-h3">Phê duyệt điều động</h3>
+          <span id="approve-header-count" class="mint-count-pill">3 đơn mới</span>
         </div>
-        <button id="approve-shift-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+        <button id="approve-shift-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
       <div class="sheet-seg-tabs" style="margin-top:10px;">
-        <button id="approve-tab-btn-shifts" type="button" class="sheet-seg-btn active">Ca trực</button>
-        <button id="approve-tab-btn-approvals" type="button" class="sheet-seg-btn">Duyệt (<span id="approvals-count-pill">0</span>)</button>
-        <button id="approve-tab-btn-scanner" type="button" class="sheet-seg-btn">Quét QR</button>
-        <button id="approve-tab-btn-directory" type="button" class="sheet-seg-btn">Danh bạ</button>
+        <button id="approve-tab-swap" type="button" class="sheet-seg-btn active">Đổi ca <span id="tab-count-swap">2</span></button>
+        <button id="approve-tab-leave" type="button" class="sheet-seg-btn">Xin vắng / Chi viện <span id="tab-count-leave">1</span></button>
+        <button id="approve-tab-shifts" type="button" class="sheet-seg-btn">Ca trực</button>
+        <button id="approve-tab-scanner" type="button" class="sheet-seg-btn">Quét QR</button>
       </div>
 
       <div class="sheet-scroll-body">
-        <!-- Panel: Shifts -->
-        <div id="approve-panel-shifts" style="display:flex;flex-direction:column;gap:10px;">
-          <div id="shiftsDeptFilterBar" class="dept-chip-scroll"></div>
-          <div id="shiftsListContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
-        </div>
+        <div id="approve-cards-container" style="display:flex;flex-direction:column;gap:10px;"></div>
 
-        <!-- Panel: Approvals -->
-        <div id="approve-panel-approvals" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
-          <div id="approvalsListContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
-        </div>
-
-        <!-- Panel: QR Scanner -->
-        <div id="approve-panel-scanner" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
+        <div id="approve-scanner-panel" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
           <div class="field-group">
             <label class="field-label-mono" for="selScanTaskId">Ca trực mục tiêu</label>
             <select id="selScanTaskId" class="aqua-input"></select>
@@ -722,7 +939,7 @@
             <video id="qrScannerVideo" autoplay muted playsinline></video>
             <canvas id="qrScannerCanvas" class="hidden"></canvas>
           </div>
-          <p id="qrScannerStatus" style="margin:0;font-size:12px;color:var(--text-secondary);">Nhấn Bật Camera hoặc chọn ảnh mã QR / nhập Mã ID để điểm danh.</p>
+          <p id="qrScannerStatus" style="margin:0;font-size:12px;color:var(--text-secondary);">Bật camera hoặc chọn ảnh QR / nhập Mã ID để điểm danh.</p>
           <div class="mini-action-grid">
             <button id="btnStartCameraScan" type="button" class="btn-mini btn-mini-sky">Bật Camera</button>
             <button id="btnSwitchCameraScan" type="button" class="btn-mini btn-mini-soft">Đổi Camera</button>
@@ -737,49 +954,123 @@
             <button id="btnManualCheckin" type="button" class="btn-mini btn-mini-emerald" style="min-height:44px;flex-shrink:0;">Điểm danh</button>
           </div>
         </div>
+      </div>
 
-        <!-- Panel: 125 Directory & RBAC -->
-        <div id="approve-panel-directory" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-            <input id="iptSearchDirectory" type="search" class="aqua-input" placeholder="Tìm tên, Mã ID, lớp hoặc ban...">
-            <span id="directoryCountLabel" class="font-mono" style="font-size:11px;color:var(--text-muted);white-space:nowrap;">125 hồ sơ</span>
-          </div>
-          <div id="directoryDeptFilterBar" class="dept-chip-scroll"></div>
-          <div id="directoryListContainer" style="display:flex;flex-direction:column;gap:8px;"></div>
-        </div>
+      <div id="approve-sheet-footer" class="sheet-footer">
+        <button id="btnApproveAllRequests" type="button" class="btn-sheet-primary water-ripple-target spring-press">✓ Duyệt tất cả (3 yêu cầu)</button>
       </div>
     </div>
   </dialog>
 
-  <!-- SHEET 8: ACTION PROMPT (SWAP / LEAVE / DELETE CONFIRM) -->
-  <dialog id="action-prompt-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="prompt-sheet-title">
+  <!-- ==================== MODAL 8: NHIỆM VỤ CA TRỰC / ĐĂNG KÝ & ĐỔI CA (SCREENSHOTS 2 & 12) ==================== -->
+  <dialog id="task-mission-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="task-mission-title">
     <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
       <div class="sheet-header">
-        <div>
-          <h3 id="prompt-sheet-title" class="sheet-title-h3">Xác Nhận Thao Tác</h3>
-          <p id="prompt-sheet-desc" class="sheet-sub">Nhập thông tin chi tiết để gửi lên hệ thống.</p>
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          </div>
+          <div>
+            <h3 id="task-mission-title" class="sheet-title-h3">Nhiệm vụ ca trực</h3>
+            <p class="sheet-sub">Đăng ký &amp; Điều phối nhân sự thể thao</p>
+          </div>
         </div>
-        <button id="prompt-modal-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+        <button id="task-mission-close-x" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
+      <div class="sheet-seg-tabs" style="margin-top:10px;">
+        <button id="mission-tab-shifts" type="button" class="sheet-seg-btn active">Ca trực khả dụng</button>
+        <button id="mission-tab-swap" type="button" class="sheet-seg-btn">Xin đổi / Rút ca</button>
+      </div>
+
       <div class="sheet-scroll-body">
-        <div id="prompt-swap-target-wrap" class="field-group hidden">
-          <label class="field-label-mono" for="selSwapTargetMember">Thành viên nhận thay ca</label>
-          <select id="selSwapTargetMember" class="aqua-input"></select>
-        </div>
-        <div id="prompt-reason-wrap" class="field-group hidden">
-          <label class="field-label-mono" for="iptPromptReason">Lý do cụ thể</label>
-          <input id="iptPromptReason" type="text" class="aqua-input" placeholder="Nhập lý do...">
+        <div id="mission-panel-shifts" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <div id="mission-panel-swap" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="selMissionTaskId">Chọn ca muốn đổi / xin rút</label>
+            <select id="selMissionTaskId" class="aqua-input"></select>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="selMissionTargetMember">Thành viên nhận thay (Tùy chọn)</label>
+            <select id="selMissionTargetMember" class="aqua-input"></select>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="iptMissionReason">Lý do cụ thể</label>
+            <input id="iptMissionReason" type="text" class="aqua-input" placeholder="Ví dụ: Trùng lịch thi, thực tập đột xuất...">
+          </div>
+          <div class="dispatch-btn-pair">
+            <button id="btnSubmitMemberSwap" type="button" class="btn-sheet-primary">Gửi đơn đổi ca</button>
+            <button id="btnSubmitMemberLeave" type="button" class="btn-sheet-muted">Xin rút ca</button>
+          </div>
         </div>
       </div>
 
       <div class="sheet-footer">
-        <button id="prompt-cancel-btn" type="button" class="btn-sheet-muted">Hủy</button>
-        <button id="prompt-confirm-btn" type="button" class="btn-sheet-primary">Xác nhận</button>
+        <button id="task-mission-close" type="button" class="btn-sheet-muted water-ripple-target spring-press">Đóng bảng điều khiển</button>
       </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== MODAL 9: ĐỔI MẬT KHẨU ==================== -->
+  <dialog id="password-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="password-modal-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge soft" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3 id="password-modal-title" class="sheet-title-h3">Đổi Mật Khẩu</h3>
+        </div>
+        <button id="password-modal-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="sheet-scroll-body">
+        <div class="field-group">
+          <label class="field-label-mono" for="iptCurrentPassword">Mật khẩu hiện tại</label>
+          <input id="iptCurrentPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu cũ">
+        </div>
+        <div class="field-group">
+          <label class="field-label-mono" for="iptNewPassword">Mật khẩu mới (&gt;= 6 ký tự)</label>
+          <input id="iptNewPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu mới">
+        </div>
+        <div class="field-group">
+          <label class="field-label-mono" for="iptConfirmPassword">Xác nhận mật khẩu mới</label>
+          <input id="iptConfirmPassword" type="password" class="aqua-input" placeholder="Nhập lại mật khẩu mới">
+        </div>
+      </div>
+      <div class="sheet-footer">
+        <button id="password-modal-cancel" type="button" class="btn-sheet-muted">Hủy</button>
+        <button id="btnSavePassword" type="button" class="btn-sheet-primary">Lưu mật khẩu</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== MODAL 10: POPUP THÀNH CÔNG TRUNG TÂM (SCREENSHOTS 3, 4, 13) ==================== -->
+  <dialog id="success-celebration-modal" class="sp-sheet-dialog sp-center-dialog" closedby="any" aria-labelledby="celebration-title">
+    <div class="celebration-panel">
+      <button id="celebration-close-x" type="button" class="sheet-close-btn celebration-close-abs spring-press" aria-label="Đóng">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="celebration-tile" aria-hidden="true">
+        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewBox="0 0 24 24">
+          <path class="check-draw-path" d="m5 13 4 4L19 7"/>
+        </svg>
+      </div>
+
+      <span id="celebration-kicker" class="celebration-kicker">• SPORTPASS PRO CLOUD</span>
+      <h3 id="celebration-title" class="celebration-title">Thao tác thành công!</h3>
+      <p id="celebration-desc" class="celebration-desc">Dữ liệu của bạn đã được cập nhật và đồng bộ an toàn vào hệ thống.</p>
+
+      <button id="celebration-confirm-btn" type="button" class="btn-sheet-primary water-ripple-target spring-press" style="width:100%;flex:none;border-radius:9999px;">
+        <span>✓ Xác nhận</span>
+      </button>
+      <div id="celebration-countdown" class="celebration-countdown">Tự động đóng sau 3s</div>
     </div>
   </dialog>
 

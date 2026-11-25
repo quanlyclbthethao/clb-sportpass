@@ -11,7 +11,7 @@
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0);
-  animation: waterRipple 650ms cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+  animation: waterRipple 620ms cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
   z-index: 30;
 }
 
@@ -28,17 +28,9 @@
 }
 
 @keyframes waterRipple {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0.9;
-  }
-  60% {
-    opacity: 0.45;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(4);
-    opacity: 0;
-  }
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+  60% { opacity: 0.45; }
+  100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
 }
 
 /* Specular Reflection & Diagonal Aurora Sweeps */
@@ -54,7 +46,11 @@
     transparent 68%
   );
   opacity: 0;
-  transition: opacity 300ms ease;
+  transition: opacity 280ms ease;
+}
+
+html[data-tilt="off"] .hero-specular-light {
+  display: none;
 }
 
 .hero-card-aquamorphic:hover .hero-specular-light {
@@ -81,7 +77,7 @@
   bottom: -24px;
   left: -48px;
   width: 80px;
-  background: linear-gradient(to right, transparent, rgba(103, 232, 249, 0.4), transparent);
+  background: linear-gradient(to right, transparent, rgba(103, 232, 249, 0.42), transparent);
   pointer-events: none;
   z-index: 0;
   animation: buttonShimmerSweep 4s cubic-bezier(0.2, 0.8, 0.25, 1) infinite;
@@ -90,92 +86,64 @@
 }
 
 @keyframes auroraShimmerSweep {
-  0% {
-    transform: translateX(-160%) skewX(-20deg);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.8;
-  }
-  45% {
-    opacity: 0.95;
-  }
-  65% {
-    opacity: 0.25;
-  }
-  100% {
-    transform: translateX(220%) skewX(-20deg);
-    opacity: 0;
-  }
+  0% { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
+  15% { opacity: 0.8; }
+  45% { opacity: 0.95; }
+  65% { opacity: 0.25; }
+  100% { transform: translateX(220%) skewX(-20deg); opacity: 0; }
 }
 
 @keyframes buttonShimmerSweep {
-  0% {
-    transform: translateX(-140%) skewX(-25deg);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.85;
-  }
-  60% {
-    opacity: 0.85;
-  }
-  100% {
-    transform: translateX(220%) skewX(-25deg);
-    opacity: 0;
-  }
+  0% { transform: translateX(-140%) skewX(-25deg); opacity: 0; }
+  20% { opacity: 0.85; }
+  60% { opacity: 0.85; }
+  100% { transform: translateX(220%) skewX(-25deg); opacity: 0; }
 }
 
 @keyframes staggerSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes statBounce {
-  0% {
-    opacity: 0;
-    transform: scale(0.7) translateY(8px);
-  }
-  60% {
-    transform: scale(1.08) translateY(-2px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  0% { opacity: 0; transform: scale(0.7) translateY(8px); }
+  60% { transform: scale(1.08) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 @keyframes qrHoloGlow {
-  0%, 100% {
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.3), inset 0 0 15px rgba(14, 165, 233, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 35px rgba(14, 165, 233, 0.5), inset 0 0 22px rgba(56, 189, 248, 0.35);
-  }
+  0%, 100% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.3), inset 0 0 15px rgba(14, 165, 233, 0.2); }
+  50% { box-shadow: 0 0 35px rgba(14, 165, 233, 0.5), inset 0 0 22px rgba(56, 189, 248, 0.35); }
 }
 
 @keyframes pingHalo {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
+  75%, 100% { transform: scale(2); opacity: 0; }
 }
 
+/* 60fps Sheet Entry & Exit Animations */
 @keyframes sheetSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(32px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sheetSlideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(44px); }
+}
+
+@keyframes popupSpringIn {
+  from { opacity: 0; transform: scale(0.88) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes popupSpringOut {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.92) translateY(10px); }
+}
+
+@keyframes checkStrokeDraw {
+  from { stroke-dashoffset: 36; }
+  to { stroke-dashoffset: 0; }
 }
 
 .ping-ring {
@@ -188,23 +156,22 @@
 }
 
 .spring-press {
-  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 220ms ease, border-color 220ms ease;
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 200ms ease, border-color 200ms ease;
 }
 
 .spring-press:active {
   transform: scale(0.96);
-  transition-duration: 100ms;
+  transition-duration: 90ms;
 }
 
-.anim-hero { animation: staggerSlideUp 500ms cubic-bezier(0.16, 1, 0.3, 1) 40ms both; }
-.anim-stagger-1 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both; }
-.anim-stagger-2 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 180ms both; }
-.anim-stagger-3 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 240ms both; }
-.anim-stagger-4 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both; }
+.anim-hero { animation: staggerSlideUp 480ms cubic-bezier(0.16, 1, 0.3, 1) 40ms both; }
+.anim-stagger-1 { animation: staggerSlideUp 440ms cubic-bezier(0.16, 1, 0.3, 1) 110ms both; }
+.anim-stagger-2 { animation: staggerSlideUp 440ms cubic-bezier(0.16, 1, 0.3, 1) 170ms both; }
+.anim-stagger-3 { animation: staggerSlideUp 440ms cubic-bezier(0.16, 1, 0.3, 1) 230ms both; }
 
-.stat-anim-1 { animation: statBounce 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 220ms both; }
-.stat-anim-2 { animation: statBounce 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 320ms both; }
-.stat-anim-3 { animation: statBounce 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 420ms both; }
+.stat-anim-1 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 200ms both; }
+.stat-anim-2 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 280ms both; }
+.stat-anim-3 { animation: statBounce 520ms cubic-bezier(0.34, 1.56, 0.64, 1) 360ms both; }
 
 .qr-holo-card {
   animation: qrHoloGlow 3.5s ease-in-out infinite;
@@ -212,6 +179,28 @@
 
 dialog.sp-sheet-dialog[open] .sheet-panel {
   animation: sheetSlideUp 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+dialog.sp-sheet-dialog[data-closing] .sheet-panel {
+  animation: sheetSlideDown 220ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+}
+
+dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel {
+  animation: popupSpringIn 340ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+dialog.sp-sheet-dialog.sp-center-dialog[data-closing] .celebration-panel {
+  animation: popupSpringOut 200ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+}
+
+dialog.sp-center-dialog[open] .check-draw-path {
+  stroke-dasharray: 36;
+  animation: checkStrokeDraw 420ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+}
+
+.dispatch-card.dismissing {
+  opacity: 0;
+  transform: translateX(28px) scale(0.96);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -222,19 +211,22 @@ dialog.sp-sheet-dialog[open] .sheet-panel {
   .anim-stagger-1,
   .anim-stagger-2,
   .anim-stagger-3,
-  .anim-stagger-4,
   .stat-anim-1,
   .stat-anim-2,
   .stat-anim-3,
   .qr-holo-card,
   .ping-ring,
-  dialog.sp-sheet-dialog[open] .sheet-panel {
+  dialog.sp-sheet-dialog[open] .sheet-panel,
+  dialog.sp-sheet-dialog[data-closing] .sheet-panel,
+  dialog.sp-sheet-dialog.sp-center-dialog[open] .celebration-panel,
+  dialog.sp-center-dialog[open] .check-draw-path {
     animation: none !important;
     transform: none !important;
   }
   .spring-press,
   .toast-pill,
-  .aqua-switch-knob {
+  .aqua-switch-knob,
+  .dispatch-card {
     transition: none !important;
   }
 }

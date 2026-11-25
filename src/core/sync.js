@@ -1,4 +1,4 @@
-// SportPass V8.0 — Bidirectional Google Apps Script Sync & Offline Mutation Queue (Forum Removed)
+// SportPass V8.5 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
 
 let syncDebounceTimer = null;
 
@@ -14,30 +14,14 @@ function enqueueOfflineMutation(type, payload) {
 
 function buildMutationUrl(mut) {
   const p = mut.payload || {};
-  if (mut.type === 'DELETE_TASK') {
-    return `${GAS_API_URL}?action=deleteTask&taskId=${encodeURIComponent(p.taskId || '')}`;
-  }
-  if (mut.type === 'CREATE_TASK') {
-    return `${GAS_API_URL}?action=createTask&task=${encodeURIComponent(JSON.stringify(p))}`;
-  }
-  if (mut.type === 'CLAIM_TASK') {
-    return `${GAS_API_URL}?action=claimTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&waitlist=${Boolean(p.waitlist)}`;
-  }
-  if (mut.type === 'WITHDRAW_TASK') {
-    return `${GAS_API_URL}?action=withdrawTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&reason=${encodeURIComponent(p.reason || '')}`;
-  }
-  if (mut.type === 'QR_CHECKIN') {
-    return `${GAS_API_URL}?action=checkinMember&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&adminId=${encodeURIComponent(p.scannerId || p.adminId || '')}`;
-  }
-  if (mut.type === 'SHIFT_ADJUST') {
-    return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
-  }
-  if (mut.type === 'UPDATE_ROLE') {
-    return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
-  }
-  if (mut.type === 'UPDATE_PROFILE') {
-    return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&lop=${encodeURIComponent(p.lop || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
-  }
+  if (mut.type === 'DELETE_TASK') return `${GAS_API_URL}?action=deleteTask&taskId=${encodeURIComponent(p.taskId || '')}`;
+  if (mut.type === 'CREATE_TASK') return `${GAS_API_URL}?action=createTask&task=${encodeURIComponent(JSON.stringify(p))}`;
+  if (mut.type === 'CLAIM_TASK') return `${GAS_API_URL}?action=claimTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&waitlist=${Boolean(p.waitlist)}`;
+  if (mut.type === 'WITHDRAW_TASK') return `${GAS_API_URL}?action=withdrawTask&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&reason=${encodeURIComponent(p.reason || '')}`;
+  if (mut.type === 'QR_CHECKIN') return `${GAS_API_URL}?action=checkinMember&taskId=${encodeURIComponent(p.taskId || '')}&memberId=${encodeURIComponent(p.memberId || '')}&adminId=${encodeURIComponent(p.scannerId || p.adminId || '')}`;
+  if (mut.type === 'SHIFT_ADJUST') return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'UPDATE_ROLE') return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&lop=${encodeURIComponent(p.lop || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
   return null;
 }
 
@@ -55,9 +39,7 @@ function syncOfflineMutations(isManual = false) {
     });
   }
 
-  if (isManual) {
-    showToast(`Đã đẩy ${batch.length} thay đổi lên máy chủ.`);
-  }
+  if (isManual) showToast(`Đã đẩy ${batch.length} thay đổi lên máy chủ.`);
 }
 
 async function syncTaskToBackend(task) {
@@ -106,7 +88,6 @@ async function syncRealtimeData() {
     }
 
     const deletedTasks = getDeletedTaskIds();
-    const prevTaskMap = new Map((currentTasks || []).map(t => [t.id, t]));
     const serverTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t));
     const serverTaskMap = new Map(serverTasks.map(t => [t.id, t]));
 
@@ -122,24 +103,14 @@ async function syncRealtimeData() {
       }
     }
 
-    const uid = currentUser.id;
-    const newlyAssigned = mergedTasks.filter(t => {
-      const assigned = Array.isArray(t.assignedMembers) && t.assignedMembers.includes(uid);
-      const prev = prevTaskMap.get(t.id);
-      const wasAssigned = prev && Array.isArray(prev.assignedMembers) && prev.assignedMembers.includes(uid);
-      return assigned && !wasAssigned;
-    });
-    if (newlyAssigned.length > 0) {
-      showToast('Lệnh điều động mới: ' + newlyAssigned[0].title);
-    }
-
     currentTasks = deduplicateTasks(mergedTasks);
-    if (Array.isArray(data.swaps)) currentSwaps = data.swaps;
-    if (Array.isArray(data.leaves)) currentLeaves = data.leaves;
+    if (Array.isArray(data.swaps) && data.swaps.length > 0) currentSwaps = data.swaps;
+    if (Array.isArray(data.leaves) && data.leaves.length > 0) currentLeaves = data.leaves;
 
     saveLocalState();
     renderProfileData();
     renderDispatchHub();
+    renderMembersModalList();
     renderNotificationsModalList();
   } catch (err) {
     // Stay resilient offline
@@ -148,9 +119,7 @@ async function syncRealtimeData() {
 
 function triggerInstantSync(delay = 80) {
   if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
-  syncDebounceTimer = setTimeout(() => {
-    syncRealtimeData();
-  }, delay);
+  syncDebounceTimer = setTimeout(() => { syncRealtimeData(); }, delay);
 }
 
 function restartAdaptivePolling() {

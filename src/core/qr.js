@@ -1,4 +1,4 @@
-// SportPass V8.0 — 45s Dynamic QR Credential Pass & Camera/Image Check-in Scanner
+// SportPass V8.5 — 45s Dynamic QR Credential Pass, Remote Lock & Check-in Scanner
 
 let qrCountdown = 45;
 let qrTimerInterval = null;
@@ -77,6 +77,13 @@ function renderQrIntoContainer(container, payloadText, pixelSize = 160) {
 }
 
 function updateQrPassDisplay() {
+  const lockedNotice = document.getElementById('qr-locked-notice');
+  const holoCard = document.getElementById('qr-holo-container');
+  const isLocked = Boolean(typeof appPreferences !== 'undefined' && appPreferences.remoteLock);
+  if (lockedNotice) lockedNotice.classList.toggle('hidden', !isLocked);
+  if (holoCard) holoCard.classList.toggle('hidden', isLocked);
+  if (isLocked) return;
+
   const uid = currentUser ? currentUser.id : 'DMC0806';
   const taskId = (currentTasks && currentTasks[0]) ? currentTasks[0].id : 'GENERAL';
   const slot = Math.floor(Date.now() / 45000);
@@ -306,6 +313,7 @@ function handleQrCheckinAction(taskId, memberId) {
 
     saveLocalState();
     renderDispatchHub();
+    triggerHaptic('success');
     showToast(`Điểm danh QR thành công: ${cleanMemberId}`);
   } else {
     showToast(`${cleanMemberId} đã điểm danh ca này trước đó.`);

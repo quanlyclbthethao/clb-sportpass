@@ -1,3 +1,4 @@
+/* Core Design Tokens Light + Dark Aquamorphic */
 :root {
   color-scheme: light;
   --sp-canvas-light: #f4f6fb;
@@ -12,53 +13,17 @@
   --text-secondary: #475569;
   --text-muted: #64748b;
   --surface: #ffffff;
-  --surface-glass: rgba(255, 255, 255, 0.84);
-  --surface-glass-strong: rgba(255, 255, 255, 0.96);
+  --surface-glass: rgba(255, 255, 255, 0.88);
+  --surface-glass-strong: rgba(255, 255, 255, 0.97);
   --surface-subtle: #f8fafc;
   --surface-chip: #f1f5f9;
-  --border-glass: rgba(224, 242, 254, 0.85);
-  --border-subtle: rgba(226, 232, 240, 0.6);
+  --border-glass: rgba(224, 242, 254, 0.88);
+  --border-subtle: rgba(226, 232, 240, 0.72);
   --border-input: #e2e8f0;
   --accent: #0369a1;
   --accent-bright: #0284c7;
   --accent-sky: #0ea5e9;
   --accent-fg: #ffffff;
-
-  --sp-sky-900: #0c4a6e;
-  --sp-sky-800: #075985;
-  --sp-sky-700: #0369a1;
-  --sp-sky-600: #0284c7;
-  --sp-sky-500: #0ea5e9;
-  --sp-sky-400: #38bdf8;
-  --sp-sky-300: #7dd3fc;
-  --sp-sky-200: #bae6fd;
-  --sp-sky-100: #e0f2fe;
-  --sp-sky-50: #f0f9ff;
-
-  --sp-cyan-200: #a5f3fc;
-  --sp-cyan-100: #cffafe;
-  --sp-blue-600: #2563eb;
-  --sp-blue-100: #dbeafe;
-  --sp-teal-700: #0f766e;
-  --sp-teal-600: #0d9488;
-  --sp-teal-100: #ccfbf1;
-  --sp-indigo-700: #4338ca;
-  --sp-indigo-600: #4f46e5;
-  --sp-indigo-500: #6366f1;
-  --sp-indigo-100: #e0e7ff;
-  --sp-emerald-700: #047857;
-  --sp-emerald-600: #059669;
-  --sp-emerald-500: #10b981;
-  --sp-emerald-100: #d1fae5;
-  --sp-amber-700: #b45309;
-  --sp-amber-600: #d97706;
-  --sp-amber-500: #f59e0b;
-  --sp-amber-100: #fef3c7;
-  --sp-rose-700: #be123c;
-  --sp-rose-600: #e11d48;
-  --sp-rose-200: #fecdd3;
-  --sp-rose-100: #ffe4e6;
-  --sp-rose-50: #fff1f2;
 
   --sp-font-sans: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --sp-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -71,11 +36,11 @@ html[data-theme="dark"] {
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
   --surface: #131c2e;
-  --surface-glass: rgba(19, 28, 46, 0.88);
-  --surface-glass-strong: rgba(19, 28, 46, 0.96);
+  --surface-glass: rgba(19, 28, 46, 0.9);
+  --surface-glass-strong: rgba(19, 28, 46, 0.97);
   --surface-subtle: #1e293b;
   --surface-chip: #1e293b;
-  --border-glass: rgba(56, 189, 248, 0.22);
-  --border-subtle: rgba(51, 65, 85, 0.72);
+  --border-glass: rgba(56, 189, 248, 0.24);
+  --border-subtle: rgba(51, 65, 85, 0.78);
   --border-input: #334155;
 }

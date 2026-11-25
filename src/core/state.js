@@ -1,21 +1,49 @@
-// SportPass V8.0 — Canonical Reactive State, Tombstones, Deduplication & RBAC (Forum Removed)
+// SportPass V8.5 — Canonical Reactive State, Preferences, Tombstones, Deduplication & RBAC
 
 let currentUser = null;
 let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined') ? DEFAULT_MEMBERS_DIRECTORY.slice() : [];
 let currentTasks = DEFAULT_TASKS.map(t => structuredClone(t));
-let currentSwaps = [];
-let currentLeaves = [];
+let currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
+let currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
 let offlineMutationQueue = [];
 
-let currentTaskDeptFilter = 'ALL';
+let currentRolePreviewMode = 'admin'; // 'admin' or 'member' (visible only when currentUser.isAdmin)
+let currentApproveSubTab = 'swap'; // 'swap' | 'leave' | 'shifts' | 'scanner'
+let currentMissionTab = 'create'; // 'approvals' | 'create' | 'swap'
 let currentDirDeptFilter = 'ALL';
-let activeApproveTab = 'shifts';
 let editingTaskId = null;
-let selectedOtherMember = null;
+let selectedShiftLeaderId = 'DMC0806';
 let pendingSmartRotationCandidates = [];
 let pendingSmartRotationTaskId = null;
-let pendingDeleteTaskId = null;
 let currentSyncPollTimer = null;
+
+let appPreferences = {
+  tilt3d: true,
+  haptics: true,
+  urgentNotifs: true,
+  faceId: true,
+  remoteLock: false,
+  lang: 'VI'
+};
+
+function loadAppPreferences() {
+  try {
+    const raw = localStorage.getItem('CLB_SPORTPASS_PREFS');
+    if (raw) {
+      appPreferences = Object.assign({}, appPreferences, JSON.parse(raw));
+    }
+  } catch (e) {}
+  document.documentElement.dataset.tilt = appPreferences.tilt3d ? 'on' : 'off';
+  document.documentElement.lang = appPreferences.lang === 'EN' ? 'en' : 'vi';
+}
+
+function saveAppPreferences() {
+  try {
+    localStorage.setItem('CLB_SPORTPASS_PREFS', JSON.stringify(appPreferences));
+  } catch (e) {}
+  document.documentElement.dataset.tilt = appPreferences.tilt3d ? 'on' : 'off';
+  document.documentElement.lang = appPreferences.lang === 'EN' ? 'en' : 'vi';
+}
 
 function safeSetText(id, text) {
   const node = document.getElementById(id);

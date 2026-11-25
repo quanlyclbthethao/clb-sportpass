@@ -1,4 +1,4 @@
-// SportPass V8.0 — Adaptive Dual-Mode Theme Controller (Light default matching code.html / Dark / System)
+// SportPass V8.5 — Adaptive Dual-Mode Theme Controller
 
 const THEME_STORAGE_KEY = 'sportpass-theme-mode';
 
@@ -28,10 +28,10 @@ function syncThemeControlUI(mode) {
   const badge = document.getElementById('theme-mode-badge');
   const desc = document.getElementById('theme-mode-desc');
   if (badge) {
-    badge.textContent = active === 'dark' ? 'Tối' : (active === 'system' ? (effective === 'dark' ? 'Tự động (Tối)' : 'Tự động (Sáng)') : 'Sáng');
+    badge.textContent = active === 'dark' ? 'Tối ⌄' : (active === 'system' ? (effective === 'dark' ? 'Tự động (Tối) ⌄' : 'Tự động (Sáng) ⌄') : 'Sáng ⌄');
   }
   if (desc) {
-    desc.textContent = active === 'system' ? 'Theo hệ thống tự động' : (active === 'dark' ? 'Đang bật chế độ tối Aquamorphic' : 'Giao diện sáng Frosted Sky');
+    desc.textContent = active === 'system' ? 'Theo hệ thống tự động' : (active === 'dark' ? 'Đang bật chế độ tối Aquamorphic' : 'Màu sắc hiển thị trên hệ thống');
   }
 }
 
@@ -58,7 +58,7 @@ function cycleThemeMode() {
   const next = order[(order.indexOf(cur) + 1) % order.length];
   setColorScheme(next, true);
   const label = next === 'dark' ? 'Tối' : (next === 'system' ? 'Tự động theo hệ thống' : 'Sáng Frosted Sky');
-  showToast(`Giao diện: ${label}`);
+  showToast(`Chủ đề giao diện: ${label}`);
 }
 
 function initThemeController() {

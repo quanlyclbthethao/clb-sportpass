@@ -1,4 +1,4 @@
-// SportPass V8.0 — Security, Auth Session Lifecycle & Sole Admin Protection
+// SportPass V8.5 — Security, Auth Session Lifecycle, Biometric Quick Unlock & Sole Admin Protection
 
 function escapeHtml(str) {
   if (str === undefined || str === null) return '';
@@ -61,13 +61,14 @@ function persistUserSession(userObj) {
 }
 
 function checkStoredLoginSession() {
+  loadAppPreferences();
   const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');
   const sessionCached = sessionStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const localCached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const dataCache = localStorage.getItem('CLB_SPORTPASS_DATA_CACHE');
 
   const isRemembered = rememberFlag === 'true';
-  let activeSessionJson = sessionCached || (isRemembered ? localCached : null);
+  const activeSessionJson = sessionCached || (isRemembered ? localCached : null);
 
   const chkRemember = document.getElementById('chkRememberLogin');
   if (chkRemember) chkRemember.checked = (rememberFlag !== 'false');
@@ -81,18 +82,22 @@ function checkStoredLoginSession() {
         const parsed = JSON.parse(dataCache);
         const rawTasks = (parsed.currentTasks && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
         currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
-        currentSwaps = parsed.currentSwaps || [];
-        currentLeaves = parsed.currentLeaves || [];
+        currentSwaps = (parsed.currentSwaps && parsed.currentSwaps.length) ? parsed.currentSwaps : DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
+        currentLeaves = (parsed.currentLeaves && parsed.currentLeaves.length) ? parsed.currentLeaves : DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
         offlineMutationQueue = parsed.offlineMutationQueue || [];
       } else {
         membersDirectory = DEFAULT_MEMBERS_DIRECTORY.slice();
         currentTasks = deduplicateTasks(DEFAULT_TASKS);
+        currentSwaps = DEFAULT_SWAPS_SEED.map(s => structuredClone(s));
+        currentLeaves = DEFAULT_LEAVES_SEED.map(l => structuredClone(l));
       }
 
       applyCustomAdminRoles(membersDirectory);
+      currentRolePreviewMode = currentUser.isAdmin ? 'admin' : 'member';
       showMainAppView();
       renderProfileData();
       renderDispatchHub();
+      renderMembersModalList();
       renderNotificationsModalList();
       updateQrPassDisplay();
       autoEnableBackgroundNotifications();
@@ -144,9 +149,11 @@ function completeUserLogin(memberObj, remember) {
   currentUser = structuredClone(memberObj);
   applyCustomAdminRoles(membersDirectory);
   window.currentUser = currentUser;
+  currentRolePreviewMode = currentUser.isAdmin ? 'admin' : 'member';
 
   const sessionStr = JSON.stringify(currentUser);
   sessionStorage.setItem('CLB_SPORTPASS_AUTH_SESSION', sessionStr);
+  try { localStorage.setItem('CLB_LAST_MEMBER_ID', currentUser.id); } catch (e) {}
   if (remember) {
     localStorage.setItem('CLB_REMEMBER_LOGIN', 'true');
     localStorage.setItem('CLB_SPORTPASS_AUTH_SESSION', sessionStr);
@@ -161,11 +168,13 @@ function completeUserLogin(memberObj, remember) {
   showMainAppView();
   renderProfileData();
   renderDispatchHub();
+  renderMembersModalList();
   renderNotificationsModalList();
   updateQrPassDisplay();
   autoEnableBackgroundNotifications();
   restartAdaptivePolling();
   syncRealtimeData();
+  triggerHaptic('success');
   showToast('Đăng nhập thành công: ' + currentUser.hoTen);
 }
 
@@ -208,6 +217,27 @@ async function handleLoginSubmit(event) {
   }
 
   fallbackOfflineLogin(ident, pass, remember);
+}
+
+function handleBiometricLogin(methodLabel) {
+  const lastId = localStorage.getItem('CLB_LAST_MEMBER_ID') || '';
+  if (!appPreferences.faceId) {
+    showToast('Tính năng đăng nhập sinh trắc học đang tắt trong Cài đặt.');
+    return;
+  }
+  if (!lastId) {
+    showToast(`Nhập MSSV và mật khẩu 1 lần đầu để liên kết ${methodLabel}.`);
+    const identEl = document.getElementById('iptUser');
+    if (identEl) identEl.focus();
+    return;
+  }
+  const found = (membersDirectory || []).find(m => m && m.id === lastId);
+  if (found) {
+    completeUserLogin(found, true);
+    showToast(`Xác thực ${methodLabel} thành công: ${found.hoTen}`);
+  } else {
+    showToast(`Không tìm thấy hồ sơ ${lastId} cho ${methodLabel}.`);
+  }
 }
 
 function executeLogoutAction() {

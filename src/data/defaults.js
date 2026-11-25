@@ -1,4 +1,4 @@
-// SportPass V8.0 — Canonical UHD Configuration, Avatar Data URI & Seed Datasets (Forum Removed)
+// SportPass V8.5 — Canonical UHD Configuration, Avatar Data URI & Dispatch Seed Datasets
 
 const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzOzxjkLP684tGXQn7HFptjiYyMoyEFMkTackb8K56f1gJvqMlvV5mFc0JBTm9gbO7U/exec';
 
@@ -20,11 +20,12 @@ const DEFAULT_TASKS = [
     title: 'Trực bàn giải Cầu lông - Tân Sinh Viên K16',
     location: 'Nhà Thi Đấu ĐH Hải Dương',
     time: '14:00 - 18:00 Thứ Bảy',
+    date: '18/03/2025',
     quota: 6,
     joinedMembers: [],
     assignedMembers: [],
     waitlist: [],
-    leaderId: '',
+    leaderId: 'DMC0806',
     checkedInMembers: [],
     checkinLogs: [],
     lockDeadline: '2026-10-25T14:00',
@@ -39,13 +40,14 @@ const DEFAULT_TASKS = [
   {
     id: 'TASK_02',
     title: 'Hậu cần & Điều phối Giải Bóng Đá Nam Vòng Bảng',
-    location: 'Sân Bóng Cỏ Nhân Tạo ĐH Hải Dương',
+    location: 'Sân Vận Động Trung Tâm',
     time: '08:00 - 11:30 Chủ Nhật',
+    date: '19/03/2025',
     quota: 4,
     joinedMembers: [],
     assignedMembers: [],
     waitlist: [],
-    leaderId: '',
+    leaderId: 'NQD1509',
     checkedInMembers: [],
     checkinLogs: [],
     lockDeadline: '2026-10-26T08:00',
@@ -55,6 +57,49 @@ const DEFAULT_TASKS = [
       'Ban Truyền Thông': 2
     },
     notes: 'Kiểm tra bóng thi đấu và nước uống cho 2 đội trước giờ bóng lăn'
+  }
+];
+
+const DEFAULT_SWAPS_SEED = [
+  {
+    id: 'SWAP_SEED_01',
+    taskId: 'TASK_01',
+    fromId: 'TTTL1805',
+    fromName: 'Tào Thị Tuyết Linh',
+    fromClass: 'K15D.GDTH',
+    toId: 'DMC0806',
+    toName: 'Đỗ Mạnh Cường',
+    currentShift: 'Nhà Thi Đấu ĐH Hải Dương (14:00 - 18:00)',
+    reason: 'Trùng lịch thi vấn đáp môn Chuyên ngành.',
+    type: 'swap',
+    status: 'pending'
+  },
+  {
+    id: 'SWAP_SEED_02',
+    taskId: 'TASK_02',
+    fromId: 'NTDL0303',
+    fromName: 'Nguyễn Thị Diệu Linh',
+    fromClass: 'K15A.GDTH',
+    toId: 'CA_TOI',
+    toName: 'Ca Tối (18:00 - 21:30)',
+    currentShift: 'Sân Vận Động Trung Tâm (08:00 - 11:30)',
+    reason: 'Hỗ trợ lịch tập huấn đội tuyển đột xuất.',
+    type: 'transfer',
+    status: 'pending'
+  }
+];
+
+const DEFAULT_LEAVES_SEED = [
+  {
+    id: 'LEAVE_SEED_01',
+    taskId: 'TASK_02',
+    memberId: 'DDH1011',
+    memberName: 'Đinh Đức Huy',
+    memberRole: 'Trưởng ca sân B',
+    timeLabel: 'Khu vực khán đài B · 15:10',
+    reason: 'Lượng cổ động viên tăng đột biến tại cửa soát vé, đề nghị điều phối thêm 02 nhân sự hỗ trợ.',
+    urgent: true,
+    status: 'pending'
   }
 ];
 

@@ -1,4 +1,4 @@
-// SportPass V8.0 — Aquamorphic Floating Pill Toast & Notification Center Sheet Renderer
+// SportPass V8.5 — Floating Pill Toast, Haptics & Notification Center Sheet Renderer
 
 let toastHideTimer = null;
 
@@ -16,6 +16,7 @@ function showToast(message) {
 
 function triggerHaptic(type = 'light') {
   try {
+    if (typeof appPreferences !== 'undefined' && appPreferences.haptics === false) return;
     if (!('vibrate' in navigator)) return;
     if (type === 'success') navigator.vibrate([12, 24, 18]);
     else if (type === 'warning') navigator.vibrate([22, 18, 22]);
@@ -68,9 +69,9 @@ function renderNotificationsModalList() {
       highlight: false,
       iconBg: 'bg-icon-amber',
       icon: 'alert',
-      title: `Có ${pendingSwaps + pendingLeaves} đơn đổi / rút ca chờ duyệt`,
-      time: 'Cần xử lý',
-      desc: 'Mở mục Duyệt ca để xem chi tiết danh sách đổi ca và rút ca của thành viên.'
+      title: `Có ${pendingSwaps + pendingLeaves} yêu cầu điều động chờ duyệt`,
+      time: 'Ưu tiên',
+      desc: 'Mở mục Duyệt ca để phê duyệt đổi ca hoặc chi viện nhân sự kịp thời.'
     });
   }
 
@@ -80,7 +81,7 @@ function renderNotificationsModalList() {
     icon: 'check',
     title: 'Hệ thống điểm danh QR đã sẵn sàng',
     time: 'CLB UHD',
-    desc: 'Dữ liệu 125 thành viên thuộc 7 ban chuyên môn đã đồng bộ đầy đủ với thẻ Varsity Pass.'
+    desc: 'Dữ liệu 125 thành viên thuộc 7 ban chuyên môn đã đồng bộ đầy đủ với Varsity Pass.'
   });
 
   const nodes = items.map(it =>
