@@ -722,8 +722,14 @@ html[data-theme="dark"] .tile-amber { background-color: rgba(245, 158, 11, 0.18)
 }
 
 .profile-phone-link {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  line-height: 26px;
   min-height: 26px;
   font-family: var(--sp-font-mono);
   font-size: 14px;

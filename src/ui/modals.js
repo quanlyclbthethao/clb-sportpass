@@ -44,7 +44,7 @@ function openSheetDialog(id) {
 
 async function closeSheetDialog(id) {
   const dlg = document.getElementById(id);
-  if (!dlg || !dlg.open) return;
+  if (!dlg || !dlg.open || dlg.hasAttribute('data-closing')) return;
 
   cleanupDialogState(id);
 
@@ -145,17 +145,24 @@ function closeAllModals() {
 function initModalLifecycle() {
   const supportsClosedBy = ('closedBy' in HTMLDialogElement.prototype);
   document.querySelectorAll('dialog.sp-sheet-dialog').forEach((dlg) => {
-    dlg.addEventListener('close', () => cleanupDialogState(dlg.id));
+    dlg.addEventListener('close', () => {
+      if (!dlg.open) cleanupDialogState(dlg.id);
+    });
 
     dlg.addEventListener('cancel', (ev) => {
       ev.preventDefault();
       closeSheetDialog(dlg.id);
     });
 
+    let pointerDownOnBackdrop = false;
+    dlg.addEventListener('pointerdown', (ev) => {
+      pointerDownOnBackdrop = (ev.target === dlg);
+    });
     dlg.addEventListener('click', (ev) => {
-      if (ev.target === dlg) {
+      if (ev.target === dlg && (ev.detail === 0 || pointerDownOnBackdrop)) {
         closeSheetDialog(dlg.id);
       }
+      pointerDownOnBackdrop = false;
     });
 
     if (!supportsClosedBy) {

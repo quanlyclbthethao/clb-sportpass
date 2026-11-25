@@ -80,7 +80,7 @@ function populateQrPassTaskSelector() {
   const sel = document.getElementById('selQrPassTask');
   if (!sel) return;
   const uid = currentUser ? currentUser.id : '';
-  const tasks = Array.isArray(currentTasks) ? currentTasks : [];
+  const tasks = deduplicateTasks(currentTasks || []);
 
   const sorted = tasks.slice().sort((a, b) => {
     const aMine = uid && ([...(a.joinedMembers || []), ...(a.assignedMembers || [])].includes(uid));
@@ -159,6 +159,7 @@ function closeQrModal() {
 }
 
 function stopQrCameraStream() {
+  isTorchOn = false;
   if (qrScanAnimFrame) {
     cancelAnimationFrame(qrScanAnimFrame);
     qrScanAnimFrame = null;
@@ -325,7 +326,8 @@ function handleScanQrPayload(rawCode) {
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
   } else if (trimmed.startsWith('#')) {
-    memberId = trimmed.slice(1).split(/[\s·]+/)[0];
+    const hashBody = trimmed.slice(1).trim();
+    memberId = hashBody.includes('·') ? hashBody.split('·')[0].trim() : hashBody.split(/\s+/)[0];
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {

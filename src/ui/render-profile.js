@@ -153,10 +153,18 @@ function cycleStatus(ev) {
 }
 
 async function handleAvatarFileSelect(event) {
-  const file = event && event.target && event.target.files ? event.target.files[0] : null;
-  if (!file || !currentUser) return;
+  const inputEl = event && event.target ? event.target : null;
+  const file = inputEl && inputEl.files ? inputEl.files[0] : null;
+  if (!file || !currentUser) {
+    if (inputEl) inputEl.value = '';
+    return;
+  }
   const compressed = await compressImage(file, 320, 320, 0.8);
-  if (!compressed) return;
+  if (inputEl) inputEl.value = '';
+  if (!compressed) {
+    showToast('Không thể đọc ảnh đại diện đã chọn.');
+    return;
+  }
   currentUser.avatar = compressed;
   for (const m of (membersDirectory || [])) {
     if (m.id === currentUser.id) m.avatar = compressed;
@@ -327,7 +335,18 @@ async function saveEditProfileAction() {
   const newPhone = (document.getElementById('input-phone')?.value || '').trim();
   const newIce = (document.getElementById('input-ice')?.value || '').trim();
 
+  if (!newName) {
+    showToast('Vui lòng nhập họ và tên.');
+    document.getElementById('input-fullname')?.focus();
+    return;
+  }
+
   if (newStudentCode) {
+    if (/[:·]/.test(newStudentCode)) {
+      showToast('Mã số sinh viên không được chứa ký tự ":" hoặc "·".');
+      document.getElementById('input-studentId')?.focus();
+      return;
+    }
     const codeUpper = newStudentCode.toUpperCase();
     const conflict = (membersDirectory || []).find(m =>
       m && m.id !== currentUser.id && (

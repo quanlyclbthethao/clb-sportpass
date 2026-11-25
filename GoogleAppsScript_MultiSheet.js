@@ -1516,7 +1516,8 @@ function handleRequest(e) {
         params.yTe,
         params.hoTen,
         params.studentCode,
-        params.chucVu
+        params.chucVu,
+        params.boMon
       );
     }
     // 11. CẬP NHẬT PHÂN QUYỀN ADMIN / TRƯỞNG CA (updateMemberRole)
@@ -2300,58 +2301,86 @@ function handleDeletePost(ss, postId) {
 /**
  * Cập nhật thông tin cá nhân của thành viên trực tiếp vào Sheet Ban tương ứng
  */
-function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCode, chucVu) {
+function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCode, chucVu, boMon) {
   if (!memberId) return { success: false, message: 'Thiếu Mã ID thành viên' };
-  var updated = false;
+  var cleanMemberId = String(memberId).trim();
+  var cleanCode = (studentCode !== undefined && studentCode !== null) ? String(studentCode).trim() : '';
 
+  if (cleanCode) {
+    var existingMembers = getAllMembersFromDepartments(ss);
+    var codeUpper = cleanCode.toUpperCase();
+    for (var cIdx = 0; cIdx < existingMembers.length; cIdx++) {
+      var em = existingMembers[cIdx];
+      if (!em || em.id === cleanMemberId) continue;
+      if (String(em.id || '').toUpperCase() === codeUpper || String(em.studentCode || '').toUpperCase() === codeUpper) {
+        return { success: false, message: 'Mã số sinh viên ' + cleanCode + ' đã được dùng bởi ' + em.hoTen };
+      }
+    }
+  }
+
+  var matchedRows = [];
   for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
     var deptName = DEPARTMENT_SHEETS[d];
     var sheet = ss.getSheetByName(deptName);
     if (!sheet) continue;
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
-      if (String(rows[i][0]).trim() === String(memberId).trim()) {
-        if (hoTen !== undefined && hoTen !== null && String(hoTen).trim() !== '') {
-          sheet.getRange(i + 1, 2).setValue(String(hoTen).trim());
-        }
-        if (lop !== undefined && lop !== null && String(lop).trim() !== '') {
-          sheet.getRange(i + 1, 3).setValue(String(lop).trim());
-        }
-        if (chucVu !== undefined && chucVu !== null && String(chucVu).trim() !== '') {
-          sheet.getRange(i + 1, 5).setValue(String(chucVu).trim());
-        }
-        if (yTe !== undefined && yTe !== null && String(yTe).trim() !== '') {
-          sheet.getRange(i + 1, 6).setValue(String(yTe).trim());
-        }
-        if (sdt !== undefined && sdt !== null && String(sdt).trim() !== '') {
-          sheet.getRange(i + 1, 7).setValue("'" + String(sdt).trim());
-        }
-        if (ice !== undefined && ice !== null && String(ice).trim() !== '') {
-          sheet.getRange(i + 1, 8).setValue("'" + String(ice).trim());
-        }
-        if (studentCode !== undefined && studentCode !== null && String(studentCode).trim() !== '') {
-          if (rows[0].length < 11) {
-            sheet.getRange(1, 11).setValue('MSSV').setFontWeight('bold');
-          }
-          sheet.getRange(i + 1, 11).setValue("'" + String(studentCode).trim());
-        }
-        updated = true;
+      if (String(rows[i][0]).trim() === cleanMemberId) {
+        matchedRows.push({ sheet: sheet, rowNum: i + 1, headerRow: rows[0] || [] });
       }
     }
   }
 
-  if (updated) {
-    var allMembers = getAllMembersFromDepartments(ss);
-    var updatedMember = null;
-    for (var mIdx = 0; mIdx < allMembers.length; mIdx++) {
-      if (allMembers[mIdx] && allMembers[mIdx].id === memberId) {
-        updatedMember = allMembers[mIdx];
-        break;
-      }
-    }
-    return { success: true, message: 'Đã cập nhật hồ sơ thành công vào Google Sheet', member: updatedMember };
+  if (matchedRows.length === 0) {
+    return { success: false, message: 'Không tìm thấy thành viên: ' + memberId };
   }
-  return { success: false, message: 'Không tìm thấy thành viên: ' + memberId };
+
+  for (var m = 0; m < matchedRows.length; m++) {
+    var entry = matchedRows[m];
+    var s = entry.sheet;
+    var rowNum = entry.rowNum;
+    var hdr = entry.headerRow;
+
+    if (hoTen !== undefined && hoTen !== null && String(hoTen).trim() !== '') {
+      s.getRange(rowNum, 2).setValue(String(hoTen).trim());
+    }
+    if (lop !== undefined && lop !== null && String(lop).trim() !== '') {
+      s.getRange(rowNum, 3).setValue(String(lop).trim());
+    }
+    if (matchedRows.length === 1 && boMon !== undefined && boMon !== null && String(boMon).trim() !== '') {
+      s.getRange(rowNum, 4).setValue(String(boMon).trim());
+    }
+    if (chucVu !== undefined && chucVu !== null && String(chucVu).trim() !== '') {
+      s.getRange(rowNum, 5).setValue(String(chucVu).trim());
+    }
+    if (yTe !== undefined && yTe !== null && String(yTe).trim() !== '') {
+      s.getRange(rowNum, 6).setValue(String(yTe).trim());
+    }
+    if (sdt !== undefined && sdt !== null && String(sdt).trim() !== '') {
+      s.getRange(rowNum, 7).setValue("'" + String(sdt).trim());
+    }
+    if (ice !== undefined && ice !== null && String(ice).trim() !== '') {
+      s.getRange(rowNum, 8).setValue("'" + String(ice).trim());
+    }
+    if (cleanCode) {
+      if (hdr.length < 9 || !hdr[8]) s.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+      if (hdr.length < 10 || !hdr[9]) s.getRange(1, 10).setValue('Số ca sinh hoạt').setFontWeight('bold');
+      if (hdr.length < 11 || !hdr[10]) s.getRange(1, 11).setValue('MSSV').setFontWeight('bold');
+      s.getRange('K:K').setNumberFormat('@');
+      s.getRange(rowNum, 11).setValue("'" + cleanCode);
+    }
+  }
+
+  SpreadsheetApp.flush();
+  var allMembers = getAllMembersFromDepartments(ss);
+  var updatedMember = null;
+  for (var mIdx = 0; mIdx < allMembers.length; mIdx++) {
+    if (allMembers[mIdx] && allMembers[mIdx].id === cleanMemberId) {
+      updatedMember = allMembers[mIdx];
+      break;
+    }
+  }
+  return { success: true, message: 'Đã cập nhật hồ sơ thành công vào Google Sheet', member: updatedMember };
 }
 
 /**

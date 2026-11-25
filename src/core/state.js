@@ -257,7 +257,8 @@ function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
         m.activityOffset = Math.max(-nextBase, Number(m.activityOffset) || 0);
         return {
           nextDisplayed: Math.max(0, nextBase + m.activityOffset),
-          patch: { soCaSinhHoat: nextRaw, activityOffset: m.activityOffset }
+          inMemPatch: { soCaSinhHoat: nextRaw, activityOffset: m.activityOffset },
+          overridePatch: { activityOffset: m.activityOffset }
         };
       }
       m.soCaHoanThanh = nextRaw;
@@ -266,7 +267,8 @@ function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
       m.shiftOffset = Math.max(-nextBase, Number(m.shiftOffset) || 0);
       return {
         nextDisplayed: Math.max(0, nextBase + m.shiftOffset),
-        patch: { soCaHoanThanh: nextRaw, soCa: nextRaw, shiftOffset: m.shiftOffset }
+        inMemPatch: { soCaHoanThanh: nextRaw, soCa: nextRaw, shiftOffset: m.shiftOffset },
+        overridePatch: { shiftOffset: m.shiftOffset }
       };
     }
 
@@ -278,37 +280,39 @@ function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
     const nextOffset = nextDisplayed - baseVal;
     if (isActivity) {
       m.activityOffset = nextOffset;
-      return { nextDisplayed, patch: { activityOffset: nextOffset } };
+      return { nextDisplayed, inMemPatch: { activityOffset: nextOffset }, overridePatch: { activityOffset: nextOffset } };
     }
     m.shiftOffset = nextOffset;
-    return { nextDisplayed, patch: { shiftOffset: nextOffset } };
+    return { nextDisplayed, inMemPatch: { shiftOffset: nextOffset }, overridePatch: { shiftOffset: nextOffset } };
   };
 
   let nextVal = 0;
   let found = false;
-  let savedPatch = null;
+  let savedMemPatch = null;
+  let savedOverridePatch = null;
 
   for (const m of (membersDirectory || [])) {
     if (m && m.id === targetId) {
       const res = applyToMember(m);
       nextVal = res.nextDisplayed;
-      savedPatch = res.patch;
+      savedMemPatch = res.inMemPatch;
+      savedOverridePatch = res.overridePatch;
       found = true;
     }
   }
 
   if (currentUser && currentUser.id === targetId) {
-    if (found && savedPatch) {
-      Object.assign(currentUser, savedPatch);
+    if (found && savedMemPatch) {
+      Object.assign(currentUser, savedMemPatch);
     } else {
       const res = applyToMember(currentUser);
       nextVal = res.nextDisplayed;
-      savedPatch = res.patch;
+      savedOverridePatch = res.overridePatch;
     }
     if (typeof persistUserSession === 'function') persistUserSession(currentUser);
   }
 
-  if (savedPatch) saveMemberOverride(targetId, savedPatch);
+  if (savedOverridePatch) saveMemberOverride(targetId, savedOverridePatch);
   return nextVal;
 }
 
@@ -325,6 +329,17 @@ function saveMemberOverride(memberId, patch) {
   if (!memberId || !patch || typeof patch !== 'object') return;
   const all = getMemberOverrides();
   all[memberId] = Object.assign({}, all[memberId] || {}, patch);
+  try {
+    localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
+  } catch (e) {}
+}
+
+function clearMemberOverrideKeys(memberId, keys) {
+  if (!memberId || !Array.isArray(keys) || keys.length === 0) return;
+  const all = getMemberOverrides();
+  if (!all[memberId]) return;
+  for (const k of keys) delete all[memberId][k];
+  if (Object.keys(all[memberId]).length === 0) delete all[memberId];
   try {
     localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
   } catch (e) {}
@@ -440,8 +455,6 @@ function applyCustomAdminRoles(members) {
     if (custom[m.id]) {
       m.isAdmin = Boolean(custom[m.id].isAdmin);
       m.isShiftLeader = m.isAdmin ? true : Boolean(custom[m.id].isShiftLeader);
-    } else {
-      m.isAdmin = false;
     }
   }
 
@@ -452,10 +465,25 @@ function applyCustomAdminRoles(members) {
     } else if (custom[currentUser.id]) {
       currentUser.isAdmin = Boolean(custom[currentUser.id].isAdmin);
       currentUser.isShiftLeader = currentUser.isAdmin ? true : Boolean(custom[currentUser.id].isShiftLeader);
-    } else {
-      currentUser.isAdmin = false;
     }
   }
+}
+
+function applyServerMemberCounters(members) {
+  const map = serverMemberCounters || {};
+  const applyOne = (m) => {
+    if (!m || !m.id || !map[m.id]) return;
+    const c = map[m.id];
+    if (typeof c.soCaHoanThanh === 'number') {
+      m.soCaHoanThanh = Math.max(0, c.soCaHoanThanh);
+      m.soCa = m.soCaHoanThanh;
+    }
+    if (typeof c.soCaSinhHoat === 'number') {
+      m.soCaSinhHoat = Math.max(0, c.soCaSinhHoat);
+    }
+  };
+  if (Array.isArray(members)) members.forEach(applyOne);
+  if (currentUser) applyOne(currentUser);
 }
 
 function hydrateLocalStateFromCache() {
@@ -474,6 +502,9 @@ function hydrateLocalStateFromCache() {
         ? parsed.currentLeaves.map(normalizeLeave).filter(Boolean)
         : DEFAULT_LEAVES_SEED.map(normalizeLeave);
       offlineMutationQueue = Array.isArray(parsed.offlineMutationQueue) ? parsed.offlineMutationQueue : [];
+      serverMemberCounters = (parsed.serverMemberCounters && typeof parsed.serverMemberCounters === 'object')
+        ? parsed.serverMemberCounters
+        : {};
       loadedFromCache = true;
     }
   } catch (e) {}
@@ -483,7 +514,9 @@ function hydrateLocalStateFromCache() {
     currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
     currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
     offlineMutationQueue = [];
+    serverMemberCounters = {};
   }
+  applyServerMemberCounters(membersDirectory);
 }
 
 function saveLocalState() {
@@ -494,7 +527,8 @@ function saveLocalState() {
       currentTasks: cleanTasks,
       currentSwaps: currentSwaps || [],
       currentLeaves: currentLeaves || [],
-      offlineMutationQueue: offlineMutationQueue || []
+      offlineMutationQueue: offlineMutationQueue || [],
+      serverMemberCounters: serverMemberCounters || {}
     }));
   } catch (e) {}
 }
@@ -505,6 +539,7 @@ let currentTasks = deduplicateTasks(DEFAULT_TASKS);
 let currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
 let currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
 let offlineMutationQueue = [];
+let serverMemberCounters = {};
 
 let activeQrTaskId = null;
 let unreadNotifSignature = '';

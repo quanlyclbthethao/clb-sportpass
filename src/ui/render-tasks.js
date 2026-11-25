@@ -160,7 +160,7 @@ function populateTaskLeaderSelector(preferredId) {
   const fallbackId = currentUser ? currentUser.id : candidates[0].id;
   selectedShiftLeaderId = candidates.some(m => m.id === preferredId) ? preferredId : fallbackId;
   if (sel) {
-    mount(sel, candidates.map(m => el('option', { value: m.id, selected: m.id === selectedShiftLeaderId }, `${m.hoTen} (${m.id})`)));
+    mount(sel, candidates.map(m => el('option', { value: m.id, selected: m.id === selectedShiftLeaderId }, `${m.hoTen} (${getDisplayStudentCode(m)})`)));
     sel.value = selectedShiftLeaderId;
   }
   updateSelectedLeaderCard();
@@ -507,7 +507,7 @@ function applySwapApproval(swap) {
   if (task) {
     task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
     task.assignedMembers = (task.assignedMembers || []).filter(id => id !== swap.fromId);
-    task.waitlist = Array.isArray(task.waitlist) ? task.waitlist : [];
+    task.waitlist = (Array.isArray(task.waitlist) ? task.waitlist : []).filter(id => id !== swap.fromId);
     if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(swap.fromId)) {
       task.checkedInMembers = task.checkedInMembers.filter(id => id !== swap.fromId);
       adjustMemberCounter(swap.fromId, task.category === 'activity' ? 'activity' : 'shift', -1, 'task');
@@ -833,7 +833,7 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     const others = (membersDirectory || []).filter(m => m && m.id && m.id !== uid);
     mount(selMem, [
       el('option', { value: '' }, '-- Để Ban Điều Phối sắp xếp --'),
-      ...others.map(m => el('option', { value: m.id }, `${m.hoTen} (${m.id})`))
+      ...others.map(m => el('option', { value: m.id }, `${m.hoTen} (${getDisplayStudentCode(m)})`))
     ]);
   }
 
@@ -864,7 +864,7 @@ function renderMissionSheetPanels(preselectTaskId = null) {
           return el('div', { className: 'dispatch-card', style: { padding: '10px 12px', gap: '6px' } },
             el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' } },
               el('span', { style: { fontSize: '12.5px', fontWeight: '700', color: 'var(--text-primary)' } }, r.title),
-              el('span', { className: stClass }, stText)
+              el('span', { className: stClass, style: { flexShrink: '0', whiteSpace: 'nowrap' } }, stText)
             ),
             el('div', { style: { fontSize: '11.5px', color: 'var(--text-secondary)' } }, r.sub),
             r.status === 'pending'

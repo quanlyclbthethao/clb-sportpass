@@ -4,7 +4,7 @@
  * Hỗ trợ: Push Notifications, Offline Caching, Background Sync, Auto Cache Cleanup
  */
 
-const CACHE_VERSION = 'clb-sportpass-v8.7.2-varsity';
+const CACHE_VERSION = 'clb-sportpass-v8.7.3-varsity';
 const STATIC_ASSETS = [
   './',
   './index.html',

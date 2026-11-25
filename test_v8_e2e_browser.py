@@ -160,10 +160,17 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.click('#members-modal-close')
         page.wait_for_timeout(320)
 
-        # 3. Edit profile (reject colliding MSSV, then save editable MSSV across reload & login)
+        # 3. Edit profile (drag-out must not dismiss; reject colliding MSSV; save editable MSSV across reload & login)
         page.click('#edit-profile-trigger')
         page.wait_for_timeout(340)
         self.assertTrue(page.eval_on_selector('#edit-profile-modal', 'el => el.open'))
+        box = page.locator('#input-studentId').bounding_box()
+        page.mouse.move(box['x'] + 20, box['y'] + 20)
+        page.mouse.down()
+        page.mouse.move(10, 10)
+        page.mouse.up()
+        page.wait_for_timeout(200)
+        self.assertTrue(page.eval_on_selector('#edit-profile-modal', 'el => el.open'), 'Drag-out closed modal!')
         self.assertFalse(page.eval_on_selector('#input-studentId', 'el => el.readOnly'))
         page.fill('#input-studentId', 'NDA0407')
         page.click('#edit-modal-save')
@@ -417,6 +424,99 @@ class TestSportPassV86BrowserE2E(unittest.TestCase):
         page.wait_for_selector('#viewLoginContainer:not(.hidden)')
         page.wait_for_timeout(220)
         page.screenshot(path=str(SHOTS_DIR / '13_login_ocean_dark.png'))
+
+        self.assertEqual(errors, [], f'Browser runtime errors: {errors}')
+        ctx.close()
+
+    def test_remote_sync_admin_role_counter_reconciliation_and_reduced_motion_reopen(self):
+        ctx = self.browser.new_context(viewport={'width': 375, 'height': 812}, reduced_motion='reduce')
+        server_shifts = {'val': 1}
+
+        def real_gas_route(route):
+            req_url = route.request.url
+            if 'action=login' in req_url:
+                route.fulfill(
+                    status=200,
+                    content_type='application/json',
+                    body='{"success":true,"member":{"id":"LDH0912","hoTen":"Lương Đình Hiếu","lop":"K13.GDTC","boMon":"Ban Chủ Nhiệm","chucVu":"Trưởng ban cầu lông","sdt":"0787246014","ice":"0787246014","soCa":1,"soCaHoanThanh":1,"soCaSinhHoat":0,"isAdmin":true,"isShiftLeader":true,"studentCode":"LDH0912"}}'
+                )
+            elif 'action=adjustMemberShifts' in req_url:
+                server_shifts['val'] += 1
+                route.fulfill(
+                    status=200,
+                    content_type='application/json',
+                    body=f'{{"success":true,"memberId":"LDH0912","newShifts":{server_shifts["val"]},"metric":"shift"}}'
+                )
+            elif 'action=syncAll' in req_url:
+                v = server_shifts['val']
+                route.fulfill(
+                    status=200,
+                    content_type='application/json',
+                    body=f'{{"success":true,"member":{{"id":"LDH0912","hoTen":"Lương Đình Hiếu","lop":"K13.GDTC","boMon":"Ban Chủ Nhiệm","chucVu":"Trưởng ban cầu lông","sdt":"0787246014","ice":"0787246014","soCa":{v},"soCaHoanThanh":{v},"soCaSinhHoat":0,"isAdmin":true,"isShiftLeader":true,"studentCode":"LDH0912"}},"membersList":[{{"id":"LDH0912","hoTen":"Lương Đình Hiếu","lop":"K13.GDTC","boMon":"Ban Chủ Nhiệm","chucVu":"Trưởng ban cầu lông","sdt":"0787246014","ice":"0787246014","soCa":{v},"soCaHoanThanh":{v},"soCaSinhHoat":0,"isAdmin":true,"isShiftLeader":true,"studentCode":"LDH0912"}}],"tasks":[{{"id":"TASK_01","title":"Ca kiểm thử","location":"SVĐ","time":"14:00 - 18:00","quota":4,"category":"shift","joinedMembers":[],"assignedMembers":[],"waitlist":[],"checkedInMembers":[],"checkinLogs":[]}}],"swaps":[{{"id":"ADJUST_1","taskId":"SHIFT_ADJUST","fromMemberId":"LDH0912","status":"Điều chỉnh"}}],"leaves":[],"deletedTaskIds":[]}}'
+                )
+            else:
+                route.fulfill(status=200, content_type='application/json', body='{"success":true}')
+
+        ctx.route('**/*script.google.com/**', real_gas_route)
+        ctx.route('**/*script.googleusercontent.com/**', real_gas_route)
+        page = ctx.new_page()
+        errors = []
+        page.on('pageerror', lambda e: errors.append(str(e)))
+        page.on('console', lambda m: errors.append(m.text) if m.type == 'error' else None)
+
+        page.goto(INDEX_URL, wait_until='domcontentloaded')
+        page.fill('#iptUser', 'LDH0912')
+        page.fill('#iptPass', '123456')
+        page.click('#btnLoginSubmit')
+        page.wait_for_selector('#viewMainAppContainer:not(.hidden)')
+        page.wait_for_timeout(300)
+
+        # 1. Remote-promoted Admin retains isAdmin after syncAll & Swaps preserves pending seed requests
+        self.assertTrue(page.evaluate('currentUser.isAdmin'))
+        self.assertTrue(page.is_visible('#role-badge'))
+        self.assertGreaterEqual(page.evaluate('currentSwaps.filter(s => s.status === "pending").length'), 2)
+
+        # 2. Online +1 Truc does NOT double count after subsequent syncAll
+        page.evaluate('adjustMemberShiftCount("LDH0912", 1, "shift")')
+        page.wait_for_timeout(200)
+        self.assertEqual(page.text_content('#stat-shifts').strip(), '2')
+        page.evaluate('syncRealtimeData()')
+        page.wait_for_timeout(250)
+        self.assertEqual(page.text_content('#stat-shifts').strip(), '2')
+
+        # 3. Reduced-motion close -> immediate reopen preserves editingTaskId & qrTimerInterval
+        reopen_shift = page.evaluate('''async () => {
+            openCreateShiftModal('TASK_01');
+            await closeCreateShiftModal();
+            openCreateShiftModal('TASK_01');
+            await new Promise(r => setTimeout(r, 60));
+            const out = { open: document.getElementById('create-shift-modal').open, editingTaskId };
+            await closeCreateShiftModal();
+            return out;
+        }''')
+        self.assertTrue(reopen_shift['open'])
+        self.assertEqual(reopen_shift['editingTaskId'], 'TASK_01')
+
+        reopen_qr = page.evaluate('''async () => {
+            openQrModal('TASK_01');
+            await closeSheetDialog('qr-modal');
+            openQrModal('TASK_01');
+            await new Promise(r => setTimeout(r, 60));
+            const out = { open: document.getElementById('qr-modal').open, timerActive: qrTimerInterval !== null };
+            await closeSheetDialog('qr-modal');
+            return out;
+        }''')
+        self.assertTrue(reopen_qr['open'])
+        self.assertTrue(reopen_qr['timerActive'])
+
+        # 4. Space-containing editable MSSV in '#MSSV · TASK' QR payload parses cleanly
+        page.evaluate('''() => {
+            const m = membersDirectory.find(x => x.id === 'LDH0912');
+            if (m) m.studentCode = 'SV 0912';
+            handleScanQrPayload('#SV 0912 · TASK_01');
+        }''')
+        page.wait_for_timeout(150)
+        self.assertTrue(page.evaluate('currentTasks.find(t => t.id === "TASK_01").checkedInMembers.includes("LDH0912")'))
 
         self.assertEqual(errors, [], f'Browser runtime errors: {errors}')
         ctx.close()

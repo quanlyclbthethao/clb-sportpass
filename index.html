@@ -959,8 +959,14 @@ html[data-theme="dark"] .tile-amber { background-color: rgba(245, 158, 11, 0.18)
 }
 
 .profile-phone-link {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  line-height: 26px;
   min-height: 26px;
   font-family: var(--sp-font-mono);
   font-size: 14px;
@@ -4248,7 +4254,8 @@ function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
         m.activityOffset = Math.max(-nextBase, Number(m.activityOffset) || 0);
         return {
           nextDisplayed: Math.max(0, nextBase + m.activityOffset),
-          patch: { soCaSinhHoat: nextRaw, activityOffset: m.activityOffset }
+          inMemPatch: { soCaSinhHoat: nextRaw, activityOffset: m.activityOffset },
+          overridePatch: { activityOffset: m.activityOffset }
         };
       }
       m.soCaHoanThanh = nextRaw;
@@ -4257,7 +4264,8 @@ function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
       m.shiftOffset = Math.max(-nextBase, Number(m.shiftOffset) || 0);
       return {
         nextDisplayed: Math.max(0, nextBase + m.shiftOffset),
-        patch: { soCaHoanThanh: nextRaw, soCa: nextRaw, shiftOffset: m.shiftOffset }
+        inMemPatch: { soCaHoanThanh: nextRaw, soCa: nextRaw, shiftOffset: m.shiftOffset },
+        overridePatch: { shiftOffset: m.shiftOffset }
       };
     }
 
@@ -4269,37 +4277,39 @@ function adjustMemberCounter(memberId, metric, delta, source = 'manual') {
     const nextOffset = nextDisplayed - baseVal;
     if (isActivity) {
       m.activityOffset = nextOffset;
-      return { nextDisplayed, patch: { activityOffset: nextOffset } };
+      return { nextDisplayed, inMemPatch: { activityOffset: nextOffset }, overridePatch: { activityOffset: nextOffset } };
     }
     m.shiftOffset = nextOffset;
-    return { nextDisplayed, patch: { shiftOffset: nextOffset } };
+    return { nextDisplayed, inMemPatch: { shiftOffset: nextOffset }, overridePatch: { shiftOffset: nextOffset } };
   };
 
   let nextVal = 0;
   let found = false;
-  let savedPatch = null;
+  let savedMemPatch = null;
+  let savedOverridePatch = null;
 
   for (const m of (membersDirectory || [])) {
     if (m && m.id === targetId) {
       const res = applyToMember(m);
       nextVal = res.nextDisplayed;
-      savedPatch = res.patch;
+      savedMemPatch = res.inMemPatch;
+      savedOverridePatch = res.overridePatch;
       found = true;
     }
   }
 
   if (currentUser && currentUser.id === targetId) {
-    if (found && savedPatch) {
-      Object.assign(currentUser, savedPatch);
+    if (found && savedMemPatch) {
+      Object.assign(currentUser, savedMemPatch);
     } else {
       const res = applyToMember(currentUser);
       nextVal = res.nextDisplayed;
-      savedPatch = res.patch;
+      savedOverridePatch = res.overridePatch;
     }
     if (typeof persistUserSession === 'function') persistUserSession(currentUser);
   }
 
-  if (savedPatch) saveMemberOverride(targetId, savedPatch);
+  if (savedOverridePatch) saveMemberOverride(targetId, savedOverridePatch);
   return nextVal;
 }
 
@@ -4316,6 +4326,17 @@ function saveMemberOverride(memberId, patch) {
   if (!memberId || !patch || typeof patch !== 'object') return;
   const all = getMemberOverrides();
   all[memberId] = Object.assign({}, all[memberId] || {}, patch);
+  try {
+    localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
+  } catch (e) {}
+}
+
+function clearMemberOverrideKeys(memberId, keys) {
+  if (!memberId || !Array.isArray(keys) || keys.length === 0) return;
+  const all = getMemberOverrides();
+  if (!all[memberId]) return;
+  for (const k of keys) delete all[memberId][k];
+  if (Object.keys(all[memberId]).length === 0) delete all[memberId];
   try {
     localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all));
   } catch (e) {}
@@ -4431,8 +4452,6 @@ function applyCustomAdminRoles(members) {
     if (custom[m.id]) {
       m.isAdmin = Boolean(custom[m.id].isAdmin);
       m.isShiftLeader = m.isAdmin ? true : Boolean(custom[m.id].isShiftLeader);
-    } else {
-      m.isAdmin = false;
     }
   }
 
@@ -4443,10 +4462,25 @@ function applyCustomAdminRoles(members) {
     } else if (custom[currentUser.id]) {
       currentUser.isAdmin = Boolean(custom[currentUser.id].isAdmin);
       currentUser.isShiftLeader = currentUser.isAdmin ? true : Boolean(custom[currentUser.id].isShiftLeader);
-    } else {
-      currentUser.isAdmin = false;
     }
   }
+}
+
+function applyServerMemberCounters(members) {
+  const map = serverMemberCounters || {};
+  const applyOne = (m) => {
+    if (!m || !m.id || !map[m.id]) return;
+    const c = map[m.id];
+    if (typeof c.soCaHoanThanh === 'number') {
+      m.soCaHoanThanh = Math.max(0, c.soCaHoanThanh);
+      m.soCa = m.soCaHoanThanh;
+    }
+    if (typeof c.soCaSinhHoat === 'number') {
+      m.soCaSinhHoat = Math.max(0, c.soCaSinhHoat);
+    }
+  };
+  if (Array.isArray(members)) members.forEach(applyOne);
+  if (currentUser) applyOne(currentUser);
 }
 
 function hydrateLocalStateFromCache() {
@@ -4465,6 +4499,9 @@ function hydrateLocalStateFromCache() {
         ? parsed.currentLeaves.map(normalizeLeave).filter(Boolean)
         : DEFAULT_LEAVES_SEED.map(normalizeLeave);
       offlineMutationQueue = Array.isArray(parsed.offlineMutationQueue) ? parsed.offlineMutationQueue : [];
+      serverMemberCounters = (parsed.serverMemberCounters && typeof parsed.serverMemberCounters === 'object')
+        ? parsed.serverMemberCounters
+        : {};
       loadedFromCache = true;
     }
   } catch (e) {}
@@ -4474,7 +4511,9 @@ function hydrateLocalStateFromCache() {
     currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
     currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
     offlineMutationQueue = [];
+    serverMemberCounters = {};
   }
+  applyServerMemberCounters(membersDirectory);
 }
 
 function saveLocalState() {
@@ -4485,7 +4524,8 @@ function saveLocalState() {
       currentTasks: cleanTasks,
       currentSwaps: currentSwaps || [],
       currentLeaves: currentLeaves || [],
-      offlineMutationQueue: offlineMutationQueue || []
+      offlineMutationQueue: offlineMutationQueue || [],
+      serverMemberCounters: serverMemberCounters || {}
     }));
   } catch (e) {}
 }
@@ -4496,6 +4536,7 @@ let currentTasks = deduplicateTasks(DEFAULT_TASKS);
 let currentSwaps = DEFAULT_SWAPS_SEED.map(normalizeSwap);
 let currentLeaves = DEFAULT_LEAVES_SEED.map(normalizeLeave);
 let offlineMutationQueue = [];
+let serverMemberCounters = {};
 
 let activeQrTaskId = null;
 let unreadNotifSignature = '';
@@ -4818,6 +4859,8 @@ function executeLogoutAction() {
 // === sync.js ===
 // SportPass V8.7 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
 
+let syncInFlightPromise = null;
+
 function enqueueOfflineMutation(type, payload) {
   offlineMutationQueue.push({
     id: 'MUT_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
@@ -4826,6 +4869,63 @@ function enqueueOfflineMutation(type, payload) {
     createdAt: Date.now()
   });
   saveLocalState();
+}
+
+function reconcileMutationResponse(type, payload, data) {
+  if (!data || data.success !== true) return;
+  if (type === 'UPDATE_ROLE' && payload && payload.memberId) {
+    const custom = getCustomAdminRoles();
+    if (custom[payload.memberId]) {
+      custom[payload.memberId].synced = true;
+      saveCustomAdminRoles(custom);
+    }
+    return;
+  }
+  if (type === 'SHIFT_ADJUST' && payload && payload.memberId && typeof data.newShifts === 'number') {
+    const mid = String(payload.memberId).trim();
+    const isActivity = payload.metric === 'activity';
+    const offsetKey = isActivity ? 'activityOffset' : 'shiftOffset';
+    const serverTotal = Math.max(0, Number(data.newShifts) || 0);
+    const delta = Number(payload.delta) || 0;
+    const counts = getMemberTaskCheckinCounts(mid);
+    const taskCount = isActivity ? counts.activitiesCheckedIn : counts.shiftsCheckedIn;
+
+    serverMemberCounters[mid] = Object.assign(
+      {},
+      serverMemberCounters[mid] || {},
+      isActivity ? { soCaSinhHoat: serverTotal } : { soCaHoanThanh: serverTotal }
+    );
+
+    let nextOffset = 0;
+    const applyOne = (m) => {
+      const curOffset = Number(m[offsetKey]) || 0;
+      const targetDisplayed = Math.max(0, serverTotal + (curOffset - delta));
+      const baseVal = Math.max(serverTotal, taskCount);
+      nextOffset = targetDisplayed - baseVal;
+      if (isActivity) {
+        m.soCaSinhHoat = serverTotal;
+      } else {
+        m.soCaHoanThanh = serverTotal;
+        m.soCa = serverTotal;
+      }
+      m[offsetKey] = nextOffset;
+    };
+
+    for (const m of (membersDirectory || [])) {
+      if (m && m.id === mid) applyOne(m);
+    }
+    if (currentUser && currentUser.id === mid) {
+      applyOne(currentUser);
+      if (typeof persistUserSession === 'function') persistUserSession(currentUser);
+    }
+
+    if (nextOffset === 0) clearMemberOverrideKeys(mid, [offsetKey]);
+    else saveMemberOverride(mid, { [offsetKey]: nextOffset });
+
+    saveLocalState();
+    if (currentUser && currentUser.id === mid && typeof renderProfileData === 'function') renderProfileData();
+    if (typeof renderMembersModalList === 'function') renderMembersModalList();
+  }
 }
 
 function buildMutationUrl(mut) {
@@ -4844,7 +4944,10 @@ function buildMutationUrl(mut) {
 function dispatchBackendMutation(type, payload) {
   const url = buildMutationUrl({ type, payload });
   if (navigator.onLine && url) {
-    fetch(url).catch(() => enqueueOfflineMutation(type, payload));
+    fetch(url)
+      .then((res) => (res && res.ok ? res.json().catch(() => null) : null))
+      .then((data) => reconcileMutationResponse(type, payload, data))
+      .catch(() => enqueueOfflineMutation(type, payload));
   } else {
     enqueueOfflineMutation(type, payload);
   }
@@ -4870,7 +4973,9 @@ async function syncOfflineMutations(isManual = false) {
       } else {
         const url = buildMutationUrl(mut);
         if (!url) continue;
-        await fetch(url);
+        const res = await fetch(url);
+        const data = (res && res.ok) ? await res.json().catch(() => null) : null;
+        reconcileMutationResponse(mut.type, mut.payload, data);
         pushedCount++;
       }
     } catch (e) {
@@ -4904,68 +5009,106 @@ async function syncTaskToBackend(task) {
 
 async function syncRealtimeData() {
   if (!currentUser || !navigator.onLine) return;
-  try {
-    if (offlineMutationQueue.length > 0) {
-      await syncOfflineMutations(false);
-    }
-    const res = await fetch(`${GAS_API_URL}?action=syncAll&memberId=${encodeURIComponent(currentUser.id)}`);
-    const data = await res.json();
-    if (!data || !data.success) return;
+  if (syncInFlightPromise) return syncInFlightPromise;
 
-    if (Array.isArray(data.deletedTaskIds)) {
-      data.deletedTaskIds.forEach(id => saveDeletedTaskId(id));
-    }
-
-    if (Array.isArray(data.membersList) && data.membersList.length > 0) {
-      membersDirectory = normalizeMembersDirectory(data.membersList);
-      applyMemberOverrides(membersDirectory);
-    }
-
-    if (data.member) {
-      const preservedAvatar = currentUser.avatar || '';
-      const preservedStudentCode = currentUser.studentCode || '';
-      const preservedDob = currentUser.ngaySinh || '';
-      const remoteStudentCode = String(data.member.studentCode || '').trim();
-      currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
-      if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
-      if ((!remoteStudentCode || remoteStudentCode === currentUser.id) && preservedStudentCode && preservedStudentCode !== currentUser.id) {
-        currentUser.studentCode = preservedStudentCode;
+  syncInFlightPromise = (async () => {
+    try {
+      if (offlineMutationQueue.length > 0) {
+        await syncOfflineMutations(false);
       }
-      if ((!data.member.ngaySinh || !DOB_REGEX.test(String(data.member.ngaySinh).trim())) && preservedDob) {
-        currentUser.ngaySinh = preservedDob;
+      const res = await fetch(`${GAS_API_URL}?action=syncAll&memberId=${encodeURIComponent(currentUser.id)}`);
+      const data = await res.json();
+      if (!data || !data.success) return;
+
+      if (Array.isArray(data.deletedTaskIds)) {
+        data.deletedTaskIds.forEach(id => saveDeletedTaskId(id));
       }
-      applyMemberOverrides(membersDirectory);
-      window.currentUser = currentUser;
-    }
 
-    const deletedTasks = getDeletedTaskIds();
-    const serverTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t));
-    const serverTaskMap = new Map(serverTasks.map(t => [t.id, t]));
+      if (Array.isArray(data.membersList) && data.membersList.length > 0) {
+        membersDirectory = normalizeMembersDirectory(data.membersList);
+        const nextServerCounters = {};
+        const customRoles = getCustomAdminRoles();
+        let rolesChanged = false;
+        for (const m of membersDirectory) {
+          if (!m || !m.id) continue;
+          nextServerCounters[m.id] = {
+            soCaHoanThanh: Math.max(0, Number(m.soCaHoanThanh) || 0),
+            soCaSinhHoat: Math.max(0, Number(m.soCaSinhHoat) || 0)
+          };
+          if (customRoles[m.id] && customRoles[m.id].synced) {
+            delete customRoles[m.id];
+            rolesChanged = true;
+          }
+        }
+        serverMemberCounters = nextServerCounters;
+        if (rolesChanged) saveCustomAdminRoles(customRoles);
+        applyMemberOverrides(membersDirectory);
+      }
 
-    const mergedTasks = [...serverTasks];
-    if (Array.isArray(currentTasks)) {
-      for (const localTask of currentTasks) {
-        if (!localTask || !localTask.id || serverTaskMap.has(localTask.id) || deletedTasks.includes(localTask.id)) continue;
-        if (localTask.localCreatedAt && (Date.now() - localTask.localCreatedAt < 30000)) {
-          mergedTasks.push(localTask);
-        } else if (!String(localTask.id).startsWith('TASK_0')) {
-          saveDeletedTaskId(localTask.id);
+      if (data.member) {
+        const preservedAvatar = currentUser.avatar || '';
+        const preservedStudentCode = currentUser.studentCode || '';
+        const preservedDob = currentUser.ngaySinh || '';
+        const remoteStudentCode = String(data.member.studentCode || '').trim();
+        currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
+        if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
+        if ((!remoteStudentCode || remoteStudentCode === currentUser.id) && preservedStudentCode && preservedStudentCode !== currentUser.id) {
+          currentUser.studentCode = preservedStudentCode;
+        }
+        if ((!data.member.ngaySinh || !DOB_REGEX.test(String(data.member.ngaySinh).trim())) && preservedDob) {
+          currentUser.ngaySinh = preservedDob;
+        }
+        serverMemberCounters[currentUser.id] = {
+          soCaHoanThanh: Math.max(0, Number(currentUser.soCaHoanThanh) || 0),
+          soCaSinhHoat: Math.max(0, Number(currentUser.soCaSinhHoat) || 0)
+        };
+        applyMemberOverrides(membersDirectory);
+        window.currentUser = currentUser;
+      }
+
+      const deletedTasks = getDeletedTaskIds();
+      const serverTasks = (data.tasks || []).filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t));
+      const serverTaskMap = new Map(serverTasks.map(t => [t.id, t]));
+
+      const mergedTasks = [...serverTasks];
+      if (Array.isArray(currentTasks)) {
+        for (const localTask of currentTasks) {
+          if (!localTask || !localTask.id || serverTaskMap.has(localTask.id) || deletedTasks.includes(localTask.id)) continue;
+          if (localTask.localCreatedAt && (Date.now() - localTask.localCreatedAt < 30000)) {
+            mergedTasks.push(localTask);
+          } else if (!String(localTask.id).startsWith('TASK_0')) {
+            saveDeletedTaskId(localTask.id);
+          }
         }
       }
+
+      currentTasks = deduplicateTasks(mergedTasks);
+      if (Array.isArray(data.swaps) && data.swaps.length > 0) {
+        const serverSwaps = data.swaps.map(normalizeSwap).filter(Boolean);
+        const serverIds = new Set(serverSwaps.map(s => s.id));
+        const preservedLocal = (currentSwaps || []).filter(s => s && s.id && !serverIds.has(s.id));
+        currentSwaps = [...serverSwaps, ...preservedLocal];
+      }
+      if (Array.isArray(data.leaves) && data.leaves.length > 0) {
+        const serverLeaves = data.leaves.map(normalizeLeave).filter(Boolean);
+        const serverIds = new Set(serverLeaves.map(l => l.id));
+        const preservedLocal = (currentLeaves || []).filter(l => l && l.id && !serverIds.has(l.id));
+        currentLeaves = [...serverLeaves, ...preservedLocal];
+      }
+
+      saveLocalState();
+      renderProfileData();
+      renderDispatchHub();
+      renderMembersModalList();
+      renderNotificationsModalList();
+    } catch (err) {
+      // Stay resilient offline
+    } finally {
+      syncInFlightPromise = null;
     }
+  })();
 
-    currentTasks = deduplicateTasks(mergedTasks);
-    if (Array.isArray(data.swaps) && data.swaps.length > 0) currentSwaps = data.swaps.map(normalizeSwap).filter(Boolean);
-    if (Array.isArray(data.leaves) && data.leaves.length > 0) currentLeaves = data.leaves.map(normalizeLeave).filter(Boolean);
-
-    saveLocalState();
-    renderProfileData();
-    renderDispatchHub();
-    renderMembersModalList();
-    renderNotificationsModalList();
-  } catch (err) {
-    // Stay resilient offline
-  }
+  return syncInFlightPromise;
 }
 
 function restartAdaptivePolling() {
@@ -5200,7 +5343,7 @@ function populateQrPassTaskSelector() {
   const sel = document.getElementById('selQrPassTask');
   if (!sel) return;
   const uid = currentUser ? currentUser.id : '';
-  const tasks = Array.isArray(currentTasks) ? currentTasks : [];
+  const tasks = deduplicateTasks(currentTasks || []);
 
   const sorted = tasks.slice().sort((a, b) => {
     const aMine = uid && ([...(a.joinedMembers || []), ...(a.assignedMembers || [])].includes(uid));
@@ -5279,6 +5422,7 @@ function closeQrModal() {
 }
 
 function stopQrCameraStream() {
+  isTorchOn = false;
   if (qrScanAnimFrame) {
     cancelAnimationFrame(qrScanAnimFrame);
     qrScanAnimFrame = null;
@@ -5445,7 +5589,8 @@ function handleScanQrPayload(rawCode) {
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
   } else if (trimmed.startsWith('#')) {
-    memberId = trimmed.slice(1).split(/[\s·]+/)[0];
+    const hashBody = trimmed.slice(1).trim();
+    memberId = hashBody.includes('·') ? hashBody.split('·')[0].trim() : hashBody.split(/\s+/)[0];
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {
@@ -5833,7 +5978,7 @@ function openSheetDialog(id) {
 
 async function closeSheetDialog(id) {
   const dlg = document.getElementById(id);
-  if (!dlg || !dlg.open) return;
+  if (!dlg || !dlg.open || dlg.hasAttribute('data-closing')) return;
 
   cleanupDialogState(id);
 
@@ -5934,17 +6079,24 @@ function closeAllModals() {
 function initModalLifecycle() {
   const supportsClosedBy = ('closedBy' in HTMLDialogElement.prototype);
   document.querySelectorAll('dialog.sp-sheet-dialog').forEach((dlg) => {
-    dlg.addEventListener('close', () => cleanupDialogState(dlg.id));
+    dlg.addEventListener('close', () => {
+      if (!dlg.open) cleanupDialogState(dlg.id);
+    });
 
     dlg.addEventListener('cancel', (ev) => {
       ev.preventDefault();
       closeSheetDialog(dlg.id);
     });
 
+    let pointerDownOnBackdrop = false;
+    dlg.addEventListener('pointerdown', (ev) => {
+      pointerDownOnBackdrop = (ev.target === dlg);
+    });
     dlg.addEventListener('click', (ev) => {
-      if (ev.target === dlg) {
+      if (ev.target === dlg && (ev.detail === 0 || pointerDownOnBackdrop)) {
         closeSheetDialog(dlg.id);
       }
+      pointerDownOnBackdrop = false;
     });
 
     if (!supportsClosedBy) {
@@ -6119,10 +6271,18 @@ function cycleStatus(ev) {
 }
 
 async function handleAvatarFileSelect(event) {
-  const file = event && event.target && event.target.files ? event.target.files[0] : null;
-  if (!file || !currentUser) return;
+  const inputEl = event && event.target ? event.target : null;
+  const file = inputEl && inputEl.files ? inputEl.files[0] : null;
+  if (!file || !currentUser) {
+    if (inputEl) inputEl.value = '';
+    return;
+  }
   const compressed = await compressImage(file, 320, 320, 0.8);
-  if (!compressed) return;
+  if (inputEl) inputEl.value = '';
+  if (!compressed) {
+    showToast('Không thể đọc ảnh đại diện đã chọn.');
+    return;
+  }
   currentUser.avatar = compressed;
   for (const m of (membersDirectory || [])) {
     if (m.id === currentUser.id) m.avatar = compressed;
@@ -6293,7 +6453,18 @@ async function saveEditProfileAction() {
   const newPhone = (document.getElementById('input-phone')?.value || '').trim();
   const newIce = (document.getElementById('input-ice')?.value || '').trim();
 
+  if (!newName) {
+    showToast('Vui lòng nhập họ và tên.');
+    document.getElementById('input-fullname')?.focus();
+    return;
+  }
+
   if (newStudentCode) {
+    if (/[:·]/.test(newStudentCode)) {
+      showToast('Mã số sinh viên không được chứa ký tự ":" hoặc "·".');
+      document.getElementById('input-studentId')?.focus();
+      return;
+    }
     const codeUpper = newStudentCode.toUpperCase();
     const conflict = (membersDirectory || []).find(m =>
       m && m.id !== currentUser.id && (
@@ -6606,7 +6777,7 @@ function populateTaskLeaderSelector(preferredId) {
   const fallbackId = currentUser ? currentUser.id : candidates[0].id;
   selectedShiftLeaderId = candidates.some(m => m.id === preferredId) ? preferredId : fallbackId;
   if (sel) {
-    mount(sel, candidates.map(m => el('option', { value: m.id, selected: m.id === selectedShiftLeaderId }, `${m.hoTen} (${m.id})`)));
+    mount(sel, candidates.map(m => el('option', { value: m.id, selected: m.id === selectedShiftLeaderId }, `${m.hoTen} (${getDisplayStudentCode(m)})`)));
     sel.value = selectedShiftLeaderId;
   }
   updateSelectedLeaderCard();
@@ -6953,7 +7124,7 @@ function applySwapApproval(swap) {
   if (task) {
     task.joinedMembers = (task.joinedMembers || []).filter(id => id !== swap.fromId);
     task.assignedMembers = (task.assignedMembers || []).filter(id => id !== swap.fromId);
-    task.waitlist = Array.isArray(task.waitlist) ? task.waitlist : [];
+    task.waitlist = (Array.isArray(task.waitlist) ? task.waitlist : []).filter(id => id !== swap.fromId);
     if (Array.isArray(task.checkedInMembers) && task.checkedInMembers.includes(swap.fromId)) {
       task.checkedInMembers = task.checkedInMembers.filter(id => id !== swap.fromId);
       adjustMemberCounter(swap.fromId, task.category === 'activity' ? 'activity' : 'shift', -1, 'task');
@@ -7279,7 +7450,7 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     const others = (membersDirectory || []).filter(m => m && m.id && m.id !== uid);
     mount(selMem, [
       el('option', { value: '' }, '-- Để Ban Điều Phối sắp xếp --'),
-      ...others.map(m => el('option', { value: m.id }, `${m.hoTen} (${m.id})`))
+      ...others.map(m => el('option', { value: m.id }, `${m.hoTen} (${getDisplayStudentCode(m)})`))
     ]);
   }
 
@@ -7310,7 +7481,7 @@ function renderMissionSheetPanels(preselectTaskId = null) {
           return el('div', { className: 'dispatch-card', style: { padding: '10px 12px', gap: '6px' } },
             el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' } },
               el('span', { style: { fontSize: '12.5px', fontWeight: '700', color: 'var(--text-primary)' } }, r.title),
-              el('span', { className: stClass }, stText)
+              el('span', { className: stClass, style: { flexShrink: '0', whiteSpace: 'nowrap' } }, stText)
             ),
             el('div', { style: { fontSize: '11.5px', color: 'var(--text-secondary)' } }, r.sub),
             r.status === 'pending'
