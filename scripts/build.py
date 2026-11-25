@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-SportPass V7.0 Build Compiler & Deterministic Verification Gate
+SportPass V8.0 Build Compiler & Deterministic Verification Gate
 Assembles src/styles/* + src/data/* + src/core/* + src/ui/* into standalone index.html
 """
 
@@ -39,13 +39,8 @@ JS_FILES = [
     os.path.join(SRC_DIR, 'core', 'notifications.js'),
     os.path.join(SRC_DIR, 'ui', 'theme.js'),
     os.path.join(SRC_DIR, 'ui', 'modals.js'),
-    os.path.join(SRC_DIR, 'ui', 'navigation.js'),
     os.path.join(SRC_DIR, 'ui', 'render-profile.js'),
     os.path.join(SRC_DIR, 'ui', 'render-tasks.js'),
-    os.path.join(SRC_DIR, 'ui', 'render-directory.js'),
-    os.path.join(SRC_DIR, 'ui', 'render-admin.js'),
-    os.path.join(SRC_DIR, 'ui', 'render-forum.js'),
-    os.path.join(SRC_DIR, 'ui', 'fund-cskh.js'),
     os.path.join(SRC_DIR, 'ui', 'app.js'),
 ]
 
@@ -123,7 +118,7 @@ def main():
         print(f'UNCLOSED HTML TAGS IN SHELL: {checker.stack}')
         sys.exit(1)
 
-    # Gate 4: Banned legacy/XSS/anti-slop tokens scan
+    # Gate 4: Banned legacy/XSS/anti-slop/forum tokens scan
     banned = [
         'cdn.tailwindcss.com',
         'transition-all',
@@ -131,10 +126,8 @@ def main():
         'JSON.parse(JSON.stringify(',
         '.innerHTML =',
         '.innerHTML=',
-        '#000000',
-        'Tây Bắc',
-        'quickFillLogin',
-        'btnOfflineSync',
+        'DEFAULT_COMMUNITY_POSTS',
+        'renderForumFeed',
     ]
     for b in banned:
         if b in output:

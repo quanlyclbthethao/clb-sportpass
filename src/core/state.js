@@ -1,31 +1,20 @@
-// SportPass V7.0 — Canonical Reactive State, Tombstones, Deduplication & RBAC
+// SportPass V8.0 — Canonical Reactive State, Tombstones, Deduplication & RBAC (Forum Removed)
 
 let currentUser = null;
 let membersDirectory = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined') ? DEFAULT_MEMBERS_DIRECTORY.slice() : [];
 let currentTasks = DEFAULT_TASKS.map(t => structuredClone(t));
-let currentPosts = DEFAULT_COMMUNITY_POSTS.map(p => structuredClone(p));
 let currentSwaps = [];
 let currentLeaves = [];
-let auditLogs = [];
 let offlineMutationQueue = [];
 
-let currentActiveTabIdx = 0;
 let currentTaskDeptFilter = 'ALL';
 let currentDirDeptFilter = 'ALL';
-let currentRoleDeptFilter = 'ALL';
+let activeApproveTab = 'shifts';
 let editingTaskId = null;
 let selectedOtherMember = null;
-let pendingConfirmCallback = null;
 let pendingSmartRotationCandidates = [];
 let pendingSmartRotationTaskId = null;
-let adjustShiftsTargetId = null;
-let adjustShiftsDelta = 1;
-let activeReplyState = {};
-let currentComposerMedia = [];
-let currentLeaveProofDataUrl = '';
-let currentLightboxImages = [];
-let currentLightboxIdx = 0;
-let currentCardStatus = 'Sẵn sàng';
+let pendingDeleteTaskId = null;
 let currentSyncPollTimer = null;
 
 function safeSetText(id, text) {
@@ -45,6 +34,41 @@ function getSportPassInitials(name) {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
+function resolveAvatarUrl(member) {
+  if (member && member.avatar && String(member.avatar).trim()) {
+    return member.avatar;
+  }
+  return DEFAULT_VARSITY_AVATAR;
+}
+
+function formatMemberDob(member) {
+  if (!member) return '08/06/2003';
+  if (member.ngaySinh && /\d{2}\/\d{2}\/\d{4}/.test(String(member.ngaySinh))) return String(member.ngaySinh).trim();
+  if (member.mssv && /\d{2}\/\d{2}\/\d{4}/.test(String(member.mssv))) {
+    return String(member.mssv).trim();
+  }
+  const canonical = (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined')
+    ? DEFAULT_MEMBERS_DIRECTORY.find(x => x && x.id === member.id)
+    : null;
+  if (canonical && canonical.mssv && /\d{2}\/\d{2}\/\d{4}/.test(String(canonical.mssv))) {
+    return String(canonical.mssv).trim();
+  }
+  const m = String(member.id || '').match(/(\d{2})(\d{2})$/);
+  return m ? `${m[1]}/${m[2]}/2004` : '08/06/2003';
+}
+
+function getDisplayStudentCode(member) {
+  if (!member) return 'DMC0806';
+  if (member.studentCode && String(member.studentCode).trim()) return String(member.studentCode).trim();
+  return member.id || 'SP0000';
+}
+
+function getMemberEmail(member) {
+  if (!member) return 'member@uhd.sportpass.vn';
+  if (member.email && String(member.email).trim()) return String(member.email).trim();
+  return `${String(member.id || 'member').toLowerCase()}@uhd.sportpass.vn`;
+}
+
 function getTheTrangTheme(theTrang) {
   const raw = String(theTrang || '');
   const lower = raw.toLowerCase();
@@ -61,68 +85,8 @@ function formatShortTheTrang(theTrang) {
   const raw = String(theTrang || 'Khỏe mạnh');
   const lower = raw.toLowerCase();
   if (lower.includes('chấn thương') || lower.includes('nghỉ')) return 'Miễn trực';
-  if (lower.includes('hồi phục')) return 'Hồi phục';
-  return 'Khỏe mạnh';
-}
-
-function applyAvatarElement(boxEl, initEl, nameStr, avatarUrl) {
-  if (!boxEl) return;
-  const oldImg = boxEl.querySelector('img');
-  if (oldImg) oldImg.remove();
-  if (avatarUrl && String(avatarUrl).trim()) {
-    const img = document.createElement('img');
-    img.src = avatarUrl;
-    img.alt = nameStr || 'Ảnh đại diện';
-    boxEl.appendChild(img);
-    if (initEl) initEl.classList.add('hidden');
-  } else if (initEl) {
-    initEl.textContent = getSportPassInitials(nameStr);
-    initEl.classList.remove('hidden');
-  }
-}
-
-async function compressImage(fileOrDataUrl, maxWidth = 800, maxHeight = 800, quality = 0.72) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      let w = img.width;
-      let h = img.height;
-      const ratio = Math.min(maxWidth / w, maxHeight / h, 1);
-      w = Math.round(w * ratio);
-      h = Math.round(h * ratio);
-      const canvas = document.createElement('canvas');
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, w, h);
-      try {
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      } catch (e) {
-        resolve(fileOrDataUrl);
-      }
-    };
-    img.onerror = () => resolve('');
-    if (typeof fileOrDataUrl === 'string') {
-      img.src = fileOrDataUrl;
-    } else {
-      const reader = new FileReader();
-      reader.onload = (ev) => { img.src = ev.target.result; };
-      reader.readAsDataURL(fileOrDataUrl);
-    }
-  });
-}
-
-function logAuditEvent(actor, action, target, detail, result = 'SUCCESS') {
-  auditLogs.unshift({
-    id: 'LOG_' + Date.now(),
-    actor: actor || (currentUser ? currentUser.id : 'SYSTEM'),
-    action,
-    target,
-    detail,
-    result,
-    at: new Date().toLocaleTimeString('vi-VN')
-  });
-  if (auditLogs.length > 60) auditLogs.length = 60;
+  if (lower.includes('hồi phục')) return 'B';
+  return 'A+';
 }
 
 // ==================== TOMBSTONES ANTI-RESURRECTION ====================
@@ -143,29 +107,12 @@ function saveDeletedTaskId(id) {
   }
 }
 
-function getDeletedPostIds() {
-  try {
-    return JSON.parse(localStorage.getItem('CLB_DELETED_POST_IDS') || '[]');
-  } catch (e) {
-    return [];
-  }
-}
-
-function saveDeletedPostId(id) {
-  if (!id) return;
-  const list = getDeletedPostIds();
-  if (!list.includes(id)) {
-    list.push(id);
-    try { localStorage.setItem('CLB_DELETED_POST_IDS', JSON.stringify(list)); } catch (e) {}
-  }
-}
-
 // ==================== SEMANTIC TASK DEDUPLICATION ====================
 function isStaleRemoteTestTask(t) {
   if (!t) return true;
   const id = String(t.id || '');
   const title = String(t.title || '');
-  return id.startsWith('MUT_TASK_') || id.startsWith('TASK_TEST_WITHDRAW_') || title === 'Task Test';
+  return id.startsWith('MUT_TASK_') || id.startsWith('TASK_TEST_WITHDRAW_') || id.startsWith('TASK_ROTATION_') || title === 'Task Test';
 }
 
 function deduplicateTasks(tasks) {
@@ -258,15 +205,11 @@ function applyCustomAdminRoles(members) {
 function saveLocalState() {
   try {
     const deletedTasks = getDeletedTaskIds();
-    const deletedPosts = getDeletedPostIds();
     const cleanTasks = (currentTasks || []).filter(t => t && !deletedTasks.includes(t.id));
-    const cleanPosts = (currentPosts || []).filter(p => p && !deletedPosts.includes(p.id));
     localStorage.setItem('CLB_SPORTPASS_DATA_CACHE', JSON.stringify({
       currentTasks: cleanTasks,
-      currentPosts: cleanPosts,
       currentSwaps: currentSwaps || [],
       currentLeaves: currentLeaves || [],
-      auditLogs: auditLogs || [],
       offlineMutationQueue: offlineMutationQueue || []
     }));
   } catch (e) {}

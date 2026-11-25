@@ -1,35 +1,17 @@
-// SportPass V7.0 — Dynamic Aqua Island Notifications, Haptics & Web Push
+// SportPass V8.0 — Aquamorphic Floating Pill Toast & Notification Center Sheet Renderer
 
-let aquaTimer = null;
+let toastHideTimer = null;
 
-function resolveIslandIconName(hint) {
-  const map = {
-    '⚡': 'zap',
-    '✅': 'check',
-    '⚠️': 'alert',
-    '🔒': 'lock',
-    '🔐': 'lock',
-    '🛡️': 'shield',
-    '🔄': 'refresh',
-    '↩️': 'refresh',
-    '🗑️': 'trash',
-    '📣': 'bell',
-    '📝': 'edit',
-    '✏️': 'edit',
-    '📸': 'camera',
-    '☁️': 'cloud',
-    '📋': 'file',
-    '⚖️': 'shield',
-    '✨': 'sparkles',
-    '🟢': 'check',
-    '💪': 'check',
-    '⏳': 'clock',
-    '📨': 'bell',
-    'ℹ️': 'info',
-    '👋': 'shield',
-    '💳': 'wallet'
-  };
-  return map[hint] || (typeof hint === 'string' && /^[a-z-]+$/.test(hint) ? hint : 'zap');
+function showToast(message) {
+  const toast = document.getElementById('toast-notification');
+  const toastText = document.getElementById('toast-text');
+  if (!toast) return;
+  if (message && toastText) toastText.textContent = String(message);
+  toast.classList.add('active');
+  if (toastHideTimer) clearTimeout(toastHideTimer);
+  toastHideTimer = setTimeout(() => {
+    toast.classList.remove('active');
+  }, 3000);
 }
 
 function triggerHaptic(type = 'light') {
@@ -41,63 +23,78 @@ function triggerHaptic(type = 'light') {
   } catch (e) {}
 }
 
-function showAquaIsland(msg, icon = 'zap') {
-  const island = document.getElementById('aquaIsland');
-  const msgEl = document.getElementById('aquaIslandMsg');
-  const iconEl = document.getElementById('aquaIslandIcon');
-  if (!island || !msgEl) return;
-
-  msgEl.textContent = String(msg || '');
-  if (iconEl) {
-    iconEl.replaceChildren(spIconNode(resolveIslandIconName(icon), 15));
-  }
-  island.classList.add('active');
-
-  if (aquaTimer) clearTimeout(aquaTimer);
-  aquaTimer = setTimeout(() => {
-    island.classList.remove('active');
-  }, 3200);
-}
-
-function triggerToast(message) {
-  showAquaIsland(message, 'sparkles');
-}
-
 function autoEnableBackgroundNotifications() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
-      if ('sync' in reg) {
-        reg.sync.register('check-tasks').catch(() => {});
-      }
-      if ('periodicSync' in reg) {
-        reg.periodicSync.register('check-tasks-periodic', { minInterval: 12 * 60 * 60 * 1000 }).catch(() => {});
-      }
+      if ('sync' in reg) reg.sync.register('check-tasks').catch(() => {});
     }).catch(() => {});
   }
 }
 
 async function requestNotificationPermission() {
   if (!('Notification' in window)) {
-    showAquaIsland('Trình duyệt không hỗ trợ thông báo đẩy.', 'alert');
+    showToast('Trình duyệt không hỗ trợ thông báo đẩy.');
     return 'unsupported';
   }
   const perm = await Notification.requestPermission();
   if (perm === 'granted') {
     autoEnableBackgroundNotifications();
-    showAquaIsland('Đã kích hoạt thông báo điều động theo thời gian thực.', 'bell');
+    showToast('Đã bật thông báo ca trực CLB!');
   }
   return perm;
 }
 
-function triggerTaskNotification(title, body) {
-  showAquaIsland(title, 'bell');
-  if ('serviceWorker' in navigator && 'Notification' in window && Notification.permission === 'granted') {
-    navigator.serviceWorker.ready.then((reg) => {
-      if (reg && reg.showNotification) {
-        reg.showNotification(title, { body: body || 'CLB Thể Thao • ĐH Hải Dương', tag: 'sportpass-dispatch' });
-      }
-    }).catch(() => {});
-  } else if ('Notification' in window && Notification.permission === 'granted') {
-    try { new Notification(title, { body: body || 'CLB Thể Thao • ĐH Hải Dương' }); } catch (e) {}
+function renderNotificationsModalList() {
+  const listEl = document.getElementById('notification-list');
+  if (!listEl) return;
+
+  const items = [];
+  const nextShift = (currentTasks || [])[0];
+  if (nextShift) {
+    items.push({
+      highlight: true,
+      iconBg: 'bg-icon-sky',
+      icon: 'clock',
+      title: 'Nhắc nhở ca trực sắp tới',
+      time: 'Hiện tại',
+      desc: `${nextShift.title} tại ${nextShift.location || 'Nhà Thi Đấu ĐH Hải Dương'} (${nextShift.time || '14:00'}). Vui lòng chuẩn bị thẻ QR để check-in.`
+    });
   }
+
+  const pendingSwaps = (currentSwaps || []).filter(s => s.status === 'pending').length;
+  const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending').length;
+  if (pendingSwaps + pendingLeaves > 0) {
+    items.push({
+      highlight: false,
+      iconBg: 'bg-icon-amber',
+      icon: 'alert',
+      title: `Có ${pendingSwaps + pendingLeaves} đơn đổi / rút ca chờ duyệt`,
+      time: 'Cần xử lý',
+      desc: 'Mở mục Duyệt ca để xem chi tiết danh sách đổi ca và rút ca của thành viên.'
+    });
+  }
+
+  items.push({
+    highlight: false,
+    iconBg: 'bg-icon-emerald',
+    icon: 'check',
+    title: 'Hệ thống điểm danh QR đã sẵn sàng',
+    time: 'CLB UHD',
+    desc: 'Dữ liệu 125 thành viên thuộc 7 ban chuyên môn đã đồng bộ đầy đủ với thẻ Varsity Pass.'
+  });
+
+  const nodes = items.map(it =>
+    el('div', { className: `notif-item-card${it.highlight ? ' highlight' : ''}` },
+      el('div', { className: `notif-item-icon ${it.iconBg}` }, spIconNode(it.icon, 16)),
+      el('div', { style: { flex: '1', minWidth: '0' } },
+        el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
+          el('span', { style: { fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)' } }, it.title),
+          el('span', { className: 'font-mono', style: { fontSize: '10px', color: '#0369a1', fontWeight: '600', flexShrink: '0' } }, it.time)
+        ),
+        el('p', { style: { margin: '4px 0 0', fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.5' } }, it.desc)
+      )
+    )
+  );
+
+  mount(listEl, nodes);
 }

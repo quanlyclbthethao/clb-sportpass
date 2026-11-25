@@ -1,10 +1,10 @@
 /**
- * CLB Thể Thao PWA Service Worker (v6.0.0-kinetic-dualmode)
+ * CLB Thể Thao PWA Service Worker (v8.0.0-varsity)
  * Trường Đại học Hải Dương (UHD) - SportPass PWA
  * Hỗ trợ: Push Notifications, Offline Caching, Background Sync, Auto Cache Cleanup
  */
 
-const CACHE_VERSION = 'clb-sportpass-v6.0.0-kinetic';
+const CACHE_VERSION = 'clb-sportpass-v8.0.0-varsity';
 const STATIC_ASSETS = [
   './',
   './index.html',

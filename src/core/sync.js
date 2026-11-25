@@ -1,4 +1,4 @@
-// SportPass V6.0 — Bidirectional Sync, Offline Mutation Queue & Adaptive Polling
+// SportPass V8.0 — Bidirectional Google Apps Script Sync & Offline Mutation Queue (Forum Removed)
 
 let syncDebounceTimer = null;
 
@@ -10,25 +10,12 @@ function enqueueOfflineMutation(type, payload) {
     createdAt: Date.now()
   });
   saveLocalState();
-  updateOfflineQueueBadge();
-}
-
-function updateOfflineQueueBadge() {
-  const el = document.getElementById('syncQueueCounter');
-  if (el) {
-    el.textContent = offlineMutationQueue.length > 0
-      ? `Chờ đồng bộ (${offlineMutationQueue.length})`
-      : 'Đồng bộ trực tuyến';
-  }
 }
 
 function buildMutationUrl(mut) {
   const p = mut.payload || {};
   if (mut.type === 'DELETE_TASK') {
     return `${GAS_API_URL}?action=deleteTask&taskId=${encodeURIComponent(p.taskId || '')}`;
-  }
-  if (mut.type === 'DELETE_POST') {
-    return `${GAS_API_URL}?action=deletePost&postId=${encodeURIComponent(p.postId || '')}`;
   }
   if (mut.type === 'CREATE_TASK') {
     return `${GAS_API_URL}?action=createTask&task=${encodeURIComponent(JSON.stringify(p))}`;
@@ -51,9 +38,6 @@ function buildMutationUrl(mut) {
   if (mut.type === 'UPDATE_PROFILE') {
     return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&lop=${encodeURIComponent(p.lop || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
   }
-  if (mut.type === 'CREATE_POST') {
-    return `${GAS_API_URL}?action=createPost&post=${encodeURIComponent(JSON.stringify(p))}`;
-  }
   return null;
 }
 
@@ -61,7 +45,6 @@ function syncOfflineMutations(isManual = false) {
   if (!navigator.onLine || offlineMutationQueue.length === 0) return;
   const batch = offlineMutationQueue.splice(0, offlineMutationQueue.length);
   saveLocalState();
-  updateOfflineQueueBadge();
 
   for (const mut of batch) {
     const url = buildMutationUrl(mut);
@@ -69,12 +52,11 @@ function syncOfflineMutations(isManual = false) {
     fetch(url).catch(() => {
       offlineMutationQueue.push(mut);
       saveLocalState();
-      updateOfflineQueueBadge();
     });
   }
 
   if (isManual) {
-    showAquaIsland(`Đã đẩy ${batch.length} thay đổi lên máy chủ.`, '☁️');
+    showToast(`Đã đẩy ${batch.length} thay đổi lên máy chủ.`);
   }
 }
 
@@ -103,14 +85,7 @@ async function syncRealtimeData() {
     if (!data || !data.success) return;
 
     if (Array.isArray(data.deletedTaskIds)) {
-      data.deletedTaskIds.forEach(id => {
-        saveDeletedTaskId(id);
-      });
-    }
-    if (Array.isArray(data.deletedPostIds)) {
-      data.deletedPostIds.forEach(id => {
-        saveDeletedPostId(id);
-      });
+      data.deletedTaskIds.forEach(id => saveDeletedTaskId(id));
     }
 
     if (Array.isArray(data.membersList) && data.membersList.length > 0) {
@@ -120,8 +95,12 @@ async function syncRealtimeData() {
 
     if (data.member) {
       const preservedAvatar = currentUser.avatar || '';
+      const preservedStudentCode = currentUser.studentCode || '';
+      const preservedDob = currentUser.ngaySinh || '';
       currentUser = Object.assign({}, currentUser, data.member);
       if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
+      if (!currentUser.studentCode && preservedStudentCode) currentUser.studentCode = preservedStudentCode;
+      if (!currentUser.ngaySinh && preservedDob) currentUser.ngaySinh = preservedDob;
       applyCustomAdminRoles(membersDirectory);
       window.currentUser = currentUser;
     }
@@ -143,7 +122,6 @@ async function syncRealtimeData() {
       }
     }
 
-    // Immediate dispatch alert when newly assigned to a task
     const uid = currentUser.id;
     const newlyAssigned = mergedTasks.filter(t => {
       const assigned = Array.isArray(t.assignedMembers) && t.assignedMembers.includes(uid);
@@ -152,48 +130,26 @@ async function syncRealtimeData() {
       return assigned && !wasAssigned;
     });
     if (newlyAssigned.length > 0) {
-      triggerTaskNotification('Bạn có lệnh điều động mới: ' + newlyAssigned[0].title, newlyAssigned[0].location || 'CLB Thể Thao ĐH Hải Dương');
+      showToast('Lệnh điều động mới: ' + newlyAssigned[0].title);
     }
 
     currentTasks = deduplicateTasks(mergedTasks);
-
-    const deletedPosts = getDeletedPostIds();
-    const serverPosts = (data.posts || []).filter(p => p && !deletedPosts.includes(p.id));
-    const serverPostMap = new Map(serverPosts.map(p => [p.id, p]));
-    const mergedPosts = [...serverPosts];
-    if (Array.isArray(currentPosts)) {
-      for (const localPost of currentPosts) {
-        if (!localPost || !localPost.id || serverPostMap.has(localPost.id) || deletedPosts.includes(localPost.id)) continue;
-        if (localPost.localCreatedAt && (Date.now() - localPost.localCreatedAt < 30000)) {
-          mergedPosts.push(localPost);
-        } else if (!String(localPost.id).startsWith('post_welcome_')) {
-          saveDeletedPostId(localPost.id);
-        }
-      }
-    }
-    if (mergedPosts.length > 0) currentPosts = mergedPosts;
-
     if (Array.isArray(data.swaps)) currentSwaps = data.swaps;
     if (Array.isArray(data.leaves)) currentLeaves = data.leaves;
 
     saveLocalState();
     renderProfileData();
-    renderTasksList();
-    renderForumFeed();
-    updatePendingSwapsBadge();
+    renderDispatchHub();
+    renderNotificationsModalList();
   } catch (err) {
-    // Stay resilient with cached/offline state
+    // Stay resilient offline
   }
 }
 
 function triggerInstantSync(delay = 80) {
   if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
   syncDebounceTimer = setTimeout(() => {
-    if (typeof window.syncRealtimeData === 'function') {
-      window.syncRealtimeData();
-    } else {
-      syncRealtimeData();
-    }
+    syncRealtimeData();
   }, delay);
 }
 
@@ -202,12 +158,11 @@ function restartAdaptivePolling() {
     clearInterval(currentSyncPollTimer);
     currentSyncPollTimer = null;
   }
-  const intervalMs = (typeof currentActiveTabIdx !== 'undefined' && currentActiveTabIdx === 1) ? 10000 : 22000;
   currentSyncPollTimer = setInterval(() => {
     if (currentUser && navigator.onLine && document.visibilityState === 'visible') {
       syncRealtimeData();
     }
-  }, intervalMs);
+  }, 20000);
 }
 
 document.addEventListener('visibilitychange', () => {

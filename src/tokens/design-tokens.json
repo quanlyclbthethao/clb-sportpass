@@ -1,82 +1,65 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "meta": {
-    "product": "SportPass UHD — CLB Thể Thao ĐH Hải Dương",
-    "version": "7.0.0",
-    "aesthetic": "athletic-precision",
+    "product": "SportPass V8.0 — Aquamorphic Varsity Pass (CLB Thể Thao ĐH Hải Dương)",
+    "version": "8.0.0",
+    "aesthetic": "aquamorphic-frosted-sky",
     "modes": ["light", "dark"]
   },
   "palette": {
-    "cobalt": {
-      "50": { "$type": "color", "$value": "#e6f0fc", "$extensions": { "oklch": "oklch(0.951 0.0194 252.9)" } },
-      "600": { "$type": "color", "$value": "#0058bc", "$extensions": { "oklch": "oklch(0.479 0.1733 257.5)" } },
-      "700": { "$type": "color", "$value": "#004ea8", "$extensions": { "oklch": "oklch(0.441 0.1593 257.4)" } },
-      "800": { "$type": "color", "$value": "#003e85", "$extensions": { "oklch": "oklch(0.376 0.1321 256.8)" } },
-      "900": { "$type": "color", "$value": "#022340", "$extensions": { "oklch": "oklch(0.251 0.0665 249.3)" } }
+    "canvas": {
+      "light": { "$type": "color", "$value": "#f4f6fb", "$extensions": { "oklch": "oklch(0.972 0.0065 264.5)" } },
+      "surface": { "$type": "color", "$value": "#ffffff", "$extensions": { "oklch": "oklch(1.000 0 0)" } },
+      "soft": { "$type": "color", "$value": "#f8fafc", "$extensions": { "oklch": "oklch(0.984 0.0035 247.9)" } },
+      "subtle": { "$type": "color", "$value": "#f1f5f9", "$extensions": { "oklch": "oklch(0.968 0.0069 247.9)" } },
+      "border": { "$type": "color", "$value": "#e2e8f0", "$extensions": { "oklch": "oklch(0.929 0.0126 255.5)" } },
+      "borderStrong": { "$type": "color", "$value": "#cbd5e1", "$extensions": { "oklch": "oklch(0.869 0.0198 252.9)" } }
+    },
+    "ink": {
+      "primary": { "$type": "color", "$value": "#0f172a", "$extensions": { "oklch": "oklch(0.208 0.0399 265.8)" } },
+      "secondary": { "$type": "color", "$value": "#475569", "$extensions": { "oklch": "oklch(0.446 0.0374 257.3)" } },
+      "muted": { "$type": "color", "$value": "#64748b", "$extensions": { "oklch": "oklch(0.554 0.0407 257.4)" } },
+      "soft": { "$type": "color", "$value": "#94a3b8", "$extensions": { "oklch": "oklch(0.711 0.0351 256.8)" } }
     },
     "sky": {
-      "300": { "$type": "color", "$value": "#7dd3fc", "$extensions": { "oklch": "oklch(0.828 0.1013 230.3)" } },
-      "400": { "$type": "color", "$value": "#38bdf8", "$extensions": { "oklch": "oklch(0.754 0.1390 232.7)" } },
+      "950": { "$type": "color", "$value": "#09335a", "$extensions": { "oklch": "oklch(0.312 0.0880 250.2)" } },
+      "700": { "$type": "color", "$value": "#0369a1", "$extensions": { "oklch": "oklch(0.500 0.1193 242.7)" } },
       "600": { "$type": "color", "$value": "#0284c7", "$extensions": { "oklch": "oklch(0.588 0.1389 242.0)" } },
-      "700": { "$type": "color", "$value": "#0369a1", "$extensions": { "oklch": "oklch(0.500 0.1193 242.7)" } }
+      "500": { "$type": "color", "$value": "#0ea5e9", "$extensions": { "oklch": "oklch(0.685 0.1489 237.3)" } },
+      "400": { "$type": "color", "$value": "#38bdf8", "$extensions": { "oklch": "oklch(0.754 0.1390 232.7)" } },
+      "300": { "$type": "color", "$value": "#7dd3fc", "$extensions": { "oklch": "oklch(0.828 0.1013 230.3)" } },
+      "100": { "$type": "color", "$value": "#e0f2fe", "$extensions": { "oklch": "oklch(0.951 0.0258 236.8)" } },
+      "50": { "$type": "color", "$value": "#f0f9ff", "$extensions": { "oklch": "oklch(0.977 0.0126 236.6)" } }
     },
-    "neutral": {
-      "0": { "$type": "color", "$value": "#ffffff", "$extensions": { "oklch": "oklch(1.000 0 0)" } },
-      "50": { "$type": "color", "$value": "#f4f6f9", "$extensions": { "oklch": "oklch(0.972 0.0045 258.3)" } },
-      "100": { "$type": "color", "$value": "#eef2f7", "$extensions": { "oklch": "oklch(0.960 0.0080 253.9)" } },
-      "150": { "$type": "color", "$value": "#e5ebf3", "$extensions": { "oklch": "oklch(0.938 0.0126 255.5)" } },
-      "200": { "$type": "color", "$value": "#d6dfe9", "$extensions": { "oklch": "oklch(0.900 0.0168 250.9)" } },
-      "400": { "$type": "color", "$value": "#7c8da3", "$extensions": { "oklch": "oklch(0.638 0.0385 255.0)" } },
-      "600": { "$type": "color", "$value": "#475569", "$extensions": { "oklch": "oklch(0.446 0.0374 257.3)" } },
-      "700": { "$type": "color", "$value": "#334155", "$extensions": { "oklch": "oklch(0.372 0.0392 257.3)" } },
-      "950": { "$type": "color", "$value": "#0b1220", "$extensions": { "oklch": "oklch(0.183 0.0309 263.4)" } }
+    "semantic": {
+      "teal600": { "$type": "color", "$value": "#0d9488" },
+      "indigo500": { "$type": "color", "$value": "#6366f1" },
+      "emerald600": { "$type": "color", "$value": "#059669" },
+      "amber600": { "$type": "color", "$value": "#d97706" },
+      "rose700": { "$type": "color", "$value": "#be123c" }
     },
-    "obsidian": {
-      "950": { "$type": "color", "$value": "#0b0f17", "$extensions": { "oklch": "oklch(0.168 0.0181 263.9)" } },
-      "900": { "$type": "color", "$value": "#121926", "$extensions": { "oklch": "oklch(0.213 0.0279 262.4)" } },
-      "850": { "$type": "color", "$value": "#1a2334", "$extensions": { "oklch": "oklch(0.256 0.0348 262.7)" } },
-      "800": { "$type": "color", "$value": "#222e42", "$extensions": { "oklch": "oklch(0.300 0.0401 260.4)" } },
-      "700": { "$type": "color", "$value": "#28364e", "$extensions": { "oklch": "oklch(0.332 0.0467 260.9)" } },
-      "500": { "$type": "color", "$value": "#586c89", "$extensions": { "oklch": "oklch(0.526 0.0519 257.6)" } },
-      "300": { "$type": "color", "$value": "#9fb0c7", "$extensions": { "oklch": "oklch(0.752 0.0382 256.0)" } },
-      "200": { "$type": "color", "$value": "#cbd5e1", "$extensions": { "oklch": "oklch(0.869 0.0198 252.9)" } },
-      "50": { "$type": "color", "$value": "#f1f5f9", "$extensions": { "oklch": "oklch(0.968 0.0069 247.9)" } }
-    }
-  },
-  "color": {
-    "light": {
-      "canvas": { "$type": "color", "$value": "{palette.neutral.50}" },
-      "surface": { "$type": "color", "$value": "{palette.neutral.0}" },
-      "elevated": { "$type": "color", "$value": "{palette.neutral.100}" },
-      "textPrimary": { "$type": "color", "$value": "{palette.neutral.950}" },
-      "textMuted": { "$type": "color", "$value": "{palette.neutral.600}" },
-      "accent": { "$type": "color", "$value": "{palette.cobalt.600}" }
-    },
-    "dark": {
-      "canvas": { "$type": "color", "$value": "{palette.obsidian.950}" },
-      "surface": { "$type": "color", "$value": "{palette.obsidian.900}" },
-      "elevated": { "$type": "color", "$value": "{palette.obsidian.850}" },
-      "textPrimary": { "$type": "color", "$value": "{palette.obsidian.50}" },
-      "textMuted": { "$type": "color", "$value": "{palette.obsidian.300}" },
-      "accent": { "$type": "color", "$value": "{palette.sky.700}" }
+    "midnight": {
+      "canvas": { "$type": "color", "$value": "#0b1120" },
+      "surface": { "$type": "color", "$value": "#131c2e" },
+      "elevated": { "$type": "color", "$value": "#1e293b" },
+      "text": { "$type": "color", "$value": "#f8fafc" }
     }
   },
   "component": {
+    "shellMaxWidth": { "$type": "dimension", "$value": "420px" },
     "radius": {
-      "sheet": { "$type": "dimension", "$value": "24px" },
-      "card": { "$type": "dimension", "$value": "18px" },
-      "inner": { "$type": "dimension", "$value": "12px" },
-      "small": { "$type": "dimension", "$value": "10px" }
-    },
-    "touchTarget": {
-      "mobile": { "$type": "dimension", "$value": "44px" },
-      "desktop": { "$type": "dimension", "$value": "40px" }
+      "sheetTop": { "$type": "dimension", "$value": "32px" },
+      "heroCard": { "$type": "dimension", "$value": "26px" },
+      "qrHolo": { "$type": "dimension", "$value": "24px" },
+      "section": { "$type": "dimension", "$value": "16px" },
+      "control": { "$type": "dimension", "$value": "12px" }
     }
   },
   "motion": {
-    "easeCrisp": { "$type": "cubicBezier", "$value": [0.2, 0, 0, 1] },
-    "easeSpringOut": { "$type": "cubicBezier", "$value": [0.22, 1, 0.36, 1] },
-    "durationFast": { "$type": "duration", "$value": "150ms" },
-    "durationModal": { "$type": "duration", "$value": "280ms" }
+    "easeSheet": { "$type": "cubicBezier", "$value": [0.16, 1, 0.3, 1] },
+    "easeSpringPress": { "$type": "cubicBezier", "$value": [0.34, 1.56, 0.64, 1] },
+    "easeRipple": { "$type": "cubicBezier", "$value": [0.1, 0.8, 0.25, 1] },
+    "durationRipple": { "$type": "duration", "$value": "650ms" },
+    "durationSheet": { "$type": "duration", "$value": "420ms" }
   }
 }

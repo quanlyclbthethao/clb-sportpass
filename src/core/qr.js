@@ -1,13 +1,12 @@
-// SportPass V7.0 — Dynamic QR Pass Generator & Field Check-in Scanner (Safe SVG DOM)
+// SportPass V8.0 — 45s Dynamic QR Credential Pass & Camera/Image Check-in Scanner
 
+let qrCountdown = 45;
+let qrTimerInterval = null;
 let qrScannerStream = null;
 let qrScanAnimFrame = null;
 let currentCameraFacing = 'environment';
 let isTorchOn = false;
 let currentScanTargetTaskId = null;
-let activeFieldQrTaskId = null;
-let qrCountdownTimer = null;
-let qrCountdownSeconds = 60;
 
 function generateOfflineSvgQrNode(data) {
   const str = String(data || 'SPORTPASS');
@@ -19,11 +18,11 @@ function generateOfflineSvgQrNode(data) {
   const size = 21;
   const dim = String(size * 6);
   const svg = svgEl('svg', {
-    width: '156',
-    height: '156',
+    width: '160',
+    height: '160',
     viewBox: `0 0 ${dim} ${dim}`,
     role: 'img',
-    'aria-label': 'Mã QR SportPass'
+    'aria-label': 'Mã QR định danh Varsity Pass'
   });
   svg.appendChild(svgEl('rect', { width: dim, height: dim, fill: '#ffffff' }));
 
@@ -47,7 +46,7 @@ function generateOfflineSvgQrNode(data) {
           y: String(r * 6),
           width: '6',
           height: '6',
-          fill: '#022340'
+          fill: '#0f172a'
         }));
       }
     }
@@ -55,7 +54,7 @@ function generateOfflineSvgQrNode(data) {
   return svg;
 }
 
-function renderQrIntoContainer(container, payloadText, pixelSize = 156) {
+function renderQrIntoContainer(container, payloadText, pixelSize = 160) {
   if (!container) return;
   container.replaceChildren();
   if (typeof window.QRCode === 'function') {
@@ -64,12 +63,12 @@ function renderQrIntoContainer(container, payloadText, pixelSize = 156) {
         text: payloadText,
         width: pixelSize,
         height: pixelSize,
-        colorDark: '#022340',
+        colorDark: '#0f172a',
         colorLight: '#ffffff',
         correctLevel: window.QRCode.CorrectLevel ? window.QRCode.CorrectLevel.M : 0
       });
       container.querySelectorAll('img').forEach((img) => {
-        if (!img.getAttribute('alt')) img.setAttribute('alt', 'Mã QR SportPass');
+        if (!img.getAttribute('alt')) img.setAttribute('alt', 'Mã QR định danh');
       });
       return;
     } catch (e) {}
@@ -77,91 +76,46 @@ function renderQrIntoContainer(container, payloadText, pixelSize = 156) {
   container.replaceChildren(generateOfflineSvgQrNode(payloadText));
 }
 
-function generateDynamicQrPass() {
-  if (!currentUser) return;
-  const token = `PASS-${currentUser.id}-${Math.floor(Date.now() / 60000)}`;
-  const vipQrBox = document.getElementById('vipCardQrContainer');
-  if (vipQrBox) renderQrIntoContainer(vipQrBox, token, 152);
-  safeSetText('vipCardPassToken', token);
+function updateQrPassDisplay() {
+  const uid = currentUser ? currentUser.id : 'DMC0806';
+  const taskId = (currentTasks && currentTasks[0]) ? currentTasks[0].id : 'GENERAL';
+  const slot = Math.floor(Date.now() / 45000);
+  const payload = `SPORTPASS:CHECKIN:${taskId}:${uid}:${slot}`;
+  const container = document.getElementById('qr-code-box');
+  if (container) renderQrIntoContainer(container, payload, 160);
+  safeSetText('qr-token-code', `#${uid}-VN`);
 }
 
-function refreshDynamicQrPass() {
-  generateDynamicQrPass();
-  showAquaIsland('Đã làm mới mã thẻ SportPass 60s.', '🔄');
-}
-
-function openFieldCheckinQrModal(taskId = null) {
-  if (!currentUser) return;
-  activeFieldQrTaskId = taskId || (currentTasks[0] ? currentTasks[0].id : 'GENERAL');
-  const sel = document.getElementById('selFieldQrShift');
-  if (sel) {
-    const opts = (currentTasks || []).map(t =>
-      el('option', { value: t.id }, `${t.id} — ${t.title}`)
-    );
-    mount(sel, opts);
-    if (activeFieldQrTaskId) sel.value = activeFieldQrTaskId;
-  }
-  generateFieldCheckinQr(activeFieldQrTaskId);
-  startFieldQrCountdownTimer();
-  openGenericModal('modalFieldCheckinQr');
-}
-
-function closeFieldCheckinQrModal() {
-  if (qrCountdownTimer) {
-    clearInterval(qrCountdownTimer);
-    qrCountdownTimer = null;
-  }
-  closeGenericModal('modalFieldCheckinQr');
-}
-
-function onFieldQrShiftChange(newTaskId) {
-  activeFieldQrTaskId = newTaskId;
-  generateFieldCheckinQr(newTaskId);
-}
-
-function generateFieldCheckinQr(taskId = null) {
-  if (!currentUser) return;
-  const tid = taskId || activeFieldQrTaskId || 'GENERAL';
-  const payload = `SPORTPASS:CHECKIN:${tid}:${currentUser.id}:${Math.floor(Date.now() / 1000)}`;
-  const container = document.getElementById('fieldCheckinQrBox');
-  if (container) renderQrIntoContainer(container, payload, 180);
-  safeSetText('fieldCheckinQrCodeLabel', `CHK-${currentUser.id}-${tid}`);
-  qrCountdownSeconds = 60;
-  safeSetText('fieldQrCountdown', '60s');
-}
-
-function refreshFieldCheckinQr() {
-  generateFieldCheckinQr(activeFieldQrTaskId);
-  showAquaIsland('Đã tạo mã QR nhận ca mới.', '🔄');
-}
-
-function startFieldQrCountdownTimer() {
-  if (qrCountdownTimer) clearInterval(qrCountdownTimer);
-  qrCountdownSeconds = 60;
-  qrCountdownTimer = setInterval(() => {
-    qrCountdownSeconds--;
-    if (qrCountdownSeconds <= 0) {
-      generateFieldCheckinQr(activeFieldQrTaskId);
-    } else {
-      safeSetText('fieldQrCountdown', `${qrCountdownSeconds}s`);
+function startQrCountdown() {
+  qrCountdown = 45;
+  safeSetText('qr-timer', qrCountdown + 's');
+  updateQrPassDisplay();
+  if (qrTimerInterval) clearInterval(qrTimerInterval);
+  qrTimerInterval = setInterval(() => {
+    qrCountdown--;
+    if (qrCountdown <= 0) {
+      qrCountdown = 45;
+      updateQrPassDisplay();
     }
+    safeSetText('qr-timer', qrCountdown + 's');
   }, 1000);
 }
 
-function openQrScannerModal(targetTaskId = null) {
-  if (!isAuthorizedScanner()) {
-    showAquaIsland('Chỉ Ban Chủ Nhiệm, Trưởng/Phó ban mới được quyền quét điểm danh.', '🔒');
-    return;
+function stopQrCountdown() {
+  if (qrTimerInterval) {
+    clearInterval(qrTimerInterval);
+    qrTimerInterval = null;
   }
-  currentScanTargetTaskId = targetTaskId || (currentTasks[0] ? currentTasks[0].id : null);
-  safeSetText('qrScannerTargetLabel', currentScanTargetTaskId ? `Ca mục tiêu: ${currentScanTargetTaskId}` : 'Quét tự động theo mã QR');
-  openGenericModal('modalQrScanner');
-  startQrScanner(currentScanTargetTaskId);
 }
 
-function closeQrScannerModal() {
-  stopQrCameraStream();
-  closeGenericModal('modalQrScanner');
+function openQrModal() {
+  startQrCountdown();
+  openSheetDialog('qr-modal');
+}
+
+function closeQrModal() {
+  stopQrCountdown();
+  closeSheetDialog('qr-modal');
 }
 
 function stopQrCameraStream() {
@@ -189,17 +143,16 @@ async function startQrScanner(targetTaskId = null) {
   video.muted = true;
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    if (statusEl) statusEl.textContent = 'Trình duyệt chưa hỗ trợ camera trực tiếp. Hãy chọn ảnh QR từ thư viện.';
+    if (statusEl) statusEl.textContent = 'Trình duyệt chưa hỗ trợ camera trực tiếp. Chọn ảnh QR hoặc nhập Mã ID.';
     return;
   }
 
   try {
     qrScannerStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: currentCameraFacing, width: { ideal: 720 }, height: { ideal: 720 } },
+      video: { facingMode: currentCameraFacing, width: { ideal: 640 }, height: { ideal: 640 } },
       audio: false
     });
     video.srcObject = qrScannerStream;
-
     const onLoaded = () => {
       video.removeEventListener('loadedmetadata', onLoaded);
       video.play().catch(() => {});
@@ -208,7 +161,7 @@ async function startQrScanner(targetTaskId = null) {
     };
     video.addEventListener('loadedmetadata', onLoaded);
   } catch (err) {
-    if (statusEl) statusEl.textContent = 'Không mở được camera. Hãy cấp quyền hoặc tải ảnh QR bên dưới.';
+    if (statusEl) statusEl.textContent = 'Không mở được camera. Hãy chọn ảnh QR hoặc nhập Mã ID bên dưới.';
   }
 }
 
@@ -260,7 +213,7 @@ function handleQrFileSelected(event) {
           return;
         }
       }
-      showAquaIsland('Không đọc được mã QR từ ảnh đã chọn.', '⚠️');
+      showToast('Không đọc được mã QR từ ảnh đã chọn.');
     };
     img.src = ev.target.result;
   };
@@ -283,25 +236,21 @@ function toggleTorchFlash() {
 function handleScanQrPayload(rawCode) {
   if (!rawCode) return;
   const trimmed = String(rawCode).trim();
-  let taskId = currentScanTargetTaskId || (currentTasks[0] ? currentTasks[0].id : '');
+  const selTask = document.getElementById('selScanTaskId')?.value || '';
+  let taskId = selTask || currentScanTargetTaskId || (currentTasks[0] ? currentTasks[0].id : '');
   let memberId = '';
 
   if (trimmed.startsWith('SPORTPASS:CHECKIN:')) {
     const parts = trimmed.split(':');
     taskId = parts[2] || taskId;
     memberId = parts[3] || '';
-  } else if (trimmed.startsWith('SPORTPASS:MEMBER:')) {
-    memberId = trimmed.split(':')[2] || '';
-  } else if (trimmed.startsWith('CHK-')) {
-    const parts = trimmed.split('-');
-    memberId = parts[1] || '';
-    taskId = parts[2] || taskId;
+  } else if (trimmed.startsWith('#') && trimmed.endsWith('-VN')) {
+    memberId = trimmed.slice(1, -3);
   } else if (trimmed.startsWith('PASS-')) {
     memberId = trimmed.split('-')[1] || '';
   } else if (trimmed.startsWith('{')) {
     try {
-      let parsedPayload = null;
-      parsedPayload = JSON.parse(rawCode);
+      const parsedPayload = JSON.parse(rawCode);
       memberId = parsedPayload.memberId || parsedPayload.id || '';
       taskId = parsedPayload.taskId || taskId;
     } catch (e) {}
@@ -310,20 +259,23 @@ function handleScanQrPayload(rawCode) {
   }
 
   if (!memberId) {
-    showAquaIsland('Mã QR không chứa mã hội viên hợp lệ.', '⚠️');
+    showToast('Mã QR không chứa mã hội viên hợp lệ.');
     return;
   }
-  performFieldCheckin(taskId, memberId);
-}
-
-function performFieldCheckin(taskId, rawMemberId) {
-  handleQrCheckinAction(taskId, rawMemberId);
+  handleQrCheckinAction(taskId, memberId);
 }
 
 function handleQrCheckinAction(taskId, memberId) {
+  if (!isAuthorizedScanner()) {
+    showToast('Chỉ Ban Chủ Nhiệm hoặc Trưởng/Phó ban mới được quét điểm danh.');
+    return;
+  }
   const cleanMemberId = String(memberId || '').trim().toUpperCase();
   const task = (currentTasks || []).find(t => t.id === taskId) || currentTasks[0];
-  if (!task) return;
+  if (!task) {
+    showToast('Chưa có ca trực để điểm danh.');
+    return;
+  }
 
   task.checkedInMembers = Array.isArray(task.checkedInMembers) ? task.checkedInMembers : [];
   if (!task.checkedInMembers.includes(cleanMemberId)) {
@@ -340,6 +292,7 @@ function handleQrCheckinAction(taskId, memberId) {
     if (currentUser && currentUser.id === cleanMemberId) {
       currentUser.soCaHoanThanh = (Number(currentUser.soCaHoanThanh) || 0) + 1;
       currentUser.soCa = currentUser.soCaHoanThanh;
+      persistUserSession(currentUser);
       renderProfileData();
     }
 
@@ -352,10 +305,9 @@ function handleQrCheckinAction(taskId, memberId) {
     }
 
     saveLocalState();
-    renderTasksList();
-    showAquaIsland(`Điểm danh QR thành công: ${cleanMemberId}`, '✅');
+    renderDispatchHub();
+    showToast(`Điểm danh QR thành công: ${cleanMemberId}`);
   } else {
-    showAquaIsland(`${cleanMemberId} đã điểm danh ở ca này trước đó.`, 'ℹ️');
+    showToast(`${cleanMemberId} đã điểm danh ca này trước đó.`);
   }
-  closeQrScannerModal();
 }

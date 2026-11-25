@@ -1,49 +1,28 @@
-/* SportPass V7.0 — Adaptive Multi-Viewport Foundation & Typographic Discipline */
-
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  scrollbar-width: none;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background-color: var(--sp-canvas);
-  color: var(--sp-text);
-  font-family: var(--font-sans);
-  font-size: 14.5px;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--sp-font-sans);
   line-height: 1.5;
-  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  text-wrap: balance;
-}
-
-p, li {
-  text-wrap: pretty;
-}
-
-button, input, select, textarea {
-  font: inherit;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
-  border: 0;
-  background: none;
-  padding: 0;
-}
-
-img, svg, video {
-  display: block;
-  max-inline-size: 100%;
-  block-size: auto;
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
 .hidden {
@@ -62,317 +41,114 @@ img, svg, video {
   border: 0;
 }
 
-:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible,
-.focus-ring:focus-visible {
-  outline: 2px solid var(--sp-accent);
-  outline-offset: 2px;
-}
-
-.sp-sheet:focus {
-  outline: none;
-}
-
+.font-mono,
 .mono-num {
-  font-family: var(--font-mono);
+  font-family: var(--sp-font-mono);
   font-variant-numeric: tabular-nums;
 }
 
-.spring-touch {
-  position: relative;
-  overflow: clip;
-  overflow-clip-margin: 4px;
-  transition: transform 150ms cubic-bezier(0.2, 0, 0, 1),
-              background-color 150ms ease-out,
-              border-color 150ms ease-out,
-              box-shadow 150ms ease-out,
-              color 150ms ease-out;
-}
-
-.spring-touch:active:not(:disabled) {
-  transform: scale(0.96);
-}
-
-/* ==================== ADAPTIVE 3-VIEWPORT APP SHELL ==================== */
-.app-shell {
-  width: 100%;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: var(--sp-canvas);
-}
-
-.app-frame {
-  width: 100%;
-  max-width: 100%;
-  min-height: 100dvh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--sp-canvas);
-}
-
-.app-workspace {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-  width: 100%;
-}
-
-.app-main {
-  flex: 1;
-  min-width: 0;
-  padding: 14px 16px calc(98px + env(safe-area-inset-bottom, 0px));
-}
-
-.tab-stage {
-  container: tab-stage / inline-size;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-width: 0;
-}
-
-.tab-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-width: 0;
-}
-
-@media (min-width: 768px) {
-  .app-shell {
-    padding: 18px 20px;
-  }
-  .app-frame {
-    max-width: 760px;
-    min-height: calc(100dvh - 36px);
-    border-radius: 28px;
-    border: 1px solid var(--sp-border);
-    box-shadow: var(--sp-shadow-float);
-    overflow: clip;
-  }
-  .app-workspace {
-    min-height: calc(100dvh - 36px);
-  }
-  .app-main {
-    padding: 20px 24px 104px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .app-shell {
-    padding: 22px 28px;
-  }
-  .app-frame {
-    max-width: 1320px;
-    min-height: calc(100dvh - 44px);
-    border-radius: 28px;
-  }
-  .app-workspace {
-    display: grid;
-    grid-template-columns: 268px minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-      "rail header"
-      "rail main";
-    min-height: calc(100dvh - 44px);
-  }
-  .app-main {
-    grid-area: main;
-    padding: 24px 28px 36px;
-  }
-}
-
-.sp-card,
-.acrylic-card {
-  background-color: var(--sp-surface);
-  border: 1px solid var(--sp-border);
-  border-radius: var(--radius-card);
-  box-shadow: var(--sp-shadow-card);
-  min-width: 0;
-}
-
-.sp-section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 4px;
-  padding-inline: 2px;
-}
-
-.sp-section-title {
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--sp-text);
-}
-
-.sp-section-sub {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: var(--sp-muted);
-}
-
-/* Forms */
-.sp-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-.sp-label {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--sp-text2);
-}
-
-.sp-input,
-.sp-select,
-.sp-textarea {
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 14px;
-  border-radius: var(--radius-inner);
-  border: 1px solid var(--sp-border-strong);
-  background-color: var(--sp-elevated);
-  color: var(--sp-text);
-  font-size: 14px;
-  transition: border-color 150ms ease-out, background-color 150ms ease-out, box-shadow 150ms ease-out;
-}
-
-.sp-textarea {
-  min-height: 88px;
-  resize: vertical;
-  line-height: 1.5;
-}
-
-.sp-input:focus-visible,
-.sp-select:focus-visible,
-.sp-textarea:focus-visible {
-  border-color: var(--sp-accent);
-  background-color: var(--sp-surface);
-  box-shadow: 0 0 0 3px var(--sp-accent-soft);
-  outline: none;
-}
-
-.sp-input::placeholder,
-.sp-textarea::placeholder {
-  color: var(--sp-muted);
-}
-
-/* Buttons (500-600 weight discipline, border for Forced Colors, >= 44px mobile touch targets) */
-.sp-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  min-width: var(--target-size);
-  padding: 10px 16px;
-  border-radius: var(--radius-inner);
-  border: 1px solid transparent;
-  font-size: 13.5px;
-  font-weight: 600;
-  line-height: 1.25;
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.sp-btn:has(> svg:first-child) {
-  padding-inline-start: 14px;
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top, 0px), 12px);
 }
 
-.sp-btn-sm {
-  min-height: var(--target-size);
-  padding: 8px 13px;
-  font-size: 12.5px;
-  border-radius: var(--radius-sm);
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
 }
 
-.sp-btn-primary {
-  background-color: #0058bc;
-  color: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 88, 188, 0.22);
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
-.sp-btn-secondary {
-  background-color: var(--sp-surface);
-  color: var(--sp-text);
-  border-color: var(--sp-border-strong);
+button {
+  cursor: pointer;
 }
 
-.sp-btn-soft {
-  background-color: var(--sp-accent-soft);
-  color: var(--sp-brand);
-  border-color: transparent;
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--sp-sky-500);
+  outline-offset: 2px;
 }
 
-.sp-btn-danger {
-  background-color: var(--sp-danger-bg);
-  color: var(--sp-danger-ink);
-  border-color: rgba(220, 38, 38, 0.40);
+/* Ambient Background Glow Orbs for Glass Refraction */
+.ambient-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 
-.sp-btn-danger-solid {
-  background-color: var(--sp-danger-solid);
-  color: #ffffff;
+.ambient-stage {
+  width: 100%;
+  max-width: 480px;
+  height: 100%;
+  position: relative;
 }
 
-.sp-btn-success {
-  background-color: var(--sp-success-bg);
-  color: var(--sp-success-ink);
-  border-color: rgba(4, 120, 87, 0.40);
+.ambient-orb {
+  position: absolute;
+  border-radius: 9999px;
+  transform: translateZ(0);
 }
 
-.sp-btn-success-solid {
-  background-color: var(--sp-success-solid);
-  color: #ffffff;
+.ambient-orb-1 {
+  top: -48px;
+  right: -64px;
+  width: 320px;
+  height: 320px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.30), rgba(59, 130, 246, 0.25));
+  filter: blur(70px);
 }
 
-.sp-btn-warning {
-  background-color: var(--sp-warning-bg);
-  color: var(--sp-warning-ink);
-  border-color: rgba(180, 83, 9, 0.40);
+.ambient-orb-2 {
+  top: 260px;
+  left: -80px;
+  width: 288px;
+  height: 288px;
+  background: linear-gradient(45deg, rgba(56, 189, 248, 0.25), rgba(45, 212, 191, 0.25));
+  filter: blur(65px);
 }
 
-@media (hover: hover) {
-  .sp-btn-primary:hover {
-    background-color: #003e85;
+.ambient-orb-3 {
+  top: 600px;
+  right: -10%;
+  width: 288px;
+  height: 288px;
+  background: linear-gradient(225deg, rgba(96, 165, 250, 0.20), rgba(103, 232, 249, 0.25));
+  filter: blur(75px);
+}
+
+/* Core 420px Mobile App Shell */
+.varsity-shell {
+  width: 100%;
+  max-width: 420px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+}
+
+@media (forced-colors: active) {
+  .hero-card-aquamorphic,
+  .glass-card,
+  .sheet-panel,
+  button {
+    border: 1px solid ButtonText;
   }
-  .sp-btn-secondary:hover {
-    background-color: var(--sp-elevated);
-  }
-  .sp-btn-soft:hover {
-    border-color: var(--sp-accent);
-  }
-}
-
-.sp-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.sp-badge-accent { background: var(--sp-accent-soft); color: var(--sp-brand); }
-.sp-badge-success { background: var(--sp-success-bg); color: var(--sp-success-ink); }
-.sp-badge-warning { background: var(--sp-warning-bg); color: var(--sp-warning-ink); }
-.sp-badge-danger { background: var(--sp-danger-bg); color: var(--sp-danger-ink); }
-.sp-badge-muted { background: var(--sp-subtle); color: var(--sp-text2); }
-
-.sp-empty {
-  padding: 28px 20px;
-  text-align: center;
-  color: var(--sp-muted);
-  font-size: 13px;
-  background-color: var(--sp-surface);
-  border: 1px dashed var(--sp-border-strong);
-  border-radius: var(--radius-card);
 }

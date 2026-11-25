@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light">
   <script>
     try {
-      var savedScheme = localStorage.getItem('color-scheme');
-      if (savedScheme === 'light' || savedScheme === 'dark') {
-        document.querySelector('meta[name="color-scheme"]').content = savedScheme;
-      }
+      var savedMode = localStorage.getItem('sportpass-theme-mode');
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var effective = (savedMode === 'dark') ? 'dark' : ((savedMode === 'system' && prefersDark) ? 'dark' : 'light');
+      document.documentElement.dataset.theme = effective;
+      document.querySelector('meta[name="color-scheme"]').content = effective;
     } catch (e) {}
   </script>
-  <title>SportPass • CLB Thể Thao ĐH Hải Dương</title>
+  <title>SportPass Pro - Varsity Pass</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" integrity="sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" integrity="sha384-hStSInNIZ8ljtOVrmrgf7zdHMapaLBWoSnPTtF0nzsybp4+LuhDz6sHuEVpWIX8o" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
@@ -24,1069 +25,760 @@
   </style>
 </head>
 <body>
-  <!-- DYNAMIC AQUA ISLAND -->
-  <div id="aquaIsland" class="aqua-island" role="status" aria-live="polite">
-    <span id="aquaIslandIcon" class="aqua-island-icon" aria-hidden="true"></span>
-    <span id="aquaIslandMsg" class="aqua-island-msg">Sẵn sàng điều phối</span>
+  <!-- Ambient Background Glow Orbs for Glass Refraction -->
+  <div class="ambient-backdrop" aria-hidden="true">
+    <div class="ambient-stage">
+      <div class="ambient-orb ambient-orb-1"></div>
+      <div class="ambient-orb ambient-orb-2"></div>
+      <div class="ambient-orb ambient-orb-3"></div>
+    </div>
   </div>
 
-  <div class="app-shell">
-    <div class="app-frame">
+  <!-- Floating Top Pill Toast -->
+  <div class="toast-host" aria-live="polite" role="status">
+    <div id="toast-notification" class="toast-pill">
+      <div class="toast-icon-circle" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+      </div>
+      <span id="toast-text" class="toast-msg-text">Sẵn sàng điều phối ca trực!</span>
+    </div>
+  </div>
 
-      <!-- ==================== VIEW 1: ASYMMETRIC LOGIN GATEWAY ==================== -->
-      <section id="viewLoginContainer" class="login-gateway" aria-label="Đăng nhập SportPass">
-        <div class="login-brand-pane">
-          <div class="login-editorial-head">
-            <div class="login-crest-row">
-              <div class="login-crest-tile" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
-                </svg>
-              </div>
-              <div>
-                <h1 class="login-hero-title">Varsity SportPass</h1>
-                <p class="login-hero-sub">CLB Thể Thao · Trường Đại học Hải Dương</p>
-              </div>
-            </div>
-            <div class="login-dept-tags" aria-label="7 Ban chuyên môn chính thức">
-              <span class="sp-badge sp-badge-accent">Chủ Nhiệm</span>
-              <span class="sp-badge sp-badge-muted">Nhân Sự</span>
-              <span class="sp-badge sp-badge-muted">Bóng Chuyền</span>
-              <span class="sp-badge sp-badge-muted">Bóng Đá Nam</span>
-              <span class="sp-badge sp-badge-muted">Bóng Đá Nữ</span>
-              <span class="sp-badge sp-badge-muted">Cầu Lông</span>
-              <span class="sp-badge sp-badge-muted">Truyền Thông</span>
-            </div>
-          </div>
+  <div class="varsity-shell">
 
-          <div class="guidance-panel">
-            <h2 class="guidance-panel-title">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
-              </svg>
-              <span>Hướng Dẫn Đăng Nhập Minh Bạch</span>
-            </h2>
-            <div>Quy tắc Mã ID: <strong>Chữ cái đầu Họ Tên + Ngày/Tháng sinh</strong>. Ví dụ <strong>Nguyễn Văn An</strong> sinh 15/08 nhập <span class="guidance-code">NVA1508</span>.</div>
-            <div>Điều hành Ban Nhân sự: <span class="guidance-code">DMC0806</span> · Mật khẩu mặc định: <span class="guidance-code">123456</span> (có thể đổi trong Cài đặt).</div>
+    <!-- ==================== VIEW 1: AQUAMORPHIC LOGIN GATEWAY ==================== -->
+    <section id="viewLoginContainer" class="login-shell-wrap" aria-label="Đăng nhập SportPass">
+      <div class="login-hero-head">
+        <div class="login-crest-lg" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <h2 class="login-title-h2">Varsity Pass</h2>
+        <p class="login-sub-copy">CLB Thể Thao • Trường Đại học Hải Dương</p>
+      </div>
+
+      <form id="login-form" class="login-glass-form">
+        <div class="field-group">
+          <label class="field-label-mono" for="iptUser">Mã ID hoặc Số điện thoại</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input id="iptUser" type="text" class="aqua-input with-lead" placeholder="Ví dụ: DMC0806 hoặc 09xxxxxxxx" autocomplete="username" autocapitalize="characters">
           </div>
         </div>
 
-        <form class="sp-card login-card" onsubmit="handleLoginSubmit(event)">
-          <div class="sp-field">
-            <label for="iptUser" class="sp-label">Mã ID thành viên hoặc số điện thoại</label>
-            <input type="text" id="iptUser" value="" class="sp-input" placeholder="Ví dụ: NVA1508 hoặc 09xxxxxxxx" autocomplete="username" autocapitalize="characters">
+        <div class="field-group">
+          <label class="field-label-mono" for="iptPass">Mật khẩu xác thực</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input id="iptPass" type="password" class="aqua-input with-lead with-trail" placeholder="Mặc định: 123456" autocomplete="current-password">
+            <button id="btnTogglePass" type="button" class="password-eye-toggle" aria-label="Hiện mật khẩu" aria-pressed="false">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
           </div>
+        </div>
 
-          <div class="sp-field">
-            <label for="iptPass" class="sp-label">Mật khẩu xác thực</label>
-            <div class="password-wrap">
-              <input type="password" id="iptPass" value="" class="sp-input" placeholder="Mật khẩu mặc định 123456" autocomplete="current-password">
-              <button type="button" id="btnTogglePass" class="focus-ring password-eye-btn" onclick="togglePasswordVisibility()" aria-label="Hiện mật khẩu" aria-pressed="false">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <label class="remember-row" for="chkRememberLogin">
-            <input type="checkbox" id="chkRememberLogin" checked>
+        <div class="remember-row">
+          <label class="remember-label" for="chkRememberLogin">
+            <input id="chkRememberLogin" type="checkbox" checked>
             <span>Ghi nhớ đăng nhập trên thiết bị này</span>
           </label>
+        </div>
 
-          <button type="submit" class="focus-ring spring-touch sp-btn sp-btn-primary" style="width:100%;">
-            Đăng nhập hệ thống
-          </button>
-        </form>
-      </section>
+        <button id="btnLoginSubmit" type="submit" class="btn-aqua-primary water-ripple-target spring-press">
+          <span>Đăng nhập Varsity Pass</span>
+        </button>
+      </form>
 
-      <!-- ==================== VIEW 2: ADAPTIVE 3-VIEWPORT MAIN WORKSPACE ==================== -->
-      <div id="viewMainAppContainer" class="app-workspace hidden">
-        <header class="app-header">
-          <div class="brand-cluster">
-            <div class="brand-emblem" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
-              </svg>
-            </div>
-            <div class="brand-meta">
-              <div class="brand-title-row">
-                <span class="brand-name">Varsity Pass</span>
-                <span id="role-badge" class="sp-badge sp-badge-accent mono-num">Hội viên</span>
-              </div>
-              <div class="brand-status">
-                <span class="live-dot" aria-hidden="true"></span>
-                <span id="syncQueueCounter">Đồng bộ trực tuyến</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="header-actions">
-            <button type="button" id="btnHeaderFund" class="focus-ring spring-touch icon-circle-btn" onclick="openVietQrFundModal()" title="Quỹ CLB VietQR" aria-label="Đóng quỹ CLB qua VietQR">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>
-              </svg>
-            </button>
-            <button type="button" id="btnHeaderScanner" class="focus-ring spring-touch icon-circle-btn" onclick="openQrScannerModal()" title="Quét QR Điểm Danh" aria-label="Quét QR Điểm Danh">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1"/>
-              </svg>
-            </button>
-            <button type="button" id="btnHeaderDirectory" class="focus-ring spring-touch icon-circle-btn" onclick="openDirectoryModal()" title="Danh Bạ 125 Hội Viên" aria-label="Danh Bạ Hội Viên">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </button>
-            <button type="button" id="btnHeaderAvatar" class="focus-ring spring-touch avatar-header-btn" onclick="openHeaderMoreModal()" title="Tài khoản & Giao diện" aria-label="Tài khoản và Cài đặt">
-              <span id="headerAvatarInitials">ĐC</span>
-            </button>
-          </div>
-        </header>
-
-        <main class="app-main">
-          <div id="tabStage" class="tab-stage">
-
-            <!-- ========== TAB 0: HỒ SƠ & THẺ SỐ (ASYMMETRIC BENTO) ========== -->
-            <section id="tabContentProfile" class="tab-panel" aria-label="Hồ Sơ Cá Nhân">
-              <div class="profile-bento">
-                <div class="profile-col-primary">
-                  <div class="perspective-stage">
-                    <article id="hero-tilt-card" class="hero-pass-card tilt-card">
-                      <svg class="hero-court-watermark" viewBox="0 0 400 200" fill="none" aria-hidden="true">
-                        <circle cx="345" cy="36" r="90" stroke="#ffffff" stroke-width="1.1"/>
-                        <circle cx="345" cy="36" r="52" stroke="#ffffff" stroke-width="0.9"/>
-                        <path d="M-20 170 Q 165 100 420 180" stroke="#ffffff" stroke-width="0.9"/>
-                      </svg>
-                      <div class="tilt-sheen" aria-hidden="true"></div>
-
-                      <div class="hero-top-row">
-                        <span class="hero-unit-tag">CLB Thể Thao · ĐH Hải Dương</span>
-                        <div class="hero-badges-right">
-                          <span class="hero-season-pill">2025–26</span>
-                          <div id="status-toggle-wrapper" class="status-toggle-wrap">
-                            <button type="button" id="hero-status-pill" class="focus-ring spring-touch hero-status-pill" onclick="toggleStatusDropdown(event)" aria-label="Đổi trạng thái hoạt động">
-                              <span class="live-dot" aria-hidden="true"></span>
-                              <span id="hero-status-text">Sẵn sàng</span>
-                            </button>
-                            <div id="status-dropdown" class="status-dropdown hidden" role="menu">
-                              <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Sẵn sàng', event)">
-                                <span style="width:8px;height:8px;border-radius:9999px;background:var(--sp-success-light);"></span>
-                                <span>Sẵn sàng trực</span>
-                              </button>
-                              <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Đang bận', event)">
-                                <span style="width:8px;height:8px;border-radius:9999px;background:var(--sp-warning-light);"></span>
-                                <span>Đang bận lịch</span>
-                              </button>
-                              <button type="button" class="focus-ring status-option-btn" onclick="selectCardStatus('Tạm nghỉ', event)">
-                                <span style="width:8px;height:8px;border-radius:9999px;background:var(--sp-danger-light);"></span>
-                                <span>Tạm nghỉ phép</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="hero-identity-row">
-                        <div class="avatar-squircle-wrap">
-                          <button type="button" id="profileAvatarBox" class="focus-ring spring-touch avatar-squircle-btn" onclick="openAvatarModal()" aria-label="Đổi ảnh đại diện">
-                            <span id="profileAvatarInitials">ĐC</span>
-                          </button>
-                          <span class="avatar-cam-badge" aria-hidden="true">
-                            <svg style="width: 11px; height: 11px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
-                            </svg>
-                          </span>
-                        </div>
-
-                        <div class="hero-identity-meta">
-                          <h2 id="card-name" class="hero-name">Đỗ Mạnh Cường</h2>
-                          <p class="hero-role"><span id="card-role-title">Trưởng ban nhân sự</span> · <span id="card-dept-badge">Ban Nhân Sự</span></p>
-                          <button type="button" class="focus-ring spring-touch compact-id-badge" onclick="openDigitalSportPassModal()" aria-label="Mở thẻ VIP SportPass số">
-                            <span id="card-mssv">DMC0806</span>
-                            <span style="opacity:0.75;">·</span>
-                            <span>Thẻ VIP Pass</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      <div class="hero-cta-row">
-                        <button type="button" class="focus-ring spring-touch hero-cta-primary" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;" onclick="openFieldCheckinQrModal()">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M18 18h3v3h-3z"/></svg>
-                          <span>Xuất trình QR nhận ca</span>
-                        </button>
-                        <button type="button" id="btnHeroQrScanner" class="focus-ring spring-touch hero-cta-ghost" onclick="openQrScannerModal()">
-                          Quét QR
-                        </button>
-                      </div>
-                    </article>
-                  </div>
-
-                  <!-- Unified Single-Row 3-Column Readiness Bar -->
-                  <div class="telemetry-bar" role="region" aria-label="Tổng quan sẵn sàng">
-                    <div class="telemetry-cell">
-                      <span class="telemetry-label">Ca hoàn thành</span>
-                      <span id="heroShiftsCount" class="telemetry-value big-mono">0</span>
-                    </div>
-                    <button type="button" class="focus-ring spring-touch telemetry-cell telemetry-cell-btn" onclick="openTheTrangModal()">
-                      <span class="telemetry-label">Thể trạng</span>
-                      <span class="telemetry-value">
-                        <span id="profileFitnessDot" style="width:7px;height:7px;border-radius:9999px;background:var(--sp-success);"></span>
-                        <span id="profileFitnessShort">Khỏe mạnh</span>
-                      </span>
-                    </button>
-                    <button type="button" class="focus-ring spring-touch telemetry-cell telemetry-cell-btn" onclick="openEmergencyIceModal()">
-                      <span class="telemetry-label">Khẩn cấp y tế</span>
-                      <span class="telemetry-value" style="color:var(--sp-danger-ink);">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                        <span>ICE</span>
-                      </span>
-                    </button>
-                  </div>
-
-                  <!-- Quick Operations Grid -->
-                  <div class="quick-action-grid">
-                    <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openDigitalSportPassModal()">
-                      Xem thẻ hội viên số
-                    </button>
-                    <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openVietQrFundModal()">
-                      Quỹ CLB VietQR
-                    </button>
-                    <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openHelpCenterModal()">
-                      Trợ lý FAQ
-                    </button>
-                    <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="callContactDirect()">
-                      Gọi thành viên
-                    </button>
-                  </div>
-
-                  <div id="adminQuickActionsCard" class="sp-card hidden admin-inline-bar">
-                    <div class="sp-section-head">
-                      <span class="sp-section-title">Điều hành Ban Nhân Sự</span>
-                      <span class="sp-badge sp-badge-accent mono-num">Admin</span>
-                    </div>
-                    <div class="admin-btn-strip">
-                      <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openCreateTaskModal()">+ Tạo ca</button>
-                      <button type="button" id="txtApproveBtnCount" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openAdminDispatchModal(0)">Duyệt (0)</button>
-                      <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openAdminRoleManagementModal()">Phân quyền</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="profile-col-secondary">
-                  <!-- 8-Column Grouped Profile List -->
-                  <div class="sp-section-head">
-                    <div>
-                      <h2 class="sp-section-title">Thông tin hội viên</h2>
-                      <p class="sp-section-sub">Trường Đại học Hải Dương</p>
-                    </div>
-                    <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openEditProfileModal()">Chỉnh sửa</button>
-                  </div>
-
-                  <div class="sp-card grouped-list">
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box accent" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-                        <span class="row-label">Họ và tên</span>
-                      </div>
-                      <span id="dFullName" class="row-val">Đỗ Mạnh Cường</span>
-                    </div>
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box accent" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="10" x2="17" y2="10"/><line x1="7" y1="14" x2="13" y2="14"/></svg></span>
-                        <span class="row-label">Mã ID SportPass</span>
-                      </div>
-                      <span id="dMemberId" class="row-val mono-num">DMC0806</span>
-                    </div>
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
-                        <span class="row-label">Lớp sinh hoạt</span>
-                      </div>
-                      <span id="dClass" class="row-val mono-num">K13.GDTC</span>
-                    </div>
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
-                        <span class="row-label">Ban chuyên môn</span>
-                      </div>
-                      <span id="dDept" class="row-val">Ban Nhân Sự</span>
-                    </div>
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-                        <span class="row-label">Chức vụ CLB</span>
-                      </div>
-                      <span id="dRole" class="row-val">Trưởng ban nhân sự</span>
-                    </div>
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box success" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-                        <span class="row-label">Số điện thoại</span>
-                      </div>
-                      <span id="dPhone" class="row-val mono-num">0913916326</span>
-                    </div>
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box danger" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
-                        <span class="row-label">Liên hệ khẩn cấp ICE</span>
-                      </div>
-                      <span id="dIce" class="row-val mono-num">0975364478</span>
-                    </div>
-                    <div class="grouped-row">
-                      <div class="grouped-row-left">
-                        <span class="row-icon-box success" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
-                        <span class="row-label">Lưu ý y tế</span>
-                      </div>
-                      <span id="dMed" class="row-val">Bình thường</span>
-                    </div>
-                  </div>
-
-                  <!-- VietQR Club Fund Quick Card -->
-                  <div class="sp-card club-fund-callout">
-                    <div>
-                      <div class="sp-section-title">Quỹ sinh hoạt CLB • NAPAS 247</div>
-                      <p class="sp-section-sub">Đóng quỹ tháng 100.000đ hoặc giải đấu bằng mã QR định danh sẵn.</p>
-                    </div>
-                    <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openVietQrFundModal()">
-                      Mở VietQR
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- ========== TAB 1: ĐIỀU ĐỘNG CA TRỰC (2-COLUMN CONTAINER GRID) ========== -->
-            <section id="tabContentTasks" class="tab-panel hidden" style="display:none;" aria-label="Điều Động Ca Trực">
-              <div class="telemetry-bar">
-                <div class="telemetry-cell">
-                  <span class="telemetry-label">Tổng ca trực</span>
-                  <span id="statTotalTasks" class="telemetry-value big-mono">2</span>
-                </div>
-                <div class="telemetry-cell">
-                  <span class="telemetry-label">Cần huy động</span>
-                  <span id="statUrgentTasks" class="telemetry-value big-mono" style="color:var(--sp-danger-ink);">2</span>
-                </div>
-                <div class="telemetry-cell">
-                  <span class="telemetry-label">Ca đã nhận</span>
-                  <span id="statMyTasks" class="telemetry-value big-mono" style="color:var(--sp-success-ink);">0</span>
-                </div>
-              </div>
-
-              <div id="adminTaskToolbar" class="acrylic-card hidden" style="padding:14px;display:flex;flex-direction:column;gap:10px;">
-                <div class="sp-section-head">
-                  <div>
-                    <h2 style="margin:0;font-size:14.5px;font-weight:600;">Điều phối ca trực</h2>
-                    <p style="margin:2px 0 0;font-size:11.5px;color:var(--sp-muted);">Công cụ quản trị ban chuyên môn</p>
-                  </div>
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openQrScannerModal()">Quét QR</button>
-                </div>
-                <div class="admin-toolbar-actions">
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="openCreateTaskModal()">+ Tạo ca trực</button>
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="openAdminDispatchModal(0)"><span>Duyệt (<span id="pendingDispatchBadgeCount" class="mono-num">0</span>)</span></button>
-                  <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="openAdminRoleManagementModal()">Phân Quyền Admin</button>
-                </div>
-              </div>
-
-              <div id="tasksDeptFilterBar" class="filter-rail" role="tablist" aria-label="Lọc ca trực theo ban">
-                <button type="button" class="focus-ring spring-touch filter-chip active" onclick="setTaskDeptFilter('ALL')">Tất cả</button>
-                <button type="button" class="focus-ring spring-touch filter-chip" onclick="setTaskDeptFilter('Ban Chủ Nhiệm')">Chủ Nhiệm</button>
-                <button type="button" class="focus-ring spring-touch filter-chip" onclick="setTaskDeptFilter('Ban Nhân Sự')">Nhân Sự</button>
-                <button type="button" class="focus-ring spring-touch filter-chip" onclick="setTaskDeptFilter('Ban Bóng Chuyền')">Bóng Chuyền</button>
-                <button type="button" class="focus-ring spring-touch filter-chip" onclick="setTaskDeptFilter('Ban Bóng Đá Nam')">Bóng Đá Nam</button>
-                <button type="button" class="focus-ring spring-touch filter-chip" onclick="setTaskDeptFilter('Ban Bóng Đá Nữ')">Bóng Đá Nữ</button>
-                <button type="button" class="focus-ring spring-touch filter-chip" onclick="setTaskDeptFilter('Ban Cầu Lông')">Cầu Lông</button>
-                <button type="button" class="focus-ring spring-touch filter-chip" onclick="setTaskDeptFilter('Ban Truyền Thông')">Truyền Thông</button>
-              </div>
-
-              <div id="tasksListContainer" class="stagger-list tasks-bento-grid"></div>
-            </section>
-
-            <!-- ========== TAB 2: DIỄN ĐÀN CLB (68CH EDITORIAL SPLIT) ========== -->
-            <section id="tabContentForum" class="tab-panel hidden" style="display:none;" aria-label="Diễn Đàn Nội Bộ">
-              <div class="forum-bento">
-                <div class="forum-composer-col">
-                  <div class="sp-card forum-composer">
-                    <h2 style="margin:0;font-weight:600;font-size:14.5px;letter-spacing:-0.01em;">Bảng tin hoạt động CLB</h2>
-                    <label for="iptPostContent" class="sr-only">Nội dung bài viết diễn đàn CLB</label>
-                    <textarea id="iptPostContent" class="sp-textarea" placeholder="Chia sẻ hình ảnh sân tập, lịch giao hữu hoặc lưu ý ca trực..."></textarea>
-                    <div id="composerMediaReel" class="media-reel hidden"></div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-                      <div style="display:flex;align-items:center;gap:10px;">
-                        <label class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" style="cursor:pointer;">
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                          <span>Chọn ảnh</span>
-                          <input type="file" accept="image/*" multiple class="sr-only" onchange="handlePostMediaSelect(event)">
-                        </label>
-                        <label class="remember-row" style="gap:6px;">
-                          <input type="checkbox" id="chkPostAnonymous">
-                          <span style="font-size:12px;">Ẩn danh</span>
-                        </label>
-                      </div>
-                      <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitNewPostAction()">Đăng bài</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="forum-feed-col">
-                  <div id="postsListContainer" class="stagger-list" style="display:flex;flex-direction:column;gap:12px;"></div>
-                </div>
-              </div>
-            </section>
-
-          </div>
-        </main>
-
-        <div class="dock-scrim" aria-hidden="true"></div>
-
-        <!-- DUAL-AXIS SPRING NAVIGATION DOCK (Bottom Pill on Mobile/Tablet · Left Rail on Desktop) -->
-        <nav class="dock-nav" aria-label="Điều hướng chính">
-          <div class="rail-desktop-brand">
-            <div class="brand-emblem" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
-              </svg>
-            </div>
-            <div>
-              <div class="brand-name">SportPass UHD</div>
-              <div class="sp-section-sub" style="margin:0;">CLB Thể Thao ĐH Hải Dương</div>
-            </div>
-          </div>
-
-          <div class="dock-track">
-            <div id="dockActiveIndicator" class="dock-indicator" aria-hidden="true"></div>
-            <button id="btnDock0" type="button" class="focus-ring dock-tab-btn active" onclick="switchDockTab(0, event)" aria-selected="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span>Hồ Sơ</span>
-            </button>
-            <button id="btnDock1" type="button" class="focus-ring dock-tab-btn" onclick="switchDockTab(1, event)" aria-selected="false">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              <span>Điều Động</span>
-              <span id="dockTasksBadge" class="dock-badge">2</span>
-            </button>
-            <button id="btnDock2" type="button" class="focus-ring dock-tab-btn" onclick="switchDockTab(2, event)" aria-selected="false">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              <span>Diễn Đàn</span>
-            </button>
-          </div>
-
-          <div class="rail-desktop-shortcuts">
-            <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft rail-shortcut-btn" onclick="openVietQrFundModal()">
-              Đóng quỹ CLB VietQR
-            </button>
-            <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary rail-shortcut-btn" onclick="openDirectoryModal()">
-              Danh bạ 125 hội viên
-            </button>
-            <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary rail-shortcut-btn" onclick="openHelpCenterModal()">
-              Trợ lý FAQ &amp; CSKH
-            </button>
-          </div>
-        </nav>
+      <div class="login-guide-card">
+        <div>Quy tắc Mã ID: <strong>Chữ cái đầu Họ Tên + Ngày/Tháng sinh</strong>.</div>
+        <div style="margin-top:4px;">Quản trị viên gốc: <span class="code-chip">DMC0806</span> • Mật khẩu mặc định: <span class="code-chip">123456</span></div>
       </div>
+    </section>
 
+    <!-- ==================== VIEW 2: EXACT CANONICAL 5-BLOCK VARSITY PASS UI ==================== -->
+    <div id="viewMainAppContainer" class="hidden" style="display:flex;flex-direction:column;min-height:100vh;">
+
+      <!-- BLOCK 0: STICKY FROSTED TOP BAR -->
+      <header class="varsity-topbar pt-safe">
+        <div class="varsity-topbar-inner">
+          <div class="brand-lockup">
+            <div class="brand-crest" aria-hidden="true">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <span class="brand-title">Varsity Pass</span>
+            <span id="role-badge" class="role-pill-badge">ADMIN</span>
+          </div>
+
+          <div class="topbar-actions">
+            <button id="notification-trigger" type="button" class="icon-circle-btn water-ripple-target spring-press" aria-label="Thông báo">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+              </svg>
+              <span class="notif-dot" aria-hidden="true"></span>
+            </button>
+            <button id="settings-trigger" type="button" class="avatar-ring-btn water-ripple-target spring-press" aria-label="Cài đặt ứng dụng">
+              <img id="settings-trigger-avatar" width="36" height="36" alt="Đỗ Mạnh Cường" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN SCROLL CONTENT -->
+      <main class="varsity-main pb-safe">
+
+        <!-- BLOCK 1: HERO CREDENTIAL PASS CARD (3D Tilt, Specular Reflection, Aurora Sweep, Exact SVG Pattern) -->
+        <div class="hero-card-container anim-hero" id="hero-card-wrap">
+          <section aria-labelledby="card-heading" class="hero-card-aquamorphic" id="hero-interactive-card" style="--specular-x: 70%; --specular-y: 35%;">
+            <div class="hero-specular-light" aria-hidden="true"></div>
+            <div class="aurora-beam" aria-hidden="true"></div>
+            <div class="hero-sheen-layer" aria-hidden="true"></div>
+
+            <!-- Preserved Aquamorphic Contour Waves & Concentric Rings (H2-002) -->
+            <div class="card-wave-pattern" id="card-pattern" aria-hidden="true">
+              <svg fill="none" preserveAspectRatio="none" stroke="currentColor" viewBox="0 0 400 240">
+                <path d="M-20 40 C 90 20, 160 110, 260 70 C 340 35, 380 90, 440 60" stroke-dasharray="3 3" stroke-width="1.2"/>
+                <path d="M-20 90 C 80 60, 180 160, 290 120 C 370 90, 410 140, 450 110" stroke-width="1.5"/>
+                <path d="M-20 140 C 110 120, 190 210, 310 170 C 390 145, 420 190, 450 170" stroke-width="1.2"/>
+                <path d="M-20 190 C 100 170, 220 250, 340 210 C 400 190, 430 220, 460 210" stroke-dasharray="4 2" stroke-width="1.5"/>
+                <path d="M220 -20 A 150 150 0 0 1 370 130" stroke-width="1.4"/>
+                <path d="M250 -30 A 170 170 0 0 1 420 140" stroke-dasharray="2 4" stroke-width="1"/>
+                <circle cx="360" cy="80" r="45" stroke-width="0.8"/>
+                <circle cx="360" cy="80" r="75" stroke-dasharray="2 3" stroke-width="0.6"/>
+              </svg>
+            </div>
+
+            <div class="hero-top-row">
+              <span class="hero-club-label">CLB THỂ THAO</span>
+              <div class="hero-badges-group">
+                <span class="year-pill">2024–25</span>
+                <button id="hero-status-pill" type="button" class="status-pill-btn" data-tone="ready" aria-label="Đổi trạng thái hoạt động">
+                  <span class="status-ping-wrap" aria-hidden="true">
+                    <span class="ping-ring"></span>
+                    <span class="status-ping-dot"></span>
+                  </span>
+                  <span id="hero-status-text">Sẵn sàng</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="hero-identity-row">
+              <button id="hero-avatar-btn" type="button" class="hero-avatar-frame" aria-label="Đổi ảnh đại diện" style="cursor:pointer;">
+                <img id="hero-avatar-img" width="64" height="64" alt="Đỗ Mạnh Cường" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+              </button>
+              <input id="hero-avatar-input" type="file" accept="image/*" class="hidden">
+
+              <div class="hero-meta-col">
+                <span id="card-kicker" class="hero-kicker">THÀNH VIÊN BAN ĐIỀU HÀNH</span>
+                <h1 id="card-heading" class="hero-name-h1">ĐỖ MẠNH CƯỜNG</h1>
+                <p id="card-subtitle" class="hero-role-sub">Trưởng ban nhân sự</p>
+                <div class="hero-id-row">
+                  <span class="hero-id-label">MSSV:</span>
+                  <span id="card-mssv" class="hero-id-badge">DMC0806</span>
+                </div>
+              </div>
+            </div>
+
+            <button id="qr-modal-trigger" type="button" class="qr-cta-btn water-ripple-target spring-press">
+              <div class="qr-button-sweep" aria-hidden="true"></div>
+              <svg width="17" height="17" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true" style="color:#0284c7;position:relative;z-index:10;">
+                <rect height="5" rx="1" width="5" x="3" y="3"/><rect height="5" rx="1" width="5" x="16" y="3"/><rect height="5" rx="1" width="5" x="3" y="16"/>
+                <path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/>
+                <path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/>
+              </svg>
+              <span style="position:relative;z-index:10;color:#0c4a6e;">Xuất trình thẻ QR cá nhân</span>
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true" style="color:#0ea5e9;position:relative;z-index:10;">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
+            </button>
+          </section>
+        </div>
+
+        <!-- BLOCK 2: PERFORMANCE STATS SECTION -->
+        <section aria-label="Chỉ số hiệu suất" class="anim-stagger-1 stats-glass-card">
+          <div class="stats-grid-3">
+            <button id="stat-shifts-btn" type="button" class="stat-cell water-ripple-target spring-press">
+              <span id="stat-shifts" class="stat-anim-1 stat-val stat-val-sky">0</span>
+              <span class="stat-lbl">Ca hoàn thành</span>
+            </button>
+            <button id="stat-efficiency-btn" type="button" class="stat-cell water-ripple-target spring-press">
+              <span id="stat-efficiency" class="stat-anim-2 stat-val stat-val-teal">98%</span>
+              <span class="stat-lbl">Đúng giờ</span>
+            </button>
+            <button id="stat-rating-btn" type="button" class="stat-cell water-ripple-target spring-press">
+              <span id="stat-rating" class="stat-anim-3 stat-val stat-val-indigo">A+</span>
+              <span class="stat-lbl">Tín nhiệm</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- BLOCK 3: QUICK ACTIONS ("Tạo ca" & "Duyệt ca") -->
+        <section aria-label="Thao tác nhanh" class="anim-stagger-2 quick-actions-grid">
+          <button id="admin-create-shift-btn" type="button" class="btn-aqua-primary water-ripple-target spring-press">
+            <div class="btn-aqua-badge" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                <line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/>
+              </svg>
+            </div>
+            <span style="position:relative;z-index:10;">Tạo ca</span>
+          </button>
+
+          <button id="admin-approve-btn" type="button" class="btn-aqua-glass water-ripple-target spring-press">
+            <div class="btn-glass-badge" aria-hidden="true">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </div>
+            <span style="position:relative;z-index:10;">Duyệt ca</span>
+          </button>
+        </section>
+
+        <!-- BLOCK 4: PROFILE DETAILS (8 ROWS MATCHING REFERENCE UI) -->
+        <section aria-labelledby="details-heading" class="anim-stagger-3 profile-section">
+          <div class="profile-section-head">
+            <h2 id="details-heading" class="section-kicker">THÔNG TIN HỒ SƠ</h2>
+            <button id="edit-profile-trigger" type="button" class="edit-pill-btn water-ripple-target spring-press">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              <span style="position:relative;z-index:10;">Chỉnh sửa</span>
+            </button>
+          </div>
+
+          <div class="profile-card-list">
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-sky" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <span class="profile-row-label">Họ và tên</span>
+              </div>
+              <span id="display-fullname" class="profile-row-val">Đỗ Mạnh Cường</span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-blue" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
+                </div>
+                <span class="profile-row-label">Mã số sinh viên</span>
+              </div>
+              <span id="display-studentId" class="profile-row-val font-mono">DMC0806</span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-indigo" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                </div>
+                <span class="profile-row-label">Khoa / Khóa</span>
+              </div>
+              <span id="display-faculty" class="profile-row-val">K13.GDTC</span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-teal" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <span class="profile-row-label">Ngày tháng năm sinh</span>
+              </div>
+              <span id="display-dob" class="profile-row-val font-mono">08/06/2003</span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-cyan" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg>
+                </div>
+                <span class="profile-row-label">Ban hoạt động</span>
+              </div>
+              <span id="display-dutyArea" class="profile-row-val">Ban Nhân Sự</span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-indigo" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <span class="profile-row-label">Chức vụ</span>
+              </div>
+              <span id="display-role" class="profile-row-val">Trưởng ban nhân sự</span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-emerald" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <span class="profile-row-label">Số điện thoại</span>
+              </div>
+              <a id="display-phone" class="profile-phone-link" href="#display-phone">Chưa cập nhật</a>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
+                <div class="profile-icon-tile tile-amber" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <span class="profile-row-label">Liên hệ khẩn (ICE)</span>
+              </div>
+              <span id="display-ice" class="profile-row-val font-mono">0988 123 456 (Trực CLB)</span>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   </div>
 
-  <!-- ==================== NATIVE TOP-LAYER DIALOG MODALS ==================== -->
+  <!-- ==================== AQUAMORPHIC NATIVE <dialog closedby="any"> BOTTOM SHEETS ==================== -->
 
-  <dialog id="modalVietQrFund" class="sp-dialog" closedby="any" aria-labelledby="titleVietQrFund">
-    <div class="sp-sheet sp-sheet-wide" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleVietQrFund" class="sp-sheet-title">Đóng quỹ CLB qua VietQR</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeVietQrFundModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-field">
-          <label for="selVietQrPurpose" class="sp-label">Khoản đóng góp</label>
-          <select id="selVietQrPurpose" class="sp-select" onchange="updateVietQrFundPreview()">
-            <option value="QUY CLB THANG">Quỹ sinh hoạt tháng (100.000đ)</option>
-            <option value="GIAI DAU">Lệ phí Giải đấu nội bộ</option>
-            <option value="AO DONG PHUC">Đăng ký áo thi đấu CLB</option>
-            <option value="SAN BAI">Chia sẻ chi phí thuê sân</option>
-          </select>
-        </div>
+  <!-- SHEET 1: QR PASS (45s Live Countdown) -->
+  <dialog id="qr-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="qr-modal-title">
+    <div class="sheet-panel sheet-panel-centered">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <h3 id="qr-modal-title" class="sheet-title-h3">Thẻ Vào Cổng &amp; Điểm Danh</h3>
+      <p class="sheet-sub" style="max-width:280px;font-size:13px;">Quét mã tại trạm trực ban sân vận động để xác nhận ca trực</p>
 
-        <div style="display:grid;grid-template-columns:1fr 120px;gap:10px;">
-          <div class="sp-field">
-            <label for="iptVietQrAmount" class="sp-label">Số tiền (VNĐ)</label>
-            <input type="number" id="iptVietQrAmount" class="sp-input mono-num" value="100000" min="10000" step="10000" oninput="updateVietQrFundPreview()">
-          </div>
-          <div class="sp-field">
-            <label for="selVietQrBank" class="sp-label">Ngân hàng</label>
-            <select id="selVietQrBank" class="sp-select" onchange="updateVietQrFundPreview()">
-              <option value="MB">MBBank</option>
-              <option value="VCB">Vietcombank</option>
-              <option value="TCB">Techcombank</option>
-              <option value="ACB">ACB</option>
-              <option value="BIDV">BIDV</option>
-            </select>
-          </div>
-        </div>
-
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary mono-num" onclick="setVietQrAmountPreset(50000)">50.000đ</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft mono-num" onclick="setVietQrAmountPreset(100000)">100.000đ</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary mono-num" onclick="setVietQrAmountPreset(200000)">200.000đ</button>
-        </div>
-
-        <div class="qr-paper-frame">
-          <div id="vietQrFundPreviewBox"></div>
-        </div>
-
-        <div class="sp-card grouped-list">
-          <div class="grouped-row">
-            <span class="row-label">Tài khoản nhận quỹ</span>
-            <span id="vietQrBankAccountVal" class="row-val mono-num">MB · 0913916326</span>
-          </div>
-          <div class="grouped-row">
-            <span class="row-label">Số tiền</span>
-            <span id="vietQrAmountDisplay" class="row-val mono-num">100.000 đ</span>
-          </div>
-          <div class="grouped-row">
-            <span class="row-label">Nội dung tự động</span>
-            <span id="vietQrTransferNoteVal" class="row-val mono-num" style="color:var(--sp-brand);">SP DMC0806 QUY_CLB</span>
-          </div>
+      <div class="qr-holo-card">
+        <div id="qr-code-box" class="qr-render-frame"></div>
+        <span id="qr-token-code" class="qr-token-text">#DMC0806-VN</span>
+        <div class="qr-timer-line">
+          <span class="status-ping-wrap" aria-hidden="true">
+            <span class="ping-ring"></span>
+            <span class="status-ping-dot"></span>
+          </span>
+          <span>Tự động làm mới sau <span id="qr-timer" class="qr-timer-count">45s</span></span>
         </div>
       </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="copyVietQrTransferInfo('account')">Sao chép STK</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="copyVietQrTransferInfo('note')">Sao chép nội dung CK</button>
-      </div>
+
+      <button id="qr-modal-close" type="button" class="btn-sheet-muted water-ripple-target spring-press" style="width:100%;margin-top:20px;flex:none;">
+        <span>Đóng</span>
+      </button>
     </div>
   </dialog>
 
-  <dialog id="modalDigitalSportPassCard" class="sp-dialog" closedby="any" aria-labelledby="titleVipCard">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleVipCard" class="sp-sheet-title">Thẻ hội viên số SportPass</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeDigitalSportPassModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="vip-pass-face">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:11px;font-weight:500;opacity:0.9;">CLB Thể Thao · ĐH Hải Dương</span>
-            <span id="vipCardMemberId" class="sp-badge mono-num" style="background:rgba(255,255,255,0.2);color:#ffffff;">DMC0806</span>
+  <!-- SHEET 2: NOTIFICATION CENTER -->
+  <dialog id="notification-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="notif-modal-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
           </div>
           <div>
-            <div id="vipCardMemberName" style="font-size:19px;font-weight:600;letter-spacing:-0.015em;">Đỗ Mạnh Cường</div>
-            <div id="vipCardMemberRole" style="font-size:12.5px;opacity:0.9;">Trưởng ban nhân sự</div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;background:rgba(255,255,255,0.14);padding:10px;border-radius:12px;">
-            <div><div style="opacity:0.8;font-size:10.5px;">Lớp</div><div id="vipCardMemberClass" class="mono-num" style="font-weight:600;">K13.GDTC</div></div>
-            <div><div style="opacity:0.8;font-size:10.5px;">Ban</div><div id="vipCardMemberDept" style="font-weight:600;">Nhân Sự</div></div>
-            <div><div style="opacity:0.8;font-size:10.5px;">Số ca</div><div id="vipCardMemberShifts" class="mono-num" style="font-weight:600;">0</div></div>
+            <h3 id="notif-modal-title" class="sheet-title-h3">Trung Tâm Thông Báo</h3>
+            <p class="sheet-sub">Cập nhật tin tức &amp; ca trực mới nhất</p>
           </div>
         </div>
-        <div class="qr-paper-frame">
-          <div id="vipCardQrContainer"></div>
-        </div>
-        <div id="vipCardPassToken" class="mono-num" style="text-align:center;font-size:11px;color:var(--sp-muted);">PASS-DMC0806</div>
+        <button id="notification-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="refreshDynamicQrPass()">Làm mới QR</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeDigitalSportPassModal()">Đóng</button>
+
+      <div id="notification-list" class="sheet-scroll-body"></div>
+
+      <div class="sheet-footer">
+        <button id="notification-dismiss-btn" type="button" class="btn-sheet-muted water-ripple-target spring-press">
+          <span>Đóng thông báo</span>
+        </button>
       </div>
     </div>
   </dialog>
 
-  <dialog id="modalFieldCheckinQr" class="sp-dialog" closedby="any" aria-labelledby="titleFieldQr">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleFieldQr" class="sp-sheet-title">Xuất trình QR nhận ca</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeFieldCheckinQrModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-field">
-          <label for="selFieldQrShift" class="sp-label">Chọn ca trực điểm danh</label>
-          <select id="selFieldQrShift" class="sp-select" onchange="onFieldQrShiftChange(this.value)"></select>
-        </div>
-        <div class="qr-paper-frame">
-          <div id="fieldCheckinQrBox"></div>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
-          <span id="fieldCheckinQrCodeLabel" class="mono-num" style="color:var(--sp-brand);font-weight:600;">CHK-PASS</span>
-          <span class="sp-badge sp-badge-accent mono-num">Làm mới sau: <strong id="fieldQrCountdown">60s</strong></span>
-        </div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-soft" onclick="refreshFieldCheckinQr()">Tạo lại mã</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeFieldCheckinQrModal()">Đóng</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalQrScanner" class="sp-dialog" closedby="any" aria-labelledby="titleQrScanner">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleQrScanner" class="sp-sheet-title">Quét QR điểm danh hiện trường</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeQrScannerModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div id="qrScannerTargetLabel" class="sp-badge sp-badge-accent mono-num" style="align-self:flex-start;">Quét tự động</div>
-        <div class="qr-viewport-box">
-          <video id="qrScannerVideo" autoplay playsinline></video>
-          <canvas id="qrScannerCanvas" class="hidden"></canvas>
-          <div class="qr-scan-reticle">
-            <div class="qr-laser-beam"></div>
+  <!-- SHEET 3: APP SETTINGS -->
+  <dialog id="settings-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="settings-modal-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </div>
+          <h3 id="settings-modal-title" class="sheet-title-h3">Cài Đặt Ứng Dụng</h3>
         </div>
-        <div id="qrScannerStatus" style="font-size:12.5px;text-align:center;color:var(--sp-text2);">Đang khởi động camera...</div>
-        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="toggleCameraFacing()">Đổi camera</button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="toggleTorchFlash()">Đèn pin</button>
-          <label class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" style="cursor:pointer;">
-            Chọn ảnh QR
-            <input type="file" id="iptQrImageFile" accept="image/*" class="sr-only" onchange="handleQrFileSelected(event)">
+        <button id="settings-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="sheet-scroll-body">
+        <div class="settings-user-card">
+          <img id="settings-avatar" width="48" height="48" alt="Avatar" class="settings-user-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+          <div style="flex:1;min-width:0;">
+            <div id="settings-name" style="font-size:14px;font-weight:700;color:var(--text-primary);" class="truncate">Đỗ Mạnh Cường</div>
+            <div id="settings-email" class="font-mono truncate" style="font-size:11px;color:var(--text-muted);">dmc0806@uhd.sportpass.vn</div>
+          </div>
+          <span id="settings-status-badge" class="settings-status-pill">Sẵn sàng</span>
+        </div>
+
+        <div class="settings-row-item">
+          <div class="settings-row-left">
+            <div class="settings-row-icon tile-sky" aria-hidden="true">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div>
+              <span class="settings-row-title">Cài đặt thông báo</span>
+              <p class="settings-row-desc">Chuông nhắc lịch và tin khẩn cấp</p>
+            </div>
+          </div>
+          <label class="aqua-switch" aria-label="Bật thông báo">
+            <input id="toggle-notif-switch" type="checkbox" class="sr-only" checked>
+            <div class="aqua-switch-track"><div class="aqua-switch-knob"></div></div>
           </label>
         </div>
-      </div>
-    </div>
-  </dialog>
 
-  <dialog id="modalCreateTask" class="sp-dialog" closedby="any" aria-labelledby="modalCreateTaskTitle">
-    <div class="sp-sheet sp-sheet-wide" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="modalCreateTaskTitle" class="sp-sheet-title">Tạo lệnh điều động mới</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeCreateTaskModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-field">
-          <label for="iptTaskTitle" class="sp-label">Tên sự kiện / Ca trực</label>
-          <input type="text" id="iptTaskTitle" class="sp-input" placeholder="Ví dụ: Trực y tế và bàn trọng tài Giải Cầu Lông">
-        </div>
-        <div class="sp-field">
-          <label for="iptTaskLocation" class="sp-label">Địa điểm tập kết</label>
-          <input type="text" id="iptTaskLocation" class="sp-input" value="Nhà Thi Đấu ĐH Hải Dương">
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 104px;gap:10px;">
-          <div class="sp-field">
-            <label for="iptTaskTime" class="sp-label">Khung giờ và ngày</label>
-            <input type="text" id="iptTaskTime" class="sp-input mono-num" value="14:00 - 17:30 Thứ Bảy">
+        <button id="theme-toggle-row" type="button" class="settings-row-item">
+          <div class="settings-row-left">
+            <div class="settings-row-icon tile-indigo" aria-hidden="true">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </div>
+            <div>
+              <span class="settings-row-title">Giao diện (Chế độ tối / sáng)</span>
+              <p id="theme-mode-desc" class="settings-row-desc">Giao diện sáng Frosted Sky</p>
+            </div>
           </div>
-          <div class="sp-field">
-            <label for="iptTaskQuota" class="sp-label">Tổng chỉ tiêu</label>
-            <input type="number" id="iptTaskQuota" class="sp-input mono-num" value="4" min="1">
-          </div>
-        </div>
-        <div class="sp-field">
-          <label for="iptTaskDeadline" class="sp-label">Hạn chót chốt quân số</label>
-          <input type="datetime-local" id="iptTaskDeadline" class="sp-input mono-num">
-        </div>
-        <div class="sp-field">
-          <span class="sp-label">Phân bổ chỉ tiêu 7 ban chuyên môn</span>
-          <div id="deptQuotaContainer" style="display:flex;flex-direction:column;gap:6px;"></div>
-        </div>
-        <div class="sp-field">
-          <label for="iptTaskNotes" class="sp-label">Ghi chú nhiệm vụ</label>
-          <textarea id="iptTaskNotes" class="sp-textarea" style="min-height:72px;" placeholder="Yêu cầu trang phục, dụng cụ còi, bảng điểm..."></textarea>
-        </div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeCreateTaskModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitCreateTaskAction()">Phát hành lệnh</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalDirectory" class="sp-dialog" closedby="any" aria-labelledby="titleDirectory">
-    <div class="sp-sheet sp-sheet-wide" tabindex="-1">
-      <div class="sp-sheet-head">
-        <div>
-          <h2 id="titleDirectory" class="sp-sheet-title">Danh bạ thành viên CLB</h2>
-          <div id="directoryCountLabel" class="mono-num" style="font-size:11.5px;color:var(--sp-muted);">125 hồ sơ</div>
-        </div>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeDirectoryModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <label for="iptSearchDirectory" class="sr-only">Tìm kiếm thành viên CLB</label>
-        <input type="search" id="iptSearchDirectory" class="sp-input" placeholder="Tìm theo tên, Mã ID, lớp, ban..." oninput="filterDirectoryMembers()">
-        <div id="directoryDeptFilterBar" class="filter-rail">
-          <button type="button" class="focus-ring spring-touch filter-chip active" onclick="setDirectoryDeptFilter('ALL')">Tất cả</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="setDirectoryDeptFilter('Ban Chủ Nhiệm')">Chủ Nhiệm</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="setDirectoryDeptFilter('Ban Nhân Sự')">Nhân Sự</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="setDirectoryDeptFilter('Ban Bóng Chuyền')">Bóng Chuyền</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="setDirectoryDeptFilter('Ban Bóng Đá Nam')">Bóng Đá Nam</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="setDirectoryDeptFilter('Ban Bóng Đá Nữ')">Bóng Đá Nữ</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="setDirectoryDeptFilter('Ban Cầu Lông')">Cầu Lông</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="setDirectoryDeptFilter('Ban Truyền Thông')">Truyền Thông</button>
-        </div>
-        <div id="directoryListContainer" class="sp-scroll" style="display:flex;flex-direction:column;gap:8px;max-height:52dvh;overflow-y:auto;"></div>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalOtherMemberDetails" class="sp-dialog" closedby="any" aria-labelledby="otherMemNameVal">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <div>
-          <h2 id="otherMemNameVal" class="sp-sheet-title">Thành viên</h2>
-          <span id="otherMemIdVal" class="sp-badge sp-badge-accent mono-num">ID</span>
-        </div>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeOtherMemberModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-card grouped-list">
-          <div class="grouped-row"><span class="row-label">Lớp sinh hoạt</span><span id="otherClass" class="row-val mono-num"></span></div>
-          <div class="grouped-row"><span class="row-label">Ban chuyên môn</span><span id="otherDept" class="row-val"></span></div>
-          <div class="grouped-row"><span class="row-label">Chức vụ</span><span id="otherRoleVal" class="row-val"></span></div>
-          <div class="grouped-row"><span class="row-label">Lưu ý y tế</span><span id="otherMed" class="row-val"></span></div>
-          <div class="grouped-row"><span class="row-label">Số điện thoại</span><span id="otherPhone" class="row-val mono-num"></span></div>
-          <div class="grouped-row"><span class="row-label">Liên hệ ICE</span><span id="otherIce" class="row-val mono-num"></span></div>
-          <div class="grouped-row"><span class="row-label">Số ca hoàn thành</span><span id="otherShiftsCountVal" class="row-val mono-num">0</span></div>
-        </div>
-
-        <div id="adminShiftAdjustRow" class="sp-card hidden" style="padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-          <span style="font-size:12.5px;font-weight:600;">Điều chỉnh số ca</span>
-          <div style="display:flex;gap:6px;">
-            <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="promptAdjustSelectedMemberShifts(-1)">-1 Ca</button>
-            <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-success-solid" onclick="promptAdjustSelectedMemberShifts(1)">+1 Ca</button>
-          </div>
-        </div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="callTargetMemberPhone()">Gọi thành viên</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger" onclick="callTargetMemberIce()">Gọi ICE</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalAdjustShifts" class="sp-dialog" closedby="any" aria-labelledby="titleAdjustShifts">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleAdjustShifts" class="sp-sheet-title">Điều chỉnh số ca trực</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeAdjustShiftsModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div>
-          <div id="adjustShiftsMemberName" style="font-weight:600;font-size:15px;"></div>
-          <div id="adjustShiftsMemberInfo" class="mono-num" style="font-size:12px;color:var(--sp-text2);"></div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:16px;padding:8px 0;">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary mono-num" onclick="changeAdjustDelta(-1)">-1</button>
-          <span id="adjustDeltaDisplay" class="mono-num" style="font-size:26px;font-weight:600;min-width:64px;text-align:center;color:var(--sp-brand);">+1</span>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary mono-num" onclick="changeAdjustDelta(1)">+1</button>
-        </div>
-        <div class="sp-field">
-          <label for="iptAdjustShiftsReason" class="sp-label">Lý do điều chỉnh (Lưu lịch sử Google Sheet)</label>
-          <input type="text" id="iptAdjustShiftsReason" class="sp-input" placeholder="Ví dụ: Khen thưởng giải đấu xuất sắc">
-        </div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeAdjustShiftsModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="executeAdjustShiftsSubmit()">Xác nhận cập nhật</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalAdminRoleManagement" class="sp-dialog" closedby="any" aria-labelledby="titleAdminRoles">
-    <div class="sp-sheet sp-sheet-wide" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleAdminRoles" class="sp-sheet-title">Trung Tâm Cấp Quyền &amp; Phân Vai</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeAdminRoleManagementModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="telemetry-bar">
-          <div class="telemetry-cell"><span class="telemetry-label">Hội viên</span><span id="roleCountTotal" class="telemetry-value big-mono">0</span></div>
-          <div class="telemetry-cell"><span class="telemetry-label">Admin</span><span id="roleCountAdmin" class="telemetry-value big-mono">1</span></div>
-          <div class="telemetry-cell"><span class="telemetry-label">Trưởng ca</span><span id="roleCountShiftLeader" class="telemetry-value big-mono" style="color:var(--sp-success-ink);">0</span></div>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <label for="iptRoleMemberSearch" class="sr-only">Tìm thành viên để phân quyền</label>
-          <input type="search" id="iptRoleMemberSearch" class="sp-input" placeholder="Tìm theo tên hoặc Mã ID..." oninput="filterRoleMemberList()">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="clearRoleMemberSearch()">Xóa</button>
-        </div>
-        <div id="roleDeptFilterBar" class="filter-rail"></div>
-        <div id="roleMemberListContainer" class="sp-scroll" style="display:flex;flex-direction:column;gap:8px;max-height:42dvh;overflow-y:auto;"></div>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalSmartRotation" class="sp-dialog" closedby="any" aria-labelledby="titleSmartRot">
-    <div class="sp-sheet sp-sheet-wide" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleSmartRot" class="sp-sheet-title">Đề xuất xoay tua công bằng</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeSmartRotationModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <p style="margin:0;font-size:12.5px;color:var(--sp-text2);">Ưu tiên thành viên có số ca hoàn thành ít nhất, đủ thể trạng và không trùng khung giờ.</p>
-        <div id="smartRotationResultsContainer" class="stagger-list sp-scroll" style="display:flex;flex-direction:column;gap:8px;max-height:46dvh;overflow-y:auto;"></div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeSmartRotationModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="applySmartRotationCandidates()">Áp dụng điều động</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalAdminDispatch" class="sp-dialog" closedby="any" aria-labelledby="titleAdminDispatch">
-    <div class="sp-sheet sp-sheet-wide" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleAdminDispatch" class="sp-sheet-title">Phê duyệt đổi ca và xin rút</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeAdminDispatchModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <button type="button" id="btnDispatchTab0" class="focus-ring spring-touch filter-chip active" onclick="switchAdminDispatchTab(0)">Yêu cầu đổi ca</button>
-          <button type="button" id="btnDispatchTab1" class="focus-ring spring-touch filter-chip" onclick="switchAdminDispatchTab(1)">Đơn xin rút ca</button>
-        </div>
-        <div id="adminSwapsPanel"><div id="adminSwapsListContainer" style="display:flex;flex-direction:column;gap:8px;"></div></div>
-        <div id="adminLeavesPanel" class="hidden"><div id="adminLeavesListContainer" style="display:flex;flex-direction:column;gap:8px;"></div></div>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalTheTrang" class="sp-dialog" closedby="any" aria-labelledby="titleTheTrang">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleTheTrang" class="sp-sheet-title">Cập nhật thể trạng sân bãi</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeTheTrangModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-success" style="justify-content:flex-start;" onclick="selectTheTrang('Khỏe mạnh (100% Sẵn sàng)')">
-            <span style="width:8px;height:8px;border-radius:9999px;background:var(--sp-success-light);"></span>
-            <span>Khỏe mạnh (100% sẵn sàng)</span>
-          </button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-warning" style="justify-content:flex-start;" onclick="selectTheTrang('Hồi phục nhẹ (Hỗ trợ bàn)')">
-            <span style="width:8px;height:8px;border-radius:9999px;background:var(--sp-warning-light);"></span>
-            <span>Hồi phục nhẹ (hỗ trợ bàn)</span>
-          </button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="justify-content:flex-start;" onclick="selectTheTrang('Chấn thương nhẹ (Tạm miễn trực)')">
-            <span style="width:8px;height:8px;border-radius:9999px;background:var(--sp-danger-light);"></span>
-            <span>Chấn thương nhẹ (tạm miễn trực)</span>
-          </button>
-          <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="justify-content:flex-start;" onclick="selectTheTrang('Nghỉ ốm / Y tế')">
-            <span style="width:8px;height:8px;border-radius:9999px;background:var(--sp-danger-light);"></span>
-            <span>Nghỉ ốm / theo dõi y tế</span>
-          </button>
-        </div>
-        <input type="hidden" id="selTheTrangLevel" value="Khỏe mạnh (100% Sẵn sàng)">
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalEditProfile" class="sp-dialog" closedby="any" aria-labelledby="titleEditProfile">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleEditProfile" class="sp-sheet-title">Chỉnh sửa thông tin thành viên</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeEditProfileModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-field"><label for="editProfileClass" class="sp-label">Lớp sinh hoạt</label><input type="text" id="editProfileClass" class="sp-input"></div>
-        <div class="sp-field"><label for="editProfilePhone" class="sp-label">Số điện thoại</label><input type="tel" id="editProfilePhone" class="sp-input mono-num"></div>
-        <div class="sp-field"><label for="editProfileIce" class="sp-label">Liên hệ khẩn cấp ICE</label><input type="tel" id="editProfileIce" class="sp-input mono-num"></div>
-        <div class="sp-field"><label for="editProfileMed" class="sp-label">Lưu ý y tế / dị ứng</label><input type="text" id="editProfileMed" class="sp-input"></div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeEditProfileModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="saveMemberProfileEdit()">Lưu thay đổi</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalAvatar" class="sp-dialog" closedby="any" aria-labelledby="titleAvatarModal">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleAvatarModal" class="sp-sheet-title">Ảnh đại diện SportPass</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeAvatarModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body" style="align-items:center;">
-        <img id="avatarPreviewImg" src="" alt="Xem trước ảnh đại diện" class="hidden" style="width:112px;height:112px;border-radius:20px;object-fit:cover;border:2px solid var(--sp-accent);">
-        <label class="focus-ring spring-touch sp-btn sp-btn-primary" style="width:100%;cursor:pointer;">
-          Chọn ảnh từ thiết bị
-          <input type="file" accept="image/*" class="sr-only" onchange="handleAvatarFileSelect(event)">
-        </label>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalEmergencyIce" class="sp-dialog" closedby="any" aria-labelledby="titleIceModal">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleIceModal" class="sp-sheet-title" style="color:var(--sp-danger-ink);">Hồ sơ cấp cứu khẩn cấp (ICE)</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeEmergencyIceModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-card grouped-list">
-          <div class="grouped-row"><span class="row-label">Số người thân / trực y tế</span><span id="iceContactNumber" class="row-val mono-num">0975364478</span></div>
-          <div class="grouped-row"><span class="row-label">Ghi chú y tế</span><span id="iceMemberMedNote" class="row-val">Bình thường</span></div>
-        </div>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger-solid" style="width:100%;" onclick="executeIceDirectCall()">Gọi khẩn cấp ICE ngay</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="shareSosLocationSms()">Gửi SMS vị trí sân</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-soft" style="width:100%;" onclick="openNearestHospitalsMap()">Tìm cơ sở y tế gần nhất</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalHeaderMore" class="sp-dialog" closedby="any" aria-labelledby="titleHeaderMore">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleHeaderMore" class="sp-sheet-title">Cài đặt tài khoản</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeHeaderMoreModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-field">
-          <span class="sp-label">Giao diện hiển thị</span>
-          <div class="theme-seg" role="group" aria-label="Chọn giao diện sáng hoặc tối">
-            <button type="button" id="btnThemeSystem" class="focus-ring spring-touch theme-seg-btn" aria-pressed="true" onclick="setColorScheme('system')">
-              <span>Hệ thống</span>
-              <span id="themeSystemHint" style="font-size:10.5px;color:var(--sp-muted);">Đang sáng</span>
-            </button>
-            <button type="button" id="btnThemeLight" class="focus-ring spring-touch theme-seg-btn" aria-pressed="false" onclick="setColorScheme('light')">
-              <span>Sáng</span>
-              <span style="font-size:10.5px;color:var(--sp-muted);">Sân tập</span>
-            </button>
-            <button type="button" id="btnThemeDark" class="focus-ring spring-touch theme-seg-btn" aria-pressed="false" onclick="setColorScheme('dark')">
-              <span>Tối</span>
-              <span style="font-size:10.5px;color:var(--sp-muted);">Ban đêm</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="sp-card" style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
-          <div>
-            <div style="font-size:13px;font-weight:600;">Cảnh báo điều động tự động</div>
-            <div style="font-size:11.5px;color:var(--sp-text2);">Tự đồng bộ ca mới và lịch thi đấu</div>
-          </div>
-          <span class="sp-badge sp-badge-success">Mặc định bật</span>
-        </div>
-
-        <button type="button" id="btnMenuRoleManagement" class="spring-touch hidden" data-focus="ring" style="min-height:44px;padding:10px 14px;border-radius:12px;background:var(--sp-accent-soft);color:var(--sp-brand);font-weight:600;font-size:13.5px;" onclick="openAdminRoleManagementModal()">
-          Phân Quyền Admin
+          <span id="theme-mode-badge" class="theme-mode-pill">Sáng</span>
         </button>
 
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-soft" style="width:100%;" onclick="closeHeaderMoreModal(); openVietQrFundModal();">Quỹ CLB VietQR</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="closeHeaderMoreModal(); openChangePasswordModal();">Đổi mật khẩu</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-secondary" style="width:100%;" onclick="closeHeaderMoreModal(); openHelpCenterModal();">Cẩm nang &amp; Trợ lý FAQ</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-danger" style="width:100%;" onclick="executeLogoutAction()">Đăng xuất tài khoản</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalChangePassword" class="sp-dialog" closedby="any" aria-labelledby="titleChangePwd">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleChangePwd" class="sp-sheet-title">Đổi mật khẩu bảo mật</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeChangePasswordModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-field"><label for="iptCurrentPassword" class="sp-label">Mật khẩu hiện tại</label><input type="password" id="iptCurrentPassword" class="sp-input"></div>
-        <div class="sp-field"><label for="iptNewPassword" class="sp-label">Mật khẩu mới (tối thiểu 6 ký tự)</label><input type="password" id="iptNewPassword" class="sp-input"></div>
-        <div class="sp-field"><label for="iptConfirmPassword" class="sp-label">Nhập lại mật khẩu mới</label><input type="password" id="iptConfirmPassword" class="sp-input"></div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeChangePasswordModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitChangePassword()">Lưu mật khẩu</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalSwapRequest" class="sp-dialog" closedby="any" aria-labelledby="titleSwapReq">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleSwapReq" class="sp-sheet-title">Yêu cầu đổi ca trực</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeSwapRequestModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <input type="hidden" id="iptSwapTaskId">
-        <div class="sp-field"><label for="selSwapTargetMember" class="sp-label">Đề xuất người trực thay</label><select id="selSwapTargetMember" class="sp-select"></select></div>
-        <div class="sp-field"><label for="iptSwapReason" class="sp-label">Lý do đổi ca</label><input type="text" id="iptSwapReason" class="sp-input" placeholder="Ví dụ: Trùng lịch thi học phần"></div>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeSwapRequestModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitSwapRequestAction()">Gửi yêu cầu</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalLeaveTask" class="sp-dialog" closedby="any" aria-labelledby="titleLeaveReq">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleLeaveReq" class="sp-sheet-title">Đơn xin rút ca trực</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeLeaveTaskModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <input type="hidden" id="iptLeaveTaskId">
-        <div class="sp-field"><label for="iptLeaveReason" class="sp-label">Lý do bất khả kháng</label><textarea id="iptLeaveReason" class="sp-textarea" style="min-height:80px;" placeholder="Trình bày rõ lý do để Ban Điều Phối duyệt..."></textarea></div>
-        <label class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" style="cursor:pointer;">
-          Đính kèm minh chứng (tùy chọn)
-          <input type="file" accept="image/*" class="sr-only" onchange="handleLeaveProofSelect(event)">
-        </label>
-        <img id="leaveProofPreview" src="" alt="Minh chứng xin rút ca" class="hidden media-thumb">
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeLeaveTaskModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger-solid" onclick="submitLeaveRequestAction()">Gửi đơn rút</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalEditPost" class="sp-dialog" closedby="any" aria-labelledby="titleEditPost">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleEditPost" class="sp-sheet-title">Chỉnh sửa bài viết</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeEditPostModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <input type="hidden" id="iptEditPostId">
-        <label for="iptEditPostContent" class="sr-only">Nội dung bài viết</label>
-        <textarea id="iptEditPostContent" class="sp-textarea"></textarea>
-      </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeEditPostModal()">Hủy</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-primary" onclick="submitEditPostAction()">Lưu bài</button>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog id="modalHelpCenter" class="sp-dialog" closedby="any" aria-labelledby="titleHelpCenter">
-    <div class="sp-sheet sp-sheet-wide" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="titleHelpCenter" class="sp-sheet-title">Cẩm nang &amp; Trợ lý FAQ CLB</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeHelpCenterModal()" aria-label="Đóng">✕</button>
-      </div>
-      <div class="sp-sheet-body">
-        <div class="sp-field">
-          <label for="iptFaqSearch" class="sp-label">Tra cứu nhanh quy định và hướng dẫn CLB</label>
-          <input type="search" id="iptFaqSearch" class="sp-input" placeholder="Gõ câu hỏi (vd: lịch tập, điểm danh, đổi ca, quỹ clb...)" oninput="searchClubFaq(this.value)">
+        <div class="settings-row-item">
+          <div class="settings-row-left">
+            <div class="settings-row-icon tile-teal" aria-hidden="true">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div>
+              <span class="settings-row-title">Ngôn ngữ</span>
+              <p class="settings-row-desc">Tiếng Việt (Mặc định)</p>
+            </div>
+          </div>
+          <span style="font-size:12px;font-weight:500;color:var(--text-secondary);">Tiếng Việt ›</span>
         </div>
-        <div class="filter-rail" aria-label="Chủ đề câu hỏi thường gặp">
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="askClubFaqPreset('lịch tập')">Lịch tập</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="askClubFaqPreset('điểm danh')">Điểm danh QR</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="askClubFaqPreset('đổi ca')">Đổi &amp; rút ca</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="askClubFaqPreset('quỹ')">Quỹ VietQR</button>
-          <button type="button" class="focus-ring spring-touch filter-chip" onclick="askClubFaqPreset('thể trạng')">Thể trạng</button>
+
+        <button id="security-password-row" type="button" class="settings-row-item">
+          <div class="settings-row-left">
+            <div class="settings-row-icon tile-emerald" aria-hidden="true">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+              <span class="settings-row-title">Bảo mật &amp; Đổi mật khẩu</span>
+              <p class="settings-row-desc">Cập nhật mật khẩu tài khoản CLB</p>
+            </div>
+          </div>
+          <span class="security-action-label">Đổi PIN ›</span>
+        </button>
+
+        <div class="settings-row-item">
+          <div class="settings-row-left">
+            <div class="settings-row-icon" style="background:var(--surface-chip);color:var(--text-secondary);" aria-hidden="true">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+            </div>
+            <div>
+              <span class="settings-row-title">Phiên bản ứng dụng</span>
+              <p class="settings-row-desc">Đã cập nhật bản mới nhất</p>
+            </div>
+          </div>
+          <span class="font-mono" style="font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface-chip);padding:2px 8px;border-radius:6px;">v2.4.0</span>
         </div>
-        <div id="faqResultsContainer" class="sp-scroll" style="display:flex;flex-direction:column;gap:10px;max-height:48dvh;overflow-y:auto;"></div>
+
+        <button id="logout-btn" type="button" class="btn-sheet-danger water-ripple-target spring-press">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          <span>Đăng xuất tài khoản</span>
+        </button>
       </div>
     </div>
   </dialog>
 
-  <dialog id="modalLightbox" class="sp-dialog" closedby="any" aria-label="Xem ảnh phóng to">
-    <div class="sp-sheet" tabindex="-1" style="background:transparent;border:0;box-shadow:none;">
-      <div style="display:flex;justify-content:flex-end;padding-bottom:8px;">
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeLightboxModal()" aria-label="Đóng ảnh">✕</button>
+  <!-- SHEET 4: EDIT PROFILE -->
+  <dialog id="edit-profile-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="edit-modal-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3 id="edit-modal-title" class="sheet-title-h3">Chỉnh Sửa Hồ Sơ</h3>
+        </div>
+        <button id="edit-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <img id="lightboxImageEl" src="" alt="Ảnh phóng to" style="width:100%;max-height:72dvh;object-fit:contain;border-radius:16px;">
-      <div style="display:flex;justify-content:center;gap:12px;padding-top:10px;">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="stepLightboxMedia(-1)">← Trước</button>
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="stepLightboxMedia(1)">Sau →</button>
+
+      <form id="profile-form" class="sheet-scroll-body" onsubmit="return false;">
+        <div class="field-group">
+          <label class="field-label-mono" for="edit-avatar-input">Ảnh đại diện thẻ (Tùy chọn)</label>
+          <input id="edit-avatar-input" type="file" accept="image/*" class="aqua-input" style="padding:8px 12px;">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-fullname">Họ và tên</label>
+          <input id="input-fullname" type="text" class="aqua-input" placeholder="Nhập họ và tên...">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-studentId">Mã số sinh viên</label>
+          <input id="input-studentId" type="text" class="aqua-input font-mono" placeholder="Mã số sinh viên...">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-faculty">Khoa / Khóa</label>
+          <input id="input-faculty" type="text" class="aqua-input" placeholder="Khoa và khóa đào tạo...">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-dob">Ngày tháng năm sinh</label>
+          <input id="input-dob" type="text" class="aqua-input font-mono" placeholder="DD/MM/YYYY">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-dutyArea">Ban hoạt động</label>
+          <input id="input-dutyArea" type="text" class="aqua-input" placeholder="Ban hoạt động CLB...">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-phone">Số điện thoại</label>
+          <input id="input-phone" type="tel" class="aqua-input font-mono" placeholder="Số điện thoại liên hệ...">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-ice">Liên hệ khẩn (ICE)</label>
+          <input id="input-ice" type="text" class="aqua-input font-mono" placeholder="Số điện thoại khẩn cấp và quan hệ...">
+        </div>
+      </form>
+
+      <div class="sheet-footer">
+        <button id="edit-modal-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">
+          <span>Hủy</span>
+        </button>
+        <button id="edit-modal-save" type="button" class="btn-sheet-primary water-ripple-target spring-press">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+          <span>Lưu thay đổi</span>
+        </button>
       </div>
     </div>
   </dialog>
 
-  <dialog id="modalConfirmDialog" class="sp-dialog" closedby="any" aria-labelledby="confirmDialogTitle">
-    <div class="sp-sheet" tabindex="-1">
-      <div class="sp-sheet-head">
-        <h2 id="confirmDialogTitle" class="sp-sheet-title">Xác nhận thao tác</h2>
-        <button type="button" class="focus-ring sp-close-btn" onclick="closeConfirmDialog()" aria-label="Đóng">✕</button>
+  <!-- SHEET 5: CHANGE PASSWORD -->
+  <dialog id="password-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="password-modal-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewBox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3 id="password-modal-title" class="sheet-title-h3">Đổi Mật Khẩu</h3>
+        </div>
+        <button id="password-modal-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <div class="sp-sheet-body">
-        <p id="confirmDialogMsg" style="margin:0;font-size:13.5px;color:var(--sp-text2);"></p>
+
+      <div class="sheet-scroll-body">
+        <div class="field-group">
+          <label class="field-label-mono" for="iptCurrentPassword">Mật khẩu hiện tại</label>
+          <input id="iptCurrentPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu cũ">
+        </div>
+        <div class="field-group">
+          <label class="field-label-mono" for="iptNewPassword">Mật khẩu mới (>= 6 ký tự)</label>
+          <input id="iptNewPassword" type="password" class="aqua-input" placeholder="Nhập mật khẩu mới">
+        </div>
+        <div class="field-group">
+          <label class="field-label-mono" for="iptConfirmPassword">Xác nhận mật khẩu mới</label>
+          <input id="iptConfirmPassword" type="password" class="aqua-input" placeholder="Nhập lại mật khẩu mới">
+        </div>
       </div>
-      <div class="sp-sheet-foot">
-        <button type="button" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-secondary" onclick="closeConfirmDialog()">Hủy</button>
-        <button type="button" id="btnConfirmDialogAction" class="focus-ring spring-touch sp-btn sp-btn-sm sp-btn-danger-solid" onclick="executeConfirmedAction()">Xác nhận</button>
+
+      <div class="sheet-footer">
+        <button id="password-modal-cancel" type="button" class="btn-sheet-muted">Hủy</button>
+        <button id="btnSavePassword" type="button" class="btn-sheet-primary">Lưu mật khẩu</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- SHEET 6: CREATE / EDIT SHIFT ("Tạo ca") -->
+  <dialog id="create-shift-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="create-shift-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+          </div>
+          <h3 id="create-shift-title" class="sheet-title-h3">Tạo Ca Trực Mới</h3>
+        </div>
+        <button id="create-shift-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="sheet-scroll-body">
+        <div class="field-group">
+          <label class="field-label-mono" for="iptTaskTitle">Tên ca trực / sự kiện</label>
+          <input id="iptTaskTitle" type="text" class="aqua-input" placeholder="Ví dụ: Trực bàn giải Cầu lông K16">
+        </div>
+        <div class="field-group">
+          <label class="field-label-mono" for="iptTaskLocation">Địa điểm</label>
+          <input id="iptTaskLocation" type="text" class="aqua-input" value="Nhà Thi Đấu ĐH Hải Dương">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 90px;gap:10px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="iptTaskTime">Khung giờ trực</label>
+            <input id="iptTaskTime" type="text" class="aqua-input font-mono" value="14:00 - 17:30 Thứ Bảy">
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="iptTaskQuota">Chỉ tiêu</label>
+            <input id="iptTaskQuota" type="number" min="1" class="aqua-input font-mono" value="4">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label-mono" for="iptTaskNotes">Ghi chú nhiệm vụ</label>
+          <input id="iptTaskNotes" type="text" class="aqua-input" placeholder="Trang phục, dụng cụ...">
+        </div>
+        <div class="field-group">
+          <span class="field-label-mono">Phân bổ 7 Ban chuyên môn</span>
+          <div id="deptQuotaContainer" style="display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
+      </div>
+
+      <div class="sheet-footer">
+        <button id="create-shift-cancel" type="button" class="btn-sheet-muted">Hủy</button>
+        <button id="btnSubmitTask" type="button" class="btn-sheet-primary">Phát hành ca trực</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- SHEET 7: APPROVE / DISPATCH / SCAN / DIRECTORY ("Duyệt ca") -->
+  <dialog id="approve-shift-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="approve-shift-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <h3 id="approve-shift-title" class="sheet-title-h3">Điều Phối &amp; Duyệt Ca</h3>
+            <p class="sheet-sub">Nhận ca, duyệt đơn, quét QR &amp; danh bạ 125 thành viên</p>
+          </div>
+        </div>
+        <button id="approve-shift-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="sheet-seg-tabs" style="margin-top:10px;">
+        <button id="approve-tab-btn-shifts" type="button" class="sheet-seg-btn active">Ca trực</button>
+        <button id="approve-tab-btn-approvals" type="button" class="sheet-seg-btn">Duyệt (<span id="approvals-count-pill">0</span>)</button>
+        <button id="approve-tab-btn-scanner" type="button" class="sheet-seg-btn">Quét QR</button>
+        <button id="approve-tab-btn-directory" type="button" class="sheet-seg-btn">Danh bạ</button>
+      </div>
+
+      <div class="sheet-scroll-body">
+        <!-- Panel: Shifts -->
+        <div id="approve-panel-shifts" style="display:flex;flex-direction:column;gap:10px;">
+          <div id="shiftsDeptFilterBar" class="dept-chip-scroll"></div>
+          <div id="shiftsListContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+
+        <!-- Panel: Approvals -->
+        <div id="approve-panel-approvals" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
+          <div id="approvalsListContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+
+        <!-- Panel: QR Scanner -->
+        <div id="approve-panel-scanner" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="selScanTaskId">Ca trực mục tiêu</label>
+            <select id="selScanTaskId" class="aqua-input"></select>
+          </div>
+          <div class="qr-video-box">
+            <video id="qrScannerVideo" autoplay muted playsinline></video>
+            <canvas id="qrScannerCanvas" class="hidden"></canvas>
+          </div>
+          <p id="qrScannerStatus" style="margin:0;font-size:12px;color:var(--text-secondary);">Nhấn Bật Camera hoặc chọn ảnh mã QR / nhập Mã ID để điểm danh.</p>
+          <div class="mini-action-grid">
+            <button id="btnStartCameraScan" type="button" class="btn-mini btn-mini-sky">Bật Camera</button>
+            <button id="btnSwitchCameraScan" type="button" class="btn-mini btn-mini-soft">Đổi Camera</button>
+            <button id="btnTorchCameraScan" type="button" class="btn-mini btn-mini-soft">Đèn Pin</button>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="iptQrFileUpload">Hoặc tải ảnh mã QR</label>
+            <input id="iptQrFileUpload" type="file" accept="image/*" class="aqua-input" style="padding:8px 12px;">
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input id="iptManualCheckinId" type="text" class="aqua-input font-mono" placeholder="Nhập nhanh Mã ID (vd: DMC0806)">
+            <button id="btnManualCheckin" type="button" class="btn-mini btn-mini-emerald" style="min-height:44px;flex-shrink:0;">Điểm danh</button>
+          </div>
+        </div>
+
+        <!-- Panel: 125 Directory & RBAC -->
+        <div id="approve-panel-directory" class="hidden" style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <input id="iptSearchDirectory" type="search" class="aqua-input" placeholder="Tìm tên, Mã ID, lớp hoặc ban...">
+            <span id="directoryCountLabel" class="font-mono" style="font-size:11px;color:var(--text-muted);white-space:nowrap;">125 hồ sơ</span>
+          </div>
+          <div id="directoryDeptFilterBar" class="dept-chip-scroll"></div>
+          <div id="directoryListContainer" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- SHEET 8: ACTION PROMPT (SWAP / LEAVE / DELETE CONFIRM) -->
+  <dialog id="action-prompt-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="prompt-sheet-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div>
+          <h3 id="prompt-sheet-title" class="sheet-title-h3">Xác Nhận Thao Tác</h3>
+          <p id="prompt-sheet-desc" class="sheet-sub">Nhập thông tin chi tiết để gửi lên hệ thống.</p>
+        </div>
+        <button id="prompt-modal-close" type="button" class="sheet-close-btn" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="sheet-scroll-body">
+        <div id="prompt-swap-target-wrap" class="field-group hidden">
+          <label class="field-label-mono" for="selSwapTargetMember">Thành viên nhận thay ca</label>
+          <select id="selSwapTargetMember" class="aqua-input"></select>
+        </div>
+        <div id="prompt-reason-wrap" class="field-group hidden">
+          <label class="field-label-mono" for="iptPromptReason">Lý do cụ thể</label>
+          <input id="iptPromptReason" type="text" class="aqua-input" placeholder="Nhập lý do...">
+        </div>
+      </div>
+
+      <div class="sheet-footer">
+        <button id="prompt-cancel-btn" type="button" class="btn-sheet-muted">Hủy</button>
+        <button id="prompt-confirm-btn" type="button" class="btn-sheet-primary">Xác nhận</button>
       </div>
     </div>
   </dialog>

@@ -1,42 +1,45 @@
-// SportPass V6.0 — Adaptive Dual-Mode Theme Engine (System / Light / Dark + View Transition)
+// SportPass V8.0 — Adaptive Dual-Mode Theme Controller (Light default matching code.html / Dark / System)
 
-const THEME_STORAGE_KEY = 'color-scheme';
+const THEME_STORAGE_KEY = 'sportpass-theme-mode';
 
-function getSystemPrefersDark() {
-  return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+function resolveEffectiveTheme(mode) {
+  if (mode === 'dark') return 'dark';
+  if (mode === 'light') return 'light';
+  const prefersDark = Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  return prefersDark ? 'dark' : 'light';
 }
 
-function getEffectiveSchemeLabel() {
-  return getSystemPrefersDark() ? 'Đang tối' : 'Đang sáng';
+function getSavedThemeMode() {
+  try {
+    const v = localStorage.getItem(THEME_STORAGE_KEY);
+    if (v === 'light' || v === 'dark' || v === 'system') return v;
+  } catch (e) {}
+  return 'light';
 }
 
-function syncThemeControlUI() {
-  let stored = null;
-  try { stored = localStorage.getItem(THEME_STORAGE_KEY); } catch (e) {}
-  const activeMode = (stored === 'light' || stored === 'dark') ? stored : 'system';
+function syncThemeControlUI(mode) {
+  const active = mode || getSavedThemeMode();
+  const effective = resolveEffectiveTheme(active);
+  document.documentElement.dataset.theme = effective;
 
-  const btnSys = document.getElementById('btnThemeSystem');
-  const btnLight = document.getElementById('btnThemeLight');
-  const btnDark = document.getElementById('btnThemeDark');
-  if (btnSys) btnSys.setAttribute('aria-pressed', String(activeMode === 'system'));
-  if (btnLight) btnLight.setAttribute('aria-pressed', String(activeMode === 'light'));
-  if (btnDark) btnDark.setAttribute('aria-pressed', String(activeMode === 'dark'));
+  const meta = document.querySelector('meta[name="color-scheme"]');
+  if (meta) meta.setAttribute('content', effective === 'dark' ? 'dark' : 'light');
 
-  const sysHint = document.getElementById('themeSystemHint');
-  if (sysHint) sysHint.textContent = getEffectiveSchemeLabel();
+  const badge = document.getElementById('theme-mode-badge');
+  const desc = document.getElementById('theme-mode-desc');
+  if (badge) {
+    badge.textContent = active === 'dark' ? 'Tối' : (active === 'system' ? (effective === 'dark' ? 'Tự động (Tối)' : 'Tự động (Sáng)') : 'Sáng');
+  }
+  if (desc) {
+    desc.textContent = active === 'system' ? 'Theo hệ thống tự động' : (active === 'dark' ? 'Đang bật chế độ tối Aquamorphic' : 'Giao diện sáng Frosted Sky');
+  }
 }
 
-function setColorScheme(mode = 'system', animate = true) {
+function setColorScheme(mode = 'light', animate = true) {
+  const nextMode = (mode === 'dark' || mode === 'system') ? mode : 'light';
   const apply = () => {
-    const meta = document.querySelector('meta[name="color-scheme"]');
-    if (mode === 'light' || mode === 'dark') {
-      try { localStorage.setItem(THEME_STORAGE_KEY, mode); } catch (e) {}
-      if (meta) meta.setAttribute('content', mode);
-    } else {
-      try { localStorage.removeItem(THEME_STORAGE_KEY); } catch (e) {}
-      if (meta) meta.setAttribute('content', 'light dark');
-    }
-    syncThemeControlUI();
+    try { localStorage.setItem(THEME_STORAGE_KEY, nextMode); } catch (e) {}
+    syncThemeControlUI(nextMode);
   };
 
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -49,17 +52,19 @@ function setColorScheme(mode = 'system', animate = true) {
   apply();
 }
 
+function cycleThemeMode() {
+  const cur = getSavedThemeMode();
+  const order = ['light', 'dark', 'system'];
+  const next = order[(order.indexOf(cur) + 1) % order.length];
+  setColorScheme(next, true);
+  const label = next === 'dark' ? 'Tối' : (next === 'system' ? 'Tự động theo hệ thống' : 'Sáng Frosted Sky');
+  showToast(`Giao diện: ${label}`);
+}
+
 function initThemeController() {
-  syncThemeControlUI();
-  window.addEventListener('storage', (ev) => {
-    if (ev.key === THEME_STORAGE_KEY) {
-      const meta = document.querySelector('meta[name="color-scheme"]');
-      if (meta) meta.setAttribute('content', ev.newValue === 'light' || ev.newValue === 'dark' ? ev.newValue : 'light dark');
-      syncThemeControlUI();
-    }
-  });
+  syncThemeControlUI(getSavedThemeMode());
   if (window.matchMedia) {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    if (mq.addEventListener) mq.addEventListener('change', syncThemeControlUI);
+    if (mq.addEventListener) mq.addEventListener('change', () => syncThemeControlUI());
   }
 }

@@ -1,4 +1,4 @@
-// SportPass V7.0 — Fair Shift Rotation Algorithm & Schedule Conflict Detector
+// SportPass V8.0 — Fair Shift Rotation Algorithm & Schedule Conflict Detector
 
 function parseShiftTimeRange(timeStr) {
   if (!timeStr) return null;
@@ -26,9 +26,7 @@ function hasShiftTimeConflict(memberId, targetTask) {
     const involved =
       (Array.isArray(t.joinedMembers) && t.joinedMembers.includes(memberId)) ||
       (Array.isArray(t.assignedMembers) && t.assignedMembers.includes(memberId));
-    if (involved && checkShiftTimeConflict(t, targetTask)) {
-      return true;
-    }
+    if (involved && checkShiftTimeConflict(t, targetTask)) return true;
   }
   return false;
 }
@@ -50,8 +48,7 @@ function calculateSmartRotation(task) {
       if (deptFilter && m.boMon !== deptFilter) return false;
       const theme = getTheTrangTheme(m.theTrang);
       if (theme.exempt) return false;
-      const hasTimeConflict = hasShiftTimeConflict(m.id, task);
-      if (hasTimeConflict) return false;
+      if (hasShiftTimeConflict(m.id, task)) return false;
       return true;
     });
 
@@ -64,11 +61,7 @@ function calculateSmartRotation(task) {
       }
     }
 
-    uniqueById.sort((a, b) => {
-      const doneA = Number(a.soCaHoanThanh ?? a.soCa ?? 0);
-      const doneB = Number(b.soCaHoanThanh ?? b.soCa ?? 0);
-      return doneA - doneB;
-    });
+    uniqueById.sort((a, b) => Number(a.soCaHoanThanh ?? a.soCa ?? 0) - Number(b.soCaHoanThanh ?? b.soCa ?? 0));
 
     for (const m of uniqueById) {
       if (picked.length + existing.size >= totalQuota) break;
@@ -90,55 +83,26 @@ function calculateSmartRotation(task) {
   return picked;
 }
 
-function openSmartRotationModal(taskId) {
+function runSmartRotationForTask(taskId) {
+  if (!currentUser || !currentUser.isAdmin) {
+    showToast('Chỉ Quản trị viên mới được điều phối xoay tua.');
+    return;
+  }
   const task = (currentTasks || []).find(t => t.id === taskId);
   if (!task) return;
-  pendingSmartRotationTaskId = taskId;
-  pendingSmartRotationCandidates = calculateSmartRotation(task);
-
-  const box = document.getElementById('smartRotationResultsContainer');
-  if (box) {
-    if (pendingSmartRotationCandidates.length === 0) {
-      mount(box, el('div', { className: 'sp-empty' }, 'Không còn thành viên phù hợp (đã đủ quân số, đang miễn trực y tế hoặc trùng lịch ca khác).'));
-    } else {
-      const rows = pendingSmartRotationCandidates.map((item, idx) =>
-        el('div', { className: 'member-item-card sp-card stagger-item' },
-          el('div', {},
-            el('div', { style: { fontWeight: '600', fontSize: '14px' } }, `${idx + 1}. ${item.member.hoTen}`),
-            el('div', { style: { fontSize: '12px', color: 'var(--sp-text2)' } },
-              `${item.dept} • `,
-              el('span', { className: 'mono-num' }, item.member.id)
-            )
-          ),
-          el('span', { className: 'sp-badge sp-badge-accent mono-num' }, `${Number(item.member.soCaHoanThanh || item.member.soCa || 0)} ca`)
-        )
-      );
-      mount(box, rows);
-    }
-  }
-
-  openGenericModal('modalSmartRotation');
-}
-
-async function applySmartRotationCandidates() {
-  const task = (currentTasks || []).find(t => t.id === pendingSmartRotationTaskId);
-  if (!task || !Array.isArray(pendingSmartRotationCandidates) || pendingSmartRotationCandidates.length === 0) {
-    closeSmartRotationModal();
+  const picked = calculateSmartRotation(task);
+  if (picked.length === 0) {
+    showToast('Không còn nhân sự phù hợp (đủ quân số hoặc miễn/trùng lịch).');
     return;
   }
   task.assignedMembers = Array.isArray(task.assignedMembers) ? task.assignedMembers : [];
-  for (const item of pendingSmartRotationCandidates) {
+  for (const item of picked) {
     if (item && item.member && !task.assignedMembers.includes(item.member.id)) {
       task.assignedMembers.push(item.member.id);
     }
   }
   saveLocalState();
   syncTaskToBackend(task);
-  renderTasksList();
-  closeSmartRotationModal();
-  showAquaIsland(`Đã phân bổ xoay tua ${pendingSmartRotationCandidates.length} thành viên.`, '⚡');
-}
-
-function closeSmartRotationModal() {
-  closeGenericModal('modalSmartRotation');
+  renderDispatchHub();
+  showToast(`Đã xoay tua phân bổ ${picked.length} thành viên vào ${task.id}!`);
 }

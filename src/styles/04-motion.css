@@ -1,172 +1,135 @@
-/* SportPass V7.0 — 120fps Physics Springs, Top-Layer @starting-style & Directional View Transitions */
+/* Aquamorphic Water Ripple Effect */
+.water-ripple-target {
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
 
-/* 1. Natural Interaction States & Ripple */
-.ripple-wave {
+.water-ripple {
   position: absolute;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
   pointer-events: none;
-  transform: scale(0);
-  opacity: 0.9;
-  animation: spRipple 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform: translate(-50%, -50%) scale(0);
+  animation: waterRipple 650ms cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+  z-index: 30;
 }
 
-@keyframes spRipple {
-  to {
-    transform: scale(3.5);
+.water-ripple.ripple-light {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, rgba(14, 165, 233, 0.25) 45%, rgba(255, 255, 255, 0) 72%);
+}
+
+.water-ripple.ripple-dark {
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.65) 0%, rgba(186, 230, 253, 0.35) 45%, rgba(255, 255, 255, 0) 70%);
+}
+
+.water-ripple.ripple-danger {
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.4) 0%, rgba(225, 29, 72, 0.22) 48%, rgba(255, 255, 255, 0) 72%);
+}
+
+@keyframes waterRipple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.9;
+  }
+  60% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(4);
     opacity: 0;
   }
 }
 
-/* 2. Dock Indicator Physics Spring (linear() with crisp ease-out fallback) */
-.dock-indicator {
-  transition: transform 320ms cubic-bezier(0.2, 0, 0, 1);
-  transition-timing-function: linear(
-    0, 0.012, 0.048, 0.16, 0.34, 0.56, 0.77, 0.92,
-    1.01, 1.032, 1.028, 1.014, 1.003, 0.998, 0.999, 1
+/* Specular Reflection & Diagonal Aurora Sweeps */
+.hero-specular-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  background: radial-gradient(
+    circle at var(--specular-x, 50%) var(--specular-y, 50%),
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(56, 189, 248, 0.18) 35%,
+    transparent 68%
   );
-}
-
-/* 3. Aqua Island Spring Transition */
-.aqua-island {
-  transition: opacity 200ms ease-out, transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
-  transition-timing-function: ease-out, linear(
-    0, 0.014, 0.06, 0.19, 0.42, 0.68, 0.89, 1.015,
-    1.04, 1.025, 1.006, 0.998, 1
-  );
-}
-
-/* 4. Native Top-Layer <dialog> Entry & Exit (@starting-style + overlay + allow-discrete + fallback) */
-dialog.sp-dialog {
   opacity: 0;
-  transition-property: opacity, transform, display, overlay;
-  transition-duration: 0.28s;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  transition-behavior: allow-discrete;
+  transition: opacity 300ms ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  dialog.sp-dialog {
-    transform: translateY(16px) scale(0.97);
-  }
-}
-
-dialog.sp-dialog::backdrop {
-  transition-property: background-color, backdrop-filter, display, overlay;
-  transition-duration: 0.24s;
-  transition-timing-function: ease-out;
-  transition-behavior: allow-discrete;
-}
-
-:is(dialog.sp-dialog[open], dialog.sp-dialog.open):where(:not([data-closing])) {
+.hero-card-aquamorphic:hover .hero-specular-light {
   opacity: 1;
+}
 
-  @starting-style {
+.aurora-beam {
+  position: absolute;
+  top: -40px;
+  bottom: -40px;
+  left: -96px;
+  width: 160px;
+  background: linear-gradient(to right, transparent, rgba(165, 243, 252, 0.3), transparent);
+  pointer-events: none;
+  z-index: 10;
+  filter: blur(8px);
+  animation: auroraShimmerSweep 5s cubic-bezier(0.2, 0.8, 0.25, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.qr-button-sweep {
+  position: absolute;
+  top: -24px;
+  bottom: -24px;
+  left: -48px;
+  width: 80px;
+  background: linear-gradient(to right, transparent, rgba(103, 232, 249, 0.4), transparent);
+  pointer-events: none;
+  z-index: 0;
+  animation: buttonShimmerSweep 4s cubic-bezier(0.2, 0.8, 0.25, 1) infinite;
+  animation-delay: 1.2s;
+  will-change: transform, opacity;
+}
+
+@keyframes auroraShimmerSweep {
+  0% {
+    transform: translateX(-160%) skewX(-20deg);
     opacity: 0;
   }
-
-  @media (prefers-reduced-motion: no-preference) {
-    transform: translateY(0) scale(1);
-
-    @starting-style {
-      transform: translateY(16px) scale(0.97);
-    }
+  15% {
+    opacity: 0.8;
   }
-
-  &::backdrop {
-    background-color: rgba(11, 15, 23, 0.58);
-    backdrop-filter: blur(6px);
-
-    @starting-style {
-      background-color: rgba(11, 15, 23, 0);
-      backdrop-filter: blur(0px);
-    }
+  45% {
+    opacity: 0.95;
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  dialog.sp-dialog,
-  dialog.sp-dialog::backdrop {
-    transition-duration: 0.08s;
+  65% {
+    opacity: 0.25;
   }
-}
-
-/* 5. Directional Tab View Transitions */
-.app-header {
-  view-transition-name: app-header;
-}
-
-.dock-nav {
-  view-transition-name: app-dock;
-}
-
-.tab-stage {
-  view-transition-name: tab-stage;
-}
-
-@keyframes vtSlideOutLeft {
-  to {
-    transform: translateX(-18%);
-    opacity: 0;
-  }
-}
-
-@keyframes vtSlideInRight {
-  from {
-    transform: translateX(18%);
+  100% {
+    transform: translateX(220%) skewX(-20deg);
     opacity: 0;
   }
 }
 
-@keyframes vtSlideOutRight {
-  to {
-    transform: translateX(18%);
+@keyframes buttonShimmerSweep {
+  0% {
+    transform: translateX(-140%) skewX(-25deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(220%) skewX(-25deg);
     opacity: 0;
   }
 }
 
-@keyframes vtSlideInLeft {
-  from {
-    transform: translateX(-18%);
-    opacity: 0;
-  }
-}
-
-::view-transition-group(tab-stage) {
-  animation: 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-html:active-view-transition-type(forward)::view-transition-old(tab-stage) {
-  animation-name: vtSlideOutLeft;
-}
-html:active-view-transition-type(forward)::view-transition-new(tab-stage) {
-  animation-name: vtSlideInRight;
-}
-
-html:active-view-transition-type(backward)::view-transition-old(tab-stage) {
-  animation-name: vtSlideOutRight;
-}
-html:active-view-transition-type(backward)::view-transition-new(tab-stage) {
-  animation-name: vtSlideInLeft;
-}
-
-html:active-view-transition-type(theme)::view-transition-group(root) {
-  animation-duration: 0.22s;
-  animation-timing-function: ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(root),
-  ::view-transition-group(tab-stage) {
-    animation: none !important;
-  }
-}
-
-/* 6. Staggered Card Choreography (sibling-index() with @supports guard & JS fallback) */
-@keyframes spCardReveal {
+@keyframes staggerSlideUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -174,42 +137,104 @@ html:active-view-transition-type(theme)::view-transition-group(root) {
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .stagger-list > .stagger-item {
-    --stagger-step: 36ms;
-    animation: spCardReveal 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(min(var(--sibling-index, 1), 10) * var(--stagger-step));
+@keyframes statBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(8px);
   }
+  60% {
+    transform: scale(1.08) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
 
-  @supports (animation-delay: calc(sibling-index() * 0.1s)) {
-    .stagger-list > .stagger-item {
-      animation-delay: calc(min(sibling-index(), 10) * var(--stagger-step));
-    }
+@keyframes qrHoloGlow {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.3), inset 0 0 15px rgba(14, 165, 233, 0.2);
   }
+  50% {
+    box-shadow: 0 0 35px rgba(14, 165, 233, 0.5), inset 0 0 22px rgba(56, 189, 248, 0.35);
+  }
+}
+
+@keyframes pingHalo {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes sheetSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ping-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background-color: #6ee7b7;
+  opacity: 0.75;
+  animation: pingHalo 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.spring-press {
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.spring-press:active {
+  transform: scale(0.96);
+  transition-duration: 100ms;
+}
+
+.anim-hero { animation: staggerSlideUp 500ms cubic-bezier(0.16, 1, 0.3, 1) 40ms both; }
+.anim-stagger-1 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both; }
+.anim-stagger-2 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 180ms both; }
+.anim-stagger-3 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 240ms both; }
+.anim-stagger-4 { animation: staggerSlideUp 450ms cubic-bezier(0.16, 1, 0.3, 1) 300ms both; }
+
+.stat-anim-1 { animation: statBounce 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 220ms both; }
+.stat-anim-2 { animation: statBounce 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 320ms both; }
+.stat-anim-3 { animation: statBounce 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 420ms both; }
+
+.qr-holo-card {
+  animation: qrHoloGlow 3.5s ease-in-out infinite;
+}
+
+dialog.sp-sheet-dialog[open] .sheet-panel {
+  animation: sheetSlideUp 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stagger-list > .stagger-item {
-    animation: none;
+  .hero-card-aquamorphic,
+  .aurora-beam,
+  .qr-button-sweep,
+  .anim-hero,
+  .anim-stagger-1,
+  .anim-stagger-2,
+  .anim-stagger-3,
+  .anim-stagger-4,
+  .stat-anim-1,
+  .stat-anim-2,
+  .stat-anim-3,
+  .qr-holo-card,
+  .ping-ring,
+  dialog.sp-sheet-dialog[open] .sheet-panel {
+    animation: none !important;
+    transform: none !important;
   }
-}
-
-/* 7. GPU-Accelerated QR Laser Sweep */
-@keyframes qrLaserSweep {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(224px); }
-  100% { transform: translateY(0px); }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .qr-laser-beam {
-    animation: qrLaserSweep 2.4s ease-in-out infinite;
-    will-change: transform;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .qr-laser-beam {
-    transform: translateY(112px);
+  .spring-press,
+  .toast-pill,
+  .aqua-switch-knob {
+    transition: none !important;
   }
 }

@@ -1,4 +1,4 @@
-// SportPass V7.0 — Security, Auth Session Lifecycle & XSS Escaping
+// SportPass V8.0 — Security, Auth Session Lifecycle & Sole Admin Protection
 
 function escapeHtml(str) {
   if (str === undefined || str === null) return '';
@@ -51,55 +51,50 @@ function showMainAppView() {
   if (appView) appView.classList.remove('hidden');
 }
 
+function persistUserSession(userObj) {
+  if (!userObj) return;
+  const json = JSON.stringify(userObj);
+  sessionStorage.setItem('CLB_SPORTPASS_AUTH_SESSION', json);
+  if (localStorage.getItem('CLB_REMEMBER_LOGIN') === 'true') {
+    localStorage.setItem('CLB_SPORTPASS_AUTH_SESSION', json);
+  }
+}
+
 function checkStoredLoginSession() {
   const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');
   const sessionCached = sessionStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const localCached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const dataCache = localStorage.getItem('CLB_SPORTPASS_DATA_CACHE');
 
-  const isRemembered = localStorage.getItem('CLB_REMEMBER_LOGIN') === 'true';
-  let activeSessionJson = null;
-  if (sessionCached) {
-    activeSessionJson = sessionCached;
-  } else if (isRemembered && localCached) {
-    activeSessionJson = localCached;
-  }
+  const isRemembered = rememberFlag === 'true';
+  let activeSessionJson = sessionCached || (isRemembered ? localCached : null);
 
   const chkRemember = document.getElementById('chkRememberLogin');
-  if (chkRemember) {
-    chkRemember.checked = (rememberFlag !== 'false');
-  }
+  if (chkRemember) chkRemember.checked = (rememberFlag !== 'false');
 
   if (activeSessionJson) {
     try {
       currentUser = JSON.parse(activeSessionJson);
       window.currentUser = currentUser;
       const deletedTasks = getDeletedTaskIds();
-      const deletedPosts = getDeletedPostIds();
       if (dataCache) {
         const parsed = JSON.parse(dataCache);
         const rawTasks = (parsed.currentTasks && parsed.currentTasks.length) ? parsed.currentTasks : DEFAULT_TASKS;
         currentTasks = deduplicateTasks(rawTasks.filter(t => t && !deletedTasks.includes(t.id) && !isStaleRemoteTestTask(t)));
-        currentPosts = (parsed.currentPosts && parsed.currentPosts.length ? parsed.currentPosts : DEFAULT_COMMUNITY_POSTS)
-          .filter(p => p && !deletedPosts.includes(p.id));
         currentSwaps = parsed.currentSwaps || [];
         currentLeaves = parsed.currentLeaves || [];
-        auditLogs = parsed.auditLogs || [];
         offlineMutationQueue = parsed.offlineMutationQueue || [];
       } else {
         membersDirectory = DEFAULT_MEMBERS_DIRECTORY.slice();
         currentTasks = deduplicateTasks(DEFAULT_TASKS);
-        currentPosts = DEFAULT_COMMUNITY_POSTS.filter(p => p && !deletedPosts.includes(p.id));
       }
 
       applyCustomAdminRoles(membersDirectory);
       showMainAppView();
       renderProfileData();
-      renderTasksList();
-      renderForumFeed();
-      updatePendingSwapsBadge();
-      updateOfflineQueueBadge();
-      generateDynamicQrPass();
+      renderDispatchHub();
+      renderNotificationsModalList();
+      updateQrPassDisplay();
       autoEnableBackgroundNotifications();
       restartAdaptivePolling();
       syncRealtimeData();
@@ -108,31 +103,6 @@ function checkStoredLoginSession() {
   }
 
   showLoginView();
-}
-
-function getDemoFallbackUser(identifier) {
-  const clean = String(identifier || '').trim().toLowerCase();
-  if (clean === 'nva1508' || clean === 'nguyễn văn an') {
-    return {
-      id: 'NVA1508',
-      hoTen: 'Nguyễn Văn An',
-      lop: 'K15.GDTC',
-      boMon: 'Ban Cầu Lông',
-      chucVu: 'Thành viên',
-      sdt: '0913916326',
-      yTe: 'Bình thường',
-      ice: '0975364478',
-      soCa: 3,
-      soCaHoanThanh: 3,
-      status: 'Sẵn sàng',
-      theTrang: 'Khỏe mạnh (100% Sẵn sàng)',
-      avatar: '',
-      isAdmin: false,
-      isShiftLeader: false,
-      donVi: 'Trường Đại học Hải Dương'
-    };
-  }
-  return null;
 }
 
 function fallbackOfflineLogin(user, pass, remember) {
@@ -154,16 +124,15 @@ function fallbackOfflineLogin(user, pass, remember) {
     }
   }
 
-  if (!matched) matched = getDemoFallbackUser(user);
   if (!matched) {
-    showAquaIsland('Không tìm thấy tài khoản hội viên. Kiểm tra Mã ID hoặc SĐT.', '⚠️');
+    showToast('Không tìm thấy tài khoản hội viên. Kiểm tra Mã ID hoặc SĐT.');
     return false;
   }
 
   const customPassKey = 'CLB_USER_PASS_' + matched.id;
   const savedPass = localStorage.getItem(customPassKey) || '123456';
   if (pass !== savedPass && pass !== '123456') {
-    showAquaIsland('Mật khẩu chưa chính xác. Mật khẩu mặc định là 123456.', '🔒');
+    showToast('Mật khẩu chưa chính xác. Mặc định là 123456.');
     return false;
   }
 
@@ -187,21 +156,17 @@ function completeUserLogin(memberObj, remember) {
   }
 
   const deletedTasks = getDeletedTaskIds();
-  const deletedPosts = getDeletedPostIds();
   currentTasks = deduplicateTasks((currentTasks.length ? currentTasks : DEFAULT_TASKS).filter(t => t && !deletedTasks.includes(t.id)));
-  currentPosts = (currentPosts.length ? currentPosts : DEFAULT_COMMUNITY_POSTS).filter(p => p && !deletedPosts.includes(p.id));
 
   showMainAppView();
-  switchDockTab(0);
   renderProfileData();
-  renderTasksList();
-  renderForumFeed();
-  updatePendingSwapsBadge();
-  generateDynamicQrPass();
+  renderDispatchHub();
+  renderNotificationsModalList();
+  updateQrPassDisplay();
   autoEnableBackgroundNotifications();
   restartAdaptivePolling();
   syncRealtimeData();
-  showAquaIsland('Đăng nhập thành công: ' + currentUser.hoTen, '🛡️');
+  showToast('Đăng nhập thành công: ' + currentUser.hoTen);
 }
 
 async function handleLoginSubmit(event) {
@@ -214,12 +179,12 @@ async function handleLoginSubmit(event) {
   const remember = remEl ? remEl.checked : true;
 
   if (!ident) {
-    showAquaIsland('Vui lòng nhập Mã ID hoặc SĐT hội viên.', '⚠️');
+    showToast('Vui lòng nhập Mã ID hoặc SĐT hội viên.');
     if (identEl) identEl.focus();
     return;
   }
   if (!pass) {
-    showAquaIsland('Vui lòng nhập mật khẩu.', '⚠️');
+    showToast('Vui lòng nhập mật khẩu.');
     if (passEl) passEl.focus();
     return;
   }
@@ -234,11 +199,11 @@ async function handleLoginSubmit(event) {
           completeUserLogin(data.member, remember);
           return;
         }
-        showAquaIsland('Mật khẩu chưa chính xác.', '🔒');
+        showToast('Mật khẩu chưa chính xác.');
         return;
       }
     } catch (err) {
-      // Fallback safely below when offline or GAS unreachable
+      // Offline fallback below
     }
   }
 
@@ -255,9 +220,5 @@ function executeLogoutAction() {
   showLoginView();
   safeSetValue('iptUser', '');
   safeSetValue('iptPass', '');
-  showAquaIsland('Đã đăng xuất an toàn.', '👋');
-}
-
-function handleLogout() {
-  executeLogoutAction();
+  showToast('Đã đăng xuất khỏi tài khoản.');
 }
