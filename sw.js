@@ -4,7 +4,7 @@
  * Hỗ trợ: Push Notifications, Offline Caching, Background Sync, Auto Cache Cleanup
  */
 
-const CACHE_VERSION = 'clb-sportpass-v8.8.0-varsity';
+const CACHE_VERSION = 'clb-sportpass-v8.8.1-varsity';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -132,7 +132,7 @@ self.addEventListener('notificationclick', (event) => {
 
 async function checkNewTasksBackground() {
   try {
-    const res = await fetch('https://script.google.com/macros/s/AKfycbzOzxjkLP684tGXQn7HFptjiYyMoyEFMkTackb8K56f1gJvqMlvV5mFc0JBTm9gbO7U/exec?action=syncAll');
+    const res = await fetch('https://script.google.com/macros/s/AKfycbwyVjhtQAk_6zr0crOKjJOje40z8Pcnl1dTdmDbW0E9DH5DD12jW3dtoq8zLSSth9Qw/exec?action=syncAll');
     const data = await res.json();
     if (data && data.success && Array.isArray(data.tasks) && data.tasks.length > 0) {
       const latest = data.tasks[0];

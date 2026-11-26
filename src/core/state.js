@@ -31,7 +31,7 @@ function normalizePhoneVN(val) {
   if (!digits) return '';
   if (digits.startsWith('84') && digits.length >= 11) {
     digits = '0' + digits.slice(2);
-  } else if (!digits.startsWith('0') && digits.length >= 9 && digits.length <= 10) {
+  } else if (!digits.startsWith('0') && digits.length === 9) {
     digits = '0' + digits;
   }
   return digits;

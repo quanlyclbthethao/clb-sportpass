@@ -1842,10 +1842,10 @@ function getAllMembersFromDepartments(ss) {
  */
 function cleanPhone(val) {
   if (!val) return '';
-  var s = String(val).trim().replace(/['\s\.\-]/g, '');
+  var s = String(val).trim().replace(/[^0-9]/g, '');
   if (s.indexOf('84') === 0 && s.length >= 11) {
     s = '0' + s.substring(2);
-  } else if (s.indexOf('0') !== 0 && (s.length === 9 || s.length === 10)) {
+  } else if (s.indexOf('0') !== 0 && s.length === 9) {
     s = '0' + s;
   }
   return s;

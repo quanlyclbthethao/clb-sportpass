@@ -300,9 +300,10 @@ async function handleLoginSubmit(event) {
       setLoginButtonLoading(true);
       const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
       const timer = ctrl ? setTimeout(() => ctrl.abort(), 8000) : null;
+      const remoteIdent = (/^(?:\+?84[\d\s.\-]{8,}|0[\d\s.\-]{8,})$/.test(ident)) ? normalizePhoneVN(ident) : ident;
       try {
         const res = await fetch(
-          `${GAS_API_URL}?action=login&identifier=${encodeURIComponent(ident)}&passwordHash=${encodeURIComponent(inputHash)}`,
+          `${GAS_API_URL}?action=login&identifier=${encodeURIComponent(remoteIdent)}&passwordHash=${encodeURIComponent(inputHash)}`,
           ctrl ? { signal: ctrl.signal } : undefined
         );
         const data = res && res.ok ? await res.json().catch(() => null) : null;

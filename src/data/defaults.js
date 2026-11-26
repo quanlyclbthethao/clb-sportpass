@@ -1,6 +1,6 @@
 // SportPass V8.5 — Canonical UHD Configuration, Avatar Data URI & Dispatch Seed Datasets
 
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzOzxjkLP684tGXQn7HFptjiYyMoyEFMkTackb8K56f1gJvqMlvV5mFc0JBTm9gbO7U/exec';
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwyVjhtQAk_6zr0crOKjJOje40z8Pcnl1dTdmDbW0E9DH5DD12jW3dtoq8zLSSth9Qw/exec';
 
 const ALL_DEPARTMENTS = [
   'Ban Chủ Nhiệm',
