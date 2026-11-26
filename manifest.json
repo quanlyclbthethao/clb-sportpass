@@ -15,39 +15,39 @@
       "short_name": "Digital Pass",
       "description": "Mở thẻ định danh số cá nhân và xuất trình QR nhận ca",
       "url": "./index.html#pass",
-      "icons": [{ "src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%230058bc&width=96&height=96", "sizes": "96x96" }]
+      "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }]
     },
     {
       "name": "Lệnh Điều Động",
       "short_name": "Điều Phối",
       "description": "Xem ca trực, nhận ca và xin đổi / rút ca",
       "url": "./index.html#tasks",
-      "icons": [{ "src": "https://api.iconify.design/solar:clipboard-check-bold-duotone.svg?color=%230058bc&width=96&height=96", "sizes": "96x96" }]
+      "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }]
     },
     {
       "name": "Quét QR Điểm Danh Hiện Trường",
       "short_name": "Điểm Danh QR",
       "description": "Quét mã QR thẻ nhận ca của thành viên (Chỉ Trưởng ca & Admin)",
       "url": "./index.html#scan",
-      "icons": [{ "src": "https://api.iconify.design/solar:qr-code-bold-duotone.svg?color=%230058bc&width=96&height=96", "sizes": "96x96" }]
+      "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }]
     },
     {
       "name": "Cấp Cứu Khẩn Cấp ICE",
       "short_name": "Cấp Cứu ICE",
       "description": "Kích hoạt cứu hộ y tế và chia sẻ vị trí",
       "url": "./index.html#ice",
-      "icons": [{ "src": "https://api.iconify.design/solar:danger-bold-duotone.svg?color=%23dc2626&width=96&height=96", "sizes": "96x96" }]
+      "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml" }]
     }
   ],
   "icons": [
     {
-      "src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%230058bc&width=192&height=192",
+      "src": "./icon.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "https://api.iconify.design/solar:shield-star-bold-duotone.svg?color=%230058bc&width=512&height=512",
+      "src": "./icon.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"

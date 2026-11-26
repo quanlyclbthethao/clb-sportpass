@@ -44,7 +44,84 @@ var DEPARTMENT_SHEETS = [
   'Ban Truyền Thông'
 ];
 
-var APP_SHEETS = ['Tasks', 'Swaps', 'Posts'];
+var APP_SHEETS = ['Tasks', 'Swaps', 'Posts', 'AdminRoles', 'DeletedTombstones', 'AuthCredentials', 'ArchivedMembers'];
+var DEFAULT_PASS_HASH_HEX = '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92';
+
+function sha256HexServer(str) {
+  var raw = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(str || ''), Utilities.Charset.UTF_8);
+  var out = '';
+  for (var i = 0; i < raw.length; i++) {
+    out += ('0' + ((raw[i] & 0xff).toString(16))).slice(-2);
+  }
+  return out;
+}
+
+function getAuthCredentialsMap(ss) {
+  var map = {};
+  try {
+    var sheet = ss.getSheetByName('AuthCredentials');
+    if (!sheet) return map;
+    var rows = sheet.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      var mid = String(rows[i][0] || '').trim().toUpperCase();
+      var hash = String(rows[i][1] || '').trim().toLowerCase();
+      if (mid && hash) map[mid] = hash;
+    }
+  } catch (e) {}
+  return map;
+}
+
+function upsertAuthCredential(ss, memberId, passHash) {
+  if (!memberId || !passHash) return;
+  var cleanId = String(memberId).trim();
+  var cleanHash = String(passHash).trim().toLowerCase();
+  var sheet = ss.getSheetByName('AuthCredentials');
+  if (!sheet) {
+    sheet = ss.insertSheet('AuthCredentials');
+    sheet.appendRow(['memberId', 'passwordHash', 'updatedAt']);
+    sheet.getRange(1, 1, 1, 3).setBackground('#0f172a').setFontColor('#ffffff').setFontWeight('bold');
+    sheet.getRange('A:C').setNumberFormat('@');
+    sheet.setFrozenRows(1);
+  }
+  var rows = sheet.getDataRange().getValues();
+  var now = new Date().toISOString();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0] || '').trim().toUpperCase() === cleanId.toUpperCase()) {
+      sheet.getRange(i + 1, 1, 1, 3).setValues([[cleanId, cleanHash, now]]);
+      return;
+    }
+  }
+  sheet.appendRow([cleanId, cleanHash, now]);
+}
+
+function removeAuthCredential(ss, memberId) {
+  if (!memberId) return;
+  var cleanUpper = String(memberId).trim().toUpperCase();
+  var sheet = ss.getSheetByName('AuthCredentials');
+  if (!sheet) return;
+  var rows = sheet.getDataRange().getValues();
+  for (var i = rows.length - 1; i >= 1; i--) {
+    if (String(rows[i][0] || '').trim().toUpperCase() === cleanUpper) {
+      sheet.deleteRow(i + 1);
+    }
+  }
+}
+
+function isActorAdminServer(ss, actorId) {
+  var clean = String(actorId || '').trim().toUpperCase();
+  if (!clean) return false;
+  if (clean === 'DMC0806') return true;
+  var rolesSheet = ss.getSheetByName('AdminRoles');
+  if (!rolesSheet) return false;
+  var rows = rolesSheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0] || '').trim().toUpperCase() === clean) {
+      var val = rows[i][1];
+      return (val === true || String(val).toLowerCase() === 'true');
+    }
+  }
+  return false;
+}
 
 var SEED_DATA = {
   "Ban Chủ Nhiệm": [
@@ -1353,15 +1430,17 @@ function handleRequest(e) {
       setupMultiSheetDatabase();
       responseData = { success: true, message: 'Đã hoàn tất dọn dẹp và khởi tạo 7 ban cùng dữ liệu 125 thành viên chuẩn 8 cột!' };
     }
-    // 1. ĐĂNG NHẬP (Tìm kiếm thông minh trên tất cả 7 Ban - Hợp nhất quyền kiêm nhiệm)
+    // 1. ĐĂNG NHẬP (Tìm kiếm thông minh theo Mã ID, MSSV, SĐT đã chuẩn hóa hoặc Họ tên)
     else if (action === 'login') {
-      var identifier = (params.identifier || '').trim().toLowerCase();
+      var rawIdent = String(params.identifier || '').trim();
+      var identifier = rawIdent.toLowerCase();
       if (!identifier) {
-        responseData = { success: false, message: 'Vui lòng nhập Mã ID, SĐT hoặc Họ và Tên' };
+        responseData = { success: false, message: 'Vui lòng nhập Mã ID, MSSV hoặc Số điện thoại' };
       } else {
         var allMembers = getAllMembersFromDepartments(ss);
         var foundMember = null;
-        var cleanIdentNum = identifier.replace(/[^0-9]/g, '');
+        var hasLetters = /[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF]/.test(rawIdent);
+        var cleanIdentPhone = !hasLetters ? cleanPhone(rawIdent) : '';
         var byIdMatch = null;
         var byCodeMatch = null;
         var byPhoneMatch = null;
@@ -1370,13 +1449,13 @@ function handleRequest(e) {
         for (var i = 0; i < allMembers.length; i++) {
           var m = allMembers[i];
           var mId = String(m.id || '').trim().toLowerCase();
-          var mSdt = String(m.sdt || '').replace(/[^0-9]/g, '');
+          var mSdt = cleanPhone(m.sdt || '');
           var mName = String(m.hoTen || '').trim().toLowerCase();
-          var mMssv = String(m.studentCode || m.mssv || '').trim().toLowerCase();
+          var mMssv = String(m.studentCode || '').trim().toLowerCase();
 
           if (!byIdMatch && mId === identifier) byIdMatch = m;
           if (!byCodeMatch && mMssv && mMssv === identifier) byCodeMatch = m;
-          if (!byPhoneMatch && cleanIdentNum.length >= 9 && mSdt && mSdt === cleanIdentNum) byPhoneMatch = m;
+          if (!byPhoneMatch && cleanIdentPhone.length >= 9 && mSdt && mSdt === cleanIdentPhone) byPhoneMatch = m;
           if (!byNameMatch && mName === identifier) byNameMatch = m;
         }
 
@@ -1386,9 +1465,18 @@ function handleRequest(e) {
         }
 
         if (foundMember) {
+          var suppliedHash = String(params.passwordHash || '').trim().toLowerCase();
+          if (suppliedHash) {
+            var authMap = getAuthCredentialsMap(ss);
+            var expectedHash = authMap[String(foundMember.id || '').toUpperCase()] || DEFAULT_PASS_HASH_HEX;
+            if (suppliedHash !== expectedHash) {
+              responseData = { success: false, code: 'WRONG_PASSWORD', message: 'Mật khẩu chưa chính xác.' };
+              return createJsonResponse(responseData);
+            }
+          }
           responseData = { success: true, member: foundMember };
         } else {
-          responseData = { success: false, message: 'Không tìm thấy thành viên: ' + identifier + '. Vui lòng kiểm tra Mã ID (VD: DMC0806, LDH0912, DDH1011...) hoặc SĐT.' };
+          responseData = { success: false, message: 'Không tìm thấy thành viên: ' + rawIdent };
         }
       }
     }
@@ -1441,7 +1529,8 @@ function handleRequest(e) {
         swaps: swapsList,
         posts: postsList,
         deletedTaskIds: tombstones.taskIds,
-        deletedPostIds: tombstones.postIds
+        deletedPostIds: tombstones.postIds,
+        deletedMemberIds: tombstones.memberIds
       };
     }
     // 3. ĐĂNG KÝ CA TRỰC (claimTask)
@@ -1537,6 +1626,19 @@ function handleRequest(e) {
       var metric = params.metric || 'shift';
       responseData = handleAdjustMemberShifts(ss, memberId, delta, reason, adminActorId, metric);
     }
+    // 13. TỰ ĐĂNG KÝ / ADMIN THÊM THÀNH VIÊN MỚI
+    else if (action === 'registerMember' || action === 'addMember') {
+      var mObj = params.member ? parseJsonSafe(params.member, null) : params;
+      responseData = handleAddOrRegisterMember(ss, mObj, action === 'addMember' ? 'add' : 'register', params.adminActorId || '');
+    }
+    // 14. ADMIN XÓA THÀNH VIÊN KHỎI CLB (Archive + Tombstone + Xóa toàn Sheet Ban)
+    else if (action === 'deleteMember') {
+      responseData = handleDeleteMember(ss, params.memberId, params.adminActorId || '');
+    }
+    // 15. ĐỔI MẬT KHẨU ĐỒNG BỘ XUYÊN THIẾT BỊ (AuthCredentials SHA-256)
+    else if (action === 'updatePassword') {
+      responseData = handleUpdatePassword(ss, params.memberId, params.oldPasswordHash, params.newPasswordHash);
+    }
 
   } catch(error) {
     responseData = { success: false, message: 'Lỗi máy chủ: ' + error.toString() };
@@ -1559,6 +1661,12 @@ function handleRequest(e) {
 function getAllMembersFromDepartments(ss) {
   var membersMap = {};
   var order = [];
+  var tombstones = getDeletedTombstones(ss);
+  var deletedMemberMap = {};
+  for (var di = 0; di < (tombstones.memberIds || []).length; di++) {
+    deletedMemberMap[String(tombstones.memberIds[di]).toUpperCase()] = true;
+  }
+  var authMap = getAuthCredentialsMap(ss);
 
   // Đọc danh sách ca trực để tính số ca hoàn thành thực tế từ Tasks sheet
   var taskSheet = ss.getSheetByName('Tasks');
@@ -1613,6 +1721,8 @@ function getAllMembersFromDepartments(ss) {
       var studentCode = (r.length > 10 && String(r[10] || '').trim()) ? String(r[10]).trim() : '';
 
       var effectiveId = id || generateMemberIdFromInfo(hoTen, '');
+      if (deletedMemberMap[String(effectiveId).toUpperCase()]) continue;
+      if (studentCode && studentCode.toUpperCase() === effectiveId.toUpperCase()) studentCode = '';
       var cvLower = chucVu.toLowerCase();
       var bmLower = boMon.toLowerCase();
 
@@ -1626,6 +1736,7 @@ function getAllMembersFromDepartments(ss) {
       if (!membersMap[effectiveId]) {
         var initialDone = hasCol9 ? soCa : (taskShiftCheckins[effectiveId] || 0);
         var initialAct = hasCol10 ? soCaSinhHoat : (taskActivityCheckins[effectiveId] || 0);
+        var storedPassHash = authMap[String(effectiveId).toUpperCase()] || '';
         membersMap[effectiveId] = {
           id: effectiveId,
           hoTen: hoTen,
@@ -1635,8 +1746,9 @@ function getAllMembersFromDepartments(ss) {
           yTe: yTe || 'Bình thường',
           sdt: sdt,
           ice: ice,
-          mssv: studentCode || effectiveId,
-          studentCode: studentCode || effectiveId,
+          mssv: studentCode,
+          studentCode: studentCode,
+          hasCustomPassword: Boolean(storedPassHash && storedPassHash !== DEFAULT_PASS_HASH_HEX),
           donVi: 'Trường Đại học Hải Dương',
           soCa: initialDone,
           soCaHoanThanh: initialDone,
@@ -1675,7 +1787,7 @@ function getAllMembersFromDepartments(ss) {
         if (!existing.sdt && sdt) existing.sdt = sdt;
         if ((!existing.ice || existing.ice === existing.sdt) && ice) existing.ice = ice;
         if ((!existing.yTe || existing.yTe === 'Bình thường') && yTe && yTe !== 'Bình thường') existing.yTe = yTe;
-        if (studentCode && existing.studentCode === existing.id) {
+        if (studentCode && !existing.studentCode) {
           existing.studentCode = studentCode;
           existing.mssv = studentCode;
         }
@@ -2243,7 +2355,7 @@ function recordDeletedTombstone(ss, id, type) {
  * Lấy danh sách ID các ca trực và bài đăng đã bị xóa khỏi hệ thống
  */
 function getDeletedTombstones(ss) {
-  var result = { taskIds: [], postIds: [] };
+  var result = { taskIds: [], postIds: [], memberIds: [] };
   try {
     var sheet = ss.getSheetByName('DeletedTombstones');
     if (!sheet) return result;
@@ -2256,6 +2368,8 @@ function getDeletedTombstones(ss) {
         if (result.taskIds.indexOf(id) === -1) result.taskIds.push(id);
       } else if (type === 'post') {
         if (result.postIds.indexOf(id) === -1) result.postIds.push(id);
+      } else if (type === 'member') {
+        if (result.memberIds.indexOf(id) === -1) result.memberIds.push(id);
       }
     }
   } catch (e) {
@@ -2299,22 +2413,36 @@ function handleDeletePost(ss, postId) {
 }
 
 /**
+ * Đảm bảo đủ 11 tiêu đề cột + định dạng Text '@' cho Sheet Ban
+ */
+function ensureDepartmentColumnsAndFormat(sheet, headerRow) {
+  if (!sheet) return;
+  var hdr = headerRow || sheet.getRange(1, 1, 1, Math.max(11, sheet.getLastColumn())).getValues()[0] || [];
+  if (hdr.length < 9 || !hdr[8]) sheet.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
+  if (hdr.length < 10 || !hdr[9]) sheet.getRange(1, 10).setValue('Số ca sinh hoạt').setFontWeight('bold');
+  if (hdr.length < 11 || !hdr[10]) sheet.getRange(1, 11).setValue('MSSV').setFontWeight('bold');
+  sheet.getRange('A:K').setNumberFormat('@');
+}
+
+/**
  * Cập nhật thông tin cá nhân của thành viên trực tiếp vào Sheet Ban tương ứng
  */
 function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCode, chucVu, boMon) {
   if (!memberId) return { success: false, message: 'Thiếu Mã ID thành viên' };
   var cleanMemberId = String(memberId).trim();
   var cleanCode = (studentCode !== undefined && studentCode !== null) ? String(studentCode).trim() : '';
+  var normSdt = (sdt !== undefined && sdt !== null && String(sdt).trim() !== '') ? cleanPhone(sdt) : '';
 
-  if (cleanCode) {
-    var existingMembers = getAllMembersFromDepartments(ss);
-    var codeUpper = cleanCode.toUpperCase();
-    for (var cIdx = 0; cIdx < existingMembers.length; cIdx++) {
-      var em = existingMembers[cIdx];
-      if (!em || em.id === cleanMemberId) continue;
-      if (String(em.id || '').toUpperCase() === codeUpper || String(em.studentCode || '').toUpperCase() === codeUpper) {
-        return { success: false, message: 'Mã số sinh viên ' + cleanCode + ' đã được dùng bởi ' + em.hoTen };
-      }
+  var existingMembers = getAllMembersFromDepartments(ss);
+  var codeUpper = cleanCode.toUpperCase();
+  for (var cIdx = 0; cIdx < existingMembers.length; cIdx++) {
+    var em = existingMembers[cIdx];
+    if (!em || em.id === cleanMemberId) continue;
+    if (cleanCode && (String(em.id || '').toUpperCase() === codeUpper || String(em.studentCode || '').toUpperCase() === codeUpper)) {
+      return { success: false, message: 'Mã số sinh viên ' + cleanCode + ' đã được dùng bởi ' + em.hoTen };
+    }
+    if (normSdt && normSdt.length >= 9 && cleanPhone(em.sdt || '') === normSdt) {
+      return { success: false, message: 'Số điện thoại này đã được dùng bởi ' + em.hoTen };
     }
   }
 
@@ -2326,7 +2454,7 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCod
     var rows = sheet.getDataRange().getValues();
     for (var i = 1; i < rows.length; i++) {
       if (String(rows[i][0]).trim() === cleanMemberId) {
-        matchedRows.push({ sheet: sheet, rowNum: i + 1, headerRow: rows[0] || [] });
+        matchedRows.push({ sheet: sheet, rowNum: i + 1, headerRow: rows[0] || [], rowData: rows[i] });
       }
     }
   }
@@ -2334,6 +2462,14 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCod
   if (matchedRows.length === 0) {
     return { success: false, message: 'Không tìm thấy thành viên: ' + memberId };
   }
+
+  var cleanBoMon = (boMon !== undefined && boMon !== null) ? String(boMon).trim() : '';
+  var shouldMoveSheet = (
+    matchedRows.length === 1 &&
+    cleanBoMon &&
+    DEPARTMENT_SHEETS.indexOf(cleanBoMon) !== -1 &&
+    matchedRows[0].sheet.getName() !== cleanBoMon
+  );
 
   for (var m = 0; m < matchedRows.length; m++) {
     var entry = matchedRows[m];
@@ -2347,8 +2483,8 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCod
     if (lop !== undefined && lop !== null && String(lop).trim() !== '') {
       s.getRange(rowNum, 3).setValue(String(lop).trim());
     }
-    if (matchedRows.length === 1 && boMon !== undefined && boMon !== null && String(boMon).trim() !== '') {
-      s.getRange(rowNum, 4).setValue(String(boMon).trim());
+    if (matchedRows.length === 1 && cleanBoMon) {
+      s.getRange(rowNum, 4).setValue(cleanBoMon);
     }
     if (chucVu !== undefined && chucVu !== null && String(chucVu).trim() !== '') {
       s.getRange(rowNum, 5).setValue(String(chucVu).trim());
@@ -2356,19 +2492,31 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCod
     if (yTe !== undefined && yTe !== null && String(yTe).trim() !== '') {
       s.getRange(rowNum, 6).setValue(String(yTe).trim());
     }
-    if (sdt !== undefined && sdt !== null && String(sdt).trim() !== '') {
-      s.getRange(rowNum, 7).setValue("'" + String(sdt).trim());
+    if (sdt !== undefined && sdt !== null) {
+      s.getRange(rowNum, 7).setValue(normSdt ? ("'" + normSdt) : '');
     }
-    if (ice !== undefined && ice !== null && String(ice).trim() !== '') {
-      s.getRange(rowNum, 8).setValue("'" + String(ice).trim());
+    if (ice !== undefined && ice !== null) {
+      var cleanIce = String(ice).trim();
+      s.getRange(rowNum, 8).setValue(cleanIce ? ("'" + cleanIce) : '');
     }
-    if (cleanCode) {
-      if (hdr.length < 9 || !hdr[8]) s.getRange(1, 9).setValue('Số ca hoàn thành').setFontWeight('bold');
-      if (hdr.length < 10 || !hdr[9]) s.getRange(1, 10).setValue('Số ca sinh hoạt').setFontWeight('bold');
-      if (hdr.length < 11 || !hdr[10]) s.getRange(1, 11).setValue('MSSV').setFontWeight('bold');
-      s.getRange('K:K').setNumberFormat('@');
-      s.getRange(rowNum, 11).setValue("'" + cleanCode);
+    if (studentCode !== undefined && studentCode !== null) {
+      ensureDepartmentColumnsAndFormat(s, hdr);
+      s.getRange(rowNum, 11).setValue(cleanCode ? ("'" + cleanCode) : '');
     }
+  }
+
+  if (shouldMoveSheet) {
+    var srcEntry = matchedRows[0];
+    var updatedVals = srcEntry.sheet.getRange(srcEntry.rowNum, 1, 1, Math.max(11, srcEntry.sheet.getLastColumn())).getValues()[0];
+    while (updatedVals.length < 11) updatedVals.push('');
+    var targetSheet = ss.getSheetByName(cleanBoMon);
+    if (!targetSheet) targetSheet = ss.insertSheet(cleanBoMon);
+    ensureDepartmentColumnsAndFormat(targetSheet);
+    if (updatedVals[6]) updatedVals[6] = "'" + cleanPhone(updatedVals[6]);
+    if (updatedVals[7]) updatedVals[7] = "'" + String(updatedVals[7]).replace(/^'/, '');
+    if (updatedVals[10]) updatedVals[10] = "'" + String(updatedVals[10]).replace(/^'/, '');
+    targetSheet.appendRow(updatedVals.slice(0, 11));
+    srcEntry.sheet.deleteRow(srcEntry.rowNum);
   }
 
   SpreadsheetApp.flush();
@@ -2381,6 +2529,188 @@ function handleUpdateProfile(ss, memberId, lop, sdt, ice, yTe, hoTen, studentCod
     }
   }
   return { success: true, message: 'Đã cập nhật hồ sơ thành công vào Google Sheet', member: updatedMember };
+}
+
+/**
+ * Tự đăng ký tài khoản mới hoặc Admin thêm thành viên đồng bộ Google Sheet + AuthCredentials
+ */
+function handleAddOrRegisterMember(ss, payload, mode, adminActorId) {
+  if (!payload || typeof payload !== 'object') {
+    return { success: false, message: 'Thiếu dữ liệu thành viên.' };
+  }
+  if (mode === 'add' && !isActorAdminServer(ss, adminActorId)) {
+    return { success: false, message: 'Chỉ Quản trị viên mới có quyền thêm thành viên.' };
+  }
+
+  var hoTen = String(payload.hoTen || '').trim();
+  if (!hoTen) return { success: false, message: 'Thiếu họ và tên thành viên.' };
+
+  var boMon = String(payload.boMon || 'Ban Nhân Sự').trim();
+  if (DEPARTMENT_SHEETS.indexOf(boMon) === -1) boMon = 'Ban Nhân Sự';
+
+  var chucVu = (mode === 'register') ? 'Thành viên' : (String(payload.chucVu || 'Thành viên').trim() || 'Thành viên');
+  var lop = String(payload.lop || 'K16-GDTC').trim();
+  var yTe = String(payload.yTe || 'Bình thường').trim();
+  var normPhone = cleanPhone(payload.sdt || '');
+  var rawIce = String(payload.ice || normPhone || '').trim();
+  var cleanCode = String(payload.studentCode || '').trim();
+  var ngaySinh = String(payload.ngaySinh || '').trim();
+
+  var existingMembers = getAllMembersFromDepartments(ss);
+  var tombstones = getDeletedTombstones(ss);
+  var takenIds = {};
+  for (var ti = 0; ti < (tombstones.memberIds || []).length; ti++) {
+    takenIds[String(tombstones.memberIds[ti]).toUpperCase()] = true;
+  }
+  for (var i = 0; i < existingMembers.length; i++) {
+    var em = existingMembers[i];
+    if (!em) continue;
+    takenIds[String(em.id || '').toUpperCase()] = true;
+    if (cleanCode && (String(em.id || '').toUpperCase() === cleanCode.toUpperCase() || String(em.studentCode || '').toUpperCase() === cleanCode.toUpperCase())) {
+      return { success: false, message: 'Mã số sinh viên ' + cleanCode + ' đã tồn tại.' };
+    }
+    if (normPhone && normPhone.length >= 9 && cleanPhone(em.sdt || '') === normPhone) {
+      return { success: false, message: 'Số điện thoại này đã được đăng ký cho ' + em.hoTen };
+    }
+  }
+
+  var requestedId = String(payload.id || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+  var finalId = requestedId || generateMemberIdFromInfo(hoTen, ngaySinh).toUpperCase();
+  if (takenIds[finalId]) {
+    var base = generateMemberIdFromInfo(hoTen, ngaySinh).toUpperCase();
+    var suffix = 2;
+    while (takenIds[base + suffix]) suffix++;
+    finalId = base + suffix;
+  }
+
+  var sheet = ss.getSheetByName(boMon);
+  if (!sheet) {
+    sheet = ss.insertSheet(boMon);
+    sheet.appendRow(['Mã ID', 'Họ và Tên', 'Lớp', 'Ban chuyên môn', 'Chức vụ', 'Y tế', 'Số điện thoại', 'Liên hệ khẩn cấp']);
+    sheet.setFrozenRows(1);
+  }
+  ensureDepartmentColumnsAndFormat(sheet);
+
+  sheet.appendRow([
+    finalId,
+    hoTen,
+    lop,
+    boMon,
+    chucVu,
+    yTe,
+    normPhone ? ("'" + normPhone) : '',
+    rawIce ? ("'" + rawIce) : '',
+    0,
+    0,
+    cleanCode ? ("'" + cleanCode) : ''
+  ]);
+
+  var passHash = String(payload.passwordHash || '').trim().toLowerCase();
+  if (passHash && passHash !== DEFAULT_PASS_HASH_HEX) {
+    upsertAuthCredential(ss, finalId, passHash);
+  }
+
+  SpreadsheetApp.flush();
+  var refreshed = getAllMembersFromDepartments(ss);
+  var createdMember = null;
+  for (var ri = 0; ri < refreshed.length; ri++) {
+    if (refreshed[ri] && refreshed[ri].id === finalId) {
+      createdMember = refreshed[ri];
+      break;
+    }
+  }
+  return {
+    success: true,
+    message: mode === 'add' ? 'Đã thêm thành viên vào CLB.' : 'Đăng ký tài khoản thành công.',
+    member: createdMember
+  };
+}
+
+/**
+ * Admin xóa thành viên khỏi toàn bộ Sheet Ban, AdminRoles & AuthCredentials; lưu dự phòng ArchivedMembers & ghi Tombstone
+ */
+function handleDeleteMember(ss, memberId, adminActorId) {
+  var cleanId = String(memberId || '').trim();
+  if (!cleanId) return { success: false, message: 'Thiếu Mã ID thành viên cần xóa.' };
+  if (!isActorAdminServer(ss, adminActorId)) {
+    return { success: false, message: 'Chỉ Quản trị viên mới có quyền xóa thành viên.' };
+  }
+  var cleanUpper = cleanId.toUpperCase();
+  if (cleanUpper === 'DMC0806' || cleanUpper === String(adminActorId || '').trim().toUpperCase()) {
+    return { success: false, message: 'Không thể xóa Quản trị gốc DMC0806 hoặc chính tài khoản đang thao tác.' };
+  }
+
+  var archiveSheet = ss.getSheetByName('ArchivedMembers');
+  if (!archiveSheet) {
+    archiveSheet = ss.insertSheet('ArchivedMembers');
+    archiveSheet.appendRow(['Mã ID', 'Họ và Tên', 'Sheet gốc', 'Dữ liệu JSON', 'Người xóa', 'Thời gian xóa']);
+    archiveSheet.getRange(1, 1, 1, 6).setBackground('#7f1d1d').setFontColor('#ffffff').setFontWeight('bold');
+    archiveSheet.getRange('A:F').setNumberFormat('@');
+    archiveSheet.setFrozenRows(1);
+  }
+
+  var nowIso = new Date().toISOString();
+  var removedRows = 0;
+  for (var d = 0; d < DEPARTMENT_SHEETS.length; d++) {
+    var deptName = DEPARTMENT_SHEETS[d];
+    var sheet = ss.getSheetByName(deptName);
+    if (!sheet) continue;
+    var rows = sheet.getDataRange().getValues();
+    for (var i = rows.length - 1; i >= 1; i--) {
+      if (String(rows[i][0] || '').trim().toUpperCase() === cleanUpper) {
+        archiveSheet.appendRow([
+          cleanId,
+          String(rows[i][1] || ''),
+          deptName,
+          JSON.stringify(rows[i]),
+          String(adminActorId || ''),
+          nowIso
+        ]);
+        sheet.deleteRow(i + 1);
+        removedRows++;
+      }
+    }
+  }
+
+  var rolesSheet = ss.getSheetByName('AdminRoles');
+  if (rolesSheet) {
+    var rRows = rolesSheet.getDataRange().getValues();
+    for (var ri = rRows.length - 1; ri >= 1; ri--) {
+      if (String(rRows[ri][0] || '').trim().toUpperCase() === cleanUpper) {
+        rolesSheet.deleteRow(ri + 1);
+      }
+    }
+  }
+
+  removeAuthCredential(ss, cleanId);
+  recordDeletedTombstone(ss, cleanId, 'member');
+  SpreadsheetApp.flush();
+
+  return {
+    success: true,
+    message: 'Đã xóa thành viên ' + cleanId + ' (' + removedRows + ' dòng) và lưu dự phòng vào ArchivedMembers.',
+    memberId: cleanId
+  };
+}
+
+/**
+ * Cập nhật mật khẩu SHA-256 trên sheet AuthCredentials
+ */
+function handleUpdatePassword(ss, memberId, oldPasswordHash, newPasswordHash) {
+  var cleanId = String(memberId || '').trim();
+  var oldH = String(oldPasswordHash || '').trim().toLowerCase();
+  var newH = String(newPasswordHash || '').trim().toLowerCase();
+  if (!cleanId || !oldH || !newH) {
+    return { success: false, message: 'Thiếu thông tin xác thực đổi mật khẩu.' };
+  }
+  var authMap = getAuthCredentialsMap(ss);
+  var expected = authMap[cleanId.toUpperCase()] || DEFAULT_PASS_HASH_HEX;
+  if (oldH !== expected) {
+    return { success: false, code: 'WRONG_PASSWORD', message: 'Mật khẩu hiện tại chưa chính xác.' };
+  }
+  upsertAuthCredential(ss, cleanId, newH);
+  SpreadsheetApp.flush();
+  return { success: true, message: 'Đã cập nhật mật khẩu vào AuthCredentials.' };
 }
 
 /**

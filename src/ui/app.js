@@ -1,4 +1,4 @@
-// SportPass V8.6 — Global Event Binding, Public Bridge & App Bootstrapper
+// SportPass V8.8 — Global Event Binding, Public Bridge & App Bootstrapper
 
 function bindUiListeners() {
   const on = (id, ev, fn) => {
@@ -6,12 +6,15 @@ function bindUiListeners() {
     if (node) node.addEventListener(ev, fn);
   };
 
-  // Login Gateway
+  // Login Gateway & Registration
   on('login-form', 'submit', handleLoginSubmit);
   on('btnTogglePass', 'click', togglePasswordVisibility);
-  on('btnForgotPass', 'click', () => showToast('Mật khẩu mặc định là 123456. Liên hệ Trưởng ban Nhân sự DMC0806 để cấp lại mật khẩu.'));
-  on('btnFaceIdLogin', 'click', () => handleBiometricLogin('Face ID'));
-  on('btnTouchIdLogin', 'click', () => handleBiometricLogin('Touch ID'));
+  on('btnOpenRegisterModal', 'click', openRegisterModal);
+  on('register-modal-close', 'click', closeRegisterModal);
+  on('reg-fullname', 'input', updateRegisterPreviewId);
+  on('reg-dob', 'input', updateRegisterPreviewId);
+  on('register-form', 'submit', submitSelfRegisterAction);
+  on('btnSubmitRegister', 'click', submitSelfRegisterAction);
 
   // Header Controls
   on('notification-trigger', 'click', openNotificationModal);
@@ -41,7 +44,11 @@ function bindUiListeners() {
   on('member-register-btn', 'click', () => openTaskMissionModal('shifts'));
   on('member-swap-btn', 'click', () => openTaskMissionModal('swap'));
 
-  // Profile Inline Quick Edit when Phone or ICE not yet set
+  // Profile Inline Quick Edit
+  on('display-studentId', 'click', (e) => {
+    e.preventDefault();
+    openEditProfileModal('input-studentId');
+  });
   on('display-phone', 'click', (e) => {
     if (e.currentTarget && e.currentTarget.dataset.needsEdit === '1') {
       e.preventDefault();
@@ -55,20 +62,26 @@ function bindUiListeners() {
     }
   });
 
-  // Members Modal
-  on('members-modal-close', 'click', closeMembersModal);
+  // Members Modal + Admin Add/Delete Modals
   on('members-modal-close-x', 'click', closeMembersModal);
   on('iptSearchMembers', 'input', renderMembersModalList);
+  on('admin-add-member-btn', 'click', openAddMemberModal);
+  on('add-member-close', 'click', closeAddMemberModal);
+  on('add-fullname', 'input', updateAddMemberAutoId);
+  on('add-dob', 'input', updateAddMemberAutoId);
+  on('add-memberId', 'input', () => { isAddMemberIdManual = true; });
+  on('add-member-form', 'submit', submitAddMemberAction);
+  on('btnSubmitAddMember', 'click', submitAddMemberAction);
+  on('confirm-delete-close', 'click', closeConfirmDeleteMemberModal);
+  on('btnConfirmDeleteMember', 'click', confirmDeleteMemberAction);
 
   // Edit Profile Modal
   on('edit-profile-trigger', 'click', () => openEditProfileModal());
   on('edit-modal-close', 'click', closeEditProfileModal);
-  on('edit-modal-cancel', 'click', closeEditProfileModal);
   on('edit-modal-save', 'click', saveEditProfileAction);
 
   // Notifications & Slim Settings Modals
   on('notification-modal-close', 'click', closeNotificationModal);
-  on('notification-dismiss-btn', 'click', closeNotificationModal);
   on('settings-modal-close', 'click', closeSettingsModal);
   on('theme-btn-light', 'click', (e) => { e.stopPropagation(); setColorScheme('light', true); });
   on('theme-btn-dark', 'click', (e) => { e.stopPropagation(); setColorScheme('dark', true); });
@@ -79,13 +92,11 @@ function bindUiListeners() {
 
   // Change Password Modal
   on('password-modal-close', 'click', closeChangePasswordModal);
-  on('password-modal-cancel', 'click', closeChangePasswordModal);
   on('password-form', 'submit', submitChangePassword);
   on('btnSavePassword', 'click', submitChangePassword);
 
   // Create Shift Modal
   on('create-shift-close', 'click', closeCreateShiftModal);
-  on('create-shift-cancel', 'click', closeCreateShiftModal);
   on('task-cat-shift', 'click', () => setTaskCategoryUI('shift'));
   on('task-cat-activity', 'click', () => setTaskCategoryUI('activity'));
   on('btnAddDeptQuotaRow', 'click', addDeptQuotaRow);
@@ -128,7 +139,6 @@ function bindUiListeners() {
   });
 
   // Member Task Mission Modal
-  on('task-mission-close', 'click', closeTaskMissionModal);
   on('task-mission-close-x', 'click', closeTaskMissionModal);
   on('mission-tab-shifts', 'click', () => switchMissionTab('shifts'));
   on('mission-tab-swap', 'click', () => switchMissionTab('swap'));
@@ -136,13 +146,13 @@ function bindUiListeners() {
   on('btnSubmitMemberLeave', 'click', submitMemberLeaveRequest);
 
   // Success Celebration Center Modal
-  on('celebration-close-x', 'click', () => closeSheetDialog('success-celebration-modal'));
   on('celebration-confirm-btn', 'click', () => closeSheetDialog('success-celebration-modal'));
 }
 
 function exposeGlobalBridge() {
   window.DEFAULT_MEMBERS_DIRECTORY = DEFAULT_MEMBERS_DIRECTORY;
   window.ALL_DEPARTMENTS = ALL_DEPARTMENTS;
+  window.STANDARD_ROLES = STANDARD_ROLES;
   window.DEFAULT_TASKS = DEFAULT_TASKS;
   Object.defineProperties(window, {
     currentUser: { configurable: true, get: () => currentUser, set: (v) => { currentUser = v; } },
@@ -159,6 +169,12 @@ function exposeGlobalBridge() {
   window.openMembersModal = openMembersModal;
   window.openEditProfileModal = openEditProfileModal;
   window.saveEditProfileAction = saveEditProfileAction;
+  window.openRegisterModal = openRegisterModal;
+  window.submitSelfRegisterAction = submitSelfRegisterAction;
+  window.openAddMemberModal = openAddMemberModal;
+  window.submitAddMemberAction = submitAddMemberAction;
+  window.openConfirmDeleteMemberModal = openConfirmDeleteMemberModal;
+  window.confirmDeleteMemberAction = confirmDeleteMemberAction;
   window.openQrModal = openQrModal;
   window.closeQrModal = closeQrModal;
   window.openCreateShiftModal = openCreateShiftModal;
@@ -173,6 +189,8 @@ function exposeGlobalBridge() {
   window.setColorScheme = setColorScheme;
   window.openSuccessCelebration = openSuccessCelebration;
   window.showToast = showToast;
+  window.normalizePhoneVN = normalizePhoneVN;
+  window.sha256Hex = sha256Hex;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -181,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bindUiListeners();
   initHeroCardParallax();
   bindWaterRipples();
+  autoEnableBackgroundNotifications();
   checkStoredLoginSession();
   exposeGlobalBridge();
 });

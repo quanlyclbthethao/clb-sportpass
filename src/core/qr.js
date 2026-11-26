@@ -119,8 +119,7 @@ function updateQrPassDisplay() {
   const payload = `SPORTPASS:CHECKIN:${taskId}:${uid}:${slot}`;
   const container = document.getElementById('qr-code-box');
   if (container) renderQrIntoContainer(container, payload, 160);
-  const displayCode = currentUser ? getDisplayStudentCode(currentUser) : uid;
-  safeSetText('qr-token-code', `#${displayCode} · ${taskId}`);
+  safeSetText('qr-token-code', `#${uid} · ${taskId}`);
 }
 
 function startQrCountdown() {
@@ -195,8 +194,8 @@ function renderScannerCheckedInList() {
 
   const rows = checked.map((mid) => {
     const member = (membersDirectory || []).find(m => m && m.id === mid);
-    const displayCode = member ? getDisplayStudentCode(member) : mid;
-    const codeLabel = (member && displayCode !== mid) ? `${displayCode} (${mid})` : mid;
+    const displayCode = member ? getDisplayStudentCode(member) : '';
+    const codeLabel = displayCode ? `${mid} · MSSV ${displayCode}` : mid;
     return el('div', { className: 'member-pill-row', style: { padding: '8px 10px' } },
       el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', minWidth: '0', flex: '1' } },
         el('div', { className: 'avatar-initials-circle solid', style: { width: '30px', height: '30px', fontSize: '10.5px' } }, getSportPassInitials(member ? member.hoTen : mid)),
@@ -353,10 +352,12 @@ function handleQrCheckinAction(taskId, memberId) {
     return;
   }
   const cleanCode = String(memberId || '').trim().toUpperCase();
+  const normPhone = normalizePhoneVN(memberId);
   const dir = membersDirectory || [];
   const targetMember =
     dir.find(m => m && String(m.id || '').toUpperCase() === cleanCode) ||
-    dir.find(m => m && String(m.studentCode || '').toUpperCase() === cleanCode);
+    dir.find(m => m && getDisplayStudentCode(m).toUpperCase() === cleanCode && cleanCode !== '') ||
+    (normPhone.length >= 9 ? dir.find(m => m && normalizePhoneVN(m.sdt) === normPhone) : null);
   if (!targetMember) {
     showToast(`Không tìm thấy hội viên với mã ${cleanCode || '(trống)'}.`);
     return;

@@ -1,9 +1,11 @@
-// SportPass V8.7 — Canonical Normalized Models, Multi-Role Merge, Overrides, Tombstones & RBAC
+// SportPass V8.8 — Canonical Normalized Models, Multi-Role Merge, Overrides, Tombstones & RBAC
 
 const DOB_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
 const DATA_CACHE_KEY = 'CLB_SPORTPASS_DATA_CACHE';
 const OVERRIDES_KEY = 'CLB_MEMBER_OVERRIDES';
 const DELETED_TASKS_KEY = 'CLB_DELETED_TASK_IDS';
+const DELETED_MEMBERS_KEY = 'CLB_DELETED_MEMBER_IDS';
+const CUSTOM_MEMBERS_KEY = 'CLB_CUSTOM_MEMBERS';
 const CUSTOM_ROLES_KEY = 'CLB_CUSTOM_ADMIN_ROLES';
 
 function safeSetText(id, text) {
@@ -21,6 +23,56 @@ function getSportPassInitials(name) {
   const parts = String(name).trim().split(/\s+/);
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+function normalizePhoneVN(val) {
+  if (val === undefined || val === null) return '';
+  let digits = String(val).trim().replace(/[^0-9]/g, '');
+  if (!digits) return '';
+  if (digits.startsWith('84') && digits.length >= 11) {
+    digits = '0' + digits.slice(2);
+  } else if (!digits.startsWith('0') && digits.length >= 9 && digits.length <= 10) {
+    digits = '0' + digits;
+  }
+  return digits;
+}
+
+function normalizeRoleValue(rawRole) {
+  const r = String(rawRole || '').trim().toLowerCase();
+  if (!r) return 'Thành viên';
+  if (r.includes('phó chủ nhiệm')) return 'Phó chủ nhiệm';
+  if (r.includes('chủ nhiệm')) return 'Chủ nhiệm';
+  if (r.includes('trưởng ban')) return 'Trưởng ban';
+  if (r.includes('phó ban')) return 'Phó ban';
+  if (r.includes('thư ký')) return 'Thư ký';
+  if (r.includes('thủ quỹ')) return 'Thủ quỹ';
+  return 'Thành viên';
+}
+
+function generateClientMemberId(hoTen, dob, extraReserved = []) {
+  let clean = String(hoTen || '').trim().replace(/Đ/g, 'D').replace(/đ/g, 'd');
+  try {
+    clean = clean.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  } catch (e) {}
+  const words = clean.split(/\s+/).filter(Boolean);
+  let initials = words.map(w => w.charAt(0).toUpperCase()).join('');
+  if (!initials) initials = 'SP';
+
+  let ddmm = '0101';
+  const m = String(dob || '').match(/(\d{1,2})[\/\-](\d{1,2})/);
+  if (m) {
+    ddmm = String(parseInt(m[1], 10)).padStart(2, '0') + String(parseInt(m[2], 10)).padStart(2, '0');
+  }
+  const baseId = `${initials}${ddmm}`.toUpperCase();
+  const used = new Set([
+    ...(Array.isArray(membersDirectory) ? membersDirectory : []).map(x => String(x?.id || '').toUpperCase()),
+    ...getDeletedMemberIds().map(x => String(x).toUpperCase()),
+    ...(Array.isArray(extraReserved) ? extraReserved : []).map(x => String(x || '').toUpperCase())
+  ]);
+  if (!used.has(baseId)) return baseId;
+  let suffix = 2;
+  while (used.has(`${baseId}${suffix}`)) suffix++;
+  return `${baseId}${suffix}`;
 }
 
 function resolveAvatarUrl(member) {
@@ -51,11 +103,17 @@ function formatMemberDob(member) {
 }
 
 function getDisplayStudentCode(member) {
-  if (!member) return 'DMC0806';
-  if (member.studentCode && String(member.studentCode).trim()) return String(member.studentCode).trim();
-  const rawMssv = String(member.mssv || '').trim();
-  if (rawMssv && !DOB_REGEX.test(rawMssv)) return rawMssv;
-  return member.id || 'SP0000';
+  if (!member) return '';
+  const idUpper = String(member.id || '').trim().toUpperCase();
+  const candidates = [member.studentCode, member.mssv];
+  for (const raw of candidates) {
+    const clean = String(raw || '').trim();
+    if (!clean) continue;
+    if (DOB_REGEX.test(clean)) continue;
+    if (idUpper && clean.toUpperCase() === idUpper) continue;
+    return clean;
+  }
+  return '';
 }
 
 function getTheTrangTheme(theTrang) {
@@ -98,6 +156,7 @@ function normalizeMember(raw) {
   copy.status = String(copy.status || 'Sẵn sàng').trim();
   copy.ngaySinh = formatMemberDob(copy);
   copy.studentCode = getDisplayStudentCode(copy);
+  copy.mssv = copy.studentCode;
   copy.soCaHoanThanh = shiftsDone;
   copy.soCa = shiftsDone;
   copy.soCaSinhHoat = activitiesDone;
@@ -105,6 +164,7 @@ function normalizeMember(raw) {
   copy.activityOffset = Number(copy.activityOffset) || 0;
   copy.isAdmin = id === 'DMC0806' ? true : Boolean(copy.isAdmin);
   copy.isShiftLeader = copy.isAdmin ? true : Boolean(copy.isShiftLeader);
+  copy.hasCustomPassword = Boolean(copy.hasCustomPassword);
   copy.donVi = copy.donVi || 'Trường Đại học Hải Dương';
   return copy;
 }
@@ -130,10 +190,14 @@ function normalizeMembersDirectory(rawList) {
     }
     prev.isAdmin = prev.isAdmin || m.isAdmin;
     prev.isShiftLeader = prev.isAdmin || prev.isShiftLeader || m.isShiftLeader;
+    prev.hasCustomPassword = prev.hasCustomPassword || m.hasCustomPassword;
     if (!prev.sdt && m.sdt) prev.sdt = m.sdt;
     if ((!prev.ice || prev.ice === prev.sdt) && m.ice) prev.ice = m.ice;
     if (prev.yTe === 'Bình thường' && m.yTe && m.yTe !== 'Bình thường') prev.yTe = m.yTe;
-    if (prev.studentCode === prev.id && m.studentCode !== m.id) prev.studentCode = m.studentCode;
+    if (!prev.studentCode && m.studentCode) {
+      prev.studentCode = m.studentCode;
+      prev.mssv = m.studentCode;
+    }
     prev.soCaHoanThanh = Math.max(prev.soCaHoanThanh, m.soCaHoanThanh);
     prev.soCa = prev.soCaHoanThanh;
     prev.soCaSinhHoat = Math.max(prev.soCaSinhHoat, m.soCaSinhHoat);
@@ -382,6 +446,85 @@ function saveDeletedTaskId(id) {
     list.push(id);
     try { localStorage.setItem(DELETED_TASKS_KEY, JSON.stringify(list)); } catch (e) {}
   }
+}
+
+function getDeletedMemberIds() {
+  try {
+    const list = JSON.parse(localStorage.getItem(DELETED_MEMBERS_KEY) || '[]');
+    return Array.isArray(list) ? list.map(x => String(x || '').trim().toUpperCase()).filter(Boolean) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveDeletedMemberId(id) {
+  const clean = String(id || '').trim().toUpperCase();
+  if (!clean || clean === 'DMC0806') return;
+  const list = getDeletedMemberIds();
+  if (!list.includes(clean)) {
+    list.push(clean);
+    try { localStorage.setItem(DELETED_MEMBERS_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+}
+
+function removeDeletedMemberId(id) {
+  const clean = String(id || '').trim().toUpperCase();
+  if (!clean) return;
+  const next = getDeletedMemberIds().filter(x => x !== clean);
+  try { localStorage.setItem(DELETED_MEMBERS_KEY, JSON.stringify(next)); } catch (e) {}
+}
+
+function getCustomMembers() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(CUSTOM_MEMBERS_KEY) || '[]');
+    return Array.isArray(raw) ? raw.filter(m => m && m.id) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function upsertCustomMember(memberObj) {
+  const norm = normalizeMember(memberObj);
+  if (!norm) return;
+  norm.localCreatedAt = memberObj.localCreatedAt || Date.now();
+  removeDeletedMemberId(norm.id);
+  const list = getCustomMembers().filter(m => String(m.id || '').toUpperCase() !== norm.id.toUpperCase());
+  list.unshift(norm);
+  try { localStorage.setItem(CUSTOM_MEMBERS_KEY, JSON.stringify(list)); } catch (e) {}
+}
+
+function removeCustomMember(memberId) {
+  const clean = String(memberId || '').trim().toUpperCase();
+  if (!clean) return;
+  const next = getCustomMembers().filter(m => String(m.id || '').toUpperCase() !== clean);
+  try { localStorage.setItem(CUSTOM_MEMBERS_KEY, JSON.stringify(next)); } catch (e) {}
+}
+
+function rebuildMembersDirectory(remoteList = null) {
+  const deletedSet = new Set(getDeletedMemberIds());
+  const baseList = Array.isArray(remoteList) && remoteList.length > 0
+    ? remoteList
+    : (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY : []);
+  const seenRemote = new Set(baseList.map(m => String(m && m.id ? m.id : '').trim().toUpperCase()).filter(Boolean));
+
+  const customList = getCustomMembers().filter((m) => {
+    const uid = String(m.id || '').trim().toUpperCase();
+    if (!uid || deletedSet.has(uid)) return false;
+    if (Array.isArray(remoteList) && remoteList.length > 0) {
+      if (seenRemote.has(uid)) return false;
+      return Boolean(m.localCreatedAt && (Date.now() - m.localCreatedAt < 90000));
+    }
+    return true;
+  });
+
+  const combined = [...baseList, ...customList].filter(m => m && m.id && !deletedSet.has(String(m.id).trim().toUpperCase()));
+  membersDirectory = normalizeMembersDirectory(combined);
+  applyServerMemberCounters(membersDirectory);
+  applyMemberOverrides(membersDirectory);
+  if (typeof window !== 'undefined' && Array.isArray(membersDirectory)) {
+    window.membersDirectory = membersDirectory;
+  }
+  return membersDirectory;
 }
 
 // ==================== SEMANTIC TASK DEDUPLICATION ====================

@@ -1,8 +1,8 @@
-# DESIGN_CONTRACT.md — SportPass V8.7 (Aquamorphic Varsity Pass & Functional Modal Suite)
-> Hợp đồng thẩm mỹ & kỹ thuật chuẩn `omni-app-studio` V2.0 — Giữ nguyên thẩm mỹ Frosted Sky & Ocean Card, 2 chỉ số phi tương tác (`Số ca hoàn thành` & `Số ca sinh hoạt`), MSSV chỉnh sửa được, phân quyền thật theo tài khoản và chuyển động Top-Layer 60fps.
+# DESIGN_CONTRACT.md — SportPass V8.8 (Aquamorphic Varsity Pass & Streamlined Modal Suite)
+> Hợp đồng thẩm mỹ & kỹ thuật chuẩn `omni-app-studio` V2.0 — Giữ nguyên thẩm mỹ Frosted Sky & Ocean Card, tách bạch ID/MSSV, tối ưu đăng nhập tức thì, 1 nút đóng duy nhất trên mỗi `<dialog>` và đồng bộ Google Sheet hai chiều.
 
 ## 1. Visual Thesis & Architecture
-- **Sản phẩm / Đề bài:** SportPass V8.7 (`Varsity Pass`) — Hệ sinh thái Thẻ Định Danh Số, Cổng Đăng Nhập Đại Dương, Phê Duyệt Điều Động, Tạo Ca Trực, Thành Viên CLB, Hồ Sơ (MSSV chỉnh sửa linh hoạt) & Cài Đặt (`CLB Thể Thao • Trường Đại học Hải Dương`).
+- **Sản phẩm / Đề bài:** SportPass V8.8 (`Varsity Pass`) — Hệ sinh thái Thẻ Định Danh Số, Cổng Đăng Nhập Tối Giản & Đăng Ký Thành Viên, Quản Trị Danh Sách CLB, Phê Duyệt Điều Động, Tạo Ca Trực & Hồ Sơ (`CLB Thể Thao • Trường Đại học Hải Dương`).
 - **Lĩnh vực (Domain):** `sports-club-operations`
 - **Trường phái thẩm mỹ:** **Aquamorphic Frosted Sky** (`#F4F6FB` canvas với 3 quầng sáng lam/ngọc, bề mặt kính mờ `backdrop-blur-2xl`, thẻ đại dương `#072A4D -> #0284C7`, nút CTA đơn điệu `#0369a1 -> #0284c7 48% -> #0ea5e9`, gợn sóng `.water-ripple`, nghiêng 3D rAF, popup trung tâm nảy lò xo).
 - **Chuyển động 60fps & Top-Layer Cleanup:** Chỉ animate `transform`, `opacity`, `background-color` (kết hợp `stroke-dashoffset` cho dấu tích SVG). Đóng/mở `<dialog class="sp-sheet-dialog" closedby="any">` dùng `@starting-style` + `transition-behavior: allow-discrete` + `overlay`, dọn tài nguyên qua `cleanupDialogState()` trên cả `closeSheetDialog` lẫn sự kiện `'close'` và fallback `[data-closing]` chờ `getAnimations()`.

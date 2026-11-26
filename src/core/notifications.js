@@ -26,6 +26,7 @@ function triggerHaptic(type = 'light') {
 function autoEnableBackgroundNotifications() {
   if (navigator && navigator.serviceWorker && window.location.protocol !== 'file:') {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
+      if (reg && typeof reg.update === 'function') reg.update().catch(() => {});
       if ('sync' in reg) reg.sync.register('check-tasks').catch(() => {});
     }).catch(() => {});
   }
@@ -38,6 +39,24 @@ function markNotificationsRead() {
   } catch (e) {}
   const dot = document.getElementById('notification-dot');
   if (dot) dot.classList.add('hidden');
+}
+
+function updateNotificationDotOnly() {
+  const uid = currentUser ? currentUser.id : '';
+  const isAdmin = Boolean(currentUser && currentUser.isAdmin);
+  const nextShift = deduplicateTasks(currentTasks || [])[0];
+  const pendingSwaps = (currentSwaps || []).filter(s => s.status === 'pending').length;
+  const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending').length;
+  unreadNotifSignature = [
+    nextShift ? nextShift.id : 'NONE',
+    isAdmin ? `${pendingSwaps}-${pendingLeaves}` : uid,
+    (currentSwaps || []).filter(s => s.fromId === uid).map(s => s.status).join(','),
+    (currentLeaves || []).filter(l => l.memberId === uid).map(l => l.status).join(',')
+  ].join('|');
+  let readSig = '';
+  try { readSig = localStorage.getItem('CLB_READ_NOTIF_SIG_' + (uid || 'GUEST')) || ''; } catch (e) {}
+  const dot = document.getElementById('notification-dot');
+  if (dot) dot.classList.toggle('hidden', !unreadNotifSignature || unreadNotifSignature === readSig);
 }
 
 function renderNotificationsModalList() {

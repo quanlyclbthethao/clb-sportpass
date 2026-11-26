@@ -1,4 +1,4 @@
-// SportPass V8.7 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
+// SportPass V8.8 — Bidirectional Google Apps Script Sync, Tombstones & Lazy Renders
 
 let syncInFlightPromise = null;
 
@@ -14,6 +14,42 @@ function enqueueOfflineMutation(type, payload) {
 
 function reconcileMutationResponse(type, payload, data) {
   if (!data || data.success !== true) return;
+  if ((type === 'REGISTER_MEMBER' || type === 'ADD_MEMBER') && payload && data.member) {
+    const serverMem = normalizeMember(data.member);
+    if (!serverMem) return;
+    const prevId = String(payload.id || '').trim();
+    if (prevId && serverMem.id !== prevId) {
+      const oldHash = localStorage.getItem('CLB_USER_PASS_HASH_' + prevId);
+      if (oldHash) {
+        try {
+          localStorage.setItem('CLB_USER_PASS_HASH_' + serverMem.id, oldHash);
+          localStorage.removeItem('CLB_USER_PASS_HASH_' + prevId);
+        } catch (e) {}
+      }
+      removeCustomMember(prevId);
+      if (currentUser && currentUser.id === prevId) {
+        currentUser = serverMem;
+        window.currentUser = currentUser;
+        if (typeof persistUserSession === 'function') persistUserSession(currentUser);
+      }
+    }
+    upsertCustomMember(serverMem);
+    rebuildMembersDirectory();
+    if (typeof renderProfileData === 'function' && currentUser && currentUser.id === serverMem.id) renderProfileData();
+    if (document.getElementById('members-modal')?.open && typeof renderMembersModalList === 'function') {
+      renderMembersModalList();
+    }
+    return;
+  }
+  if (type === 'DELETE_MEMBER' && payload && payload.memberId) {
+    saveDeletedMemberId(payload.memberId);
+    removeCustomMember(payload.memberId);
+    rebuildMembersDirectory();
+    if (document.getElementById('members-modal')?.open && typeof renderMembersModalList === 'function') {
+      renderMembersModalList();
+    }
+    return;
+  }
   if (type === 'UPDATE_ROLE' && payload && payload.memberId) {
     const custom = getCustomAdminRoles();
     if (custom[payload.memberId]) {
@@ -65,7 +101,7 @@ function reconcileMutationResponse(type, payload, data) {
 
     saveLocalState();
     if (currentUser && currentUser.id === mid && typeof renderProfileData === 'function') renderProfileData();
-    if (typeof renderMembersModalList === 'function') renderMembersModalList();
+    if (document.getElementById('members-modal')?.open && typeof renderMembersModalList === 'function') renderMembersModalList();
   }
 }
 
@@ -79,6 +115,10 @@ function buildMutationUrl(mut) {
   if (mut.type === 'SHIFT_ADJUST') return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&metric=${encodeURIComponent(p.metric || 'shift')}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_ROLE') return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&hoTen=${encodeURIComponent(p.hoTen || '')}&studentCode=${encodeURIComponent(p.studentCode || '')}&lop=${encodeURIComponent(p.lop || '')}&boMon=${encodeURIComponent(p.boMon || '')}&chucVu=${encodeURIComponent(p.chucVu || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
+  if (mut.type === 'REGISTER_MEMBER') return `${GAS_API_URL}?action=registerMember&member=${encodeURIComponent(JSON.stringify(p))}`;
+  if (mut.type === 'ADD_MEMBER') return `${GAS_API_URL}?action=addMember&member=${encodeURIComponent(JSON.stringify(p))}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'DELETE_MEMBER') return `${GAS_API_URL}?action=deleteMember&memberId=${encodeURIComponent(p.memberId || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'UPDATE_PASSWORD') return `${GAS_API_URL}?action=updatePassword&memberId=${encodeURIComponent(p.memberId || '')}&oldPasswordHash=${encodeURIComponent(p.oldPasswordHash || '')}&newPasswordHash=${encodeURIComponent(p.newPasswordHash || '')}`;
   return null;
 }
 
@@ -165,8 +205,21 @@ async function syncRealtimeData() {
         data.deletedTaskIds.forEach(id => saveDeletedTaskId(id));
       }
 
+      if (Array.isArray(data.deletedMemberIds) && data.deletedMemberIds.length > 0) {
+        data.deletedMemberIds.forEach((id) => {
+          saveDeletedMemberId(id);
+          removeCustomMember(id);
+        });
+        const deletedUpper = data.deletedMemberIds.map(x => String(x || '').trim().toUpperCase());
+        if (currentUser && deletedUpper.includes(String(currentUser.id || '').toUpperCase())) {
+          executeLogoutAction();
+          showToast('Tài khoản của bạn đã được xóa khỏi CLB.');
+          return;
+        }
+      }
+
       if (Array.isArray(data.membersList) && data.membersList.length > 0) {
-        membersDirectory = normalizeMembersDirectory(data.membersList);
+        rebuildMembersDirectory(data.membersList);
         const nextServerCounters = {};
         const customRoles = getCustomAdminRoles();
         let rolesChanged = false;
@@ -188,13 +241,17 @@ async function syncRealtimeData() {
 
       if (data.member) {
         const preservedAvatar = currentUser.avatar || '';
-        const preservedStudentCode = currentUser.studentCode || '';
+        const preservedStudentCode = getDisplayStudentCode(currentUser);
         const preservedDob = currentUser.ngaySinh || '';
-        const remoteStudentCode = String(data.member.studentCode || '').trim();
+        const remoteStudentCode = getDisplayStudentCode(data.member);
         currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
         if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
-        if ((!remoteStudentCode || remoteStudentCode === currentUser.id) && preservedStudentCode && preservedStudentCode !== currentUser.id) {
-          currentUser.studentCode = preservedStudentCode;
+        if (!remoteStudentCode && preservedStudentCode) {
+          const hasPendingProfile = (offlineMutationQueue || []).some(q => q && q.type === 'UPDATE_PROFILE' && q.payload && q.payload.memberId === currentUser.id);
+          if (hasPendingProfile) {
+            currentUser.studentCode = preservedStudentCode;
+            currentUser.mssv = preservedStudentCode;
+          }
         }
         if ((!data.member.ngaySinh || !DOB_REGEX.test(String(data.member.ngaySinh).trim())) && preservedDob) {
           currentUser.ngaySinh = preservedDob;
@@ -239,9 +296,17 @@ async function syncRealtimeData() {
 
       saveLocalState();
       renderProfileData();
-      renderDispatchHub();
-      renderMembersModalList();
-      renderNotificationsModalList();
+      updatePendingBadges();
+      updateNotificationDotOnly();
+      if (document.getElementById('approve-shift-modal')?.open || document.getElementById('task-mission-modal')?.open) {
+        renderDispatchHub();
+      }
+      if (document.getElementById('members-modal')?.open) {
+        renderMembersModalList();
+      }
+      if (document.getElementById('notification-modal')?.open) {
+        renderNotificationsModalList();
+      }
     } catch (err) {
       // Stay resilient offline
     } finally {

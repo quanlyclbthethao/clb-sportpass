@@ -388,7 +388,8 @@ function renderDispatchHub() {
     }
     const cards = pendingSwaps.map((s) => {
       const fromMember = (membersDirectory || []).find(m => m && m.id === s.fromId);
-      const fromCode = fromMember ? getDisplayStudentCode(fromMember) : s.fromId;
+      const fromCode = fromMember ? getDisplayStudentCode(fromMember) : '';
+      const idSub = fromCode ? `ID: ${s.fromId} · MSSV: ${fromCode}` : `ID: ${s.fromId}`;
       return el('article', { className: 'dispatch-card', dataset: { reqId: s.id } },
         el('div', { className: 'dispatch-head' },
           el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0', flex: '1' } },
@@ -398,7 +399,7 @@ function renderDispatchHub() {
                 el('span', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, s.fromName),
                 s.fromClass ? el('span', { style: { fontSize: '10.5px', background: 'var(--surface-chip)', color: 'var(--text-secondary)', padding: '1px 6px', borderRadius: '5px', fontWeight: '600' } }, s.fromClass) : null
               ),
-              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, `MSSV: ${fromCode}`)
+              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, idSub)
             )
           ),
           el('span', { className: 'role-pill-badge' }, 'Đổi ca')
@@ -833,7 +834,10 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     const others = (membersDirectory || []).filter(m => m && m.id && m.id !== uid);
     mount(selMem, [
       el('option', { value: '' }, '-- Để Ban Điều Phối sắp xếp --'),
-      ...others.map(m => el('option', { value: m.id }, `${m.hoTen} (${getDisplayStudentCode(m)})`))
+      ...others.map((m) => {
+        const sc = getDisplayStudentCode(m);
+        return el('option', { value: m.id }, `${m.hoTen} (${sc ? m.id + ' · ' + sc : m.id})`);
+      })
     ]);
   }
 

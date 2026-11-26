@@ -7,6 +7,7 @@ function cleanupDialogState(id) {
   if (id === 'approve-shift-modal') stopQrCameraStream();
   if (id === 'qr-modal') stopQrCountdown();
   if (id === 'create-shift-modal') editingTaskId = null;
+  if (id === 'confirm-delete-modal') pendingDeleteMemberId = null;
   if (id === 'success-celebration-modal' && celebrationTimer) {
     clearInterval(celebrationTimer);
     celebrationTimer = null;

@@ -632,8 +632,15 @@ html[data-theme="dark"] .notif-dot {
 .hero-id-row {
   margin-top: 6px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
+}
+
+.hero-id-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .hero-id-label {
@@ -1022,45 +1029,6 @@ html[data-theme="dark"] .profile-phone-link { color: #38bdf8; }
   border: 1px solid rgba(186, 230, 253, 0.45);
 }
 
-.login-pro-tag {
-  position: absolute;
-  bottom: -6px;
-  right: -10px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  background-color: #0284c7;
-  color: #ffffff;
-  border: 2px solid #f4f6fb;
-  padding: 1px 6px;
-  border-radius: 9999px;
-  font-family: var(--sp-font-mono);
-}
-
-html[data-theme="dark"] .login-pro-tag {
-  border-color: #0b1120;
-}
-
-.login-club-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 2px 10px;
-  border-radius: 9999px;
-  background-color: rgba(2, 132, 199, 0.12);
-  border: 1px solid rgba(14, 165, 233, 0.25);
-  color: #0369a1;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  font-family: var(--sp-font-mono);
-}
-
-html[data-theme="dark"] .login-club-chip {
-  background-color: rgba(56, 189, 248, 0.15);
-  color: #7dd3fc;
-}
-
 .login-portal-title {
   margin: 0;
   font-size: 22px;
@@ -1098,61 +1066,11 @@ html[data-theme="dark"] .login-club-chip {
   gap: 14px;
 }
 
-.login-badge-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.login-glass-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  font-size: 10px;
-  font-weight: 600;
-  color: #e0f2fe;
-  font-family: var(--sp-font-mono);
-}
-
-.login-field-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
 .login-field-label {
   font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: #e0f2fe;
-  font-family: var(--sp-font-mono);
-}
-
-.login-req-badge {
-  font-size: 9.5px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 9999px;
-  background-color: rgba(56, 189, 248, 0.25);
-  color: #e0f2fe;
-  border: 1px solid rgba(125, 211, 252, 0.4);
-  font-family: var(--sp-font-mono);
-}
-
-.login-sec-badge {
-  font-size: 9.5px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 9999px;
-  background-color: rgba(16, 185, 129, 0.25);
-  color: #d1fae5;
-  border: 1px solid rgba(110, 231, 183, 0.4);
   font-family: var(--sp-font-mono);
 }
 
@@ -1230,19 +1148,6 @@ html[data-theme="dark"] .login-club-chip {
   accent-color: #38bdf8;
 }
 
-.login-forgot-btn {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 8px;
-  margin: -8px -8px -8px 0;
-  border: 0;
-  background: transparent;
-  color: #bae6fd;
-  font-size: 12.5px;
-  font-weight: 500;
-}
-
 .login-white-cta {
   height: 48px;
   width: 100%;
@@ -1259,34 +1164,32 @@ html[data-theme="dark"] .login-club-chip {
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.22);
 }
 
-.login-bio-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+.login-white-cta:disabled,
+.login-white-cta.is-loading {
+  opacity: 0.85;
+  cursor: wait;
 }
 
-.login-bio-btn {
-  height: 44px;
-  border-radius: 14px;
-  background-color: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(186, 230, 253, 0.25);
+.login-register-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 2px;
+  font-size: 12.5px;
+  color: #e0f2fe;
+}
+
+.login-register-btn {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(186, 230, 253, 0.4);
+  background-color: rgba(255, 255, 255, 0.14);
   color: #ffffff;
   font-size: 12.5px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.login-footer-ssl {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 11.5px;
-  color: var(--text-secondary);
-  text-align: center;
+  font-weight: 700;
 }
 
 /* ==================== SHARED FORM INPUTS & BUTTONS ==================== */
@@ -1350,6 +1253,11 @@ html[data-theme="dark"] .login-club-chip {
 }
 
 .aqua-input.with-lead { padding-left: 38px; }
+
+.aqua-input[readonly] {
+  opacity: 0.85;
+  cursor: default;
+}
 
 .aqua-input:focus {
   background-color: var(--surface);
@@ -2217,9 +2125,61 @@ html[data-theme="dark"] .dispatch-card.urgent {
   background-color: var(--surface);
   border: 1px solid var(--border-subtle);
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  content-visibility: auto;
+  contain-intrinsic-size: 96px;
+}
+
+.member-stats-strip {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.member-stat-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.member-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--sp-font-mono);
+  white-space: nowrap;
+}
+
+.member-stat-pill.sky {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.member-stat-pill.teal {
+  background-color: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+}
+
+html[data-theme="dark"] .member-stat-pill.sky {
+  background-color: rgba(14, 165, 233, 0.16);
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.32);
+}
+
+html[data-theme="dark"] .member-stat-pill.teal {
+  background-color: rgba(20, 184, 166, 0.16);
+  color: #2dd4bf;
+  border-color: rgba(45, 212, 191, 0.32);
 }
 
 .ready-badge-pill {
@@ -2735,7 +2695,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
 
   <div class="varsity-shell">
 
-    <!-- ==================== VIEW 1: OCEAN LOGIN PORTAL (SCREENSHOTS 7 & 11) ==================== -->
+    <!-- ==================== VIEW 1: OCEAN LOGIN PORTAL (STREAMLINED V8.8) ==================== -->
     <section id="viewLoginContainer" class="login-shell-wrap" aria-label="Cổng Thẻ Số Thể Thao">
       <div class="login-hero-head">
         <div class="login-crest-wrap">
@@ -2745,11 +2705,9 @@ dialog.sp-center-dialog[open] .check-draw-path {
               <path d="m9 12 2 2 4-4"/>
             </svg>
           </div>
-          <span class="login-pro-tag">PRO</span>
         </div>
-        <div class="login-club-chip">• CLB THỂ THAO</div>
         <h2 class="login-portal-title">Cổng Thẻ Số Thể Thao</h2>
-        <p class="login-sub-copy">Xác thực sinh viên để truy cập tiện ích thể thao</p>
+        <p class="login-sub-copy">Đăng nhập để truy cập thẻ định danh &amp; điều phối ca trực</p>
       </div>
 
       <form id="login-form" class="login-ocean-card">
@@ -2763,32 +2721,18 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <div class="login-card-inner">
-          <div class="login-badge-row">
-            <span class="login-glass-pill">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <span>ĐĂNG NHẬP HỆ THỐNG</span>
-            </span>
-            <span class="login-glass-pill">NIÊN KHÓA 2024 - 2025</span>
-          </div>
-
           <div class="field-group">
-            <div class="login-field-head">
-              <label class="login-field-label" for="iptUser">MÃ SỐ SINH VIÊN (MSSV)</label>
-              <span class="login-req-badge">BẮT BUỘC</span>
-            </div>
+            <label class="login-field-label" for="iptUser">MÃ ID, MSSV HOẶC SỐ ĐIỆN THOẠI</label>
             <div class="login-glass-input-wrap">
               <span class="login-input-icon" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h6"/></svg>
               </span>
-              <input id="iptUser" type="text" class="login-glass-input font-mono" placeholder="Ví dụ: DMC0806 hoặc SĐT" autocomplete="username" autocapitalize="characters">
+              <input id="iptUser" type="text" class="login-glass-input font-mono" placeholder="VD: DMC0806, MSSV hoặc SĐT" autocomplete="username">
             </div>
           </div>
 
           <div class="field-group">
-            <div class="login-field-head">
-              <label class="login-field-label" for="iptPass">MẬT KHẨU TRUY CẬP</label>
-              <span class="login-sec-badge">BẢO MẬT</span>
-            </div>
+            <label class="login-field-label" for="iptPass">MẬT KHẨU TRUY CẬP</label>
             <div class="login-glass-input-wrap">
               <span class="login-input-icon" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -2805,9 +2749,8 @@ dialog.sp-center-dialog[open] .check-draw-path {
           <div class="login-options-row">
             <label class="login-remember-label" for="chkRememberLogin">
               <input id="chkRememberLogin" type="checkbox" checked>
-              <span>Ghi nhớ phiên</span>
+              <span>Ghi nhớ đăng nhập</span>
             </label>
-            <button id="btnForgotPass" type="button" class="login-forgot-btn">Quên mật khẩu?</button>
           </div>
 
           <button id="btnLoginSubmit" type="submit" class="login-white-cta water-ripple-target spring-press">
@@ -2815,23 +2758,12 @@ dialog.sp-center-dialog[open] .check-draw-path {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </button>
 
-          <div class="login-bio-row">
-            <button id="btnFaceIdLogin" type="button" class="login-bio-btn water-ripple-target spring-press">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/><path d="M9 10v1m6-1v1m-4 4a2 2 0 0 0 2 0"/></svg>
-              <span>Face ID</span>
-            </button>
-            <button id="btnTouchIdLogin" type="button" class="login-bio-btn water-ripple-target spring-press">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0 0 8 11a4 4 0 1 1 8 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0 0 15.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 0 0 8 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/></svg>
-              <span>Touch ID</span>
-            </button>
+          <div class="login-register-row">
+            <span>Chưa có tài khoản CLB?</span>
+            <button id="btnOpenRegisterModal" type="button" class="login-register-btn">Đăng ký tài khoản mới</button>
           </div>
         </div>
       </form>
-
-      <div class="login-footer-ssl">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-        <span>Bảo mật chuẩn mã hóa SSL 256-bit • CLB Thể Thao ĐH Hải Dương</span>
-      </div>
     </section>
 
     <!-- ==================== VIEW 2: CANONICAL MAIN VARSITY PASS UI ==================== -->
@@ -2924,8 +2856,8 @@ dialog.sp-center-dialog[open] .check-draw-path {
                 <h1 id="card-heading" class="hero-name-h1">ĐỖ MẠNH CƯỜNG</h1>
                 <p id="card-subtitle" class="hero-role-sub">Trưởng ban nhân sự</p>
                 <div class="hero-id-row">
-                  <span class="hero-id-label">MSSV:</span>
-                  <span id="card-mssv" class="hero-id-badge">DMC0806</span>
+                  <span class="hero-id-chip"><span class="hero-id-label">ID:</span> <span id="card-member-id" class="hero-id-badge">DMC0806</span></span>
+                  <span class="hero-id-chip"><span class="hero-id-label">MSSV:</span> <span id="card-mssv" class="hero-id-badge">Chưa cập nhật</span></span>
                 </div>
               </div>
             </div>
@@ -3025,12 +2957,24 @@ dialog.sp-center-dialog[open] .check-draw-path {
 
             <div class="profile-row">
               <div class="profile-row-left">
+                <div class="profile-icon-tile tile-sky" aria-hidden="true">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"/><path d="M7 9h4"/><path d="M7 13h10"/></svg>
+                </div>
+                <span class="profile-row-label">Mã ID CLB</span>
+              </div>
+              <span id="display-memberId" class="profile-row-val font-mono">DMC0806</span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-row">
+              <div class="profile-row-left">
                 <div class="profile-icon-tile tile-blue" aria-hidden="true">
                   <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
                 </div>
                 <span class="profile-row-label">Mã số sinh viên</span>
               </div>
-              <span id="display-studentId" class="profile-row-val font-mono">DMC0806</span>
+              <a id="display-studentId" class="profile-phone-link font-mono" href="#edit-profile-modal">Chưa cập nhật</a>
             </div>
 
             <div class="profile-divider"></div>
@@ -3112,29 +3056,36 @@ dialog.sp-center-dialog[open] .check-draw-path {
 
   <!-- ==================== MODAL 1: THẺ VÀO CỔNG QR ==================== -->
   <dialog id="qr-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="qr-modal-title">
-    <div class="sheet-panel sheet-panel-centered">
+    <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
-      <h3 id="qr-modal-title" class="sheet-title-h3">Thẻ Vào Cổng &amp; Điểm Danh</h3>
-      <p class="sheet-sub" style="max-width:280px;font-size:13px;">Chọn ca trực và quét mã tại trạm điều phối sân</p>
-
-      <select id="selQrPassTask" class="aqua-input" aria-label="Chọn ca trực xuất trình QR" style="margin-top:12px;font-size:12.5px;"></select>
-      <span id="qr-checkin-status-pill" class="role-pill-badge" style="margin-top:8px;">Chưa điểm danh</span>
-
-      <div id="qr-holo-container" class="qr-holo-card">
-        <div id="qr-code-box" class="qr-render-frame"></div>
-        <span id="qr-token-code" class="qr-token-text">#DMC0806-VN</span>
-        <div class="qr-timer-line">
-          <span class="status-ping-wrap" aria-hidden="true">
-            <span class="ping-ring"></span>
-            <span class="status-ping-dot"></span>
-          </span>
-          <span>Tự động làm mới sau <span id="qr-timer" class="qr-timer-count">45s</span></span>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div>
+            <h3 id="qr-modal-title" class="sheet-title-h3">Thẻ Vào Cổng &amp; Điểm Danh</h3>
+            <p class="sheet-sub">Chọn ca trực và quét mã tại trạm điều phối sân</p>
+          </div>
         </div>
+        <button id="qr-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
 
-      <button id="qr-modal-close" type="button" class="btn-sheet-muted water-ripple-target spring-press" style="width:100%;margin-top:20px;flex:none;">
-        <span>Đóng</span>
-      </button>
+      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+        <select id="selQrPassTask" class="aqua-input" aria-label="Chọn ca trực xuất trình QR" style="margin-top:12px;font-size:12.5px;"></select>
+        <span id="qr-checkin-status-pill" class="role-pill-badge" style="margin-top:8px;">Chưa điểm danh</span>
+
+        <div id="qr-holo-container" class="qr-holo-card" style="width:100%;max-width:260px;">
+          <div id="qr-code-box" class="qr-render-frame"></div>
+          <span id="qr-token-code" class="qr-token-text">#DMC0806-VN</span>
+          <div class="qr-timer-line">
+            <span class="status-ping-wrap" aria-hidden="true">
+              <span class="ping-ring"></span>
+              <span class="status-ping-dot"></span>
+            </span>
+            <span>Tự động làm mới sau <span id="qr-timer" class="qr-timer-count">45s</span></span>
+          </div>
+        </div>
+      </div>
     </div>
   </dialog>
 
@@ -3157,13 +3108,10 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </button>
       </div>
       <div id="notification-list" class="sheet-scroll-body"></div>
-      <div class="sheet-footer">
-        <button id="notification-dismiss-btn" type="button" class="btn-sheet-muted water-ripple-target spring-press">Đóng thông báo</button>
-      </div>
     </div>
   </dialog>
 
-  <!-- ==================== MODAL 3: THÀNH VIÊN CLB (SCREENSHOT 1) ==================== -->
+  <!-- ==================== MODAL 3: THÀNH VIÊN CLB ==================== -->
   <dialog id="members-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="members-modal-title">
     <div class="sheet-panel">
       <div class="sheet-drag-handle" aria-hidden="true"></div>
@@ -3172,19 +3120,18 @@ dialog.sp-center-dialog[open] .check-draw-path {
           <h3 id="members-modal-title" class="sheet-title-h3">Thành Viên CLB</h3>
           <span id="membersCountBadge" class="role-pill-badge">125</span>
         </div>
-        <button id="members-modal-close-x" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button id="admin-add-member-btn" type="button" class="btn-mini btn-mini-sky hidden">+ Thêm</button>
+          <button id="members-modal-close-x" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
       </div>
 
       <div class="sheet-scroll-body">
-        <input id="iptSearchMembers" type="search" class="aqua-input" placeholder="Tìm tên, Mã ID hoặc ban...">
+        <input id="iptSearchMembers" type="search" class="aqua-input" placeholder="Tìm tên, Mã ID, MSSV hoặc ban...">
         <div id="membersDeptFilterBar" class="dept-chip-scroll"></div>
         <div id="membersModalList" style="display:flex;flex-direction:column;gap:8px;"></div>
-      </div>
-
-      <div class="sheet-footer">
-        <button id="members-modal-close" type="button" class="btn-sheet-muted water-ripple-target spring-press">Đóng</button>
       </div>
     </div>
   </dialog>
@@ -3302,15 +3249,26 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-studentId">2. Mã số sinh viên</label>
+          <div class="field-head-split">
+            <label class="field-label-mono" for="input-memberId">2. Mã ID CLB</label>
+            <span class="role-pill-badge">Cố định</span>
+          </div>
           <div class="input-icon-wrap">
-            <span class="input-lead-icon" style="color:#2563eb;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/></svg></span>
-            <input id="input-studentId" type="text" class="aqua-input with-lead font-mono" placeholder="Nhập mã số sinh viên..." autocomplete="off" autocapitalize="characters" spellcheck="false">
+            <span class="input-lead-icon" style="color:#0284c7;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"/><path d="M7 9h4"/><path d="M7 13h10"/></svg></span>
+            <input id="input-memberId" type="text" class="aqua-input with-lead font-mono" readonly aria-readonly="true">
           </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-faculty">3. Khoa / Khóa học</label>
+          <label class="field-label-mono" for="input-studentId">3. Mã số sinh viên (MSSV)</label>
+          <div class="input-icon-wrap">
+            <span class="input-lead-icon" style="color:#2563eb;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"/><path d="M7 7h10"/><path d="M7 12h10"/></svg></span>
+            <input id="input-studentId" type="text" class="aqua-input with-lead font-mono" placeholder="Nhập mã số sinh viên (nếu có)..." autocomplete="off" autocapitalize="characters" spellcheck="false">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="input-faculty">4. Khoa / Khóa học</label>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#4f46e5;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
             <input id="input-faculty" type="text" class="aqua-input with-lead" placeholder="Khoa và khóa đào tạo...">
@@ -3318,7 +3276,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-dob">4. Ngày tháng năm sinh</label>
+          <label class="field-label-mono" for="input-dob">5. Ngày tháng năm sinh</label>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#e11d48;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>
             <input id="input-dob" type="text" class="aqua-input with-lead font-mono" placeholder="DD/MM/YYYY">
@@ -3326,23 +3284,23 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-dutyArea">5. Ban hoạt động</label>
+          <label class="field-label-mono" for="input-dutyArea">6. Ban hoạt động</label>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#0d9488;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
-            <input id="input-dutyArea" type="text" class="aqua-input with-lead" placeholder="Ban hoạt động CLB...">
+            <select id="input-dutyArea" class="aqua-input with-lead"></select>
           </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-role">6. Chức vụ</label>
+          <label class="field-label-mono" for="input-role">7. Chức vụ</label>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#d97706;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
-            <input id="input-role" type="text" class="aqua-input with-lead" placeholder="Chức vụ trong CLB...">
+            <select id="input-role" class="aqua-input with-lead"></select>
           </div>
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-phone">7. Số điện thoại</label>
+          <label class="field-label-mono" for="input-phone">8. Số điện thoại</label>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#059669;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
             <input id="input-phone" type="tel" class="aqua-input with-lead font-mono" placeholder="Số điện thoại liên hệ...">
@@ -3350,7 +3308,7 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
 
         <div class="field-group">
-          <label class="field-label-mono" for="input-ice">8. Liên hệ khẩn (ICE)</label>
+          <label class="field-label-mono" for="input-ice">9. Liên hệ khẩn (ICE)</label>
           <div class="input-icon-wrap">
             <span class="input-lead-icon" style="color:#d97706;" aria-hidden="true"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
             <input id="input-ice" type="text" class="aqua-input with-lead font-mono" placeholder="Số điện thoại khẩn cấp...">
@@ -3359,7 +3317,6 @@ dialog.sp-center-dialog[open] .check-draw-path {
       </form>
 
       <div class="sheet-footer">
-        <button id="edit-modal-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">Hủy</button>
         <button id="edit-modal-save" type="button" class="btn-sheet-primary water-ripple-target spring-press">✓ Lưu thay đổi</button>
       </div>
     </div>
@@ -3460,7 +3417,6 @@ dialog.sp-center-dialog[open] .check-draw-path {
       </div>
 
       <div class="sheet-footer">
-        <button id="create-shift-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">Hủy</button>
         <button id="btnSubmitTask" type="button" class="btn-sheet-primary water-ripple-target spring-press">✓ Tạo ca trực</button>
       </div>
     </div>
@@ -3572,10 +3528,6 @@ dialog.sp-center-dialog[open] .check-draw-path {
           <div id="memberMyRequestsList" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
       </div>
-
-      <div class="sheet-footer">
-        <button id="task-mission-close" type="button" class="btn-sheet-muted water-ripple-target spring-press">Đóng bảng điều khiển</button>
-      </div>
     </div>
   </dialog>
 
@@ -3609,19 +3561,14 @@ dialog.sp-center-dialog[open] .check-draw-path {
         </div>
       </form>
       <div class="sheet-footer">
-        <button id="password-modal-cancel" type="button" class="btn-sheet-muted water-ripple-target spring-press">Hủy</button>
         <button id="btnSavePassword" type="button" class="btn-sheet-primary water-ripple-target spring-press">Lưu mật khẩu</button>
       </div>
     </div>
   </dialog>
 
-  <!-- ==================== MODAL 10: POPUP THÀNH CÔNG TRUNG TÂM (SCREENSHOTS 3, 4, 13) ==================== -->
+  <!-- ==================== MODAL 10: POPUP THÀNH CÔNG TRUNG TÂM ==================== -->
   <dialog id="success-celebration-modal" class="sp-sheet-dialog sp-center-dialog" closedby="any" aria-labelledby="celebration-title">
     <div class="celebration-panel">
-      <button id="celebration-close-x" type="button" class="sheet-close-btn celebration-close-abs spring-press" aria-label="Đóng">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-
       <div class="celebration-tile" aria-hidden="true">
         <svg width="28" height="28" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewBox="0 0 24 24">
           <path class="check-draw-path" d="m5 13 4 4L19 7"/>
@@ -3636,6 +3583,175 @@ dialog.sp-center-dialog[open] .check-draw-path {
         <span>✓ Xác nhận</span>
       </button>
       <div id="celebration-countdown" class="celebration-countdown">Tự động đóng sau 3s</div>
+    </div>
+  </dialog>
+
+  <!-- ==================== MODAL 11: ĐĂNG KÝ TÀI KHOẢN MỚI ==================== -->
+  <dialog id="register-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="register-modal-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" x2="20" y1="8" y2="14"/><line x1="23" x2="17" y1="11" y2="11"/></svg>
+          </div>
+          <div>
+            <h3 id="register-modal-title" class="sheet-title-h3">Đăng Ký Tài Khoản Mới</h3>
+            <p class="sheet-sub">Kích hoạt thẻ số hội viên CLB Thể Thao</p>
+          </div>
+        </div>
+        <button id="register-modal-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="register-form" class="sheet-scroll-body" onsubmit="return false;">
+        <div class="field-group">
+          <div class="field-head-split">
+            <label class="field-label-mono" for="reg-fullname">Họ và tên</label>
+            <span class="role-pill-badge">Mã ID dự kiến: <strong id="reg-preview-id">SP0101</strong></span>
+          </div>
+          <input id="reg-fullname" type="text" class="aqua-input" placeholder="Ví dụ: Nguyễn Văn An" required>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="reg-dob">Ngày sinh</label>
+            <input id="reg-dob" type="text" class="aqua-input font-mono" placeholder="DD/MM/YYYY" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="reg-studentId">MSSV (tùy chọn)</label>
+            <input id="reg-studentId" type="text" class="aqua-input font-mono" placeholder="Ví dụ: 211031..." autocomplete="off">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="reg-phone">Số điện thoại</label>
+            <input id="reg-phone" type="tel" class="aqua-input font-mono" placeholder="09xxxxxxxx" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="reg-faculty">Khoa / Lớp</label>
+            <input id="reg-faculty" type="text" class="aqua-input" placeholder="K16-GDTC" required>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="reg-department">Ban hoạt động</label>
+          <select id="reg-department" class="aqua-input"></select>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="reg-password">Mật khẩu (&gt;= 6 ký tự)</label>
+            <input id="reg-password" type="password" class="aqua-input" autocomplete="new-password" placeholder="Tạo mật khẩu" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="reg-confirm-password">Xác nhận mật khẩu</label>
+            <input id="reg-confirm-password" type="password" class="aqua-input" autocomplete="new-password" placeholder="Nhập lại mật khẩu" required>
+          </div>
+        </div>
+      </form>
+
+      <div class="sheet-footer">
+        <button id="btnSubmitRegister" type="button" class="btn-sheet-primary water-ripple-target spring-press">✓ Hoàn tất đăng ký</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== MODAL 12: ADMIN THÊM THÀNH VIÊN ==================== -->
+  <dialog id="add-member-modal" class="sp-sheet-dialog" closedby="any" aria-labelledby="add-member-title">
+    <div class="sheet-panel">
+      <div class="sheet-drag-handle" aria-hidden="true"></div>
+      <div class="sheet-header">
+        <div class="sheet-title-wrap">
+          <div class="sheet-icon-badge" aria-hidden="true">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" x2="20" y1="8" y2="14"/><line x1="23" x2="17" y1="11" y2="11"/></svg>
+          </div>
+          <div>
+            <h3 id="add-member-title" class="sheet-title-h3">Thêm Thành Viên CLB</h3>
+            <p class="sheet-sub">Ghi trực tiếp vào Google Sheet Ban tương ứng</p>
+          </div>
+        </div>
+        <button id="add-member-close" type="button" class="sheet-close-btn water-ripple-target spring-press" aria-label="Đóng">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="add-member-form" class="sheet-scroll-body" onsubmit="return false;">
+        <div class="field-group">
+          <label class="field-label-mono" for="add-fullname">Họ và tên</label>
+          <input id="add-fullname" type="text" class="aqua-input" placeholder="Nhập họ và tên thành viên..." required>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="add-dob">Ngày sinh</label>
+            <input id="add-dob" type="text" class="aqua-input font-mono" placeholder="DD/MM/YYYY" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="add-memberId">Mã ID CLB</label>
+            <input id="add-memberId" type="text" class="aqua-input font-mono" placeholder="Tự động [Chữ][DDMM]">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="add-studentId">MSSV (tùy chọn)</label>
+            <input id="add-studentId" type="text" class="aqua-input font-mono" placeholder="Mã số sinh viên...">
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="add-phone">Số điện thoại</label>
+            <input id="add-phone" type="tel" class="aqua-input font-mono" placeholder="09xxxxxxxx">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="add-faculty">Khoa / Lớp</label>
+          <input id="add-faculty" type="text" class="aqua-input" placeholder="Ví dụ: K16A.GDTC">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="field-group">
+            <label class="field-label-mono" for="add-department">Ban hoạt động</label>
+            <select id="add-department" class="aqua-input"></select>
+          </div>
+          <div class="field-group">
+            <label class="field-label-mono" for="add-role">Chức vụ</label>
+            <select id="add-role" class="aqua-input"></select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label-mono" for="add-password">Mật khẩu khởi tạo</label>
+          <input id="add-password" type="text" class="aqua-input font-mono" value="123456" placeholder="Mặc định 123456">
+        </div>
+      </form>
+
+      <div class="sheet-footer">
+        <button id="btnSubmitAddMember" type="button" class="btn-sheet-primary water-ripple-target spring-press">✓ Thêm vào CLB</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== MODAL 13: XÁC NHẬN XÓA THÀNH VIÊN ==================== -->
+  <dialog id="confirm-delete-modal" class="sp-sheet-dialog sp-center-dialog" closedby="any" aria-labelledby="confirm-delete-title">
+    <div class="celebration-panel">
+      <button id="confirm-delete-close" type="button" class="sheet-close-btn celebration-close-abs spring-press" aria-label="Đóng">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="sheet-icon-badge" style="width:52px;height:52px;border-radius:16px;background-color:#fff1f2;color:#be123c;border:1px solid #fecdd3;margin-bottom:4px;" aria-hidden="true">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </div>
+
+      <span class="celebration-kicker" style="background-color:#fff1f2;color:#be123c;border-color:#fecdd3;">• XÓA KHỎI CLB</span>
+      <h3 id="confirm-delete-title" class="celebration-title">Xóa thành viên?</h3>
+      <p id="confirm-delete-desc" class="celebration-desc">Thành viên sẽ bị gỡ khỏi toàn bộ Sheet Ban, đồng thời lưu 1 bản sao dự phòng vào sheet ArchivedMembers.</p>
+
+      <button id="btnConfirmDeleteMember" type="button" class="btn-sheet-danger water-ripple-target spring-press" style="margin-top:0;border-radius:9999px;">
+        <span>Xóa vĩnh viễn khỏi CLB</span>
+      </button>
     </div>
   </dialog>
 
@@ -3657,6 +3773,16 @@ const ALL_DEPARTMENTS = [
   'Ban Bóng Đá Nữ',
   'Ban Cầu Lông',
   'Ban Truyền Thông'
+];
+
+const STANDARD_ROLES = [
+  'Chủ nhiệm',
+  'Phó chủ nhiệm',
+  'Trưởng ban',
+  'Phó ban',
+  'Thư ký',
+  'Thủ quỹ',
+  'Thành viên'
 ];
 
 const DEFAULT_VARSITY_AVATAR = 'data:image/jpeg;base64,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';
@@ -3995,12 +4121,14 @@ function initHeroCardParallax() {
 }
 
 // === state.js ===
-// SportPass V8.7 — Canonical Normalized Models, Multi-Role Merge, Overrides, Tombstones & RBAC
+// SportPass V8.8 — Canonical Normalized Models, Multi-Role Merge, Overrides, Tombstones & RBAC
 
 const DOB_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
 const DATA_CACHE_KEY = 'CLB_SPORTPASS_DATA_CACHE';
 const OVERRIDES_KEY = 'CLB_MEMBER_OVERRIDES';
 const DELETED_TASKS_KEY = 'CLB_DELETED_TASK_IDS';
+const DELETED_MEMBERS_KEY = 'CLB_DELETED_MEMBER_IDS';
+const CUSTOM_MEMBERS_KEY = 'CLB_CUSTOM_MEMBERS';
 const CUSTOM_ROLES_KEY = 'CLB_CUSTOM_ADMIN_ROLES';
 
 function safeSetText(id, text) {
@@ -4018,6 +4146,56 @@ function getSportPassInitials(name) {
   const parts = String(name).trim().split(/\s+/);
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+function normalizePhoneVN(val) {
+  if (val === undefined || val === null) return '';
+  let digits = String(val).trim().replace(/[^0-9]/g, '');
+  if (!digits) return '';
+  if (digits.startsWith('84') && digits.length >= 11) {
+    digits = '0' + digits.slice(2);
+  } else if (!digits.startsWith('0') && digits.length >= 9 && digits.length <= 10) {
+    digits = '0' + digits;
+  }
+  return digits;
+}
+
+function normalizeRoleValue(rawRole) {
+  const r = String(rawRole || '').trim().toLowerCase();
+  if (!r) return 'Thành viên';
+  if (r.includes('phó chủ nhiệm')) return 'Phó chủ nhiệm';
+  if (r.includes('chủ nhiệm')) return 'Chủ nhiệm';
+  if (r.includes('trưởng ban')) return 'Trưởng ban';
+  if (r.includes('phó ban')) return 'Phó ban';
+  if (r.includes('thư ký')) return 'Thư ký';
+  if (r.includes('thủ quỹ')) return 'Thủ quỹ';
+  return 'Thành viên';
+}
+
+function generateClientMemberId(hoTen, dob, extraReserved = []) {
+  let clean = String(hoTen || '').trim().replace(/Đ/g, 'D').replace(/đ/g, 'd');
+  try {
+    clean = clean.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  } catch (e) {}
+  const words = clean.split(/\s+/).filter(Boolean);
+  let initials = words.map(w => w.charAt(0).toUpperCase()).join('');
+  if (!initials) initials = 'SP';
+
+  let ddmm = '0101';
+  const m = String(dob || '').match(/(\d{1,2})[\/\-](\d{1,2})/);
+  if (m) {
+    ddmm = String(parseInt(m[1], 10)).padStart(2, '0') + String(parseInt(m[2], 10)).padStart(2, '0');
+  }
+  const baseId = `${initials}${ddmm}`.toUpperCase();
+  const used = new Set([
+    ...(Array.isArray(membersDirectory) ? membersDirectory : []).map(x => String(x?.id || '').toUpperCase()),
+    ...getDeletedMemberIds().map(x => String(x).toUpperCase()),
+    ...(Array.isArray(extraReserved) ? extraReserved : []).map(x => String(x || '').toUpperCase())
+  ]);
+  if (!used.has(baseId)) return baseId;
+  let suffix = 2;
+  while (used.has(`${baseId}${suffix}`)) suffix++;
+  return `${baseId}${suffix}`;
 }
 
 function resolveAvatarUrl(member) {
@@ -4048,11 +4226,17 @@ function formatMemberDob(member) {
 }
 
 function getDisplayStudentCode(member) {
-  if (!member) return 'DMC0806';
-  if (member.studentCode && String(member.studentCode).trim()) return String(member.studentCode).trim();
-  const rawMssv = String(member.mssv || '').trim();
-  if (rawMssv && !DOB_REGEX.test(rawMssv)) return rawMssv;
-  return member.id || 'SP0000';
+  if (!member) return '';
+  const idUpper = String(member.id || '').trim().toUpperCase();
+  const candidates = [member.studentCode, member.mssv];
+  for (const raw of candidates) {
+    const clean = String(raw || '').trim();
+    if (!clean) continue;
+    if (DOB_REGEX.test(clean)) continue;
+    if (idUpper && clean.toUpperCase() === idUpper) continue;
+    return clean;
+  }
+  return '';
 }
 
 function getTheTrangTheme(theTrang) {
@@ -4095,6 +4279,7 @@ function normalizeMember(raw) {
   copy.status = String(copy.status || 'Sẵn sàng').trim();
   copy.ngaySinh = formatMemberDob(copy);
   copy.studentCode = getDisplayStudentCode(copy);
+  copy.mssv = copy.studentCode;
   copy.soCaHoanThanh = shiftsDone;
   copy.soCa = shiftsDone;
   copy.soCaSinhHoat = activitiesDone;
@@ -4102,6 +4287,7 @@ function normalizeMember(raw) {
   copy.activityOffset = Number(copy.activityOffset) || 0;
   copy.isAdmin = id === 'DMC0806' ? true : Boolean(copy.isAdmin);
   copy.isShiftLeader = copy.isAdmin ? true : Boolean(copy.isShiftLeader);
+  copy.hasCustomPassword = Boolean(copy.hasCustomPassword);
   copy.donVi = copy.donVi || 'Trường Đại học Hải Dương';
   return copy;
 }
@@ -4127,10 +4313,14 @@ function normalizeMembersDirectory(rawList) {
     }
     prev.isAdmin = prev.isAdmin || m.isAdmin;
     prev.isShiftLeader = prev.isAdmin || prev.isShiftLeader || m.isShiftLeader;
+    prev.hasCustomPassword = prev.hasCustomPassword || m.hasCustomPassword;
     if (!prev.sdt && m.sdt) prev.sdt = m.sdt;
     if ((!prev.ice || prev.ice === prev.sdt) && m.ice) prev.ice = m.ice;
     if (prev.yTe === 'Bình thường' && m.yTe && m.yTe !== 'Bình thường') prev.yTe = m.yTe;
-    if (prev.studentCode === prev.id && m.studentCode !== m.id) prev.studentCode = m.studentCode;
+    if (!prev.studentCode && m.studentCode) {
+      prev.studentCode = m.studentCode;
+      prev.mssv = m.studentCode;
+    }
     prev.soCaHoanThanh = Math.max(prev.soCaHoanThanh, m.soCaHoanThanh);
     prev.soCa = prev.soCaHoanThanh;
     prev.soCaSinhHoat = Math.max(prev.soCaSinhHoat, m.soCaSinhHoat);
@@ -4381,6 +4571,85 @@ function saveDeletedTaskId(id) {
   }
 }
 
+function getDeletedMemberIds() {
+  try {
+    const list = JSON.parse(localStorage.getItem(DELETED_MEMBERS_KEY) || '[]');
+    return Array.isArray(list) ? list.map(x => String(x || '').trim().toUpperCase()).filter(Boolean) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveDeletedMemberId(id) {
+  const clean = String(id || '').trim().toUpperCase();
+  if (!clean || clean === 'DMC0806') return;
+  const list = getDeletedMemberIds();
+  if (!list.includes(clean)) {
+    list.push(clean);
+    try { localStorage.setItem(DELETED_MEMBERS_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+}
+
+function removeDeletedMemberId(id) {
+  const clean = String(id || '').trim().toUpperCase();
+  if (!clean) return;
+  const next = getDeletedMemberIds().filter(x => x !== clean);
+  try { localStorage.setItem(DELETED_MEMBERS_KEY, JSON.stringify(next)); } catch (e) {}
+}
+
+function getCustomMembers() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(CUSTOM_MEMBERS_KEY) || '[]');
+    return Array.isArray(raw) ? raw.filter(m => m && m.id) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function upsertCustomMember(memberObj) {
+  const norm = normalizeMember(memberObj);
+  if (!norm) return;
+  norm.localCreatedAt = memberObj.localCreatedAt || Date.now();
+  removeDeletedMemberId(norm.id);
+  const list = getCustomMembers().filter(m => String(m.id || '').toUpperCase() !== norm.id.toUpperCase());
+  list.unshift(norm);
+  try { localStorage.setItem(CUSTOM_MEMBERS_KEY, JSON.stringify(list)); } catch (e) {}
+}
+
+function removeCustomMember(memberId) {
+  const clean = String(memberId || '').trim().toUpperCase();
+  if (!clean) return;
+  const next = getCustomMembers().filter(m => String(m.id || '').toUpperCase() !== clean);
+  try { localStorage.setItem(CUSTOM_MEMBERS_KEY, JSON.stringify(next)); } catch (e) {}
+}
+
+function rebuildMembersDirectory(remoteList = null) {
+  const deletedSet = new Set(getDeletedMemberIds());
+  const baseList = Array.isArray(remoteList) && remoteList.length > 0
+    ? remoteList
+    : (typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY : []);
+  const seenRemote = new Set(baseList.map(m => String(m && m.id ? m.id : '').trim().toUpperCase()).filter(Boolean));
+
+  const customList = getCustomMembers().filter((m) => {
+    const uid = String(m.id || '').trim().toUpperCase();
+    if (!uid || deletedSet.has(uid)) return false;
+    if (Array.isArray(remoteList) && remoteList.length > 0) {
+      if (seenRemote.has(uid)) return false;
+      return Boolean(m.localCreatedAt && (Date.now() - m.localCreatedAt < 90000));
+    }
+    return true;
+  });
+
+  const combined = [...baseList, ...customList].filter(m => m && m.id && !deletedSet.has(String(m.id).trim().toUpperCase()));
+  membersDirectory = normalizeMembersDirectory(combined);
+  applyServerMemberCounters(membersDirectory);
+  applyMemberOverrides(membersDirectory);
+  if (typeof window !== 'undefined' && Array.isArray(membersDirectory)) {
+    window.membersDirectory = membersDirectory;
+  }
+  return membersDirectory;
+}
+
 // ==================== SEMANTIC TASK DEDUPLICATION ====================
 function isStaleRemoteTestTask(t) {
   if (!t) return true;
@@ -4548,46 +4817,137 @@ let selectedShiftLeaderId = 'DMC0806';
 let currentSyncPollTimer = null;
 
 // === security.js ===
-// SportPass V8.7 — Security, Auth Session Lifecycle, WebAuthn Passkey & Strict Password Enforcement
+// SportPass V8.8 — Fast Optimistic Auth, Cross-Context SHA-256, ID/MSSV/Phone Lookup & Scanner RBAC
+
+const DEFAULT_PASS_HASH = '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'; // sha256('123456')
+let isLoginSubmitting = false;
 
 function isAuthorizedScanner(user = currentUser) {
-  if (!user) return false;
-  if (user.isAdmin || user.isShiftLeader) return true;
-  const cv = String(user.chucVu || '').toLowerCase();
-  const bm = String(user.boMon || '').toLowerCase();
-  return (
-    cv.includes('trưởng ban') ||
-    cv.includes('phó ban') ||
-    cv.includes('chủ nhiệm') ||
-    cv.includes('ban chủ nhiệm') ||
-    bm.includes('ban chủ nhiệm')
-  );
+  return Boolean(user && (user.isAdmin || user.isShiftLeader));
 }
 
-function verifyMemberPassword(memberId, inputPass) {
-  const customPass = localStorage.getItem('CLB_USER_PASS_' + memberId);
-  const expectedPass = customPass !== null ? customPass : '123456';
-  return String(inputPass || '') === expectedPass;
+function sha256PureJsHex(str) {
+  const utf8 = unescape(encodeURIComponent(String(str || '')));
+  const bytes = [];
+  for (let i = 0; i < utf8.length; i++) bytes.push(utf8.charCodeAt(i));
+
+  const bitLen = bytes.length * 8;
+  bytes.push(0x80);
+  while ((bytes.length % 64) !== 56) bytes.push(0);
+  const hiLen = Math.floor(bitLen / 0x100000000);
+  const loLen = bitLen >>> 0;
+  bytes.push((hiLen >>> 24) & 0xff, (hiLen >>> 16) & 0xff, (hiLen >>> 8) & 0xff, hiLen & 0xff);
+  bytes.push((loLen >>> 24) & 0xff, (loLen >>> 16) & 0xff, (loLen >>> 8) & 0xff, loLen & 0xff);
+
+  const K = [
+    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+  ];
+  const H = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19];
+  const rotr = (v, n) => (v >>> n) | (v << (32 - n));
+  const w = new Array(64);
+
+  for (let off = 0; off < bytes.length; off += 64) {
+    for (let i = 0; i < 16; i++) {
+      w[i] = ((bytes[off + i * 4] << 24) | (bytes[off + i * 4 + 1] << 16) | (bytes[off + i * 4 + 2] << 8) | bytes[off + i * 4 + 3]) >>> 0;
+    }
+    for (let i = 16; i < 64; i++) {
+      const s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+      const s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+      w[i] = (w[i - 16] + s0 + w[i - 7] + s1) >>> 0;
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let i = 0; i < 64; i++) {
+      const S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+      const ch = (e & f) ^ ((~e) & g);
+      const t1 = (h + S1 + ch + K[i] + w[i]) >>> 0;
+      const S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+      const maj = (a & b) ^ (a & c) ^ (b & c);
+      const t2 = (S0 + maj) >>> 0;
+      h = g; g = f; f = e; e = (d + t1) >>> 0;
+      d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+    H[0] = (H[0] + a) >>> 0; H[1] = (H[1] + b) >>> 0; H[2] = (H[2] + c) >>> 0; H[3] = (H[3] + d) >>> 0;
+    H[4] = (H[4] + e) >>> 0; H[5] = (H[5] + f) >>> 0; H[6] = (H[6] + g) >>> 0; H[7] = (H[7] + h) >>> 0;
+  }
+  return H.map(v => v.toString(16).padStart(8, '0')).join('');
+}
+
+async function sha256Hex(plain) {
+  const str = String(plain || '');
+  if (window.crypto && window.crypto.subtle && typeof TextEncoder === 'function') {
+    try {
+      const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) {}
+  }
+  return sha256PureJsHex(str);
+}
+
+function hasCustomMemberPassword(member) {
+  if (!member || !member.id) return false;
+  if (localStorage.getItem('CLB_USER_PASS_HASH_' + member.id) !== null) return true;
+  if (localStorage.getItem('CLB_USER_PASS_' + member.id) !== null) return true;
+  return Boolean(member.hasCustomPassword);
+}
+
+function setStoredPasswordHash(memberId, passHash) {
+  if (!memberId || !passHash) return;
+  try {
+    localStorage.setItem('CLB_USER_PASS_HASH_' + memberId, String(passHash));
+    localStorage.removeItem('CLB_USER_PASS_' + memberId);
+  } catch (e) {}
+}
+
+async function getStoredPasswordHash(memberId) {
+  const h = localStorage.getItem('CLB_USER_PASS_HASH_' + memberId);
+  if (h) return h;
+  const legacy = localStorage.getItem('CLB_USER_PASS_' + memberId);
+  if (legacy !== null) {
+    const migrated = await sha256Hex(legacy);
+    setStoredPasswordHash(memberId, migrated);
+    return migrated;
+  }
+  return DEFAULT_PASS_HASH;
+}
+
+async function verifyMemberPasswordHash(memberId, inputHash) {
+  const expected = await getStoredPasswordHash(memberId);
+  return String(inputHash || '') === expected;
 }
 
 function findLocalMemberByIdentifier(identifier) {
-  const cleanIdent = String(identifier || '').trim().toLowerCase();
+  const rawIdent = String(identifier || '').trim();
+  const cleanIdent = rawIdent.toLowerCase();
   if (!cleanIdent) return null;
-  const cleanPhone = cleanIdent.replace(/[^0-9]/g, '');
-  const list = Array.isArray(membersDirectory) ? membersDirectory : [];
 
-  const exactId = list.find(m => m && String(m.id || '').trim().toLowerCase() === cleanIdent);
+  const deletedSet = new Set(getDeletedMemberIds());
+  const list = (Array.isArray(membersDirectory) ? membersDirectory : [])
+    .filter(m => m && m.id && !deletedSet.has(String(m.id).trim().toUpperCase()));
+
+  const exactId = list.find(m => String(m.id || '').trim().toLowerCase() === cleanIdent);
   if (exactId) return structuredClone(exactId);
 
-  const exactStudentCode = list.find(m => m && String(m.studentCode || '').trim().toLowerCase() === cleanIdent);
+  const exactStudentCode = list.find((m) => {
+    const code = getDisplayStudentCode(m).toLowerCase();
+    return code && code === cleanIdent;
+  });
   if (exactStudentCode) return structuredClone(exactStudentCode);
 
-  if (cleanPhone.length >= 9) {
-    const exactPhone = list.find(m => m && String(m.sdt || '').replace(/[^0-9]/g, '') === cleanPhone);
+  const hasLetters = /[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF]/.test(rawIdent);
+  const normPhone = !hasLetters ? normalizePhoneVN(rawIdent) : '';
+  if (normPhone.length >= 9) {
+    const exactPhone = list.find(m => normalizePhoneVN(m.sdt) === normPhone);
     if (exactPhone) return structuredClone(exactPhone);
   }
 
-  const exactName = list.find(m => m && String(m.hoTen || '').trim().toLowerCase() === cleanIdent);
+  const exactName = list.find(m => String(m.hoTen || '').trim().toLowerCase() === cleanIdent);
   return exactName ? structuredClone(exactName) : null;
 }
 
@@ -4618,6 +4978,15 @@ function showMainAppView() {
   if (appView) appView.classList.remove('hidden');
 }
 
+function setLoginButtonLoading(loading) {
+  const btn = document.getElementById('btnLoginSubmit');
+  if (!btn) return;
+  btn.disabled = Boolean(loading);
+  btn.classList.toggle('is-loading', Boolean(loading));
+  const label = btn.querySelector('span');
+  if (label) label.textContent = loading ? 'Đang xác thực...' : 'Đăng nhập ngay';
+}
+
 function persistUserSession(userObj) {
   if (!userObj) return;
   const json = JSON.stringify(userObj);
@@ -4630,34 +4999,34 @@ function persistUserSession(userObj) {
 function activateAuthenticatedSession() {
   showMainAppView();
   renderProfileData();
-  renderDispatchHub();
-  renderMembersModalList();
-  renderNotificationsModalList();
-  updateQrPassDisplay();
+  updatePendingBadges();
+  updateNotificationDotOnly();
   autoEnableBackgroundNotifications();
   restartAdaptivePolling();
-  syncRealtimeData();
+  setTimeout(() => {
+    if (currentUser && navigator.onLine) syncRealtimeData();
+  }, 450);
 }
 
 function checkStoredLoginSession() {
-  membersDirectory = normalizeMembersDirectory(typeof DEFAULT_MEMBERS_DIRECTORY !== 'undefined' ? DEFAULT_MEMBERS_DIRECTORY : []);
-  applyMemberOverrides(membersDirectory);
+  hydrateLocalStateFromCache();
+  rebuildMembersDirectory();
 
+  const deletedSet = new Set(getDeletedMemberIds());
   const rememberFlag = localStorage.getItem('CLB_REMEMBER_LOGIN');
   const sessionCached = sessionStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
   const localCached = localStorage.getItem('CLB_SPORTPASS_AUTH_SESSION');
-  const isRemembered = rememberFlag === 'true';
-  const activeSessionJson = sessionCached || (isRemembered ? localCached : null);
+  const activeSessionJson = sessionCached || (rememberFlag === 'true' ? localCached : null);
 
   const chkRemember = document.getElementById('chkRememberLogin');
   if (chkRemember) chkRemember.checked = (rememberFlag !== 'false');
 
   if (activeSessionJson) {
     try {
-      currentUser = normalizeMember(JSON.parse(activeSessionJson));
-      if (currentUser) {
+      const parsed = normalizeMember(JSON.parse(activeSessionJson));
+      if (parsed && !deletedSet.has(parsed.id.toUpperCase())) {
+        currentUser = parsed;
         window.currentUser = currentUser;
-        hydrateLocalStateFromCache();
         applyMemberOverrides(membersDirectory);
         activateAuthenticatedSession();
         return;
@@ -4665,31 +5034,16 @@ function checkStoredLoginSession() {
     } catch (e) {}
   }
 
-  hydrateLocalStateFromCache();
   showLoginView();
 }
 
-function fallbackOfflineLogin(user, pass, remember) {
-  const matched = findLocalMemberByIdentifier(user);
-  if (!matched) {
-    showToast('Không tìm thấy tài khoản hội viên. Kiểm tra Mã ID hoặc SĐT.');
-    return false;
-  }
-
-  if (!verifyMemberPassword(matched.id, pass)) {
-    const hasCustom = localStorage.getItem('CLB_USER_PASS_' + matched.id) !== null;
-    showToast(hasCustom ? 'Mật khẩu chưa chính xác.' : 'Mật khẩu chưa chính xác. Mặc định là 123456.');
-    return false;
-  }
-
-  completeUserLogin(matched, remember);
-  return true;
-}
-
-function completeUserLogin(memberObj, remember) {
+function completeUserLogin(memberObj, remember, verifiedHash = null) {
   currentUser = normalizeMember(memberObj);
+  if (verifiedHash && verifiedHash !== DEFAULT_PASS_HASH) {
+    currentUser.hasCustomPassword = true;
+  }
   hydrateLocalStateFromCache();
-  applyMemberOverrides(membersDirectory);
+  rebuildMembersDirectory();
   window.currentUser = currentUser;
 
   const sessionStr = JSON.stringify(currentUser);
@@ -4708,8 +5062,25 @@ function completeUserLogin(memberObj, remember) {
   showToast('Đăng nhập thành công: ' + currentUser.hoTen);
 }
 
+async function fallbackOfflineLogin(user, pass, remember) {
+  const inputHash = await sha256Hex(pass);
+  const matched = findLocalMemberByIdentifier(user);
+  if (!matched) {
+    showToast('Không tìm thấy tài khoản theo Mã ID, MSSV hoặc SĐT.');
+    return false;
+  }
+  if (!(await verifyMemberPasswordHash(matched.id, inputHash))) {
+    showToast(hasCustomMemberPassword(matched) ? 'Mật khẩu chưa chính xác.' : 'Mật khẩu chưa chính xác. Mặc định là 123456.');
+    return false;
+  }
+  completeUserLogin(matched, remember, inputHash);
+  return true;
+}
+
 async function handleLoginSubmit(event) {
   if (event && event.preventDefault) event.preventDefault();
+  if (isLoginSubmitting) return;
+
   const identEl = document.getElementById('iptUser');
   const passEl = document.getElementById('iptPass');
   const remEl = document.getElementById('chkRememberLogin');
@@ -4718,125 +5089,77 @@ async function handleLoginSubmit(event) {
   const remember = remEl ? remEl.checked : true;
 
   if (!ident) {
-    showToast('Vui lòng nhập Mã ID hoặc SĐT hội viên.');
-    if (identEl) identEl.focus();
+    showToast('Vui lòng nhập Mã ID, MSSV hoặc Số điện thoại.');
+    identEl?.focus();
     return;
   }
   if (!pass) {
     showToast('Vui lòng nhập mật khẩu.');
-    if (passEl) passEl.focus();
+    passEl?.focus();
     return;
   }
 
-  if (navigator.onLine) {
-    try {
-      const res = await fetch(`${GAS_API_URL}?action=login&identifier=${encodeURIComponent(ident)}`);
-      const data = await res.json();
-      if (data && data.success && data.member) {
-        if (verifyMemberPassword(data.member.id, pass)) {
-          completeUserLogin(data.member, remember);
+  isLoginSubmitting = true;
+  try {
+    const inputHash = await sha256Hex(pass);
+    const localMatch = findLocalMemberByIdentifier(ident);
+    const localHashMissingForServerPass = Boolean(
+      localMatch &&
+      localMatch.hasCustomPassword &&
+      localStorage.getItem('CLB_USER_PASS_HASH_' + localMatch.id) === null &&
+      localStorage.getItem('CLB_USER_PASS_' + localMatch.id) === null
+    );
+
+    if (localMatch && !localHashMissingForServerPass && (await verifyMemberPasswordHash(localMatch.id, inputHash))) {
+      completeUserLogin(localMatch, remember, inputHash);
+      return;
+    }
+
+    if (navigator.onLine) {
+      setLoginButtonLoading(true);
+      const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), 8000) : null;
+      try {
+        const res = await fetch(
+          `${GAS_API_URL}?action=login&identifier=${encodeURIComponent(ident)}&passwordHash=${encodeURIComponent(inputHash)}`,
+          ctrl ? { signal: ctrl.signal } : undefined
+        );
+        const data = res && res.ok ? await res.json().catch(() => null) : null;
+        if (data && data.success && data.member) {
+          if (getDeletedMemberIds().includes(String(data.member.id || '').toUpperCase())) {
+            showToast('Tài khoản này đã bị xóa khỏi CLB.');
+            return;
+          }
+          setStoredPasswordHash(data.member.id, inputHash);
+          upsertCustomMember(data.member);
+          rebuildMembersDirectory();
+          completeUserLogin(data.member, remember, inputHash);
           return;
         }
-        showToast('Mật khẩu chưa chính xác.');
-        return;
-      }
-    } catch (err) {
-      // Offline fallback below
-    }
-  }
-
-  fallbackOfflineLogin(ident, pass, remember);
-}
-
-function bufferToBase64Url(buf) {
-  const bytes = new Uint8Array(buf);
-  let bin = '';
-  for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
-  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-function base64UrlToUint8Array(b64u) {
-  const b64 = String(b64u || '').replace(/-/g, '+').replace(/_/g, '/');
-  const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
-  const bin = atob(b64 + pad);
-  const out = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-  return out;
-}
-
-async function handleBiometricLogin(methodLabel) {
-  if (!window.PublicKeyCredential || !window.isSecureContext || !navigator.credentials) {
-    showToast('Trình duyệt hoặc kết nối chưa hỗ trợ sinh trắc học WebAuthn. Vui lòng đăng nhập bằng mật khẩu.');
-    document.getElementById('iptUser')?.focus();
-    return;
-  }
-
-  let binding = null;
-  try {
-    const raw = localStorage.getItem('CLB_PASSKEY_BINDING');
-    if (raw) binding = JSON.parse(raw);
-  } catch (e) {}
-
-  if (binding && binding.memberId && binding.credIdB64) {
-    const boundMember = findLocalMemberByIdentifier(binding.memberId);
-    if (boundMember) {
-      try {
-        const challenge = crypto.getRandomValues(new Uint8Array(32));
-        const assertion = await navigator.credentials.get({
-          publicKey: {
-            challenge,
-            allowCredentials: [{ id: base64UrlToUint8Array(binding.credIdB64), type: 'public-key' }],
-            userVerification: 'required',
-            timeout: 30000
-          }
-        });
-        if (assertion) {
-          completeUserLogin(boundMember, true);
-          showToast(`Xác thực ${methodLabel} thành công: ${boundMember.hoTen}`);
+        if (data && data.code === 'WRONG_PASSWORD') {
+          showToast('Mật khẩu chưa chính xác.');
+          passEl?.focus();
           return;
         }
       } catch (err) {
-        showToast(`Xác thực ${methodLabel} đã hủy hoặc không khớp trên thiết bị.`);
-        return;
+        // Offline / timeout fallback below
+      } finally {
+        if (timer) clearTimeout(timer);
+        setLoginButtonLoading(false);
       }
     }
-  }
 
-  const ident = (document.getElementById('iptUser')?.value || '').trim();
-  const pass = (document.getElementById('iptPass')?.value || '').trim();
-  const candidate = ident ? findLocalMemberByIdentifier(ident) : null;
-
-  if (candidate && pass && verifyMemberPassword(candidate.id, pass)) {
-    try {
-      const challenge = crypto.getRandomValues(new Uint8Array(32));
-      const userId = new TextEncoder().encode(candidate.id);
-      const cred = await navigator.credentials.create({
-        publicKey: {
-          challenge,
-          rp: { name: 'SportPass Pro UHD' },
-          user: { id: userId, name: candidate.id, displayName: candidate.hoTen },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
-          authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
-          timeout: 30000
-        }
-      });
-      if (cred && cred.rawId) {
-        localStorage.setItem('CLB_PASSKEY_BINDING', JSON.stringify({
-          memberId: candidate.id,
-          credIdB64: bufferToBase64Url(cred.rawId)
-        }));
-        completeUserLogin(candidate, true);
-        showToast(`Đã liên kết ${methodLabel} & đăng nhập: ${candidate.hoTen}`);
-        return;
-      }
-    } catch (err) {
-      showToast(`Thiết bị chưa hoàn tất tạo khóa ${methodLabel}. Vui lòng đăng nhập bằng mật khẩu.`);
-      return;
+    if (localMatch) {
+      showToast(hasCustomMemberPassword(localMatch) ? 'Mật khẩu chưa chính xác.' : 'Mật khẩu chưa chính xác. Mặc định là 123456.');
+      passEl?.focus();
+    } else {
+      showToast('Không tìm thấy tài khoản theo Mã ID, MSSV hoặc SĐT.');
+      identEl?.focus();
     }
+  } finally {
+    isLoginSubmitting = false;
+    setLoginButtonLoading(false);
   }
-
-  showToast(`Đăng nhập bằng MSSV & mật khẩu trước, sau đó nhấn ${methodLabel} để liên kết thiết bị.`);
-  document.getElementById('iptUser')?.focus();
 }
 
 function executeLogoutAction() {
@@ -4857,7 +5180,7 @@ function executeLogoutAction() {
 }
 
 // === sync.js ===
-// SportPass V8.7 — Bidirectional Google Apps Script Sync & Offline Mutation Queue
+// SportPass V8.8 — Bidirectional Google Apps Script Sync, Tombstones & Lazy Renders
 
 let syncInFlightPromise = null;
 
@@ -4873,6 +5196,42 @@ function enqueueOfflineMutation(type, payload) {
 
 function reconcileMutationResponse(type, payload, data) {
   if (!data || data.success !== true) return;
+  if ((type === 'REGISTER_MEMBER' || type === 'ADD_MEMBER') && payload && data.member) {
+    const serverMem = normalizeMember(data.member);
+    if (!serverMem) return;
+    const prevId = String(payload.id || '').trim();
+    if (prevId && serverMem.id !== prevId) {
+      const oldHash = localStorage.getItem('CLB_USER_PASS_HASH_' + prevId);
+      if (oldHash) {
+        try {
+          localStorage.setItem('CLB_USER_PASS_HASH_' + serverMem.id, oldHash);
+          localStorage.removeItem('CLB_USER_PASS_HASH_' + prevId);
+        } catch (e) {}
+      }
+      removeCustomMember(prevId);
+      if (currentUser && currentUser.id === prevId) {
+        currentUser = serverMem;
+        window.currentUser = currentUser;
+        if (typeof persistUserSession === 'function') persistUserSession(currentUser);
+      }
+    }
+    upsertCustomMember(serverMem);
+    rebuildMembersDirectory();
+    if (typeof renderProfileData === 'function' && currentUser && currentUser.id === serverMem.id) renderProfileData();
+    if (document.getElementById('members-modal')?.open && typeof renderMembersModalList === 'function') {
+      renderMembersModalList();
+    }
+    return;
+  }
+  if (type === 'DELETE_MEMBER' && payload && payload.memberId) {
+    saveDeletedMemberId(payload.memberId);
+    removeCustomMember(payload.memberId);
+    rebuildMembersDirectory();
+    if (document.getElementById('members-modal')?.open && typeof renderMembersModalList === 'function') {
+      renderMembersModalList();
+    }
+    return;
+  }
   if (type === 'UPDATE_ROLE' && payload && payload.memberId) {
     const custom = getCustomAdminRoles();
     if (custom[payload.memberId]) {
@@ -4924,7 +5283,7 @@ function reconcileMutationResponse(type, payload, data) {
 
     saveLocalState();
     if (currentUser && currentUser.id === mid && typeof renderProfileData === 'function') renderProfileData();
-    if (typeof renderMembersModalList === 'function') renderMembersModalList();
+    if (document.getElementById('members-modal')?.open && typeof renderMembersModalList === 'function') renderMembersModalList();
   }
 }
 
@@ -4938,6 +5297,10 @@ function buildMutationUrl(mut) {
   if (mut.type === 'SHIFT_ADJUST') return `${GAS_API_URL}?action=adjustMemberShifts&memberId=${encodeURIComponent(p.memberId || '')}&delta=${encodeURIComponent(p.delta || 0)}&metric=${encodeURIComponent(p.metric || 'shift')}&reason=${encodeURIComponent(p.reason || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_ROLE') return `${GAS_API_URL}?action=updateMemberRole&memberId=${encodeURIComponent(p.memberId || '')}&isAdmin=${Boolean(p.isAdmin)}&isShiftLeader=${Boolean(p.isShiftLeader)}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
   if (mut.type === 'UPDATE_PROFILE') return `${GAS_API_URL}?action=updateProfile&memberId=${encodeURIComponent(p.memberId || '')}&hoTen=${encodeURIComponent(p.hoTen || '')}&studentCode=${encodeURIComponent(p.studentCode || '')}&lop=${encodeURIComponent(p.lop || '')}&boMon=${encodeURIComponent(p.boMon || '')}&chucVu=${encodeURIComponent(p.chucVu || '')}&sdt=${encodeURIComponent(p.sdt || '')}&ice=${encodeURIComponent(p.ice || '')}&yTe=${encodeURIComponent(p.yTe || '')}`;
+  if (mut.type === 'REGISTER_MEMBER') return `${GAS_API_URL}?action=registerMember&member=${encodeURIComponent(JSON.stringify(p))}`;
+  if (mut.type === 'ADD_MEMBER') return `${GAS_API_URL}?action=addMember&member=${encodeURIComponent(JSON.stringify(p))}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'DELETE_MEMBER') return `${GAS_API_URL}?action=deleteMember&memberId=${encodeURIComponent(p.memberId || '')}&adminActorId=${encodeURIComponent(p.adminActorId || '')}`;
+  if (mut.type === 'UPDATE_PASSWORD') return `${GAS_API_URL}?action=updatePassword&memberId=${encodeURIComponent(p.memberId || '')}&oldPasswordHash=${encodeURIComponent(p.oldPasswordHash || '')}&newPasswordHash=${encodeURIComponent(p.newPasswordHash || '')}`;
   return null;
 }
 
@@ -5024,8 +5387,21 @@ async function syncRealtimeData() {
         data.deletedTaskIds.forEach(id => saveDeletedTaskId(id));
       }
 
+      if (Array.isArray(data.deletedMemberIds) && data.deletedMemberIds.length > 0) {
+        data.deletedMemberIds.forEach((id) => {
+          saveDeletedMemberId(id);
+          removeCustomMember(id);
+        });
+        const deletedUpper = data.deletedMemberIds.map(x => String(x || '').trim().toUpperCase());
+        if (currentUser && deletedUpper.includes(String(currentUser.id || '').toUpperCase())) {
+          executeLogoutAction();
+          showToast('Tài khoản của bạn đã được xóa khỏi CLB.');
+          return;
+        }
+      }
+
       if (Array.isArray(data.membersList) && data.membersList.length > 0) {
-        membersDirectory = normalizeMembersDirectory(data.membersList);
+        rebuildMembersDirectory(data.membersList);
         const nextServerCounters = {};
         const customRoles = getCustomAdminRoles();
         let rolesChanged = false;
@@ -5047,13 +5423,17 @@ async function syncRealtimeData() {
 
       if (data.member) {
         const preservedAvatar = currentUser.avatar || '';
-        const preservedStudentCode = currentUser.studentCode || '';
+        const preservedStudentCode = getDisplayStudentCode(currentUser);
         const preservedDob = currentUser.ngaySinh || '';
-        const remoteStudentCode = String(data.member.studentCode || '').trim();
+        const remoteStudentCode = getDisplayStudentCode(data.member);
         currentUser = normalizeMember(Object.assign({}, currentUser, data.member));
         if (!currentUser.avatar && preservedAvatar) currentUser.avatar = preservedAvatar;
-        if ((!remoteStudentCode || remoteStudentCode === currentUser.id) && preservedStudentCode && preservedStudentCode !== currentUser.id) {
-          currentUser.studentCode = preservedStudentCode;
+        if (!remoteStudentCode && preservedStudentCode) {
+          const hasPendingProfile = (offlineMutationQueue || []).some(q => q && q.type === 'UPDATE_PROFILE' && q.payload && q.payload.memberId === currentUser.id);
+          if (hasPendingProfile) {
+            currentUser.studentCode = preservedStudentCode;
+            currentUser.mssv = preservedStudentCode;
+          }
         }
         if ((!data.member.ngaySinh || !DOB_REGEX.test(String(data.member.ngaySinh).trim())) && preservedDob) {
           currentUser.ngaySinh = preservedDob;
@@ -5098,9 +5478,17 @@ async function syncRealtimeData() {
 
       saveLocalState();
       renderProfileData();
-      renderDispatchHub();
-      renderMembersModalList();
-      renderNotificationsModalList();
+      updatePendingBadges();
+      updateNotificationDotOnly();
+      if (document.getElementById('approve-shift-modal')?.open || document.getElementById('task-mission-modal')?.open) {
+        renderDispatchHub();
+      }
+      if (document.getElementById('members-modal')?.open) {
+        renderMembersModalList();
+      }
+      if (document.getElementById('notification-modal')?.open) {
+        renderNotificationsModalList();
+      }
     } catch (err) {
       // Stay resilient offline
     } finally {
@@ -5382,8 +5770,7 @@ function updateQrPassDisplay() {
   const payload = `SPORTPASS:CHECKIN:${taskId}:${uid}:${slot}`;
   const container = document.getElementById('qr-code-box');
   if (container) renderQrIntoContainer(container, payload, 160);
-  const displayCode = currentUser ? getDisplayStudentCode(currentUser) : uid;
-  safeSetText('qr-token-code', `#${displayCode} · ${taskId}`);
+  safeSetText('qr-token-code', `#${uid} · ${taskId}`);
 }
 
 function startQrCountdown() {
@@ -5458,8 +5845,8 @@ function renderScannerCheckedInList() {
 
   const rows = checked.map((mid) => {
     const member = (membersDirectory || []).find(m => m && m.id === mid);
-    const displayCode = member ? getDisplayStudentCode(member) : mid;
-    const codeLabel = (member && displayCode !== mid) ? `${displayCode} (${mid})` : mid;
+    const displayCode = member ? getDisplayStudentCode(member) : '';
+    const codeLabel = displayCode ? `${mid} · MSSV ${displayCode}` : mid;
     return el('div', { className: 'member-pill-row', style: { padding: '8px 10px' } },
       el('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', minWidth: '0', flex: '1' } },
         el('div', { className: 'avatar-initials-circle solid', style: { width: '30px', height: '30px', fontSize: '10.5px' } }, getSportPassInitials(member ? member.hoTen : mid)),
@@ -5616,10 +6003,12 @@ function handleQrCheckinAction(taskId, memberId) {
     return;
   }
   const cleanCode = String(memberId || '').trim().toUpperCase();
+  const normPhone = normalizePhoneVN(memberId);
   const dir = membersDirectory || [];
   const targetMember =
     dir.find(m => m && String(m.id || '').toUpperCase() === cleanCode) ||
-    dir.find(m => m && String(m.studentCode || '').toUpperCase() === cleanCode);
+    dir.find(m => m && getDisplayStudentCode(m).toUpperCase() === cleanCode && cleanCode !== '') ||
+    (normPhone.length >= 9 ? dir.find(m => m && normalizePhoneVN(m.sdt) === normPhone) : null);
   if (!targetMember) {
     showToast(`Không tìm thấy hội viên với mã ${cleanCode || '(trống)'}.`);
     return;
@@ -5698,6 +6087,7 @@ function triggerHaptic(type = 'light') {
 function autoEnableBackgroundNotifications() {
   if (navigator && navigator.serviceWorker && window.location.protocol !== 'file:') {
     navigator.serviceWorker.register('./sw.js').then((reg) => {
+      if (reg && typeof reg.update === 'function') reg.update().catch(() => {});
       if ('sync' in reg) reg.sync.register('check-tasks').catch(() => {});
     }).catch(() => {});
   }
@@ -5710,6 +6100,24 @@ function markNotificationsRead() {
   } catch (e) {}
   const dot = document.getElementById('notification-dot');
   if (dot) dot.classList.add('hidden');
+}
+
+function updateNotificationDotOnly() {
+  const uid = currentUser ? currentUser.id : '';
+  const isAdmin = Boolean(currentUser && currentUser.isAdmin);
+  const nextShift = deduplicateTasks(currentTasks || [])[0];
+  const pendingSwaps = (currentSwaps || []).filter(s => s.status === 'pending').length;
+  const pendingLeaves = (currentLeaves || []).filter(l => l.status === 'pending').length;
+  unreadNotifSignature = [
+    nextShift ? nextShift.id : 'NONE',
+    isAdmin ? `${pendingSwaps}-${pendingLeaves}` : uid,
+    (currentSwaps || []).filter(s => s.fromId === uid).map(s => s.status).join(','),
+    (currentLeaves || []).filter(l => l.memberId === uid).map(l => l.status).join(',')
+  ].join('|');
+  let readSig = '';
+  try { readSig = localStorage.getItem('CLB_READ_NOTIF_SIG_' + (uid || 'GUEST')) || ''; } catch (e) {}
+  const dot = document.getElementById('notification-dot');
+  if (dot) dot.classList.toggle('hidden', !unreadNotifSignature || unreadNotifSignature === readSig);
 }
 
 function renderNotificationsModalList() {
@@ -5941,6 +6349,7 @@ function cleanupDialogState(id) {
   if (id === 'approve-shift-modal') stopQrCameraStream();
   if (id === 'qr-modal') stopQrCountdown();
   if (id === 'create-shift-modal') editingTaskId = null;
+  if (id === 'confirm-delete-modal') pendingDeleteMemberId = null;
   if (id === 'success-celebration-modal' && celebrationTimer) {
     clearInterval(celebrationTimer);
     celebrationTimer = null;
@@ -6116,7 +6525,22 @@ function initModalLifecycle() {
 }
 
 // === render-profile.js ===
-// SportPass V8.6 — Profile Hero, Real Account RBAC, 8-Row Interactive Profile, Members Directory & Slim Settings
+// SportPass V8.8 — Profile Hero, RBAC, ID/MSSV Separation, Members Directory (Stats + Add + Delete) & Registration
+
+let expandedAdminMemberId = null;
+let pendingDeleteMemberId = null;
+let isAddMemberIdManual = false;
+
+function populateSelectOptions(selectId, optionsList, selectedValue) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const list = Array.isArray(optionsList) ? optionsList.slice() : [];
+  if (selectedValue && !list.includes(selectedValue)) {
+    list.unshift(selectedValue);
+  }
+  mount(sel, list.map(opt => el('option', { value: opt, selected: opt === selectedValue }, opt)));
+  if (selectedValue) sel.value = selectedValue;
+}
 
 async function compressImage(fileOrDataUrl, maxWidth = 320, maxHeight = 320, quality = 0.8) {
   return new Promise((resolve) => {
@@ -6157,6 +6581,9 @@ function applyAccountRoleUI() {
     roleBadge.textContent = isAdmin ? 'ADMIN' : 'THÀNH VIÊN';
     roleBadge.classList.toggle('hidden', !isAdmin);
   }
+
+  const addMemberBtn = document.getElementById('admin-add-member-btn');
+  if (addMemberBtn) addMemberBtn.classList.toggle('hidden', !isAdmin);
 }
 
 function extractPhoneDigits(text) {
@@ -6172,6 +6599,7 @@ function renderProfileData() {
   const stats = computeMemberStats(currentUser);
   const avatarSrc = resolveAvatarUrl(currentUser);
   const studentCode = getDisplayStudentCode(currentUser);
+  const studentDisplay = studentCode || 'Chưa cập nhật';
   const dobText = formatMemberDob(currentUser);
   const phoneText = currentUser.sdt && String(currentUser.sdt).trim() ? String(currentUser.sdt).trim() : 'Chưa cập nhật';
   const iceText = currentUser.ice && String(currentUser.ice).trim()
@@ -6197,13 +6625,19 @@ function renderProfileData() {
 
   safeSetText('card-heading', String(currentUser.hoTen || 'THÀNH VIÊN CLB').toUpperCase());
   safeSetText('card-subtitle', currentUser.chucVu || 'Thành viên CLB Thể Thao');
-  safeSetText('card-mssv', studentCode);
+  safeSetText('card-member-id', currentUser.id || 'SP0000');
+  safeSetText('card-mssv', studentDisplay);
 
   safeSetText('stat-shifts', String(stats.shiftsCount));
   safeSetText('stat-activities', String(stats.activitiesCount));
 
   safeSetText('display-fullname', currentUser.hoTen || '');
-  safeSetText('display-studentId', studentCode);
+  safeSetText('display-memberId', currentUser.id || '');
+  const mssvEl = document.getElementById('display-studentId');
+  if (mssvEl) {
+    mssvEl.textContent = studentDisplay;
+    mssvEl.dataset.needsEdit = studentCode ? '0' : '1';
+  }
   safeSetText('display-faculty', currentUser.lop || 'K13.GDTC');
   safeSetText('display-dob', dobText);
   safeSetText('display-dutyArea', currentUser.boMon || 'Ban Nhân Sự');
@@ -6225,7 +6659,6 @@ function renderProfileData() {
     iceEl.dataset.needsEdit = iceDigits ? '0' : '1';
   }
 
-  // Sync Settings Mini Hero Card
   const settingsAvatar = document.getElementById('settings-avatar');
   if (settingsAvatar) {
     settingsAvatar.src = avatarSrc;
@@ -6233,15 +6666,16 @@ function renderProfileData() {
   }
   safeSetText('settings-role-kicker', isAdmin ? 'ĐIỀU PHỐI VIÊN' : String(currentUser.boMon || 'HỘI VIÊN CLB').toUpperCase());
   safeSetText('settings-name', currentUser.hoTen || 'Thành viên CLB');
-  safeSetText('settings-submeta', `MSSV: ${studentCode} • ${currentUser.lop || 'UHD'}`);
+  safeSetText('settings-submeta', `ID: ${currentUser.id} • MSSV: ${studentDisplay} • ${currentUser.lop || 'UHD'}`);
   safeSetText('settings-grade-badge', `${stats.shiftsCount} ca · ${stats.activitiesCount} SH`);
 
-  const hasCustomPass = localStorage.getItem('CLB_USER_PASS_' + currentUser.id) !== null;
-  safeSetText('password-status-desc', hasCustomPass ? 'Đã thiết lập mật khẩu riêng' : 'Đang dùng mật khẩu mặc định (123456)');
+  safeSetText('password-status-desc', hasCustomMemberPassword(currentUser) ? 'Đã thiết lập mật khẩu riêng' : 'Đang dùng mật khẩu mặc định (123456)');
 
   applyStatusBadgeStyle();
   applyAccountRoleUI();
-  updateQrPassDisplay();
+  if (document.getElementById('qr-modal')?.open) {
+    updateQrPassDisplay();
+  }
 }
 
 function applyStatusBadgeStyle() {
@@ -6357,8 +6791,12 @@ function renderMembersModalList() {
     const isMe = currentUser && m.id === currentUser.id;
     const isRoot = m.id === 'DMC0806';
     const mStats = computeMemberStats(m);
-    const adminControls = isAdmin
-      ? el('div', { className: 'mini-action-grid', style: { width: '100%', paddingTop: '4px', borderTop: '1px solid var(--border-subtle)' } },
+    const mCode = getDisplayStudentCode(m);
+    const idLine = mCode ? `ID: ${m.id} · MSSV: ${mCode}` : `ID: ${m.id}`;
+    const isExpanded = isAdmin && expandedAdminMemberId === m.id;
+
+    const adminDrawer = isExpanded
+      ? el('div', { className: 'mini-action-grid', style: { width: '100%', paddingTop: '6px', borderTop: '1px solid var(--border-subtle)' } },
           !isMe
             ? el('button', {
                 type: 'button',
@@ -6379,7 +6817,7 @@ function renderMembersModalList() {
             type: 'button',
             className: 'btn-mini btn-mini-soft',
             onClick: () => adjustMemberShiftCount(m.id, 1, 'shift')
-          }, `+1 Trực (${mStats.shiftsCount})`),
+          }, '+1 Trực'),
           el('button', {
             type: 'button',
             className: 'btn-mini btn-mini-rose',
@@ -6389,27 +6827,52 @@ function renderMembersModalList() {
             type: 'button',
             className: 'btn-mini btn-mini-soft',
             onClick: () => adjustMemberShiftCount(m.id, 1, 'activity')
-          }, `+1 SH (${mStats.activitiesCount})`),
+          }, '+1 SH'),
           el('button', {
             type: 'button',
             className: 'btn-mini btn-mini-rose',
             onClick: () => adjustMemberShiftCount(m.id, -1, 'activity')
-          }, '-1 SH')
+          }, '-1 SH'),
+          (!isMe && !isRoot)
+            ? el('button', {
+                type: 'button',
+                className: 'btn-mini btn-mini-rose',
+                onClick: () => openConfirmDeleteMemberModal(m.id)
+              }, 'Xóa thành viên')
+            : null
         )
       : null;
 
-    return el('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' }, className: 'member-pill-row' },
+    return el('div', { className: 'member-pill-row', dataset: { memberId: m.id } },
       el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '10px' } },
         el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0', flex: '1' } },
           el('div', { className: `avatar-initials-circle${isMe ? ' solid' : ''}` }, getSportPassInitials(m.hoTen)),
           el('div', { style: { minWidth: '0', flex: '1' } },
             el('div', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' }, className: 'truncate' }, `${m.hoTen}${isMe ? ' (Bạn)' : ''}`),
-            el('div', { style: { fontSize: '11.5px', color: '#0369a1' }, className: 'truncate' }, `${getDisplayStudentCode(m)} · ${m.chucVu} • ${m.lop}`)
+            el('div', { className: 'font-mono truncate', style: { fontSize: '11px', color: '#0369a1' } }, idLine),
+            el('div', { style: { fontSize: '11px', color: 'var(--text-muted)' }, className: 'truncate' }, `${m.chucVu} • ${m.lop || 'UHD'} • ${m.boMon || 'CLB'}`)
           )
         ),
         el('span', { className: 'ready-badge-pill' }, m.status || 'Sẵn sàng')
       ),
-      adminControls
+      el('div', { className: 'member-stats-strip' },
+        el('div', { className: 'member-stat-badges' },
+          el('span', { className: 'member-stat-pill sky' }, `${mStats.shiftsCount} ca trực`),
+          el('span', { className: 'member-stat-pill teal' }, `${mStats.activitiesCount} ca sinh hoạt`)
+        ),
+        isAdmin
+          ? el('button', {
+              type: 'button',
+              className: 'btn-mini btn-mini-soft',
+              ariaExpanded: String(isExpanded),
+              onClick: () => {
+                expandedAdminMemberId = isExpanded ? null : m.id;
+                renderMembersModalList();
+              }
+            }, isExpanded ? 'Thu gọn ▲' : 'Quản lý ▾')
+          : null
+      ),
+      adminDrawer
     );
   });
 
@@ -6425,11 +6888,12 @@ function openEditProfileModal(focusFieldId = null) {
     previewImg.alt = currentUser.hoTen || 'Ảnh đại diện hồ sơ';
   }
   safeSetValue('input-fullname', currentUser.hoTen || '');
+  safeSetValue('input-memberId', currentUser.id || '');
   safeSetValue('input-studentId', getDisplayStudentCode(currentUser));
   safeSetValue('input-faculty', currentUser.lop || '');
   safeSetValue('input-dob', formatMemberDob(currentUser));
-  safeSetValue('input-dutyArea', currentUser.boMon || '');
-  safeSetValue('input-role', currentUser.chucVu || 'Thành viên');
+  populateSelectOptions('input-dutyArea', ALL_DEPARTMENTS, currentUser.boMon || 'Ban Nhân Sự');
+  populateSelectOptions('input-role', STANDARD_ROLES, normalizeRoleValue(currentUser.chucVu));
   safeSetValue('input-phone', currentUser.sdt || '');
   safeSetValue('input-ice', currentUser.ice || currentUser.sdt || '');
   openSheetDialog('edit-profile-modal');
@@ -6469,12 +6933,29 @@ async function saveEditProfileAction() {
     const conflict = (membersDirectory || []).find(m =>
       m && m.id !== currentUser.id && (
         String(m.id || '').toUpperCase() === codeUpper ||
-        String(m.studentCode || '').toUpperCase() === codeUpper
+        getDisplayStudentCode(m).toUpperCase() === codeUpper
       )
     );
     if (conflict) {
       showToast(`Mã số sinh viên ${newStudentCode} đã được dùng bởi ${conflict.hoTen}.`);
       document.getElementById('input-studentId')?.focus();
+      return;
+    }
+  }
+
+  const normPhone = normalizePhoneVN(newPhone);
+  if (newPhone) {
+    if (normPhone.length < 9) {
+      showToast('Số điện thoại cần tối thiểu 9 chữ số hợp lệ.');
+      document.getElementById('input-phone')?.focus();
+      return;
+    }
+    const phoneConflict = (membersDirectory || []).find(m =>
+      m && m.id !== currentUser.id && normalizePhoneVN(m.sdt) === normPhone
+    );
+    if (phoneConflict) {
+      showToast(`Số điện thoại này đã được dùng bởi ${phoneConflict.hoTen}.`);
+      document.getElementById('input-phone')?.focus();
       return;
     }
   }
@@ -6491,21 +6972,27 @@ async function saveEditProfileAction() {
     }
   }
 
-  if (newName) currentUser.hoTen = newName;
-  currentUser.studentCode = newStudentCode || currentUser.id;
+  currentUser.hoTen = newName;
+  currentUser.studentCode = newStudentCode;
+  currentUser.mssv = newStudentCode;
   if (newFaculty) currentUser.lop = newFaculty;
   if (newDob) currentUser.ngaySinh = newDob;
   if (newArea) {
     currentUser.boMon = newArea;
-    currentUser.cacBan = Array.from(new Set([...(Array.isArray(currentUser.cacBan) ? currentUser.cacBan : []), newArea]));
+    if (!Array.isArray(currentUser.cacBan) || currentUser.cacBan.length <= 1) {
+      currentUser.cacBan = [newArea];
+    } else if (!currentUser.cacBan.includes(newArea)) {
+      currentUser.cacBan.push(newArea);
+    }
   }
   if (newRole) currentUser.chucVu = newRole;
-  currentUser.sdt = newPhone;
+  currentUser.sdt = normPhone || newPhone;
   currentUser.ice = newIce;
 
   const patch = {
     hoTen: currentUser.hoTen,
-    studentCode: currentUser.studentCode,
+    studentCode: newStudentCode,
+    mssv: newStudentCode,
     lop: currentUser.lop,
     ngaySinh: currentUser.ngaySinh,
     boMon: currentUser.boMon,
@@ -6525,12 +7012,14 @@ async function saveEditProfileAction() {
   persistUserSession(currentUser);
   saveLocalState();
   renderProfileData();
-  renderMembersModalList();
-  renderDispatchHub();
+  if (document.getElementById('members-modal')?.open) renderMembersModalList();
+  if (document.getElementById('approve-shift-modal')?.open || document.getElementById('task-mission-modal')?.open) {
+    renderDispatchHub();
+  }
   dispatchBackendMutation('UPDATE_PROFILE', {
     memberId: currentUser.id,
     hoTen: currentUser.hoTen || '',
-    studentCode: currentUser.studentCode || '',
+    studentCode: newStudentCode,
     lop: currentUser.lop || '',
     boMon: currentUser.boMon || '',
     chucVu: currentUser.chucVu || '',
@@ -6591,7 +7080,8 @@ async function submitChangePassword(ev) {
   const newPass = (document.getElementById('iptNewPassword')?.value || '').trim();
   const confirmPass = (document.getElementById('iptConfirmPassword')?.value || '').trim();
 
-  if (!verifyMemberPassword(currentUser.id, curPass)) {
+  const curHash = await sha256Hex(curPass);
+  if (!(await verifyMemberPasswordHash(currentUser.id, curHash))) {
     showToast('Mật khẩu hiện tại chưa chính xác.');
     return;
   }
@@ -6604,14 +7094,322 @@ async function submitChangePassword(ev) {
     return;
   }
 
-  localStorage.setItem('CLB_USER_PASS_' + currentUser.id, newPass);
+  const newHash = await sha256Hex(newPass);
+  setStoredPasswordHash(currentUser.id, newHash);
+  currentUser.hasCustomPassword = (newHash !== DEFAULT_PASS_HASH);
+  persistUserSession(currentUser);
   renderProfileData();
+  dispatchBackendMutation('UPDATE_PASSWORD', {
+    memberId: currentUser.id,
+    oldPasswordHash: curHash,
+    newPasswordHash: newHash
+  });
   await closeChangePasswordModal();
   openSuccessCelebration({
     kicker: '• SPORTPASS PRO SECURITY',
     title: 'Đổi mật khẩu thành công!',
-    descNodes: ['Mật khẩu tài khoản ', el('strong', {}, currentUser.id), ' đã được cập nhật và kích hoạt ngay.']
+    descNodes: ['Mật khẩu tài khoản ', el('strong', {}, currentUser.id), ' đã được cập nhật và đồng bộ an toàn.']
   });
+}
+
+// ==================== SELF-REGISTRATION MODAL ====================
+function updateRegisterPreviewId() {
+  const name = document.getElementById('reg-fullname')?.value || '';
+  const dob = document.getElementById('reg-dob')?.value || '';
+  safeSetText('reg-preview-id', generateClientMemberId(name, dob));
+}
+
+function openRegisterModal() {
+  safeSetValue('reg-fullname', '');
+  safeSetValue('reg-dob', '');
+  safeSetValue('reg-studentId', '');
+  safeSetValue('reg-phone', '');
+  safeSetValue('reg-faculty', '');
+  safeSetValue('reg-password', '');
+  safeSetValue('reg-confirm-password', '');
+  populateSelectOptions('reg-department', ALL_DEPARTMENTS, 'Ban Bóng Chuyền');
+  safeSetText('reg-preview-id', 'SP0101');
+  openSheetDialog('register-modal');
+}
+
+function closeRegisterModal() {
+  return closeSheetDialog('register-modal');
+}
+
+function normalizeInputDob(rawDob) {
+  const trimmed = String(rawDob || '').trim();
+  const m = trimmed.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (!m) return '';
+  return `${m[1].padStart(2, '0')}/${m[2].padStart(2, '0')}/${m[3]}`;
+}
+
+function checkStudentCodeAndPhoneConflict(studentCode, normPhone, excludeId = '') {
+  if (studentCode) {
+    if (/[:·]/.test(studentCode)) return 'Mã số sinh viên không được chứa ký tự ":" hoặc "·".';
+    const upper = studentCode.toUpperCase();
+    const hit = (membersDirectory || []).find(m =>
+      m && m.id !== excludeId && (String(m.id || '').toUpperCase() === upper || getDisplayStudentCode(m).toUpperCase() === upper)
+    );
+    if (hit) return `MSSV ${studentCode} đã được dùng bởi ${hit.hoTen}.`;
+  }
+  if (normPhone) {
+    if (normPhone.length < 9) return 'Số điện thoại cần tối thiểu 9 chữ số hợp lệ.';
+    const hitPhone = (membersDirectory || []).find(m => m && m.id !== excludeId && normalizePhoneVN(m.sdt) === normPhone);
+    if (hitPhone) return `Số điện thoại này đã được dùng bởi ${hitPhone.hoTen}.`;
+  }
+  return '';
+}
+
+async function submitSelfRegisterAction(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const hoTen = (document.getElementById('reg-fullname')?.value || '').trim();
+  const dob = normalizeInputDob(document.getElementById('reg-dob')?.value || '');
+  const studentCode = (document.getElementById('reg-studentId')?.value || '').trim();
+  const rawPhone = (document.getElementById('reg-phone')?.value || '').trim();
+  const normPhone = normalizePhoneVN(rawPhone);
+  const lop = (document.getElementById('reg-faculty')?.value || '').trim();
+  const boMon = (document.getElementById('reg-department')?.value || '').trim() || 'Ban Bóng Chuyền';
+  const pass = (document.getElementById('reg-password')?.value || '').trim();
+  const confirmPass = (document.getElementById('reg-confirm-password')?.value || '').trim();
+
+  if (hoTen.length < 2) { showToast('Vui lòng nhập đầy đủ họ và tên.'); document.getElementById('reg-fullname')?.focus(); return; }
+  if (!DOB_REGEX.test(dob)) { showToast('Ngày sinh cần đúng định dạng DD/MM/YYYY.'); document.getElementById('reg-dob')?.focus(); return; }
+  if (!rawPhone || normPhone.length < 9) { showToast('Vui lòng nhập số điện thoại hợp lệ (>= 9 số).'); document.getElementById('reg-phone')?.focus(); return; }
+  if (!lop) { showToast('Vui lòng nhập Khoa / Lớp.'); document.getElementById('reg-faculty')?.focus(); return; }
+  if (pass.length < 6) { showToast('Mật khẩu cần tối thiểu 6 ký tự.'); document.getElementById('reg-password')?.focus(); return; }
+  if (pass !== confirmPass) { showToast('Xác nhận mật khẩu chưa khớp.'); document.getElementById('reg-confirm-password')?.focus(); return; }
+
+  const dupErr = checkStudentCodeAndPhoneConflict(studentCode, normPhone);
+  if (dupErr) { showToast(dupErr); return; }
+
+  const memberId = generateClientMemberId(hoTen, dob);
+  const passHash = await sha256Hex(pass);
+  const newMember = normalizeMember({
+    id: memberId,
+    hoTen,
+    ngaySinh: dob,
+    studentCode,
+    mssv: studentCode,
+    lop,
+    boMon,
+    chucVu: 'Thành viên',
+    sdt: normPhone,
+    ice: normPhone,
+    yTe: 'Bình thường',
+    soCaHoanThanh: 0,
+    soCaSinhHoat: 0,
+    isAdmin: false,
+    isShiftLeader: false,
+    hasCustomPassword: passHash !== DEFAULT_PASS_HASH
+  });
+
+  setStoredPasswordHash(memberId, passHash);
+  upsertCustomMember(newMember);
+  rebuildMembersDirectory();
+  dispatchBackendMutation('REGISTER_MEMBER', {
+    id: memberId,
+    hoTen,
+    ngaySinh: dob,
+    studentCode,
+    lop,
+    boMon,
+    chucVu: 'Thành viên',
+    sdt: normPhone,
+    ice: normPhone,
+    passwordHash: passHash
+  });
+
+  await closeRegisterModal();
+  completeUserLogin(newMember, true, passHash);
+  openSuccessCelebration({
+    kicker: '• THẺ MỚI ĐÃ KÍCH HOẠT',
+    title: 'Đăng ký thành công!',
+    descNodes: [
+      'Chào mừng ', el('strong', {}, hoTen), '. Mã ID CLB của bạn là ',
+      el('strong', {}, memberId), '. Bạn có thể đăng nhập bằng Mã ID, MSSV hoặc SĐT.'
+    ]
+  });
+}
+
+// ==================== ADMIN ADD / DELETE MEMBER MODALS ====================
+function updateAddMemberAutoId() {
+  if (isAddMemberIdManual) return;
+  const name = document.getElementById('add-fullname')?.value || '';
+  const dob = document.getElementById('add-dob')?.value || '';
+  safeSetValue('add-memberId', generateClientMemberId(name, dob));
+}
+
+function openAddMemberModal() {
+  if (!currentUser || !currentUser.isAdmin) {
+    showToast('Chỉ Quản trị viên mới có quyền thêm thành viên.');
+    return;
+  }
+  isAddMemberIdManual = false;
+  safeSetValue('add-fullname', '');
+  safeSetValue('add-dob', '');
+  safeSetValue('add-memberId', '');
+  safeSetValue('add-studentId', '');
+  safeSetValue('add-phone', '');
+  safeSetValue('add-faculty', '');
+  safeSetValue('add-password', '123456');
+  populateSelectOptions('add-department', ALL_DEPARTMENTS, 'Ban Nhân Sự');
+  populateSelectOptions('add-role', STANDARD_ROLES, 'Thành viên');
+  openSheetDialog('add-member-modal');
+}
+
+function closeAddMemberModal() {
+  return closeSheetDialog('add-member-modal');
+}
+
+async function submitAddMemberAction(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  if (!currentUser || !currentUser.isAdmin) return;
+
+  const hoTen = (document.getElementById('add-fullname')?.value || '').trim();
+  const dob = normalizeInputDob(document.getElementById('add-dob')?.value || '');
+  const manualId = (document.getElementById('add-memberId')?.value || '').trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+  const studentCode = (document.getElementById('add-studentId')?.value || '').trim();
+  const rawPhone = (document.getElementById('add-phone')?.value || '').trim();
+  const normPhone = normalizePhoneVN(rawPhone);
+  const lop = (document.getElementById('add-faculty')?.value || '').trim() || 'K16-GDTC';
+  const boMon = (document.getElementById('add-department')?.value || '').trim() || 'Ban Nhân Sự';
+  const chucVu = (document.getElementById('add-role')?.value || '').trim() || 'Thành viên';
+  const initPass = (document.getElementById('add-password')?.value || '').trim() || '123456';
+
+  if (hoTen.length < 2) { showToast('Vui lòng nhập họ và tên thành viên.'); document.getElementById('add-fullname')?.focus(); return; }
+  if (!DOB_REGEX.test(dob)) { showToast('Ngày sinh cần đúng định dạng DD/MM/YYYY.'); document.getElementById('add-dob')?.focus(); return; }
+  if (initPass.length < 6) { showToast('Mật khẩu khởi tạo cần tối thiểu 6 ký tự.'); return; }
+
+  const dupErr = checkStudentCodeAndPhoneConflict(studentCode, rawPhone ? normPhone : '');
+  if (dupErr) { showToast(dupErr); return; }
+
+  const memberId = manualId || generateClientMemberId(hoTen, dob);
+  const idTaken = (membersDirectory || []).some(m => String(m?.id || '').toUpperCase() === memberId) ||
+    getDeletedMemberIds().includes(memberId);
+  if (idTaken) {
+    showToast(`Mã ID ${memberId} đã tồn tại hoặc nằm trong danh sách đã xóa.`);
+    document.getElementById('add-memberId')?.focus();
+    return;
+  }
+
+  const passHash = await sha256Hex(initPass);
+  const newMember = normalizeMember({
+    id: memberId,
+    hoTen,
+    ngaySinh: dob,
+    studentCode,
+    mssv: studentCode,
+    lop,
+    boMon,
+    chucVu,
+    sdt: normPhone || rawPhone,
+    ice: normPhone || rawPhone,
+    yTe: 'Bình thường',
+    soCaHoanThanh: 0,
+    soCaSinhHoat: 0,
+    isAdmin: false,
+    isShiftLeader: false,
+    hasCustomPassword: passHash !== DEFAULT_PASS_HASH
+  });
+
+  setStoredPasswordHash(memberId, passHash);
+  upsertCustomMember(newMember);
+  rebuildMembersDirectory();
+  saveLocalState();
+
+  dispatchBackendMutation('ADD_MEMBER', {
+    id: memberId,
+    hoTen,
+    ngaySinh: dob,
+    studentCode,
+    lop,
+    boMon,
+    chucVu,
+    sdt: newMember.sdt,
+    ice: newMember.ice,
+    passwordHash: passHash,
+    adminActorId: currentUser.id
+  });
+
+  await closeAddMemberModal();
+  if (document.getElementById('members-modal')?.open) renderMembersModalList();
+  showToast(`Đã thêm ${hoTen} (${memberId}) vào ${boMon}.`);
+}
+
+function openConfirmDeleteMemberModal(memberId) {
+  if (!currentUser || !currentUser.isAdmin) {
+    showToast('Chỉ Quản trị viên mới có quyền xóa thành viên.');
+    return;
+  }
+  const cleanId = String(memberId || '').trim();
+  if (!cleanId || cleanId === 'DMC0806' || cleanId === currentUser.id) {
+    showToast('Không thể xóa Quản trị gốc DMC0806 hoặc tài khoản đang đăng nhập.');
+    return;
+  }
+  const target = (membersDirectory || []).find(m => m && m.id === cleanId);
+  if (!target) return;
+
+  pendingDeleteMemberId = cleanId;
+  const descEl = document.getElementById('confirm-delete-desc');
+  if (descEl) {
+    const code = getDisplayStudentCode(target);
+    mount(descEl, [
+      'Xác nhận xóa ', el('strong', {}, target.hoTen),
+      ` (ID: ${target.id}${code ? ' · MSSV: ' + code : ''}) khỏi `,
+      el('strong', {}, (target.cacBan || [target.boMon]).join(', ')),
+      '? Dữ liệu sẽ được lưu dự phòng vào ArchivedMembers.'
+    ]);
+  }
+  openSheetDialog('confirm-delete-modal');
+}
+
+function closeConfirmDeleteMemberModal() {
+  pendingDeleteMemberId = null;
+  return closeSheetDialog('confirm-delete-modal');
+}
+
+async function confirmDeleteMemberAction() {
+  if (!currentUser || !currentUser.isAdmin || !pendingDeleteMemberId) return;
+  const targetId = pendingDeleteMemberId;
+  if (targetId === 'DMC0806' || targetId === currentUser.id) return;
+
+  saveDeletedMemberId(targetId);
+  removeCustomMember(targetId);
+  const customRoles = getCustomAdminRoles();
+  if (customRoles[targetId]) {
+    delete customRoles[targetId];
+    saveCustomAdminRoles(customRoles);
+  }
+  try {
+    const overrides = getMemberOverrides();
+    if (overrides[targetId]) {
+      delete overrides[targetId];
+      localStorage.setItem(OVERRIDES_KEY, JSON.stringify(overrides));
+    }
+    localStorage.removeItem('CLB_USER_PASS_HASH_' + targetId);
+    localStorage.removeItem('CLB_USER_PASS_' + targetId);
+  } catch (e) {}
+
+  for (const t of (currentTasks || [])) {
+    if (!t) continue;
+    t.joinedMembers = (t.joinedMembers || []).filter(x => x !== targetId);
+    t.assignedMembers = (t.assignedMembers || []).filter(x => x !== targetId);
+    t.waitlist = (t.waitlist || []).filter(x => x !== targetId);
+  }
+
+  if (expandedAdminMemberId === targetId) expandedAdminMemberId = null;
+  rebuildMembersDirectory();
+  saveLocalState();
+
+  dispatchBackendMutation('DELETE_MEMBER', {
+    memberId: targetId,
+    adminActorId: currentUser.id
+  });
+
+  await closeConfirmDeleteMemberModal();
+  if (document.getElementById('members-modal')?.open) renderMembersModalList();
+  updatePendingBadges();
+  showToast(`Đã xóa thành viên ${targetId} và đồng bộ Google Sheet.`);
 }
 
 // === render-tasks.js ===
@@ -7005,7 +7803,8 @@ function renderDispatchHub() {
     }
     const cards = pendingSwaps.map((s) => {
       const fromMember = (membersDirectory || []).find(m => m && m.id === s.fromId);
-      const fromCode = fromMember ? getDisplayStudentCode(fromMember) : s.fromId;
+      const fromCode = fromMember ? getDisplayStudentCode(fromMember) : '';
+      const idSub = fromCode ? `ID: ${s.fromId} · MSSV: ${fromCode}` : `ID: ${s.fromId}`;
       return el('article', { className: 'dispatch-card', dataset: { reqId: s.id } },
         el('div', { className: 'dispatch-head' },
           el('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '0', flex: '1' } },
@@ -7015,7 +7814,7 @@ function renderDispatchHub() {
                 el('span', { style: { fontSize: '13.5px', fontWeight: '700', color: 'var(--text-primary)' } }, s.fromName),
                 s.fromClass ? el('span', { style: { fontSize: '10.5px', background: 'var(--surface-chip)', color: 'var(--text-secondary)', padding: '1px 6px', borderRadius: '5px', fontWeight: '600' } }, s.fromClass) : null
               ),
-              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, `MSSV: ${fromCode}`)
+              el('div', { className: 'font-mono', style: { fontSize: '11px', color: 'var(--text-muted)' } }, idSub)
             )
           ),
           el('span', { className: 'role-pill-badge' }, 'Đổi ca')
@@ -7450,7 +8249,10 @@ function renderMissionSheetPanels(preselectTaskId = null) {
     const others = (membersDirectory || []).filter(m => m && m.id && m.id !== uid);
     mount(selMem, [
       el('option', { value: '' }, '-- Để Ban Điều Phối sắp xếp --'),
-      ...others.map(m => el('option', { value: m.id }, `${m.hoTen} (${getDisplayStudentCode(m)})`))
+      ...others.map((m) => {
+        const sc = getDisplayStudentCode(m);
+        return el('option', { value: m.id }, `${m.hoTen} (${sc ? m.id + ' · ' + sc : m.id})`);
+      })
     ]);
   }
 
@@ -7616,7 +8418,7 @@ function adjustMemberShiftCount(memberId, delta, metric = 'shift') {
 }
 
 // === app.js ===
-// SportPass V8.6 — Global Event Binding, Public Bridge & App Bootstrapper
+// SportPass V8.8 — Global Event Binding, Public Bridge & App Bootstrapper
 
 function bindUiListeners() {
   const on = (id, ev, fn) => {
@@ -7624,12 +8426,15 @@ function bindUiListeners() {
     if (node) node.addEventListener(ev, fn);
   };
 
-  // Login Gateway
+  // Login Gateway & Registration
   on('login-form', 'submit', handleLoginSubmit);
   on('btnTogglePass', 'click', togglePasswordVisibility);
-  on('btnForgotPass', 'click', () => showToast('Mật khẩu mặc định là 123456. Liên hệ Trưởng ban Nhân sự DMC0806 để cấp lại mật khẩu.'));
-  on('btnFaceIdLogin', 'click', () => handleBiometricLogin('Face ID'));
-  on('btnTouchIdLogin', 'click', () => handleBiometricLogin('Touch ID'));
+  on('btnOpenRegisterModal', 'click', openRegisterModal);
+  on('register-modal-close', 'click', closeRegisterModal);
+  on('reg-fullname', 'input', updateRegisterPreviewId);
+  on('reg-dob', 'input', updateRegisterPreviewId);
+  on('register-form', 'submit', submitSelfRegisterAction);
+  on('btnSubmitRegister', 'click', submitSelfRegisterAction);
 
   // Header Controls
   on('notification-trigger', 'click', openNotificationModal);
@@ -7659,7 +8464,11 @@ function bindUiListeners() {
   on('member-register-btn', 'click', () => openTaskMissionModal('shifts'));
   on('member-swap-btn', 'click', () => openTaskMissionModal('swap'));
 
-  // Profile Inline Quick Edit when Phone or ICE not yet set
+  // Profile Inline Quick Edit
+  on('display-studentId', 'click', (e) => {
+    e.preventDefault();
+    openEditProfileModal('input-studentId');
+  });
   on('display-phone', 'click', (e) => {
     if (e.currentTarget && e.currentTarget.dataset.needsEdit === '1') {
       e.preventDefault();
@@ -7673,20 +8482,26 @@ function bindUiListeners() {
     }
   });
 
-  // Members Modal
-  on('members-modal-close', 'click', closeMembersModal);
+  // Members Modal + Admin Add/Delete Modals
   on('members-modal-close-x', 'click', closeMembersModal);
   on('iptSearchMembers', 'input', renderMembersModalList);
+  on('admin-add-member-btn', 'click', openAddMemberModal);
+  on('add-member-close', 'click', closeAddMemberModal);
+  on('add-fullname', 'input', updateAddMemberAutoId);
+  on('add-dob', 'input', updateAddMemberAutoId);
+  on('add-memberId', 'input', () => { isAddMemberIdManual = true; });
+  on('add-member-form', 'submit', submitAddMemberAction);
+  on('btnSubmitAddMember', 'click', submitAddMemberAction);
+  on('confirm-delete-close', 'click', closeConfirmDeleteMemberModal);
+  on('btnConfirmDeleteMember', 'click', confirmDeleteMemberAction);
 
   // Edit Profile Modal
   on('edit-profile-trigger', 'click', () => openEditProfileModal());
   on('edit-modal-close', 'click', closeEditProfileModal);
-  on('edit-modal-cancel', 'click', closeEditProfileModal);
   on('edit-modal-save', 'click', saveEditProfileAction);
 
   // Notifications & Slim Settings Modals
   on('notification-modal-close', 'click', closeNotificationModal);
-  on('notification-dismiss-btn', 'click', closeNotificationModal);
   on('settings-modal-close', 'click', closeSettingsModal);
   on('theme-btn-light', 'click', (e) => { e.stopPropagation(); setColorScheme('light', true); });
   on('theme-btn-dark', 'click', (e) => { e.stopPropagation(); setColorScheme('dark', true); });
@@ -7697,13 +8512,11 @@ function bindUiListeners() {
 
   // Change Password Modal
   on('password-modal-close', 'click', closeChangePasswordModal);
-  on('password-modal-cancel', 'click', closeChangePasswordModal);
   on('password-form', 'submit', submitChangePassword);
   on('btnSavePassword', 'click', submitChangePassword);
 
   // Create Shift Modal
   on('create-shift-close', 'click', closeCreateShiftModal);
-  on('create-shift-cancel', 'click', closeCreateShiftModal);
   on('task-cat-shift', 'click', () => setTaskCategoryUI('shift'));
   on('task-cat-activity', 'click', () => setTaskCategoryUI('activity'));
   on('btnAddDeptQuotaRow', 'click', addDeptQuotaRow);
@@ -7746,7 +8559,6 @@ function bindUiListeners() {
   });
 
   // Member Task Mission Modal
-  on('task-mission-close', 'click', closeTaskMissionModal);
   on('task-mission-close-x', 'click', closeTaskMissionModal);
   on('mission-tab-shifts', 'click', () => switchMissionTab('shifts'));
   on('mission-tab-swap', 'click', () => switchMissionTab('swap'));
@@ -7754,13 +8566,13 @@ function bindUiListeners() {
   on('btnSubmitMemberLeave', 'click', submitMemberLeaveRequest);
 
   // Success Celebration Center Modal
-  on('celebration-close-x', 'click', () => closeSheetDialog('success-celebration-modal'));
   on('celebration-confirm-btn', 'click', () => closeSheetDialog('success-celebration-modal'));
 }
 
 function exposeGlobalBridge() {
   window.DEFAULT_MEMBERS_DIRECTORY = DEFAULT_MEMBERS_DIRECTORY;
   window.ALL_DEPARTMENTS = ALL_DEPARTMENTS;
+  window.STANDARD_ROLES = STANDARD_ROLES;
   window.DEFAULT_TASKS = DEFAULT_TASKS;
   Object.defineProperties(window, {
     currentUser: { configurable: true, get: () => currentUser, set: (v) => { currentUser = v; } },
@@ -7777,6 +8589,12 @@ function exposeGlobalBridge() {
   window.openMembersModal = openMembersModal;
   window.openEditProfileModal = openEditProfileModal;
   window.saveEditProfileAction = saveEditProfileAction;
+  window.openRegisterModal = openRegisterModal;
+  window.submitSelfRegisterAction = submitSelfRegisterAction;
+  window.openAddMemberModal = openAddMemberModal;
+  window.submitAddMemberAction = submitAddMemberAction;
+  window.openConfirmDeleteMemberModal = openConfirmDeleteMemberModal;
+  window.confirmDeleteMemberAction = confirmDeleteMemberAction;
   window.openQrModal = openQrModal;
   window.closeQrModal = closeQrModal;
   window.openCreateShiftModal = openCreateShiftModal;
@@ -7791,6 +8609,8 @@ function exposeGlobalBridge() {
   window.setColorScheme = setColorScheme;
   window.openSuccessCelebration = openSuccessCelebration;
   window.showToast = showToast;
+  window.normalizePhoneVN = normalizePhoneVN;
+  window.sha256Hex = sha256Hex;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7799,6 +8619,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bindUiListeners();
   initHeroCardParallax();
   bindWaterRipples();
+  autoEnableBackgroundNotifications();
   checkStoredLoginSession();
   exposeGlobalBridge();
 });

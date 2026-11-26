@@ -4,11 +4,12 @@
  * Hỗ trợ: Push Notifications, Offline Caching, Background Sync, Auto Cache Cleanup
  */
 
-const CACHE_VERSION = 'clb-sportpass-v8.7.3-varsity';
+const CACHE_VERSION = 'clb-sportpass-v8.8.0-varsity';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './icon.svg',
   'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap',
   'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js',
   'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js'
@@ -51,7 +52,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  if (req.mode === 'navigate' || url.pathname.endsWith('index.html')) {
+  if (req.mode === 'navigate' || url.pathname.endsWith('index.html') || url.pathname.endsWith('manifest.json')) {
     event.respondWith(
       fetch(req).then((networkRes) => {
         return caches.open(CACHE_VERSION).then((cache) => {
